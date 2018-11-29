@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Switch, Route } from 'dva/router';
 import dynamic from 'dva/dynamic';
-import AppLayout from 'layout';
+import AppLayout from 'layout/base';
 import { History } from 'interface/common';
 
 interface IProps {

@@ -8,7 +8,7 @@ interface IProps {
   children: string | React.ReactNode | (() => React.ReactNode)
 }
 
-// 移除 app-shell的html和css，并显示pmp_content的内容
+// 移除 app-shell的html和css，并显示content的内容
 const showContent = () => {
   const $pmp_skeleton = document.querySelector('#skeleton');
   const $pmp_content = document.querySelector('#content');

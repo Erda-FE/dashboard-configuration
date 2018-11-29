@@ -9,7 +9,7 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 import createHistory from 'history/createBrowserHistory';
 // import router from './router';
-// import models from './models';
+import models from './models';
 import { checkVersion } from './version';
 
 moment.locale('zh-cn');
@@ -44,9 +44,9 @@ const app = dva({
   },
 });
 
-// models.forEach((model) => {
-//   app.model(model);
-// });
+models.forEach((model) => {
+  app.model(model);
+});
 app.use(createLoading({ namespace: 'isFetching', effects: true }));
 // app.router(() => router({ user, app, history }));
 app.start('#pmp_content');

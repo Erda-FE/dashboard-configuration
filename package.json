@@ -9,7 +9,7 @@
   "main": "index.js",
   "scripts": {
     "watch": "rm -rf public/scripts && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d ",
-    "web": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development",
+    "web": "rm -rf public/scripts && npm run version && webpack-dev-server --config webpack.server.js --mode=development",
     "https": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development --https",
     "dll": "webpack --config webpack_dll.config.js --mode development",
     "build": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --color && npm run version",

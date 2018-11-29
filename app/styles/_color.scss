@@ -1,0 +1,138 @@
+// Color palette
+$green: #00d19c;
+$light-green: #f0fbf6;
+$blue: #2786f4;
+$lightblue: #1eb6f8;
+$purple: #ae8fe5;
+$orange: #fba254;
+$red: #f75b60;
+$dark-black: #292929;
+$light-black: #606060;
+$gray: #666666;
+$darkgray: #7a7a7a;
+$lightgray: #bababa;
+$white: #ffffff;
+$darkblue: #2374e1 !default;
+$dark: #dfdfdf !default;
+$assist-desc: #999999;
+$tip-color: #999999;
+
+$placeholder-color: #bababa;
+
+// Color primary
+$color-primary: #44c790;
+$color-secondary: $gray;
+// Color text
+$color-text-primary: $dark-black;
+$color-text: $gray;
+$color-text-assist: $assist-desc;
+$color-text-secondary: $lightgray;
+$text-color-secondary: $lightgray; // antd
+$color-text-secondary-assist: $darkgray !default;
+$color-text-opacity: rgba(0, 0, 0, .45);
+$color-text-assist-secondary: #e8e8e8;
+$color-text-warning: #ec5265;
+// Color link
+$color-link: $color-primary;
+$color-link-assist: $dark-black;
+$color-link-secondary: $lightgray;
+$color-close-hover: #ff4f4f;
+// Color status
+$color-success: $green;
+$color-danger: $red;
+$color-warning: $orange;
+$color-info: $gray;
+// color decorator
+$color-background: #f6f6f6;
+$dark-background: #e8e8e8;
+$color-dark-background: #e5e5e5;
+$color-background-popover: rgba(24, 24, 24, .5);
+$color-border: #e8e8e8;
+$light-color-border: #f6f6f6;
+$color-shadow: rgb(232, 232, 232);
+$color-background-assist: rgba(239, 242, 240, .4);
+$color-hover: #fffeeb;
+$color-gradient-start: #0cdea9;
+$color-gradient-end: #1eb6f8;
+$color-border-second: $lightblue;
+$color-border-hover: $green;
+$color-sidebar: #505a60;
+$color-topbar: #505a60;
+$color-sidebar-selected: $color-primary;
+$color-border-dark: $dark !default;
+$color-text-title: #464c57 !default;
+$table-odd-background-color: #fafafa;
+$border-colors: #ff6161 #ffa161 #ffea61 #6cdb85 #6cf0e8 #5fb8ff;
+$upload-icon-color: #d9d9d9;
+$color-okr-shadow: rgba(0, 0, 0, .05);
+$color-new-okr-border: #efefef;
+$setting-head: #e9e9e9;
+$color-emergency: #ff4f4f;
+$color-common: #7ed321;
+$color-important: #ffa161;
+$color-panel-key-info: #647a87;
+$color-hover: $light-green;
+$color-actived: #dcf4ea;
+$tab-border: #e5e5e5;
+$detail-border: #dddddd;
+$table-even: #fafafa;
+$table-thead: #e5e5e5;
+$upload-border: #dadada;
+$detail-hover: #758a97;
+$header-bg: #1f2532;
+// label color
+$label-red: #f35c6f;
+$label-orange: #fa9548;
+$label-aqua: #5bd6d0;
+$label-blue: #5294fa;
+$label-purple: #8570f7;
+$label-gray: #cacaca;
+
+// filter color
+$filter-border: #f6f6f6;
+$disabled-min: #e5e5e5;
+$enable-min: #ff9340;
+
+// hoook color
+$input-border: #eeeeee;
+$prefix-input: #505a60;
+$setting-head: #e9e9e9;
+$notification-inner-bg: #f4ce51;
+$notification-ding-bg: #368be7;
+$notification-email-bg: #72cb56;
+$notification-tip: #bababa;
+$v2-border-color: #e9e9e9;
+$v2-title: $dark-black;
+$org-selected-org: #f8f8f8;
+$opacity-primary-color: rgba(32, 193, 142, .1);
+$border-radius: 3px;
+$border-radius-left: 3px 0 0 3px;
+$border-radius-right: 0 3px 3px 0;
+$border-radius-small: 2px;
+$box-shadow: 0 1px 2px 0 rgba(0, 0, 0, .04);
+$modal-box-shadow: 0 1px 4px 2px rgba(0, 0, 0, .08);
+$fullscreen-center-width: 1184px;
+
+//contract-color
+$table-header: rgba(68, 199, 144, .08);
+$org-selected-org: #f8f8f8;
+//workload-statistic
+$delayed: #ff9340;
+$today-start: #44c790;
+$org-selected-org: #f8f8f8;
+$statistic-icon: #d8d8d8;
+$time-select: #e8e8e8;
+$statistic-title: $dark-black;
+$icon-color: #7a7a7a;
+$percent-color: #505360;
+
+//work allocation
+$work-allocation-gray: #f8f8f8;
+$work-allocation: #ace5e5 #8bdbdb #6bc8c8 #52baba #4ecfbc #33c2ad #25acb3
+  #098f97 #02787b #005c5c;
+
+$issue-detail-caret: #d8d8d8;
+$mask: rgba(0, 0, 0, .1);
+$color-degree: #44c790, #ff9340, #ec5265, #9013fe;
+$light-primary: rgba(68, 199, 144, .08);
+$bgGray: #fafafa;

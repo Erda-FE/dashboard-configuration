@@ -89,6 +89,7 @@
     "@types/react-redux": "^6.0.9",
     "@types/react-router": "^4.0.26",
     "@types/webpack": "^4.4.0",
+    "babel-eslint": "^8.2.6",
     "eslint": "^5.8.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-ali": "^4.0.0",

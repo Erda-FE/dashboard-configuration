@@ -8,7 +8,6 @@ const vendors = [
   'dva',
   'lodash',
   'antd',
-  'echarts',
 ];
 
 module.exports = {

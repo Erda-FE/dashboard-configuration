@@ -1,0 +1,54 @@
+server {
+    set $backend_server $BACKEND_URL;
+
+    listen       80;
+    server_name  localhost;
+    root   /usr/share/nginx/html;
+
+    client_max_body_size 50m;
+
+    set $taEnabled ${TERMINUS_TA_ENABLE};
+    set $taUrl ${TERMINUS_TA_URL};
+    set $collectorUrl ${TERMINUS_TA_COLLECTOR_URL};
+    set $terminusKey ${TERMINUS_KEY};
+
+    location / {
+        index index.html;
+        try_files /index.html =404;
+        if_modified_since off;
+        add_header Cache-Control no-cache;
+    }
+
+    location /ta {
+        default_type application/javascript;
+        return 200 'window._taConfig={enabled:$taEnabled,ak:"$terminusKey",url:"$taUrl",collectorUrl:"$collectorUrl"}';
+    }
+
+    location /api {
+        proxy_pass http://$backend_server;
+        proxy_set_header        X-Real-IP $remote_addr;
+        proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header        Host $http_host;
+    }
+
+    location /api/ws {
+        proxy_pass http://$backend_server;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
+    }
+
+    error_page   500 502 503 504  /50x.html;
+    location = /50x.html {
+        root   /usr/share/nginx/html;
+    }
+
+    location ~* ^.*\.(jpg|jpeg|gif|png|ico|css|zip|tgz|gz|rar|bz2|doc|xls|exe|pdf|ppt|txt|tar|mid|midi|wav|bmp|rtf|js|css|map)$ {
+        expires 30d;
+    }
+    location ~* version\.(json)$ {
+        expires -1;
+        add_header 'Cache-Control' 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0';
+    }
+}

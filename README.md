@@ -1,6 +1,6 @@
-# Terminus Project Manage UI
+# 项目基础架构
 
-端点项目管理 UI 工程 , 基于 `react + antd`
+基于 `react + antd`
 
 ## Run
 
@@ -75,8 +75,5 @@ npm i -g @terminus/jarvis
   `flow([(value) => map(value, user => user.name), (value) => join(value, '，')])`
 
   value 是上一个方法返回的值
-  
-2、过滤puppeteer的浏览器下载
 
-  已经在.npmrc中增加 `puppeteer_skip_chromium_download=true`
 

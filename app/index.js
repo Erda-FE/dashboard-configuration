@@ -8,7 +8,7 @@ import createLoading from 'dva-loading';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import createHistory from 'history/createBrowserHistory';
-// import router from './router';
+import AppRouter from './router';
 import models from './models';
 import { checkVersion } from './version';
 
@@ -48,6 +48,6 @@ models.forEach((model) => {
   app.model(model);
 });
 app.use(createLoading({ namespace: 'isFetching', effects: true }));
-// app.router(() => router({ user, app, history }));
-app.start('#pmp_content');
+app.router(() => <AppRouter {...{ app, history }} />);
+app.start('#content');
 checkVersion();

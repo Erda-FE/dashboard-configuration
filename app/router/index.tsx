@@ -1,28 +1,32 @@
 import React from 'react';
-import { forEach } from 'lodash';
 import { Router, Switch, Route } from 'dva/router';
 import dynamic from 'dva/dynamic';
+import { History } from 'interface/common';
 
-const PageContainer = ({ children }) => children;
+const PageContainer = ({ children }: any) => children;
 
-class AppRouter extends React.PureComponent {
+interface IProps {
+  app: any
+  history: History
+}
+
+class AppRouter extends React.PureComponent<IProps> {
+  childRoutes: any[] = [];
+
   componentWillMount() {
     this.initChildRoutes();
   }
 
   initChildRoutes = () => {
-    const routeHandlers = [
-
-    ];
-    this.childRoutes = [];
+    const routeHandlers: any[] = [];
     const { app } = this.props;
-    routeHandlers.forEach(handler => forEach(handler(), ({ getComponent, ...other }) => this.childRoutes.push({
+    routeHandlers.forEach(({ getComponent, ...other }) => this.childRoutes.push({
       ...other,
       Comp: dynamic({
         app,
         component: getComponent,
-      }),
-    })));
+      } as any),
+    }));
   }
 
   render() {
@@ -34,7 +38,7 @@ class AppRouter extends React.PureComponent {
             path="/"
             render={props => (<PageContainer {...props}>
               <Switch>
-                {this.childRoutes.map(({ path, Comp }) => (
+                {this.childRoutes.map(({ path, Comp }: any) => (
                   <Route
                     key={path}
                     path={path}

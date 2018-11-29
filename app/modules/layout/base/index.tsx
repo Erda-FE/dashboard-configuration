@@ -1,8 +1,9 @@
 import React from 'react';
-import { Layout, Breadcrumb } from 'antd';
-import Sider from './sider';
+import { Layout } from 'antd';
+import AppSider from './sider';
+import AppHeader from './top-header';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 interface IProps {
   children: string | React.ReactNode | (() => React.ReactNode)
@@ -24,14 +25,9 @@ export default class AppLayout extends React.PureComponent<IProps> {
   render() {
     return (
       <Layout style={{ minHeight: '100vh' }}>
-        <Sider />
+        <AppSider />
         <Layout>
-          <Header style={{ background: '#fff', padding: 0 }}>
-            <Breadcrumb style={{ margin: '16px 0' }}>
-              <Breadcrumb.Item>User</Breadcrumb.Item>
-              <Breadcrumb.Item>Bill</Breadcrumb.Item>
-            </Breadcrumb>
-          </Header>
+          <AppHeader />
           <Content style={{ margin: '16px' }}>
             {this.props.children}
           </Content>

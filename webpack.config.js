@@ -10,7 +10,6 @@ const cssnano = require('cssnano');
 const HappyPack = require('happypack');
 const os = require('os');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
-const UglifyJS = require('uglify-js');
 
 
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
@@ -252,10 +251,6 @@ module.exports = () => {
       }),
       new CopyWebpackPlugin([
         { from: './app/images', to: 'images' },
-          transform(fileContent) {
-            return UglifyJS.minify(fileContent.toString()).code;
-          },
-        },
       ]),
       new HtmlWebpackPlugin({
         filename: 'index.html',

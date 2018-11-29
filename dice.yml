@@ -19,6 +19,5 @@ services:
       disk: 100
     deployments:
       replicas: 1
-      policys: shuffle
     expose:
     - 80

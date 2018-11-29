@@ -1,9 +1,8 @@
 import React from 'react';
 import { Router, Switch, Route } from 'dva/router';
 import dynamic from 'dva/dynamic';
+import AppLayout from 'layout';
 import { History } from 'interface/common';
-
-const PageContainer = ({ children }: any) => children;
 
 interface IProps {
   app: any
@@ -36,7 +35,7 @@ class AppRouter extends React.PureComponent<IProps> {
         <Switch>
           <Route
             path="/"
-            render={props => (<PageContainer {...props}>
+            render={props => (<AppLayout {...props}>
               <Switch>
                 {this.childRoutes.map(({ path, Comp }: any) => (
                   <Route
@@ -46,7 +45,7 @@ class AppRouter extends React.PureComponent<IProps> {
                   />
                 ))}
               </Switch>
-            </PageContainer>)}
+            </AppLayout>)}
           />
         </Switch>
       </Router>

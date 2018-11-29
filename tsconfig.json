@@ -29,6 +29,7 @@
       "utils/*": ["./app/utils/*"],
       "models/*": ["./app/models/*"],
       "services/*": ["./app/services/*"],
+      "layout": ["./app/modules/layout"],
       "layout/*": ["./app/modules/layout/*"],
       "user/*": ["./app/modules/user/*"],
       "agent": ["./app/agent.js"],

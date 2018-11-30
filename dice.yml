@@ -10,7 +10,7 @@ services:
       TERMINUS_TRACE_ENABLE: false
       TERMINUS_APP_NAME: datahub-ui
       DATAHUB_MASTER_HOST: manager-starter-test-4863
-      HORUS_CONSOLE_PORT: 80
+      DATAHUB_MASTER_PORT: 80
     hosts:
     - 127.0.0.1 datahub.terminus.io
     resources:

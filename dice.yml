@@ -9,7 +9,7 @@ services:
     envs:
       TERMINUS_TRACE_ENABLE: false
       TERMINUS_APP_NAME: datahub-ui
-      DATAHUB_MASTER_HOST: manager-starter-test-4863
+      DATAHUB_MASTER_HOST: manager-starter.test-4863.services.v1.runtimes.marathon.l4lb.thisdcos.directory
       DATAHUB_MASTER_PORT: 80
     hosts:
     - 127.0.0.1 datahub.terminus.io

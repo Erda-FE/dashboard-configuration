@@ -1,5 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
+import classnames from 'classnames';
+import { Link } from 'dva/router';
 import { Icon as ColorIcon } from 'common';
 import SiderMenu from './menu';
 import styles from './index.scss';
@@ -31,6 +33,9 @@ export default class AppSidebar extends React.PureComponent {
           </div>
         )}
       >
+        <Link to="/">
+          <div className={classnames('logo', { collapsed })} />
+        </Link>
         <SiderMenu />
       </Sider>
     );

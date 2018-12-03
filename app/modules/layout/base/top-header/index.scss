@@ -1,0 +1,16 @@
+.header {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  background-color: $white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .08);
+}
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  margin-left: 24px;
+  font-size: 14px;
+  a {
+    text-decoration: none;
+  }
+}

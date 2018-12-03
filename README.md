@@ -2,6 +2,24 @@
 
 基于 `react + antd`
 
+## 初始化
+```js
+const testEnv = 'front.terminus.io';
+const stagingEnv = 'staging.terminus.io';
+const devBranchEnv = 'dev.terminus.io';
+const prodEnv = 'prod.terminus.io';
+
+const backendUrl = testEnv;
+const frontUrl = 'local.terminus.io'; // local与对应环境根域名一致
+const port = 8080;
+
+module.exports = {
+  backendUrl,
+  frontUrl,
+  port,
+};
+```
+
 ## Run
 
 - `npm i`

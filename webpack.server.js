@@ -6,9 +6,13 @@ const webpackConfig = require('./webpack.config');
 const { existsSync } = require('fs');
 
 let urlOption = {};
-if (existsSync('./dev-server.ignore.js')) urlOption = require('./dev-server.ignore');
+if (existsSync('./dev-server.ignore.js')) {
+  urlOption = require('./dev-server.ignore');
+} else {
+  throw new Error('请创建 dev-server.ignore.js文件');
+}
 
-const { backendUrl = 'front.test.pmp.y.terminus.io', frontUrl = 'local.app.terminus.io', port } = urlOption;
+const { backendUrl, frontUrl, port } = urlOption;
 
 let mockpath = [];
 if (existsSync('./swagger.json')) swaggerParserMock({ spec: require('./swagger.json') }).then((docs) => { mockpath = docs.paths; });

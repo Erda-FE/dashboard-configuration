@@ -8,7 +8,8 @@
 - `npm run web ` (起devServer, 有热加载， 随改随刷新)
 
 ## VSCode配置说明
-* 安装eslint、tslint、stylelint、prettier
+* 必须安装eslint、tslint、stylelint、prettier、scss-lint
+* 推荐安装 CSS Modules、colorize、scss intelliSense
 * 请使用VScode->Preferences->setting，设置
 
 ```shell

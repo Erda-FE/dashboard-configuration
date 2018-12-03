@@ -1,17 +1,17 @@
-const path = require('path')
-const swaggerParserMock = require('swagger-parser-mock')
-const pathToRegexp = require('path-to-regexp')
-const Mock = require('mockjs')
-const webpackConfig = require('./webpack.config')
-const { existsSync } = require('fs')
+const path = require('path');
+const swaggerParserMock = require('swagger-parser-mock');
+const pathToRegexp = require('path-to-regexp');
+const Mock = require('mockjs');
+const webpackConfig = require('./webpack.config');
+const { existsSync } = require('fs');
 
-let urlOption = {}
-if (existsSync('./dev-server.ignore.js')) urlOption = require('./dev-server.ignore')
+let urlOption = {};
+if (existsSync('./dev-server.ignore.js')) urlOption = require('./dev-server.ignore');
 
-const { backendUrl = 'front.test.pmp.y.terminus.io', frontUrl = 'local.app.terminus.io', port } = urlOption
+const { backendUrl = 'front.test.pmp.y.terminus.io', frontUrl = 'local.app.terminus.io', port } = urlOption;
 
-let mockpath = []
-if (existsSync('./swagger.json')) swaggerParserMock({ spec: require('./swagger.json') }).then(docs => { mockpath = docs.paths })
+let mockpath = [];
+if (existsSync('./swagger.json')) swaggerParserMock({ spec: require('./swagger.json') }).then((docs) => { mockpath = docs.paths; });
 
 const devServer = {
   port: port || 8080,
@@ -49,21 +49,21 @@ const devServer = {
       onProxyRes(proxyRes, req, res) {
         if (proxyRes.statusCode === 404 || proxyRes.statusCode === 503) {
           Object.keys(mockpath).forEach((mockurl) => {
-            mockpath[mockurl].mockUrl = mockurl.replace(/{/g, ':').replace(/}/g, '')
+            mockpath[mockurl].mockUrl = mockurl.replace(/{/g, ':').replace(/}/g, '');
             if (pathToRegexp(mockpath[mockurl].mockUrl).exec(req.path)) {
-              const responses = mockpath[mockurl][req.method.toLowerCase()].responses[200].example && JSON.parse(mockpath[mockurl][req.method.toLowerCase()].responses[200].example)
-              res.json(Mock.mock(responses))
-              console.log(`mockto: ${req.method} ${mockurl}`)
+              const responses = mockpath[mockurl][req.method.toLowerCase()].responses[200].example && JSON.parse(mockpath[mockurl][req.method.toLowerCase()].responses[200].example);
+              res.json(Mock.mock(responses));
+              console.log(`mockto: ${req.method} ${mockurl}`);
             }
-          })
+          });
         }
       },
       // logLevel: 'debug',
     },
   ],
-}
+};
 
 module.exports = {
   ...webpackConfig(),
   devServer,
-}
+};

@@ -22,14 +22,14 @@ export default class SiderMenu extends React.PureComponent<any, IState> {
 
   render() {
     const { openKeys } = this.state;
+    const tempProps: any = this.props.collapsed ? { mode: 'vertical' } : { mode: 'inline', openKeys };
     return (
       <Menu
         theme="dark"
         defaultSelectedKeys={['3']}
-        mode="inline"
         className={styles.menu}
-        openKeys={openKeys}
         onOpenChange={this.onOpenChange}
+        {...tempProps}
       >
         <SubMenu
           key="sub1"

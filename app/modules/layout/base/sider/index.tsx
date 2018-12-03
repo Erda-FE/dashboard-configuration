@@ -36,7 +36,7 @@ export default class AppSidebar extends React.PureComponent {
         <Link to="/">
           <div className={classnames('logo', { collapsed })} />
         </Link>
-        <SiderMenu />
+        <SiderMenu collapsed={collapsed} />
       </Sider>
     );
   }

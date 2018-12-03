@@ -5,7 +5,8 @@
 ## Run
 
 - `npm i`
-- `npm run web ` (起devServer, 有热加载， 随改随刷新)
+- `npm run dll && npm run web` // 初次启动
+- `npm run web ` 再次启动 (起devServer, 有热加载，实时刷新)
 
 ## VSCode配置说明
 * 必须安装eslint、tslint、stylelint、prettier、scss-lint

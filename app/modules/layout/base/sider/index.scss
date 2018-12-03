@@ -1,0 +1,16 @@
+.sider {
+  background-color: $header-bg;
+}
+.trigger {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $header-bg;
+  :global {
+    .trigger-icon {
+      color: $white;
+      font-size: 12px;
+      cursor: pointer;
+    }
+  }
+}

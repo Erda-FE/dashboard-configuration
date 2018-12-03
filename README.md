@@ -4,6 +4,10 @@
 
 ## 初始化
 ```js
+/*
+ * 运行npm run web 必须dev-server.ignore.js文件
+ * 示例
+ */
 const testEnv = 'front.terminus.io';
 const stagingEnv = 'staging.terminus.io';
 const devBranchEnv = 'dev.terminus.io';

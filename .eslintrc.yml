@@ -16,8 +16,6 @@ settings:
         - app
         - router
         - router/modules
-    webpack:
-      config: 'webpack.config.js'
 rules:
   max-len: 0
   no-nested-ternary: 0

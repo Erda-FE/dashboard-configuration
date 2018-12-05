@@ -13,9 +13,9 @@
     "https": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development --https",
     "dll": "webpack --config webpack_dll.config.js --mode development",
     "build": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --color && npm run version",
+    "version": "node version.config.js",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
-    "version": "node version.config.js",
     "lint-fix": "eslint --fix app ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
     "tslint-fix": "tslint --fix 'app/**/*.tsx' ",
     "stylelint-fix": "stylelint 'app/**/*.scss' --config .stylelintrc.json --fix"
@@ -80,7 +80,6 @@
     "@types/history": "^4.7.0",
     "@types/js-cookie": "^2.1.0",
     "@types/lodash": "^4.14.107",
-    "@types/moment": "^2.13.0",
     "@types/qs": "^6.5.1",
     "@types/react": "^16.3.14",
     "@types/react-dom": "^16.0.5",
@@ -136,6 +135,11 @@
       "git add"
     ],
     "app/**/*.ts": [
+      "eslint --fix",
+      "tslint --fix",
+      "git add"
+    ],
+    "app/**/*.tsx": [
       "eslint --fix",
       "tslint --fix",
       "git add"

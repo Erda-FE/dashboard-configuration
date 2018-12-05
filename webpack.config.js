@@ -16,7 +16,6 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = () => {
   const isBuild = process.env.NODE_ENV === 'production';
-  const isRunWatch = process.env.ENV === 'watch';
   const publicPath = path.join(__dirname, '/public');
   const pkgPath = path.join(process.cwd(), 'package.json');
   // eslint-disable-next-line
@@ -38,10 +37,6 @@ module.exports = () => {
   const plugins = [];
 
   if (!isBuild) {
-    if (isRunWatch) {
-      const Visualizer = require('webpack-visualizer-plugin');
-      plugins.push(new Visualizer());
-    }
     plugins.push(
       new webpack.DllReferencePlugin({
         context: __dirname,

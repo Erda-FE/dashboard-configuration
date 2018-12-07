@@ -37,7 +37,7 @@ const devServer = {
   proxy: [
     {
       context: ['/api/ws'],
-      target: `https://${backendUrl}`,
+      target: backendUrl,
       secure: true,
       changeOrigin: true,
       ignorePath: false,
@@ -46,7 +46,7 @@ const devServer = {
     },
     {
       context: ['/api'],
-      target: `https://${backendUrl}`,
+      target: backendUrl,
       secure: true,
       changeOrigin: true,
       ignorePath: false,

@@ -11,7 +11,6 @@ const HappyPack = require('happypack');
 const os = require('os');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
-
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = () => {
@@ -207,7 +206,7 @@ module.exports = () => {
       },
       minimizer: isBuild ? [
         new UglifyJsPlugin({
-          sourceMap: true,
+          sourceMap: false,
           cache: path.join(__dirname, '/.cache'),
           parallel: true,
           uglifyOptions: {
@@ -295,7 +294,7 @@ module.exports = () => {
           {
             loader: 'less-loader',
             options: {
-              sourceMap: true,
+              sourceMap: false,
               modifyVars: theme,
               javascriptEnabled: true,
             },
@@ -310,7 +309,7 @@ module.exports = () => {
             loader: 'css-loader',
             options: {
               modules: true,
-              sourceMap: true,
+              sourceMap: false,
               localIdentName: '[name]_[local]-[hash:base64:7]',
             },
           },

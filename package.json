@@ -33,6 +33,7 @@
   "author": "wy",
   "license": "ISC",
   "dependencies": {
+    "@types/echarts": "^4.1.3",
     "antd": "^3.10.9",
     "autoprefixer": "^6.5.3",
     "classnames": "^2.2.5",
@@ -40,6 +41,8 @@
     "css-loader": "^0.28.11",
     "dva": "^2.3.0",
     "dva-loading": "^0.2.0",
+    "echarts": "^4.2.0-rc.2",
+    "echarts-for-react": "^2.0.15-beta.0",
     "happypack": "^5.0.0",
     "history": "^4.7.2",
     "html-webpack-plugin": "^3.2.0",

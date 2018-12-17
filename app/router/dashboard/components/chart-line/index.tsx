@@ -13,12 +13,10 @@ interface IData {
   areaStyle?: object // 基本面积图时，传入空的{}即可
 }
 
-interface IBaseProps {
+interface IProps extends ReactEchartsPropsTypes {
   names: string[]
   datas: IData[]
 }
-
-type IProps = IBaseProps & ReactEchartsPropsTypes;
 
 const baseAxis = {
   type: 'category',

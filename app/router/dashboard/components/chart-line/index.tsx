@@ -2,7 +2,7 @@
  * 2D 线形图：折线、柱状、曲线
  */
 import React from 'react';
-import ReactEcharts from 'echarts-for-react';
+import ChartSizeMe from '../chart-sizeme';
 import { merge, get } from 'lodash';
 import { ReactEchartsPropsTypes } from 'dashboard/types';
 
@@ -40,7 +40,7 @@ const ChartLine = ({ option = {}, names, datas, ...others }: IProps) => {
     } : { type: yAxisType },
     series: (datas || []).map(({ type = 'line', data, smooth = false }) => ({ type, data, smooth })),
   };
-  return <ReactEcharts option={merge(source, option)} {...others} />;
+  return <ChartSizeMe option={merge(source, option)} {...others} />;
 };
 
 export default ChartLine;

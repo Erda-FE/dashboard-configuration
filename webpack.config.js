@@ -194,7 +194,7 @@ module.exports = () => {
             name: 'chunk-libs',
             test: /[\\/]node_modules[\\/]/,
             priority: 4,
-            chunks: 'initial', // 只打包初始时依赖的第三方
+            chunks: 'all',
           },
           codeMirror: {
             name: 'chunk-codeMirror',

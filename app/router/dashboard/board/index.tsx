@@ -19,14 +19,8 @@ const layout = [
 ];
 
 class Board extends React.PureComponent {
-  private isInit = true;
-
   onLayoutChange = () => {
-    if (!this.isInit) {
-      this.forceUpdate();
-    } else {
-      this.isInit = false;
-    }
+
   }
 
   render() {

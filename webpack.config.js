@@ -143,7 +143,7 @@ module.exports = () => {
         user: path.resolve(__dirname, 'app/modules/user'),
         layout: path.resolve(__dirname, 'app/modules/layout'),
         // 业务域 含有路由
-        source: path.resolve(__dirname, 'app/router/source'),
+        dashboard: path.resolve(__dirname, 'app/router/dashboard'),
         // 其他
         agent: path.resolve(__dirname, 'app/agent.js'),
         utils: path.resolve(__dirname, 'app/utils'),

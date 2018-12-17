@@ -3,6 +3,7 @@ import { Router, Switch, Route } from 'dva/router';
 import dynamic from 'dva/dynamic';
 import AppLayout from 'layout/base';
 import { History } from 'interface/common';
+import DashBoardRoutes from './dashboard';
 
 interface IProps {
   app: any
@@ -17,7 +18,9 @@ class AppRouter extends React.PureComponent<IProps> {
   }
 
   initChildRoutes = () => {
-    const routeHandlers: any[] = [];
+    const routeHandlers: any[] = [
+      ...DashBoardRoutes,
+    ];
     const { app } = this.props;
     routeHandlers.forEach(({ getComponent, ...other }) => this.childRoutes.push({
       ...other,

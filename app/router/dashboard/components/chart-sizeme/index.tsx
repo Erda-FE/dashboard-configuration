@@ -2,13 +2,15 @@ import React from 'react';
 import ReactEcharts, { ReactEchartsPropsTypes } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
 import { ISizeMe } from 'dashboard/types';
-import styles from './index.scss';
+import './index.scss';
 
-type IProps = ReactEchartsPropsTypes & ISizeMe;
+type IProps = ReactEchartsPropsTypes & ISizeMe & {
+  descHeight?: number // 图表应减少的高度
+};
 
-const Chart = ({ size, ...props }: IProps) => (
-  <div className={styles.sizeme}>
-    <ReactEcharts {...props} style={{ ...props.style, height: size.height }} />
+const Chart = ({ size, descHeight = 32, ...props }: IProps) => (
+  <div className="chart-sizeme">
+    <ReactEcharts {...props} style={{ ...props.style, height: size.height - descHeight }} />
   </div>
 );
 

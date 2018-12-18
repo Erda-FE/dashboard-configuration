@@ -42,7 +42,6 @@ const layout = [
   { i: 'c', x: 4, y: 0, w: 1, h: 6 },
 ];
 
-
 class Board extends React.PureComponent<IProps> {
   onLayoutChange = () => {
 

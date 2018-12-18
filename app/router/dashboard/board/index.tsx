@@ -16,7 +16,7 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
 
-type IProps = ISizeMe;
+type IProps = ISizeMe & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 const GRID_MARGIN = 10; // Cell间距
 const RECT_BORDER_WIDTH = 1; // rect border宽度
@@ -42,20 +42,11 @@ const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const datas = [{
   data: [820, 932, 901, 934, 1290, 1330, 1320],
 }];
-const layout = [
-  { i: 'a', x: 0, y: 0, w: 1, h: 6 },
-  { i: 'b', x: 1, y: 0, w: 3, h: 6, minW: 2, maxW: 4 },
-  { i: 'c', x: 4, y: 0, w: 1, h: 6 },
-];
 
 class Board extends React.PureComponent<IProps> {
   state = {
     isEdit: false,
   };
-
-  onLayoutChange = () => {
-
-  }
 
   onDragStart = () => this.state.isEdit;
 
@@ -64,7 +55,7 @@ class Board extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size } = this.props;
+    const { size, onLayoutChange, layout } = this.props;
     const { width } = size;
     const { isEdit } = this.state;
     return (
@@ -78,7 +69,7 @@ class Board extends React.PureComponent<IProps> {
           cols={cols}
           rowHeight={30}
           width={width}
-          onLayoutChange={this.onLayoutChange}
+          onLayoutChange={onLayoutChange}
           isDraggable
           isResizable
           style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
@@ -93,4 +84,14 @@ class Board extends React.PureComponent<IProps> {
   }
 }
 
-export default sizeMe({ monitorHeight: true })(connect()(Board));
+const mapStateToProps = ({ biBoard: { layout } }: any) => ({
+  layout,
+});
+
+const mapDispatchToProps = (dispatch: any) => ({
+  onLayoutChange(layout: []) {
+    dispatch({ type: 'biBoard/onLayoutChange', layout });
+  },
+});
+
+export default sizeMe({ monitorHeight: true })(connect(mapStateToProps, mapDispatchToProps)(Board));

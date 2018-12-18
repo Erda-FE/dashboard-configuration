@@ -62,7 +62,10 @@ class Board extends React.PureComponent<IProps> {
     const { width } = size;
     const { isEdit } = this.state;
     return (
-      <div>
+      <div className={isEdit ? '' : 'bi-in-edit'}>
+        <div className="bi-header">
+          <Icon type={isEdit ? 'save' : 'edit'} onClick={this.trigger} />
+        </div>
         <ReactGridLayout
           autoSize
           layout={layout}
@@ -70,17 +73,14 @@ class Board extends React.PureComponent<IProps> {
           rowHeight={30}
           width={width}
           onLayoutChange={this.onLayoutChange}
-          isDraggable={isEdit}
-          isResizable={isEdit}
+          isDraggable
+          isResizable
           style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
         >
           <div key="a"><ChartLine names={names} datas={datas} /></div>
           <div key="b"><ChartLine names={names} datas={datas} /></div>
           <div key="c"><ChartLine names={names} datas={datas} /></div>
         </ReactGridLayout>
-        <div className="bi-footer">
-          <Icon type={isEdit ? 'save' : 'edit'} onClick={this.trigger} />
-        </div>
       </div>
     );
   }

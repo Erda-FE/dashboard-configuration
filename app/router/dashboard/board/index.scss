@@ -1,5 +1,5 @@
 :global {
-  .bi-footer {
+  .bi-header {
     padding-right: 10px;
     text-align: right;
     .anticon {
@@ -10,5 +10,8 @@
         color: $color-primary;
       }
     }
+  }
+  .bi-in-edit .react-resizable-handle {
+    display: none;
   }
 }

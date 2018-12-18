@@ -65,7 +65,7 @@ class Board extends React.PureComponent<IProps> {
       <div>
         <ReactGridLayout
           autoSize
-          layout={layout.map(single => ({ ...single, static: !isEdit }))}
+          layout={layout}
           cols={cols}
           rowHeight={30}
           width={width}

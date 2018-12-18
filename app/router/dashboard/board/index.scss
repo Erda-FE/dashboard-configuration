@@ -1,0 +1,13 @@
+:global {
+  .bi-footer {
+    padding-right: 10px;
+    text-align: right;
+    .anticon {
+      font-size: 16px;
+      cursor: pointer;
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+}

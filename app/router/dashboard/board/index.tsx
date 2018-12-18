@@ -3,12 +3,14 @@
  */
 import React from 'react';
 import { connect } from 'dva';
+import { Icon } from 'antd';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import { ChartLine } from 'dashboard/components';
 import { ISizeMe } from 'dashboard/types';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import './index.scss';
 
 type IProps = ISizeMe;
 
@@ -43,28 +45,42 @@ const layout = [
 ];
 
 class Board extends React.PureComponent<IProps> {
+  state = {
+    isEdit: false,
+  };
+
   onLayoutChange = () => {
 
+  }
+
+  trigger = () => {
+    this.setState({ isEdit: !this.state.isEdit });
   }
 
   render() {
     const { size } = this.props;
     const { width } = size;
+    const { isEdit } = this.state;
     return (
       <div>
         <ReactGridLayout
           autoSize
-          layout={layout}
+          layout={layout.map(single => ({ ...single, static: !isEdit }))}
           cols={cols}
           rowHeight={30}
           width={width}
           onLayoutChange={this.onLayoutChange}
-          style={{ backgroundImage: getGridBackground(width) }}
+          isDraggable={isEdit}
+          isResizable={isEdit}
+          style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
         >
           <div key="a"><ChartLine names={names} datas={datas} /></div>
           <div key="b"><ChartLine names={names} datas={datas} /></div>
           <div key="c"><ChartLine names={names} datas={datas} /></div>
         </ReactGridLayout>
+        <div className="bi-footer">
+          <Icon type={isEdit ? 'save' : 'edit'} onClick={this.trigger} />
+        </div>
       </div>
     );
   }

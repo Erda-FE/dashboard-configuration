@@ -1,5 +1,9 @@
 /**
  * 删格化仪表盘
+ * 1、阻止拖动是通过onDragStart来实现而非isDraggable
+ * 2、阻止缩放，是通过隐藏样式，而非isResizable
+ * 因为react-grid-layout会在相关变化时子组件注销重新加载，从而导致图表重绘操作，
+ * 见GridItem相关实现即知,https://github.com/STRML/react-grid-layout/blob/master/lib/GridItem.jsx
  */
 import React from 'react';
 import { connect } from 'dva';
@@ -53,6 +57,8 @@ class Board extends React.PureComponent<IProps> {
 
   }
 
+  onDragStart = () => this.state.isEdit;
+
   trigger = () => {
     this.setState({ isEdit: !this.state.isEdit });
   }
@@ -76,6 +82,7 @@ class Board extends React.PureComponent<IProps> {
           isDraggable
           isResizable
           style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
+          onDragStart={this.onDragStart}
         >
           <div key="a"><ChartLine names={names} datas={datas} /></div>
           <div key="b"><ChartLine names={names} datas={datas} /></div>

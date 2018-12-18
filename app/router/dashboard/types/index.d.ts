@@ -30,3 +30,7 @@ export interface ReactEchartsPropsTypes {
   opts?: OptsMap;
   shouldSetOption?: Func;
 }
+
+export interface ISizeMe {
+  size: { width: number, height: number }
+}

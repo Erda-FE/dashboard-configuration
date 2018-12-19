@@ -10,7 +10,7 @@ import { connect } from 'dva';
 import { Icon, Tooltip } from 'antd';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
-import { ChartLine } from 'dashboard/components';
+import { ChartLine, ChartDrawer } from 'dashboard/components';
 import { ISizeMe } from 'dashboard/types';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -55,13 +55,13 @@ class Board extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size, onLayoutChange, layout } = this.props;
+    const { size, onLayoutChange, layout, openDrawer } = this.props;
     const { width } = size;
     const { isEdit } = this.state;
     return (
       <div className={isEdit ? '' : 'bi-in-edit'}>
         <div className="bi-header">
-          {isEdit && <Icon type="plus" />}
+          {isEdit && <Icon type="plus" onClick={openDrawer} />}
           <Tooltip placement="bottom" title={isEdit ? '保存' : '编辑'}>
             <Icon type={isEdit ? 'save' : 'edit'} onClick={this.trigger} />
           </Tooltip>
@@ -82,6 +82,7 @@ class Board extends React.PureComponent<IProps> {
           <div key="b"><ChartLine names={names} datas={datas} /></div>
           <div key="c"><ChartLine names={names} datas={datas} /></div>
         </ReactGridLayout>
+        <ChartDrawer />
       </div>
     );
   }
@@ -94,6 +95,9 @@ const mapStateToProps = ({ biBoard: { layout } }: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   onLayoutChange(layout: []) {
     dispatch({ type: 'biBoard/onLayoutChange', layout });
+  },
+  openDrawer() {
+    dispatch({ type: 'biDrawer/openDrawer' });
   },
 });
 

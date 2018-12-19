@@ -7,7 +7,7 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import { Icon } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import { ChartLine } from 'dashboard/components';
@@ -61,7 +61,10 @@ class Board extends React.PureComponent<IProps> {
     return (
       <div className={isEdit ? '' : 'bi-in-edit'}>
         <div className="bi-header">
-          <Icon type={isEdit ? 'save' : 'edit'} onClick={this.trigger} />
+          {isEdit && <Icon type="plus" />}
+          <Tooltip placement="bottom" title={isEdit ? '保存' : '编辑'}>
+            <Icon type={isEdit ? 'save' : 'edit'} onClick={this.trigger} />
+          </Tooltip>
         </div>
         <ReactGridLayout
           autoSize

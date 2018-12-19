@@ -1,7 +1,7 @@
 const defaultLayout = [
-  { i: 'a', x: 0, y: 0, w: 1, h: 6 },
-  { i: 'b', x: 1, y: 0, w: 3, h: 6, minW: 2, maxW: 4 },
-  { i: 'c', x: 4, y: 0, w: 1, h: 6 },
+  { i: 'a', x: 0, y: 0, w: 4, h: 6 },
+  { i: 'b', x: 4, y: 0, w: 5, h: 6 },
+  { i: 'c', x: 9, y: 0, w: 3, h: 6 },
 ];
 
 export default {

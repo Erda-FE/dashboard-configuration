@@ -1,7 +1,8 @@
 export default {
   namespace: 'biDrawer',
   state: {
-    visible: false,
+    visible: true,
+    chartType: '',
   },
   effects: {
   },
@@ -11,6 +12,10 @@ export default {
     },
     closeDrawer(state) {
       return { ...state, visible: false };
+    },
+    chooseChart(state, { chartType }) {
+      if (chartType === state.chartType) return state;
+      return { ...state, chartType };
     },
   },
 };

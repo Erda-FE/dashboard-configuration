@@ -45,7 +45,7 @@ const datas = [{
 
 class Board extends React.PureComponent<IProps> {
   state = {
-    isEdit: false,
+    isEdit: true,
   };
 
   onDragStart = () => this.state.isEdit;

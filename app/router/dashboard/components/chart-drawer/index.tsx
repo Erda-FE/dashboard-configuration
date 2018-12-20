@@ -1,6 +1,10 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Drawer, Button } from 'antd';
+import { Drawer, Button, Collapse } from 'antd';
+import PanelCharts from './panel-charts';
+import PanelControls from './panel-controls';
+import PanelStyles from './panel-styles';
+import PanelData from './panel-data';
 import './index.scss';
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -18,7 +22,14 @@ class ChartDrawer extends React.PureComponent<IProps> {
         closable={false}
         className="bi-drawer"
       >
-        <div className="bi-drawer-content" />
+        <div className="bi-drawer-content">
+          <Collapse accordion>
+            <PanelCharts />
+            <PanelControls />
+            <PanelStyles />
+            <PanelData />
+          </Collapse>
+        </div>
         <div className="bi-drawer-footer">
           <Button onClick={closeDrawer} style={{ marginRight: 8 }}>
             取消

@@ -5,6 +5,10 @@ export default {
     chartType: '',
   },
   effects: {
+    * submitDrawer(_, { put, select }) {
+      const { chartType } = yield select(state => state.biDrawer);
+      yield put({ type: 'biDashBoard/generateChart', chartType });
+    },
   },
   reducers: {
     openDrawer(state) {

@@ -1,4 +1,7 @@
 :global {
+  .bi-board {
+    height: 100%;
+  }
   .bi-header {
     padding-right: 10px;
     text-align: right;
@@ -12,7 +15,7 @@
       }
     }
   }
-  .bi-in-edit .react-resizable-handle {
+  .bi-off-edit .react-resizable-handle {
     display: none;
   }
 }

@@ -10,6 +10,7 @@ import { connect } from 'dva';
 import { Icon, Tooltip } from 'antd';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
+import classnames from 'classnames';
 import { ChartLine, ChartDrawer } from 'dashboard/components';
 import { ISizeMe } from 'dashboard/types';
 import 'react-grid-layout/css/styles.css';
@@ -38,15 +39,14 @@ const getGridBackground = (width: number) => {
   return `${front}${colsStr}${back}`;
 };
 
-const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-const datas = [{
-  data: [820, 932, 901, 934, 1290, 1330, 1320],
-}];
-
 class Board extends React.PureComponent<IProps> {
   state = {
     isEdit: true,
   };
+
+  componentWillMount() {
+    this.props.initDashboardType();
+  }
 
   onDragStart = () => this.state.isEdit;
 
@@ -55,11 +55,11 @@ class Board extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size, onLayoutChange, layout, openDrawer } = this.props;
+    const { size, onLayoutChange, layout, openDrawer, chartDatasMap } = this.props;
     const { width } = size;
     const { isEdit } = this.state;
     return (
-      <div className={isEdit ? '' : 'bi-in-edit'}>
+      <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
         <div className="bi-header">
           {isEdit && <Icon type="plus" onClick={openDrawer} />}
           <Tooltip placement="bottom" title={isEdit ? '保存' : '编辑'}>
@@ -78,9 +78,17 @@ class Board extends React.PureComponent<IProps> {
           style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
           onDragStart={this.onDragStart}
         >
-          <div key="a"><ChartLine names={names} datas={datas} /></div>
-          <div key="b"><ChartLine names={names} datas={datas} /></div>
-          <div key="c"><ChartLine names={names} datas={datas} /></div>
+          {layout.map(({ i }: any) => {
+            const { chartType, names, datas } = chartDatasMap[i];
+            switch (chartType) {
+              case 'line':
+              case 'bar':
+              case 'area':
+                return <div key={i}><ChartLine names={names} datas={datas} /></div>;
+              default:
+                return null;
+            }
+          })}
         </ReactGridLayout>
         <ChartDrawer />
       </div>
@@ -88,13 +96,17 @@ class Board extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biBoard: { layout } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { layout, chartDatasMap } }: any) => ({
   layout,
+  chartDatasMap,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
+  initDashboardType() {
+    dispatch({ type: 'biDashBoard/initDashboardType', dashboardType: 'board' });
+  },
   onLayoutChange(layout: []) {
-    dispatch({ type: 'biBoard/onLayoutChange', layout });
+    dispatch({ type: 'biDashBoard/onLayoutChange', layout });
   },
   openDrawer() {
     dispatch({ type: 'biDrawer/openDrawer' });

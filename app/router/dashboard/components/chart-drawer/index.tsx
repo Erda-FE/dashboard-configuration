@@ -11,7 +11,7 @@ type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatch
 
 class ChartDrawer extends React.PureComponent<IProps> {
   render() {
-    const { visible, closeDrawer } = this.props;
+    const { visible, closeDrawer, submitDrawer } = this.props;
     return (
       <Drawer
         placement="right"
@@ -34,7 +34,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
           <Button onClick={closeDrawer} style={{ marginRight: 8 }}>
             取消
           </Button>
-          <Button onClick={closeDrawer} type="primary">
+          <Button onClick={submitDrawer} type="primary">
             提交
           </Button>
         </div>
@@ -50,6 +50,9 @@ const mapStateToProps = ({ biDrawer: { visible } }: any) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   closeDrawer() {
     dispatch({ type: 'biDrawer/closeDrawer' });
+  },
+  submitDrawer() {
+    dispatch({ type: 'biDrawer/submitDrawer' });
   },
 });
 

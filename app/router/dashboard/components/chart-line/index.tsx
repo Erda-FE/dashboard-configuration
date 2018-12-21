@@ -6,8 +6,10 @@ import ChartSizeMe from '../chart-sizeme';
 import { merge, get } from 'lodash';
 import { ReactEchartsPropsTypes } from 'dashboard/types';
 
+type IType = 'line' | 'bar' | 'area';
+
 interface IData {
-  type?: 'line' | 'bar'
+  type?: IType
   data: number[]
   smooth?: boolean
   areaStyle?: object // 基本面积图时，传入空的{}即可
@@ -24,6 +26,9 @@ const baseAxis = {
   boundaryGap: true,
 };
 
+const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
+const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
+
 const ChartLine = ({ option = {}, names, datas, ...others }: IProps) => {
   let xAxisType = get(option, ['xAxis', 'type']);
   const yAxisType = get(option, ['yAxis', 'type']);
@@ -39,7 +44,7 @@ const ChartLine = ({ option = {}, names, datas, ...others }: IProps) => {
       ...baseAxis,
       data: names,
     } : { type: yAxisType },
-    series: (datas || []).map(({ type = 'line', data, smooth = false }) => ({ type, data, smooth })),
+    series: (datas || []).map(({ type, data, ...dataOthers }: any) => ({ type: getAreaType(type), data, ...getOthers(type), ...dataOthers })),
   };
   return <ChartSizeMe option={merge(source, option)} {...others} />;
 };

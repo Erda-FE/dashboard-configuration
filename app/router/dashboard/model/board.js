@@ -5,7 +5,6 @@ const datas = [{
   data: [820, 932, 901, 934, 1290, 1330, 1320],
 }];
 
-
 export default {
   namespace: 'biDashBoard',
   state: {

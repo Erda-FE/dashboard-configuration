@@ -1,4 +1,3 @@
-import { cloneDeep } from 'lodash';
 
 const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const datas = [{
@@ -22,14 +21,14 @@ export default {
   reducers: {
     generateChart(state, { chartType }) {
       const { chartDatasMap, layout } = state;
-      const key = 'b'; // `${Date.parse(new Date())}`; // `chart-${Date.parse(new Date())}`;
+      const key = `chart-${Date.parse(new Date())}`;
       chartDatasMap[key] = generateChartData(chartType);
-      layout.push({ i: key, x: 3, y: 0, w: 3, h: 6, minW: 3, minH: 6 });
-      return { ...state, chartDatasMap, layout: cloneDeep(layout) };
+      layout.push({ i: key, x: 3, y: 0, w: 3, h: 6 });
+      return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
     },
-    // onLayoutChange(state, { layout }) {
-    //   return { ...state, layout };
-    // },
+    onLayoutChange(state, { layout }) {
+      return { ...state, layout };
+    },
     initDashboardType(state, { dashboardType }) {
       return { ...state, dashboardType };
     },

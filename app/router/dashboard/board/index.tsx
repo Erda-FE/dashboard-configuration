@@ -78,13 +78,14 @@ class Board extends React.PureComponent<IProps> {
           style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
           onDragStart={this.onDragStart}
         >
-          {layout.map(({ i }: any) => {
+          {layout.map(({ i, ...others }: any) => {
+            // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
             const { chartType, names, datas } = chartDatasMap[i];
             switch (chartType) {
               case 'line':
               case 'bar':
               case 'area':
-                return <div key={i}><ChartLine names={names} datas={datas} /></div>;
+                return <div key={i} data-grid={{ ...others }}><ChartLine names={names} datas={datas} /></div>;
               default:
                 return null;
             }

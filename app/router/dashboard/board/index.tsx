@@ -1,5 +1,5 @@
 /**
- * 删格化仪表盘
+ * 栅格化仪表盘
  * 1、阻止拖动是通过onDragStart来实现而非isDraggable
  * 2、阻止缩放，是通过隐藏样式，而非isResizable
  * 因为react-grid-layout会在相关变化时子组件注销重新加载，从而导致图表重绘操作，
@@ -11,7 +11,7 @@ import { Icon, Tooltip } from 'antd';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
-import { ChartLine, ChartDrawer } from 'dashboard/components';
+import { ChartLine, ChartDrawer, ChartOperation } from 'dashboard/components';
 import { ISizeMe } from 'dashboard/types';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -85,7 +85,13 @@ class Board extends React.PureComponent<IProps> {
               case 'line':
               case 'bar':
               case 'area':
-                return <div key={i} data-grid={{ ...others }}><ChartLine names={names} datas={datas} /></div>;
+                return (
+                  <div key={i} data-grid={{ ...others }}>
+                    <ChartOperation>
+                      <ChartLine names={names} datas={datas} />
+                    </ChartOperation>
+                  </div>
+                );
               default:
                 return null;
             }

@@ -1,3 +1,4 @@
+import { maxBy } from 'lodash';
 
 const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const datas = [{
@@ -23,7 +24,7 @@ export default {
       const { chartDatasMap, layout } = state;
       const key = `chart-${Date.parse(new Date())}`;
       chartDatasMap[key] = generateChartData(chartType);
-      layout.push({ i: key, x: 3, y: 0, w: 3, h: 6 });
+      layout.push({ i: key, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
       return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
     },
     onLayoutChange(state, { layout }) {
@@ -33,6 +34,11 @@ export default {
       return { ...state, dashboardType };
     },
   },
+};
+
+const getNewChartYPostion = (layout) => {
+  const { y: maxY, h: maxH } = maxBy(layout, ({ y, h }) => y + h);
+  return maxY + maxH;
 };
 
 const generateChartData = (chartType) => {

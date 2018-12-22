@@ -7,9 +7,10 @@ import './index.scss';
 const { Panel } = Collapse;
 
 const charts = [
-  { type: 'bar', name: '柱状图', img: '/images/charts/bar-heap-on.png', formatMsg: '' },
-  { type: 'line', name: '折线图', img: '/images/charts/line-on.png', formatMsg: '' },
-  { type: 'area', name: '面积图', img: '/images/charts/line-area-on.png', formatMsg: '' },
+  { type: 'bar', name: '柱状图', img: '/images/charts/bar-heap-on.png' },
+  { type: 'line', name: '折线图', img: '/images/charts/line-on.png' },
+  { type: 'area', name: '面积图', img: '/images/charts/line-area-on.png' },
+  { type: 'pie', name: '饼图', img: '/images/charts/pie-on.png' },
 ];
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;

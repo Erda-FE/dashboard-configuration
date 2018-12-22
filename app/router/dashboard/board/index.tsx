@@ -11,7 +11,7 @@ import { Icon, Tooltip } from 'antd';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
-import { ChartLine, ChartDrawer, ChartOperation } from 'dashboard/components';
+import { ChartLine, ChartPie, ChartDrawer, ChartOperation } from 'dashboard/components';
 import { ISizeMe } from 'dashboard/types';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -77,21 +77,27 @@ class Board extends React.PureComponent<IProps> {
         >
           {layout.map(({ i, ...others }: any) => {
             // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-            const { chartType } = (chartDatasMap[i]) as any;
+            const { chartType } = chartDatasMap[i];
+            let ChartNode = null as any;
             switch (chartType) {
               case 'line':
               case 'bar':
               case 'area':
-                return (
-                  <div key={i} data-grid={{ ...others }}>
-                    <ChartOperation chartId={i}>
-                      <ChartLine {...chartDatasMap[i]} />
-                    </ChartOperation>
-                  </div>
-                );
+                ChartNode = ChartLine;
+                break;
+              case 'pie':
+                ChartNode = ChartPie;
+                break;
               default:
                 return null;
             }
+            return (
+              <div key={i} data-grid={{ ...others }}>
+                <ChartOperation chartId={i}>
+                  <ChartNode {...chartDatasMap[i]} />
+                </ChartOperation>
+              </div>
+            );
           })}
         </ReactGridLayout>
         <ChartDrawer />

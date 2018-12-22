@@ -49,6 +49,7 @@ const generateChartData = (chartType) => {
     case 'line':
     case 'bar':
     case 'area':
+    case 'pie':
       return { chartType, isMock: true };
     default:
       return {};

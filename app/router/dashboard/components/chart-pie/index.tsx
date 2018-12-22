@@ -3,20 +3,40 @@
  */
 import React from 'react';
 import ChartSizeMe from '../chart-sizeme';
-import { merge, get } from 'lodash';
+import { merge } from 'lodash';
 import { ReactEchartsPropsTypes } from 'dashboard/types';
 
 type IType = 'pie';
 
+interface IData {
+  name: string,
+  value: number,
+}
+
 interface IProps extends ReactEchartsPropsTypes {
   names: string[]
+  datas: IData[]
   descHeight?: number // 图表应减少的高度
   isMock?: boolean
   chartType?: IType
 }
 const data = genData(50);
 
-const ChartPie = ({ option = {}, isMock, chartType, ...others }: IProps) => {
+// 获取默认的前面选中的6个
+const getDefaultSelected = (names: string[]) => {
+  const selected = {};
+  for (let i = 0; i < 6; i++) {
+    const name = names[i];
+    if (name) {
+      selected[name] = i < 6;
+    } else {
+      break;
+    }
+  }
+  return selected;
+};
+
+const ChartPie = ({ option = {}, isMock, chartType, names, datas, ...others }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',
@@ -28,9 +48,8 @@ const ChartPie = ({ option = {}, isMock, chartType, ...others }: IProps) => {
       right: 10,
       top: 20,
       bottom: 20,
-      data: data.legendData,
-
-      selected: data.selected,
+      data: isMock ? data.legendData : names,
+      selected: isMock ? data.selected : getDefaultSelected(names),
     },
     series: [
       {
@@ -38,7 +57,7 @@ const ChartPie = ({ option = {}, isMock, chartType, ...others }: IProps) => {
         type: 'pie',
         radius: '55%',
         center: ['40%', '50%'],
-        data: data.seriesData,
+        data: isMock ? data.seriesData : datas,
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
@@ -72,7 +91,6 @@ function genData(count: number) {
     });
     selected[name] = i < 6;
   }
-
   return {
     legendData,
     seriesData,

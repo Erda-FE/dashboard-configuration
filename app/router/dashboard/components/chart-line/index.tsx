@@ -37,6 +37,9 @@ const ChartLine = ({ option = {}, names, datas, ...others }: IProps) => {
     xAxisType = 'category';
   }
   const source = {
+    tooltip: {
+      trigger: 'axis',
+    },
     xAxis: xAxisType === 'category' ? {
       ...baseAxis,
       data: names,

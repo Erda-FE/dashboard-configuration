@@ -11,7 +11,7 @@ type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatch
 const PanelData = ({ chartType, chooseChart, ...others }: IProps) => (
   <Panel {...others} header="数据" key="data">
     {chartType && (
-      <div className="bi-demo-text">{`${chartNameMap[chartType]}数据示例复制`}</div>
+      <div className="bi-demo-text">{`${chartNameMap[chartType]}数据示例下载`}</div>
     )}
   </Panel>
 );

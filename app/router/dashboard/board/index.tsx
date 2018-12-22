@@ -87,7 +87,7 @@ class Board extends React.PureComponent<IProps> {
               case 'area':
                 return (
                   <div key={i} data-grid={{ ...others }}>
-                    <ChartOperation>
+                    <ChartOperation chartId={i}>
                       <ChartLine names={names} datas={datas} />
                     </ChartOperation>
                   </div>

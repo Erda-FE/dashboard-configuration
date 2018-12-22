@@ -4,4 +4,18 @@
     width: 100%;
     height: 100%;
   }
+  .bi-chart-operation-header {
+    position: absolute;
+    z-index: 999;
+    width: 100%;
+    padding-top: 12px;
+    padding-right: 20px;
+    text-align: right;
+    .anticon {
+      cursor: pointer;
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
 }

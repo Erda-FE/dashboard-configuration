@@ -1,4 +1,4 @@
-import { maxBy } from 'lodash';
+import { maxBy, remove } from 'lodash';
 
 const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 const datas = [{
@@ -24,6 +24,12 @@ export default {
       const key = `chart-${Date.parse(new Date())}`;
       chartDatasMap[key] = generateChartData(chartType);
       layout.push({ i: key, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
+      return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
+    },
+    deleteChart(state, { chartId }) {
+      const { chartDatasMap, layout } = state;
+      remove(layout, ({ i }) => chartId === i);
+      delete chartDatasMap[chartId];
       return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
     },
     onLayoutChange(state, { layout }) {

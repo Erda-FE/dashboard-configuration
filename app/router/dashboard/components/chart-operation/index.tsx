@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm } from 'antd';
 import './index.scss';
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends ReturnType<typeof mapDispatchToProps> {
   chartId: string
 }
 
@@ -13,7 +13,12 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   doAction = ({ key }: any) => {
-    console.log('key', key);
+    switch (key) {
+      case 'edit':
+        return this.props.editChart(this.props.chartId);
+      default:
+        break;
+    }
   }
 
   getMenu = () => (
@@ -48,15 +53,13 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { layout, chartDatasMap } }: any) => ({
-  layout,
-  chartDatasMap,
-});
-
 const mapDispatchToProps = (dispatch: any) => ({
+  editChart(chartId: string) {
+    dispatch({ type: 'biDrawer/editChart', chartId });
+  },
   deleteChart(chartId: string) {
     dispatch({ type: 'biDashBoard/deleteChart', chartId });
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChartOperation);
+export default connect(undefined, mapDispatchToProps)(ChartOperation);

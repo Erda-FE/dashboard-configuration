@@ -77,7 +77,7 @@ class Board extends React.PureComponent<IProps> {
         >
           {layout.map(({ i, ...others }: any) => {
             // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-            const { chartType, names, datas, isMock } = chartDatasMap[i];
+            const { chartType } = (chartDatasMap[i]) as any;
             switch (chartType) {
               case 'line':
               case 'bar':
@@ -85,7 +85,7 @@ class Board extends React.PureComponent<IProps> {
                 return (
                   <div key={i} data-grid={{ ...others }}>
                     <ChartOperation chartId={i}>
-                      <ChartLine names={names} datas={datas} isMock={isMock} />
+                      <ChartLine {...chartDatasMap[i]} />
                     </ChartOperation>
                   </div>
                 );

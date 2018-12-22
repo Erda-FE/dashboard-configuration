@@ -1,10 +1,5 @@
 import { maxBy, remove } from 'lodash';
 
-const names = ['demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6', 'demo7'];
-const datas = [{
-  data: [820, 932, 901, 934, 1290, 1330, 1320],
-}];
-
 export default {
   namespace: 'biDashBoard',
   state: {
@@ -54,12 +49,7 @@ const generateChartData = (chartType) => {
     case 'line':
     case 'bar':
     case 'area':
-      return {
-        names,
-        chartType,
-        isMock: true,
-        datas: datas.map(single => ({ ...single, type: chartType })),
-      };
+      return { chartType, isMock: true };
     default:
       return {};
   }

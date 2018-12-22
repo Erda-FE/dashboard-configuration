@@ -40,31 +40,28 @@ const getGridBackground = (width: number) => {
 };
 
 class Board extends React.PureComponent<IProps> {
-  state = {
-    isEdit: true,
-  };
-
   componentWillMount() {
     this.props.initDashboardType();
   }
 
-  onDragStart = () => this.state.isEdit;
-
-  trigger = () => {
-    this.setState({ isEdit: !this.state.isEdit });
-  }
+  onDragStart = () => this.props.isEdit;
 
   render() {
-    const { size, onLayoutChange, layout, openDrawer, chartDatasMap } = this.props;
+    const { size, onLayoutChange, layout, openDrawer, chartDatasMap, isEdit, openEdit, saveEdit } = this.props;
     const { width } = size;
-    const { isEdit } = this.state;
     return (
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
         <div className="bi-header">
           {isEdit && <Icon type="plus" onClick={openDrawer} />}
-          <Tooltip placement="bottom" title={isEdit ? '保存' : '编辑'}>
-            <Icon type={isEdit ? 'save' : 'edit'} onClick={this.trigger} />
-          </Tooltip>
+          {isEdit ? (
+            <Tooltip placement="bottom" title="保存">
+              <Icon type="save" onClick={saveEdit} />
+            </Tooltip>
+          ) : (
+            <Tooltip placement="bottom" title="编辑">
+              <Icon type="edit" onClick={openEdit} />
+            </Tooltip>
+          )}
         </div>
         <ReactGridLayout
           autoSize
@@ -103,9 +100,10 @@ class Board extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { layout, chartDatasMap } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { layout, chartDatasMap, isEdit } }: any) => ({
   layout,
   chartDatasMap,
+  isEdit,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -117,6 +115,12 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   openDrawer() {
     dispatch({ type: 'biDrawer/openDrawer' });
+  },
+  openEdit() {
+    dispatch({ type: 'biDashBoard/openEdit' });
+  },
+  saveEdit() {
+    dispatch({ type: 'biDashBoard/saveEdit' });
   },
 });
 

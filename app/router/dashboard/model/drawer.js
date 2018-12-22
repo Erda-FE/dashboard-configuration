@@ -3,7 +3,7 @@ import { get } from 'lodash';
 export default {
   namespace: 'biDrawer',
   state: {
-    visible: true,
+    visible: false,
     chartType: '',
     editChartId: '',
   },
@@ -15,10 +15,13 @@ export default {
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId }, biDashBoard: { chartDatasMap } } = yield select(state => state);
       if (chartId === editChartId) return;
-      yield put({ type: 'biDrawer/chooseChart', chartType: get(chartDatasMap, [chartId, 'chartType']) });
+      yield put({ type: 'querySuccess', payload: { visible: true, chartType: get(chartDatasMap, [chartId, 'chartType']), editChartId: chartId } });
     },
   },
   reducers: {
+    querySuccess(state, { payload }) {
+      return { ...state, ...payload };
+    },
     openDrawer(state) {
       return { ...state, visible: true };
     },

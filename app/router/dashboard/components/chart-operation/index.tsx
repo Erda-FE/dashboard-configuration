@@ -3,7 +3,7 @@ import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm } from 'antd';
 import './index.scss';
 
-interface IProps extends ReturnType<typeof mapDispatchToProps> {
+interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   chartId: string
 }
 
@@ -39,19 +39,25 @@ class ChartOperation extends React.PureComponent<IProps> {
   )
 
   render() {
-    const { children } = this.props;
+    const { children, isEdit } = this.props;
     return (
       <div className="bi-chart-operation">
-        <div className="bi-chart-operation-header">
-          <Dropdown overlay={this.getMenu()}>
-            <Icon type="dash" />
-          </Dropdown>
-        </div>
+        {isEdit && (
+          <div className="bi-chart-operation-header">
+            <Dropdown overlay={this.getMenu()}>
+              <Icon type="dash" />
+            </Dropdown>
+          </div>
+        )}
         {children}
       </div>
     );
   }
 }
+
+const mapStateToProps = ({ biDashBoard: { isEdit } }: any) => ({
+  isEdit,
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   editChart(chartId: string) {
@@ -62,4 +68,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(undefined, mapDispatchToProps)(ChartOperation);
+export default connect(mapStateToProps, mapDispatchToProps)(ChartOperation);

@@ -8,6 +8,7 @@ const datas = [{
 export default {
   namespace: 'biDashBoard',
   state: {
+    isEdit: false,
     layout: [{ i: 'a', x: 0, y: 0, w: 3, h: 6 }],
     chartDatasMap: { a: {
       chartType: 'bar',
@@ -37,6 +38,12 @@ export default {
     },
     initDashboardType(state, { dashboardType }) {
       return { ...state, dashboardType };
+    },
+    openEdit(state) {
+      return { ...state, isEdit: true };
+    },
+    saveEdit(state) {
+      return { ...state, isEdit: false };
     },
   },
 };

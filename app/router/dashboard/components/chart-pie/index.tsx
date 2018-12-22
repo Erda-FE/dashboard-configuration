@@ -20,6 +20,7 @@ interface IProps extends ReactEchartsPropsTypes {
   descHeight?: number // 图表应减少的高度
   isMock?: boolean
   chartType?: IType
+  name: string
 }
 
 // 获取默认的前面选中的6个
@@ -33,7 +34,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, isMock, chartType, names, datas, ...others }: IProps) => {
+const ChartPie = ({ option = {}, isMock, chartType, name = '', names, datas, ...others }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',
@@ -50,7 +51,7 @@ const ChartPie = ({ option = {}, isMock, chartType, names, datas, ...others }: I
     },
     series: [
       {
-        name: '姓名',
+        name: isMock ? mockDataPie.name : name,
         type: 'pie',
         radius: '55%',
         center: ['40%', '50%'],

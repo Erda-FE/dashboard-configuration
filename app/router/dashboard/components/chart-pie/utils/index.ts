@@ -15,6 +15,7 @@ function genData(count: number) {
     });
   }
   return {
+    name: '姓名',
     names,
     datas,
   };

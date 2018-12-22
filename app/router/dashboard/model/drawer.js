@@ -9,8 +9,12 @@ export default {
   },
   effects: {
     * submitDrawer(_, { put, select }) {
-      const { chartType } = yield select(state => state.biDrawer);
-      yield put({ type: 'biDashBoard/generateChart', chartType });
+      const { chartType, editChartId } = yield select(state => state.biDrawer);
+      if (!editChartId) {
+        yield put({ type: 'biDashBoard/generateChart', chartType });
+        return;
+      }
+      yield put({ type: 'closeDrawer' });
     },
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId }, biDashBoard: { chartDatasMap } } = yield select(state => state);
@@ -23,7 +27,7 @@ export default {
       return { ...state, ...payload };
     },
     openDrawer(state) {
-      return { ...state, visible: true };
+      return { ...state, visible: true, chartType: '', editChartId: '' };
     },
     closeDrawer(state) {
       return { ...state, visible: false };

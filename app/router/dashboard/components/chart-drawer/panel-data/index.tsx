@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Collapse } from 'antd';
+import jsonPretty from 'json-stringify-pretty-compact';
 import { chartNameMap } from 'dashboard/utils';
 import { getMockData } from './utils';
 import './index.scss';
@@ -15,7 +16,7 @@ const PanelData = ({ chartType, chooseChart, ...others }: IProps) => (
       <a
         className="bi-demo-text"
         download={`mock-${chartType}.json`}
-        href={`data:text/json;charset=utf-8,${JSON.stringify(getMockData(chartType))}`}
+        href={`data:text/json;charset=utf-8,${jsonPretty(getMockData(chartType))}`}
       >{`${chartNameMap[chartType]}数据示例下载`}</a>
     )}
   </Panel>

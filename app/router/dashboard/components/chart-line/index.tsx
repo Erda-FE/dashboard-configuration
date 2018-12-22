@@ -19,6 +19,7 @@ interface IProps extends ReactEchartsPropsTypes {
   names: string[]
   datas: IData[]
   descHeight?: number // 图表应减少的高度
+  isMock?: boolean
 }
 
 const baseAxis = {

@@ -1,9 +1,33 @@
 :global {
-  .chart-sizeme {
+  .bi-chart-sizeme {
+    position: relative;
     height: 100%;
     padding: 12px 20px 20px;
     background-color: $white;
     border: 1px solid $color-border;
     border-radius: 6px;
+  }
+  .bi-chart-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9;
+  }
+  .bi-mask-inner {
+    width: 100%;
+    height: 100%;
+    background-color: $dark-black;
+    opacity: .2;
+  }
+  .bi-mask-text {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -30px;
+    color: $white;
+    font-size: 30px;
+    text-align: center;
   }
 }

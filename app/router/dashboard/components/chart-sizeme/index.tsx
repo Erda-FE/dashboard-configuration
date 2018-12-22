@@ -7,9 +7,9 @@ import './index.scss';
 
 type IProps = ReactEchartsPropsTypes & ISizeMe & {
   descHeight: number // 图表应减少的高度
+  isMock?: boolean
 };
 
-// @fix: 保存编辑的切换时图表仍会再次刷新，原因不明
 class Chart extends React.Component<IProps> {
   static defaultProps = {
     descHeight: 32,
@@ -20,9 +20,15 @@ class Chart extends React.Component<IProps> {
   }
 
   render() {
-    const { size, descHeight, ...others } = this.props;
+    const { size, descHeight, isMock, ...others } = this.props;
     return (
-      <div className="chart-sizeme">
+      <div className="bi-chart-sizeme">
+        {isMock && (
+          <div className="bi-chart-mask">
+            <div className="bi-mask-inner" />
+            <div className="bi-mask-text">模拟数据展示</div>
+          </div>
+        )}
         <ReactEcharts {...others} style={{ ...others.style, height: size.height - descHeight }} />
       </div>
     );

@@ -1,6 +1,6 @@
 import { maxBy, remove } from 'lodash';
 
-const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const names = ['demo1', 'demo2', 'demo3', 'demo4', 'demo5', 'demo6', 'demo7'];
 const datas = [{
   data: [820, 932, 901, 934, 1290, 1330, 1320],
 }];
@@ -9,12 +9,8 @@ export default {
   namespace: 'biDashBoard',
   state: {
     isEdit: false,
-    layout: [{ i: 'a', x: 0, y: 0, w: 3, h: 6 }],
-    chartDatasMap: { a: {
-      chartType: 'bar',
-      names,
-      datas: datas.map(single => ({ ...single, type: 'bar' })),
-    } },
+    layout: [],
+    chartDatasMap: {},
     dashboardType: '',
   },
   effects: {
@@ -49,7 +45,7 @@ export default {
 };
 
 const getNewChartYPostion = (layout) => {
-  const { y: maxY, h: maxH } = maxBy(layout, ({ y, h }) => y + h);
+  const { y: maxY, h: maxH } = maxBy(layout, ({ y, h }) => y + h) || { y: 0, h: 0 };
   return maxY + maxH;
 };
 
@@ -61,6 +57,7 @@ const generateChartData = (chartType) => {
       return {
         names,
         chartType,
+        isMock: true,
         datas: datas.map(single => ({ ...single, type: chartType })),
       };
     default:

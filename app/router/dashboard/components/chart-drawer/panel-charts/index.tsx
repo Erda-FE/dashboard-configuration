@@ -17,19 +17,17 @@ type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatch
 
 const PanelCharts = ({ chartType, chooseChart, ...others }: IProps) => (
   <Panel {...others} header="图表" key="charts">
-    <div>
-      {charts.map(({ type, img, name }) => (
-        <div
-          key={type}
-          className={classnames({ 'bi-drawer-charts': true, active: type === chartType })}
-          onClick={() => chooseChart(type)}
-        >
-          <Tooltip placement="bottom" title={name}>
-            <img src={img} />
-          </Tooltip>
-        </div>
-      ))}
-    </div>
+    {charts.map(({ type, img, name }) => (
+      <div
+        key={type}
+        className={classnames({ 'bi-drawer-charts': true, active: type === chartType })}
+        onClick={() => chooseChart(type)}
+      >
+        <Tooltip placement="bottom" title={name}>
+          <img src={img} />
+        </Tooltip>
+      </div>
+    ))}
   </Panel>
 );
 

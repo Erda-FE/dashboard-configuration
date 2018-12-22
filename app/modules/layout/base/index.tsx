@@ -30,7 +30,9 @@ export default class AppLayout extends React.PureComponent<IProps> {
         <Layout>
           <AppHeader />
           <Content className={styles.innerLayout}>
-            {this.props.children}
+            <div className={styles.inner}>
+              {this.props.children}
+            </div>
           </Content>
         </Layout>
       </Layout>

@@ -47,12 +47,12 @@ class Board extends React.PureComponent<IProps> {
   onDragStart = () => this.props.isEdit;
 
   render() {
-    const { size, onLayoutChange, layout, openDrawer, chartDatasMap, isEdit, openEdit, saveEdit } = this.props;
+    const { size, onLayoutChange, layout, openDrawerAdd, chartDatasMap, isEdit, openEdit, saveEdit } = this.props;
     const { width } = size;
     return (
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
         <div className="bi-header">
-          {isEdit && <Icon type="plus" onClick={openDrawer} />}
+          {isEdit && <Icon type="plus" onClick={openDrawerAdd} />}
           {isEdit ? (
             <Tooltip placement="bottom" title="保存">
               <Icon type="save" onClick={saveEdit} />
@@ -119,8 +119,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   onLayoutChange(layout: []) {
     dispatch({ type: 'biDashBoard/onLayoutChange', layout });
   },
-  openDrawer() {
-    dispatch({ type: 'biDrawer/openDrawer' });
+  openDrawerAdd() {
+    dispatch({ type: 'biDrawer/openDrawerAdd' });
   },
   openEdit() {
     dispatch({ type: 'biDashBoard/openEdit' });

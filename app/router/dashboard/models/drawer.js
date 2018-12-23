@@ -9,13 +9,11 @@ export default {
     drawerInfo: {},
   },
   effects: {
-    * submitDrawer({ payload }, { put, select }) {
+    * submitDrawer(_, { put, select }) {
       const { chartType, editChartId } = yield select(state => state.biDrawer);
       if (!editChartId) {
-        yield put({ type: 'biDashBoard/generateChart', payload: { ...payload, chartType } });
-        return;
+        yield put({ type: 'biDashBoard/generateChart', chartType });
       }
-      yield put({ type: 'querySuccess', payload });
     },
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId }, biDashBoard: { chartDatasMap } } = yield select(state => state);
@@ -26,6 +24,9 @@ export default {
   reducers: {
     querySuccess(state, { payload }) {
       return { ...state, ...payload };
+    },
+    onDrawerInfoChange(state, { payload }) {
+      return { ...state, drawerInfo: payload };
     },
     openDrawer(state) {
       return { ...state, visible: true, chartType: '', editChartId: '' };

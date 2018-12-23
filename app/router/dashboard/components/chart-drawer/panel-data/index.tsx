@@ -31,7 +31,7 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
     )}
     <Form.Item label="接口" {...formItemLayout}>
       {
-        getFieldDecorator('url', {
+        getFieldDecorator('panneldata#url', {
           rules: [{
             required: true,
             message: '请输入接口',

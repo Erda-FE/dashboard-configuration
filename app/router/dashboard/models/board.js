@@ -1,4 +1,4 @@
-import { maxBy, remove } from 'lodash';
+import { maxBy, remove, get } from 'lodash';
 import agent from 'agent';
 import { message } from 'antd';
 
@@ -16,17 +16,15 @@ export default {
     dashboardType: '',
   },
   effects: {
-    * generateChart({ payload }, { call, select, put }) {
-      const { chartDatasMap, layout } = yield select(state => state.biDashBoard);
-      const { chartType, url } = payload;
+    * generateChart({ chartType }, { call, select, put }) {
+      const { biDashBoard: { chartDatasMap, layout }, biDrawer: { drawerInfo } } = yield select(state => state);
+      const url = get(drawerInfo, ['panneldata#url']);
       const key = `chart-${generateUUID()}`;
-      let chartData = null;
-      const baseData = generateChartData(chartType);
+      let chartData = generateChartData(chartType);
       try {
-        chartData = { ...baseData, ...(yield call(url)), isMock: false };
+        if (url) chartData = { ...chartData, ...(yield call(url)), isMock: false };
       } catch (error) {
         message.error('当前配置的获取数据失败,将使用mock数据显示', 3);
-        chartData = baseData;
       }
       chartDatasMap[key] = chartData;
       layout.push({ i: key, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });

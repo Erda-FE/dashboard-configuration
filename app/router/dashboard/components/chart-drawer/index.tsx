@@ -1,3 +1,4 @@
+import { forEach } from 'lodash';
 import React from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Collapse, Form } from 'antd';
@@ -13,9 +14,9 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 class ChartDrawer extends React.PureComponent<IProps> {
   submitDrawer = () => {
     const { form: { validateFields }, submitDrawer } = this.props;
-    validateFields((err: any, values: object) => {
+    validateFields((err: any) => {
       if (err) return;
-      submitDrawer(values);
+      submitDrawer();
     });
   }
 
@@ -54,18 +55,31 @@ class ChartDrawer extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDrawer: { visible, editChartId } }: any) => ({
+const mapStateToProps = ({ biDrawer: { visible, editChartId, drawerInfo } }: any) => ({
   visible,
   editChartId,
+  drawerInfo,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   closeDrawer() {
     dispatch({ type: 'biDrawer/closeDrawer' });
   },
-  submitDrawer(payload: object) {
-    dispatch({ type: 'biDrawer/submitDrawer', payload });
+  submitDrawer() {
+    dispatch({ type: 'biDrawer/submitDrawer' });
+  },
+  onDrawerInfoChange(payload: object) {
+    dispatch({ type: 'biDrawer/onDrawerInfoChange', payload });
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(ChartDrawer));
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create({
+  mapPropsToFields({ drawerInfo }: IProps) {
+    const values = {};
+    forEach(drawerInfo, (value, key) => { values[key] = Form.createFormField({ value }); });
+    return values;
+  },
+  onValuesChange({ onDrawerInfoChange }: IProps, _, allValues) {
+    onDrawerInfoChange(allValues);
+  },
+})(ChartDrawer));

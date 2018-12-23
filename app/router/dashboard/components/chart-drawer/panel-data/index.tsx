@@ -41,7 +41,7 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
   </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { chartType } }: any) => ({
+const mapStateToProps = ({ biDrawer: { drawerInfo: { chartType } } }: any) => ({
   chartType,
 });
 

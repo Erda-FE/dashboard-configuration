@@ -32,6 +32,7 @@
       "layout": ["./app/modules/layout"],
       "layout/*": ["./app/modules/layout/*"],
       "user/*": ["./app/modules/user/*"],
+      "dashboard/*": ["./app/router/dashboard/*"],
       "agent": ["./app/agent.js"],
       "dva/*": ["./node_modules/dva-react-router-3/*"],
       "interface": ["./interface"]

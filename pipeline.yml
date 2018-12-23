@@ -1,0 +1,50 @@
+version: '1.0'
+
+stages:
+- name: repo
+  tasks:
+  - get: repo
+    params:
+      depth: 3
+
+- name: buildpack
+  tasks:
+  - put: bp-fronted
+    params:
+      only_build: false
+
+- name: deploy
+  tasks:
+  - put: deploy
+    params:
+      dice_yml: repo/dice.yml
+      time_out: 900
+      replacement_images:
+      - bp-fronted/pack-result
+
+resources:
+- name: repo
+  type: git
+  source:
+    uri: ((gittar.repo))
+    branch: ((gittar.branch))
+    username: ((gittar.username))
+    password: ((gittar.password))
+
+- name: bp-fronted
+  type: buildpack
+  source:
+    bp_repo: http://git.terminus.io/buildpacks/dice-bpack-termspa.git
+    bp_ver: pipeline
+    context: repo
+    modules:
+    - name: datahub-ui
+
+- name: deploy
+  type: dice
+  source:
+    app_id: ((dice.id))
+    uri: ((dice.url))
+    operator_id: ((dice.operator.id))
+    workspace: ((dice.env))
+    branch: ((gittar.branch))

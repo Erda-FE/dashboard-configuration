@@ -30,7 +30,7 @@ export default {
     beginEditChart(state, { chartId }) {
       return { ...state, editChartId: chartId };
     },
-    onDrawerInfoChange(state, { payload }) {
+    onDrawerChange(state, { payload }) {
       return { ...state, drawerInfo: payload };
     },
     openDrawer(state) {

@@ -68,8 +68,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   submitDrawer() {
     dispatch({ type: 'biDrawer/submitDrawer' });
   },
-  onDrawerInfoChange(payload: object) {
-    dispatch({ type: 'biDrawer/onDrawerInfoChange', payload });
+  onDrawerChange(payload: object) {
+    dispatch({ type: 'biDrawer/onDrawerChange', payload });
   },
 });
 
@@ -79,7 +79,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Form.create({
     forEach(drawerInfo, (value, key) => { values[key] = Form.createFormField({ value }); });
     return values;
   },
-  onValuesChange({ onDrawerInfoChange }: IProps, _, allValues) {
-    onDrawerInfoChange(allValues);
+  onValuesChange({ onDrawerChange }: IProps, _, allValues) {
+    onDrawerChange(allValues);
   },
 })(ChartDrawer));

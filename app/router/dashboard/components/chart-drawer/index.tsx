@@ -13,11 +13,9 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 class ChartDrawer extends React.PureComponent<IProps> {
   submitDrawer = () => {
     const { form: { validateFields }, submitDrawer } = this.props;
-    validateFields((err: any, value: any) => {
-      if (err) {
-        return;
-      }
-      submitDrawer();
+    validateFields((err: any, values: object) => {
+      if (err) return;
+      submitDrawer(values);
     });
   }
 
@@ -65,8 +63,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   closeDrawer() {
     dispatch({ type: 'biDrawer/closeDrawer' });
   },
-  submitDrawer() {
-    dispatch({ type: 'biDrawer/submitDrawer' });
+  submitDrawer(payload: object) {
+    dispatch({ type: 'biDrawer/submitDrawer', payload });
   },
 });
 

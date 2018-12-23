@@ -1,4 +1,11 @@
 import { maxBy, remove } from 'lodash';
+import agent from 'agent';
+import { message } from 'antd';
+
+export function getChartData(url) {
+  return agent.get(url)
+    .then(response => response.body);
+}
 
 export default {
   namespace: 'biDashBoard',
@@ -9,14 +16,26 @@ export default {
     dashboardType: '',
   },
   effects: {
+    * generateChart({ payload }, { call, select, put }) {
+      const { chartDatasMap, layout } = yield select(state => state.biDashBoard);
+      const { chartType, url } = payload;
+      const key = `chart-${generateUUID()}`;
+      let chartData = null;
+      const baseData = generateChartData(chartType);
+      try {
+        chartData = { ...baseData, ...(yield call(url)), isMock: false };
+      } catch (error) {
+        message.error('当前配置的获取数据失败,将使用mock数据显示', 3);
+        chartData = baseData;
+      }
+      chartDatasMap[key] = chartData;
+      layout.push({ i: key, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
+      yield put({ type: 'querySuccess', payload: { chartDatasMap: { ...chartDatasMap }, layout } });
+    },
   },
   reducers: {
-    generateChart(state, { chartType }) {
-      const { chartDatasMap, layout } = state;
-      const key = `chart-${generateUUID()}`;
-      chartDatasMap[key] = generateChartData(chartType);
-      layout.push({ i: key, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
-      return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
+    querySuccess(state, { payload }) {
+      return { ...state, ...payload };
     },
     deleteChart(state, { chartId }) {
       const { chartDatasMap, layout } = state;

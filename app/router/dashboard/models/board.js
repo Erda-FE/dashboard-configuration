@@ -14,14 +14,15 @@ export default {
     layout: [],
     chartDatasMap: {}, // 图表基本数据信息
     dashboardType: '',
+    drawerInfoMap: {}, // 所有图表配置信息
   },
   effects: {
-    * generateChart({ chartType }, { call, select, put }) {
+    * generateChart(_, { call, select, put }) {
       const { biDashBoard: { chartDatasMap, layout }, biDrawer: { drawerInfo } } = yield select(state => state);
       const url = get(drawerInfo, ['panneldata#url']);
       const chartId = `chart-${generateUUID()}`;
       yield put({ type: 'biDrawer/beginEditChart', chartId });
-      let chartData = { chartType, isMock: true };
+      let chartData = { isMock: true };
       try {
         if (url) chartData = { ...chartData, ...(yield call(url)), isMock: false };
       } catch (error) {
@@ -37,9 +38,10 @@ export default {
       return { ...state, ...payload };
     },
     deleteChart(state, { chartId }) {
-      const { chartDatasMap, layout } = state;
+      const { chartDatasMap, layout, drawerInfoMap } = state;
       remove(layout, ({ i }) => chartId === i);
       delete chartDatasMap[chartId];
+      delete drawerInfoMap[chartId];
       return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
     },
     onLayoutChange(state, { layout }) {

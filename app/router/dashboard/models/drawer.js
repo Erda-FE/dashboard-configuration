@@ -27,7 +27,8 @@ export default {
           chartType: get(chartDatasMap, [chartId, 'chartType']),
           editChartId: chartId,
           drawerInfo: drawerInfoMap[chartId],
-        } });
+        },
+      });
     },
   },
   reducers: {

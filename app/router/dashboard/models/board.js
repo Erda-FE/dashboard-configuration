@@ -52,7 +52,8 @@ export default {
       return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
     },
     updateDrawerInfoMap(state, { drawerInfo, editChartId }) {
-      return { ...state, chartDatasMap: { ...state.drawerInfoMap, [editChartId]: drawerInfo } };
+      const { drawerInfoMap, chartDatasMap } = state;
+      return { ...state, chartDatasMap, drawerInfoMap: { ...drawerInfoMap, [editChartId]: drawerInfo } };
     },
     onLayoutChange(state, { layout }) {
       return { ...state, layout };

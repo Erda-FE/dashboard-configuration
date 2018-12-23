@@ -18,7 +18,6 @@ export default {
       }
       // 保存
       yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo, editChartId });
-      yield put({ type: 'closeDrawer' });
     },
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId }, biDashBoard: { drawerInfoMap } } = yield select(state => state);

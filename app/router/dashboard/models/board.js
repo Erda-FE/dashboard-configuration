@@ -12,7 +12,7 @@ export default {
   state: {
     isEdit: false,
     layout: [],
-    chartDatasMap: {},
+    chartDatasMap: {}, // 图表基本数据信息
     dashboardType: '',
   },
   effects: {
@@ -21,11 +21,11 @@ export default {
       const url = get(drawerInfo, ['panneldata#url']);
       const chartId = `chart-${generateUUID()}`;
       yield put({ type: 'biDrawer/beginEditChart', chartId });
-      let chartData = generateChartData(chartType);
+      let chartData = { chartType, isMock: true };
       try {
         if (url) chartData = { ...chartData, ...(yield call(url)), isMock: false };
       } catch (error) {
-        message.error('当前配置的获取数据失败,将使用mock数据显示', 3);
+        message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
       }
       chartDatasMap[chartId] = chartData;
       layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
@@ -60,18 +60,6 @@ export default {
 const getNewChartYPostion = (layout) => {
   const { y: maxY, h: maxH } = maxBy(layout, ({ y, h }) => y + h) || { y: 0, h: 0 };
   return maxY + maxH;
-};
-
-const generateChartData = (chartType) => {
-  switch (chartType) {
-    case 'line':
-    case 'bar':
-    case 'area':
-    case 'pie':
-      return { chartType, isMock: true };
-    default:
-      return {};
-  }
 };
 
 export const generateUUID = () => {

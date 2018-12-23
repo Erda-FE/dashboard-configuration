@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Collapse } from 'antd';
+import { Collapse, Form, Input } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 import jsonPretty from 'json-stringify-pretty-compact';
 import { chartNameMap } from 'dashboard/utils';
 import { getMockData } from './utils';
@@ -8,9 +9,18 @@ import './index.scss';
 
 const { Panel } = Collapse;
 
-type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const PanelData = ({ chartType, chooseChart, ...others }: IProps) => (
+const formItemLayout = {
+  labelCol: {
+    span: 4,
+  },
+  wrapperCol: {
+    span: 16,
+  },
+};
+
+const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...others }: IProps) => (
   <Panel {...others} header="数据" key="data">
     {chartType && (
       <a
@@ -19,6 +29,16 @@ const PanelData = ({ chartType, chooseChart, ...others }: IProps) => (
         href={`data:text/json;charset=utf-8,${jsonPretty(getMockData(chartType))}`}
       >{`${chartNameMap[chartType]}数据示例下载`}</a>
     )}
+    <Form.Item label="接口" {...formItemLayout}>
+      {
+        getFieldDecorator('url', {
+          rules: [{
+            required: true,
+            message: '请输入接口',
+          }],
+        })(<Input />)
+      }
+    </Form.Item>
   </Panel>
 );
 

@@ -1,17 +1,28 @@
 import React from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Collapse } from 'antd';
+import { Drawer, Button, Collapse, Form } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 import PanelCharts from './panel-charts';
 import PanelControls from './panel-controls';
 import PanelStyles from './panel-styles';
 import PanelData from './panel-data';
 import './index.scss';
 
-type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class ChartDrawer extends React.PureComponent<IProps> {
+  submitDrawer = () => {
+    const { form: { validateFields }, submitDrawer } = this.props;
+    validateFields((err: any, value: any) => {
+      if (err) {
+        return;
+      }
+      submitDrawer();
+    });
+  }
+
   render() {
-    const { visible, closeDrawer, submitDrawer, editChartId } = this.props;
+    const { visible, closeDrawer, editChartId, form } = this.props;
     return (
       <Drawer
         placement="right"
@@ -23,18 +34,20 @@ class ChartDrawer extends React.PureComponent<IProps> {
         className="bi-drawer"
       >
         <div className="bi-drawer-content">
-          <Collapse accordion>
-            <PanelCharts />
-            <PanelControls />
-            <PanelStyles />
-            <PanelData />
-          </Collapse>
+          <Form >
+            <Collapse accordion>
+              <PanelCharts />
+              <PanelControls />
+              <PanelStyles />
+              <PanelData form={form} />
+            </Collapse>
+          </Form>
         </div>
         <div className="bi-drawer-footer">
           <Button onClick={closeDrawer} style={{ marginRight: 8 }}>
             取消
           </Button>
-          <Button onClick={submitDrawer} type="primary">
+          <Button onClick={this.submitDrawer} type="primary">
             {editChartId ? '保存' : '添加'}
           </Button>
         </div>
@@ -57,4 +70,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ChartDrawer);
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(ChartDrawer));

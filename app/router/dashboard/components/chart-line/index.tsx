@@ -30,7 +30,7 @@ const baseAxis = {
 const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
 const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 
-const ChartLine = ({ option = {}, names, datas, isMock, chartType, ...others }: IProps) => {
+const ChartLine = ({ option = {}, names, datas, isMock, chartType }: IProps) => {
   let xAxisType = get(option, ['xAxis', 'type']);
   const yAxisType = get(option, ['yAxis', 'type']);
   if (xAxisType === 'category' || (!xAxisType && !yAxisType)) {
@@ -53,14 +53,18 @@ const ChartLine = ({ option = {}, names, datas, isMock, chartType, ...others }: 
     } : { type: yAxisType },
     series: realDatas.map(({ type, data, ...dataOthers }: any) => ({ type: getAreaType(type), data, ...getOthers(type), ...dataOthers })),
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} {...others} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => ({
-  names: chartDatasMap[chartId].names as string[],
-  datas: chartDatasMap[chartId].datas as IData[],
-  isMock: chartDatasMap[chartId].isMock as boolean,
-  chartType: drawerInfoMap[chartId].chartType as string,
-});
+const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => {
+  const chartData = chartDatasMap[chartId] || {};
+  const drawerInfo = drawerInfoMap[chartId] || {};
+  return {
+    names: chartData.names as string[],
+    datas: chartData.datas as IData[],
+    isMock: chartData.isMock as boolean,
+    chartType: drawerInfo.chartType as string,
+  };
+};
 
 export default connect(mapStateToProps)(ChartLine);

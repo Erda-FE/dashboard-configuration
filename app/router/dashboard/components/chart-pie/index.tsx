@@ -29,7 +29,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, isMock, chartType, name = '', names, datas, ...others }: IProps) => {
+const ChartPie = ({ option = {}, isMock, name = '', names, datas }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',
@@ -61,15 +61,19 @@ const ChartPie = ({ option = {}, isMock, chartType, name = '', names, datas, ...
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} {...others} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => ({
-  name: chartDatasMap[chartId].name as string,
-  names: chartDatasMap[chartId].names as string[],
-  datas: chartDatasMap[chartId].datas as IData[],
-  isMock: chartDatasMap[chartId].isMock as boolean,
-  chartType: drawerInfoMap[chartId].chartType as string,
-});
+const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => {
+  const chartData = chartDatasMap[chartId] || {};
+  const drawerInfo = drawerInfoMap[chartId] || {};
+  return {
+    name: chartData.name as string,
+    names: chartData.names as string[],
+    datas: chartData.datas as IData[],
+    isMock: chartData.isMock as boolean,
+    chartType: drawerInfo.chartType as string,
+  };
+};
 
 export default connect(mapStateToProps)(ChartPie);

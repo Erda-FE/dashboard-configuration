@@ -12,7 +12,9 @@ export default {
     * submitDrawer(_, { put, select }) {
       const { editChartId, drawerInfo } = yield select(state => state.biDrawer);
       if (!editChartId) {
-        yield put({ type: 'biDashBoard/generateChart' });
+        const chartId = `chart-${generateUUID()}`;
+        yield put({ type: 'biDashBoard/generateChart', chartId });
+        yield put({ type: 'querySuccess', payload: { editChartId: chartId } });
         return;
       }
       yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo, editChartId });
@@ -35,9 +37,6 @@ export default {
     querySuccess(state, { payload }) {
       return { ...state, ...payload };
     },
-    beginEditChart(state, { chartId }) {
-      return { ...state, editChartId: chartId };
-    },
     onDrawerChange(state, { payload }) {
       return { ...state, drawerInfo: payload };
     },
@@ -52,4 +51,17 @@ export default {
       return { ...state, chartType };
     },
   },
+};
+
+export const generateUUID = () => {
+  let d = new Date().getTime();
+  // 只用8位够了
+  const uuid = 'xxxxxxxx'.replace(/[xy]/g, (c) => {
+    // eslint-disable-next-line
+    const r = (d + (Math.random() * 16)) % 16 | 0;
+    d = Math.floor(d / 16);
+    // eslint-disable-next-line
+    return (c === 'x' ? r : ((r & 0x7) | 0x8)).toString(16);
+  });
+  return uuid;
 };

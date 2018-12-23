@@ -33,7 +33,6 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
       {
         getFieldDecorator('panneldata#url', {
           rules: [{
-            required: true,
             message: '请输入接口',
           }],
         })(<Input />)

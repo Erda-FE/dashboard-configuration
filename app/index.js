@@ -10,7 +10,6 @@ import 'moment/locale/zh-cn';
 import createHistory from 'history/createBrowserHistory';
 import AppRouter from './router';
 import models from './models';
-import { checkVersion } from './version';
 
 moment.locale('zh-cn');
 const loginUrl = '/api/login/terminus';
@@ -50,4 +49,3 @@ models.forEach((model) => {
 app.use(createLoading({ namespace: 'isFetching', effects: true }));
 app.router(() => <AppRouter {...{ app, history }} />);
 app.start('#content');
-checkVersion();

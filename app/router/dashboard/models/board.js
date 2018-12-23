@@ -13,14 +13,14 @@ export default {
     isEdit: false,
     layout: [],
     chartDatasMap: {}, // 图表基本数据信息
-    dashboardType: '',
+    dashboardType: '', // 布局；类型
     drawerInfoMap: {}, // 所有图表配置信息
   },
   effects: {
     * generateChart({ chartId }, { call, select, put }) {
       const {
         biDashBoard: { chartDatasMap, layout, drawerInfoMap },
-        biDrawer: { drawerInfo, chartType },
+        biDrawer: { drawerInfo },
       } = yield select(state => state);
       const url = get(drawerInfo, ['panneldata#url']);
       let chartData = { isMock: true };
@@ -33,7 +33,7 @@ export default {
       layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
       yield put({ type: 'querySuccess',
         payload: {
-          drawerInfoMap: { ...drawerInfoMap, [chartId]: { chartType } },
+          drawerInfoMap: { ...drawerInfoMap, [chartId]: { chartType: drawerInfo.chartType } },
           chartDatasMap: { ...chartDatasMap },
           layout,
         },

@@ -1,32 +1,31 @@
-import { get } from 'lodash';
-
 export default {
   namespace: 'biDrawer',
   state: {
     visible: false,
-    chartType: '',
     editChartId: '',
-    drawerInfo: {}, // 当前编辑的图表配置信息
+    drawerInfo: { // 当前编辑的图表配置信息
+      chartType: '',
+    },
   },
   effects: {
     * submitDrawer(_, { put, select }) {
       const { editChartId, drawerInfo } = yield select(state => state.biDrawer);
-      if (!editChartId) {
+      if (!editChartId) { // 添加
         const chartId = `chart-${generateUUID()}`;
         yield put({ type: 'biDashBoard/generateChart', chartId });
         yield put({ type: 'querySuccess', payload: { editChartId: chartId } });
         return;
       }
+      // 保存
       yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo, editChartId });
       yield put({ type: 'closeDrawer' });
     },
     * editChart({ chartId }, { put, select }) {
-      const { biDrawer: { editChartId }, biDashBoard: { chartDatasMap, drawerInfoMap } } = yield select(state => state);
+      const { biDrawer: { editChartId }, biDashBoard: { drawerInfoMap } } = yield select(state => state);
       if (chartId === editChartId) return;
       yield put({ type: 'querySuccess',
         payload: {
           visible: true,
-          chartType: get(chartDatasMap, [chartId, 'chartType']),
           editChartId: chartId,
           drawerInfo: drawerInfoMap[chartId],
         },
@@ -38,17 +37,18 @@ export default {
       return { ...state, ...payload };
     },
     onDrawerChange(state, { payload }) {
-      return { ...state, drawerInfo: payload };
+      return { ...state, drawerInfo: { ...state.drawerInfo, ...payload } };
     },
     openDrawerAdd(state) {
-      return { ...state, visible: true, chartType: '', editChartId: '' };
+      return { ...state, visible: true, editChartId: '', drawerInfo: {} };
     },
     closeDrawer(state) {
-      return { ...state, visible: false, chartType: '', editChartId: '' };
+      return { ...state, visible: false, editChartId: '', drawerInfo: {} };
     },
     chooseChart(state, { chartType }) {
-      if (chartType === state.chartType) return state;
-      return { ...state, chartType };
+      const { drawerInfo } = state;
+      if (chartType === drawerInfo.chartType) return state;
+      return { ...state, drawerInfo: { ...drawerInfo, chartType } };
     },
   },
 };

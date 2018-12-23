@@ -2,6 +2,7 @@
  * 2D 线形图：折线、柱状、曲线
  */
 import React from 'react';
+import { connect } from 'dva';
 import ChartSizeMe from '../chart-sizeme';
 import { merge, get } from 'lodash';
 import { ReactEchartsPropsTypes } from 'dashboard/types';
@@ -16,12 +17,9 @@ interface IData {
   areaStyle?: object // 基本面积图时，传入空的{}即可
 }
 
-interface IProps extends ReactEchartsPropsTypes {
-  names: string[]
-  datas: IData[]
-  descHeight?: number // 图表应减少的高度
-  isMock?: boolean
-  chartType?: IType
+interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+  chartId: string
+  option?: any
 }
 
 const baseAxis = {
@@ -58,4 +56,11 @@ const ChartLine = ({ option = {}, names, datas, isMock, chartType, ...others }: 
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} {...others} />;
 };
 
-export default ChartLine;
+const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => ({
+  names: chartDatasMap[chartId].names as string[],
+  datas: chartDatasMap[chartId].datas as IData[],
+  isMock: chartDatasMap[chartId].isMock as boolean,
+  chartType: drawerInfoMap[chartId].chartType as string,
+});
+
+export default connect(mapStateToProps)(ChartLine);

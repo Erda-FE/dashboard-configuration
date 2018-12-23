@@ -18,7 +18,10 @@ export default {
   },
   effects: {
     * generateChart(_, { call, select, put }) {
-      const { biDashBoard: { chartDatasMap, layout }, biDrawer: { drawerInfo } } = yield select(state => state);
+      const {
+        biDashBoard: { chartDatasMap, layout, drawerInfoMap },
+        biDrawer: { drawerInfo, chartType },
+      } = yield select(state => state);
       const url = get(drawerInfo, ['panneldata#url']);
       const chartId = `chart-${generateUUID()}`;
       yield put({ type: 'biDrawer/beginEditChart', chartId });
@@ -30,7 +33,13 @@ export default {
       }
       chartDatasMap[chartId] = chartData;
       layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
-      yield put({ type: 'querySuccess', payload: { chartDatasMap: { ...chartDatasMap }, layout } });
+      yield put({ type: 'querySuccess',
+        payload: {
+          drawerInfoMap: { ...drawerInfoMap, [chartId]: { chartType } },
+          chartDatasMap: { ...chartDatasMap },
+          layout,
+        },
+      });
     },
   },
   reducers: {
@@ -43,6 +52,9 @@ export default {
       delete chartDatasMap[chartId];
       delete drawerInfoMap[chartId];
       return { ...state, chartDatasMap: { ...chartDatasMap }, layout };
+    },
+    updateDrawerInfoMap(state, { drawerInfo, editChartId }) {
+      return { ...state, chartDatasMap: { ...state.drawerInfoMap, [editChartId]: drawerInfo } };
     },
     onLayoutChange(state, { layout }) {
       return { ...state, layout };

@@ -47,7 +47,7 @@ class Board extends React.PureComponent<IProps> {
   onDragStart = () => this.props.isEdit;
 
   render() {
-    const { size, onLayoutChange, layout, openDrawerAdd, chartDatasMap, isEdit, openEdit, saveEdit } = this.props;
+    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, saveEdit } = this.props;
     const { width } = size;
     return (
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
@@ -77,7 +77,7 @@ class Board extends React.PureComponent<IProps> {
         >
           {layout.map(({ i, ...others }: any) => {
             // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-            const { chartType } = chartDatasMap[i];
+            const { chartType } = drawerInfoMap[i];
             let ChartNode = null as any;
             switch (chartType) {
               case 'line':
@@ -94,7 +94,7 @@ class Board extends React.PureComponent<IProps> {
             return (
               <div key={i} data-grid={{ ...others }}>
                 <ChartOperation chartId={i}>
-                  <ChartNode {...chartDatasMap[i]} />
+                  <ChartNode chartId={i} />
                 </ChartOperation>
               </div>
             );
@@ -106,9 +106,9 @@ class Board extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { layout, chartDatasMap, isEdit } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { layout, drawerInfoMap, isEdit } }: any) => ({
   layout,
-  chartDatasMap,
+  drawerInfoMap,
   isEdit,
 });
 

@@ -7,19 +7,19 @@ export default {
     chartType: '',
     editChartId: '',
     drawerInfo: {}, // 当前编辑的图表配置信息
-    drawerInfoMap: {}, // 所有图表配置信息
   },
   effects: {
     * submitDrawer(_, { put, select }) {
-      const { chartType, editChartId } = yield select(state => state.biDrawer);
+      const { editChartId, drawerInfo } = yield select(state => state.biDrawer);
       if (!editChartId) {
-        yield put({ type: 'biDashBoard/generateChart', chartType });
+        yield put({ type: 'biDashBoard/generateChart' });
         return;
       }
+      yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo, editChartId });
       yield put({ type: 'closeDrawer' });
     },
     * editChart({ chartId }, { put, select }) {
-      const { biDrawer: { editChartId, drawerInfoMap }, biDashBoard: { chartDatasMap } } = yield select(state => state);
+      const { biDrawer: { editChartId }, biDashBoard: { chartDatasMap, drawerInfoMap } } = yield select(state => state);
       if (chartId === editChartId) return;
       yield put({ type: 'querySuccess',
         payload: {
@@ -45,8 +45,7 @@ export default {
       return { ...state, visible: true, chartType: '', editChartId: '' };
     },
     closeDrawer(state) {
-      const { drawerInfoMap, drawerInfo, editChartId } = state;
-      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: drawerInfo }, visible: false, chartType: '', editChartId: '' };
+      return { ...state, visible: false, chartType: '', editChartId: '' };
     },
     chooseChart(state, { chartType }) {
       if (chartType === state.chartType) return state;

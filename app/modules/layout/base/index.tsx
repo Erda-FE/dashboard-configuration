@@ -2,6 +2,7 @@ import React from 'react';
 import { Layout } from 'antd';
 import AppSider from './sider';
 import AppHeader from './top-header';
+import styles from './index.scss';
 
 const { Content } = Layout;
 
@@ -24,12 +25,14 @@ export default class AppLayout extends React.PureComponent<IProps> {
 
   render() {
     return (
-      <Layout style={{ minHeight: '100vh' }}>
+      <Layout className={styles.outerLayout}>
         <AppSider />
         <Layout>
           <AppHeader />
-          <Content style={{ margin: '16px' }}>
-            {this.props.children}
+          <Content className={styles.innerLayout}>
+            <div className={styles.inner}>
+              {this.props.children}
+            </div>
           </Content>
         </Layout>
       </Layout>

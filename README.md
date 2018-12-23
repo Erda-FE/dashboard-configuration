@@ -2,13 +2,37 @@
 
 基于 `react + antd`
 
+## 初始化
+```js
+/*
+ * 运行npm run web 必须dev-server.ignore.js文件
+ * 示例
+ */
+const testEnv = 'front.terminus.io';
+const stagingEnv = 'staging.terminus.io';
+const devBranchEnv = 'dev.terminus.io';
+const prodEnv = 'prod.terminus.io';
+
+const backendUrl = testEnv;
+const frontUrl = 'local.terminus.io'; // local与对应环境根域名一致
+const port = 8080;
+
+module.exports = {
+  backendUrl,
+  frontUrl,
+  port,
+};
+```
+
 ## Run
 
 - `npm i`
-- `npm run web ` (起devServer, 有热加载， 随改随刷新)
+- `npm run dll && npm run web` // 初次启动
+- `npm run web ` 再次启动 (起devServer, 有热加载，实时刷新)
 
 ## VSCode配置说明
-* 安装eslint、tslint、stylelint、prettier
+* 必须安装eslint、tslint、stylelint、prettier、scss-lint
+* 推荐安装 CSS Modules、colorize、scss intelliSense
 * 请使用VScode->Preferences->setting，设置
 
 ```shell

@@ -16,8 +16,6 @@ settings:
         - app
         - router
         - router/modules
-    webpack:
-      config: 'webpack.config.js'
 rules:
   max-len: 0
   no-nested-ternary: 0
@@ -36,6 +34,7 @@ overrides:
       no-undef: 0
       no-restricted-globals: 0
       no-unused-vars: 0
+      no-use-before-define: 0
 globals: 
   page: true,
   browser: true,

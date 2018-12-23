@@ -1,0 +1,21 @@
+:global {
+  .bi-drawer {
+    .ant-drawer-body {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 12px;
+    }
+    .ant-collapse-content > .ant-collapse-content-box {
+      padding: 8px;
+    }
+  }
+  .bi-drawer-content {
+    flex: 1;
+  }
+  .bi-drawer-footer {
+    height: 44px;
+    padding-top: 12px;
+    text-align: right;
+  }
+}

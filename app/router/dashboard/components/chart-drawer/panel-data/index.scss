@@ -1,0 +1,9 @@
+:global {
+  .bi-demo-text {
+    display: inline-block;
+    cursor: pointer;
+    &:hover {
+      color: $blue;
+    }
+  }
+}

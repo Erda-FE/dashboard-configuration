@@ -11,12 +11,10 @@ const HappyPack = require('happypack');
 const os = require('os');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
-
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = () => {
   const isBuild = process.env.NODE_ENV === 'production';
-  const isRunWatch = process.env.ENV === 'watch';
   const publicPath = path.join(__dirname, '/public');
   const pkgPath = path.join(process.cwd(), 'package.json');
   // eslint-disable-next-line
@@ -38,10 +36,6 @@ module.exports = () => {
   const plugins = [];
 
   if (!isBuild) {
-    if (isRunWatch) {
-      const Visualizer = require('webpack-visualizer-plugin');
-      plugins.push(new Visualizer());
-    }
     plugins.push(
       new webpack.DllReferencePlugin({
         context: __dirname,
@@ -149,7 +143,7 @@ module.exports = () => {
         user: path.resolve(__dirname, 'app/modules/user'),
         layout: path.resolve(__dirname, 'app/modules/layout'),
         // 业务域 含有路由
-        source: path.resolve(__dirname, 'app/router/source'),
+        dashboard: path.resolve(__dirname, 'app/router/dashboard'),
         // 其他
         agent: path.resolve(__dirname, 'app/agent.js'),
         utils: path.resolve(__dirname, 'app/utils'),
@@ -212,7 +206,7 @@ module.exports = () => {
       },
       minimizer: isBuild ? [
         new UglifyJsPlugin({
-          sourceMap: true,
+          sourceMap: false,
           cache: path.join(__dirname, '/.cache'),
           parallel: true,
           uglifyOptions: {
@@ -300,7 +294,7 @@ module.exports = () => {
           {
             loader: 'less-loader',
             options: {
-              sourceMap: true,
+              sourceMap: false,
               modifyVars: theme,
               javascriptEnabled: true,
             },
@@ -315,7 +309,7 @@ module.exports = () => {
             loader: 'css-loader',
             options: {
               modules: true,
-              sourceMap: true,
+              sourceMap: false,
               localIdentName: '[name]_[local]-[hash:base64:7]',
             },
           },

@@ -19,15 +19,16 @@ export default {
     * generateChart({ chartType }, { call, select, put }) {
       const { biDashBoard: { chartDatasMap, layout }, biDrawer: { drawerInfo } } = yield select(state => state);
       const url = get(drawerInfo, ['panneldata#url']);
-      const key = `chart-${generateUUID()}`;
+      const chartId = `chart-${generateUUID()}`;
+      yield put({ type: 'biDrawer/beginEditChart', chartId });
       let chartData = generateChartData(chartType);
       try {
         if (url) chartData = { ...chartData, ...(yield call(url)), isMock: false };
       } catch (error) {
         message.error('当前配置的获取数据失败,将使用mock数据显示', 3);
       }
-      chartDatasMap[key] = chartData;
-      layout.push({ i: key, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
+      chartDatasMap[chartId] = chartData;
+      layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
       yield put({ type: 'querySuccess', payload: { chartDatasMap: { ...chartDatasMap }, layout } });
     },
   },

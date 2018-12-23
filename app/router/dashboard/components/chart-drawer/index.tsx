@@ -34,7 +34,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
       >
         <div className="bi-drawer-content">
           <Form >
-            <Collapse accordion>
+            <Collapse defaultActiveKey={['charts']}>
               <PanelCharts />
               <PanelControls />
               <PanelStyles />

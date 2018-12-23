@@ -67,24 +67,6 @@ module.exports = {
     "editor.formatOnSave": true
   },
 ```
-
-## interface 和 services 的更新
-
-1、 全局安装Jarvis
-
-```shell
-npm i -g @terminus/jarvis
-```
-
-2、 进入指定工程下，使用 jarvis init
-
-   > 将会生成一份 .jarvis.yml配置文件
-
-3、 启用监听， 使用 jarvis
-
-   > 如果工程下有.jarvis.yml 配置文件则只监听工程的swagger.json的改动
-   >
-   > 如果没有则监听全局。
    
 ## 注意事项
 1、lodash

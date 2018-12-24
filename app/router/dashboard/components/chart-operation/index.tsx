@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm } from 'antd';
+import classnames from 'classnames';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -43,9 +44,9 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { children, isEdit } = this.props;
+    const { children, isEdit, isChartEdit } = this.props;
     return (
-      <div className="bi-chart-operation">
+      <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
           <Icon type="reload" onClick={this.reloadChart} />
           {isEdit && (
@@ -60,8 +61,9 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { isEdit } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { isEdit }, biDrawer: { editChartId } }: any, { chartId }: any) => ({
   isEdit,
+  isChartEdit: editChartId === chartId,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

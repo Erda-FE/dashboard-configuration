@@ -3,7 +3,7 @@ const datas = [{
   data: [820, 932, 901, 934, 1290, 1330, 1320],
 }];
 
-export const getMockLine = (chartType: any) => ({
+export const mockDataLine = {
   names,
-  datas: datas.map(single => ({ ...single, type: chartType })),
-});
+  datas,
+};

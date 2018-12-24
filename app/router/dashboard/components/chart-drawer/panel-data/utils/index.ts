@@ -1,4 +1,4 @@
-import { getMockLine } from 'dashboard/components/chart-line/utils';
+import { mockDataLine } from 'dashboard/components/chart-line/utils';
 import { mockDataPie } from 'dashboard/components/chart-pie/utils';
 
 export const getMockData = (chartType: string) => {
@@ -6,7 +6,7 @@ export const getMockData = (chartType: string) => {
     case 'line':
     case 'bar':
     case 'area':
-      return getMockLine(chartType);
+      return mockDataLine;
     case 'pie':
       return mockDataPie;
     default:

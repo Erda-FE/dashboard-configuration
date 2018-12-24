@@ -34,7 +34,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
       >
         <div className="bi-drawer-content">
           <Form >
-            <Collapse accordion>
+            <Collapse defaultActiveKey={['charts']}>
               <PanelCharts />
               <PanelControls />
               <PanelStyles />
@@ -44,7 +44,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
         </div>
         <div className="bi-drawer-footer">
           <Button onClick={closeDrawer} style={{ marginRight: 8 }}>
-            取消
+            关闭
           </Button>
           <Button onClick={this.submitDrawer} type="primary">
             {editChartId ? '保存' : '添加'}
@@ -68,8 +68,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   submitDrawer() {
     dispatch({ type: 'biDrawer/submitDrawer' });
   },
-  onDrawerInfoChange(payload: object) {
-    dispatch({ type: 'biDrawer/onDrawerInfoChange', payload });
+  onDrawerChange(payload: object) {
+    dispatch({ type: 'biDrawer/onDrawerChange', payload });
   },
 });
 
@@ -79,7 +79,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Form.create({
     forEach(drawerInfo, (value, key) => { values[key] = Form.createFormField({ value }); });
     return values;
   },
-  onValuesChange({ onDrawerInfoChange }: IProps, _, allValues) {
-    onDrawerInfoChange(allValues);
+  onValuesChange({ onDrawerChange }: IProps, _, allValues) {
+    onDrawerChange(allValues);
   },
 })(ChartDrawer));

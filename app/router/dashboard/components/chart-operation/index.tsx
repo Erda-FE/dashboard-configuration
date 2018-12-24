@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm } from 'antd';
+import classnames from 'classnames';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -38,25 +39,31 @@ class ChartOperation extends React.PureComponent<IProps> {
     </Menu>
   )
 
+  reloadChart = () => {
+    this.props.reloadChart(this.props.chartId);
+  }
+
   render() {
-    const { children, isEdit } = this.props;
+    const { children, isEdit, isChartEdit } = this.props;
     return (
-      <div className="bi-chart-operation">
-        {isEdit && (
-          <div className="bi-chart-operation-header">
+      <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
+        <div className="bi-chart-operation-header">
+          <Icon type="reload" onClick={this.reloadChart} />
+          {isEdit && (
             <Dropdown overlay={this.getMenu()}>
               <Icon type="dash" />
             </Dropdown>
-          </div>
-        )}
+          )}
+        </div>
         {children}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { isEdit } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { isEdit }, biDrawer: { editChartId } }: any, { chartId }: any) => ({
   isEdit,
+  isChartEdit: editChartId === chartId,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
@@ -65,6 +72,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   deleteChart(chartId: string) {
     dispatch({ type: 'biDashBoard/deleteChart', chartId });
+  },
+  reloadChart(chartId: string) {
+    dispatch({ type: 'biDashBoard/reloadChart', chartId });
   },
 });
 

@@ -2,25 +2,20 @@
  * 2D 饼图
  */
 import React from 'react';
+import { connect } from 'dva';
 import ChartSizeMe from '../chart-sizeme';
 import { merge } from 'lodash';
 import { ReactEchartsPropsTypes } from 'dashboard/types';
 import { mockDataPie } from './utils';
-
-type IType = 'pie';
 
 interface IData {
   name: string,
   value: number,
 }
 
-interface IProps extends ReactEchartsPropsTypes {
-  names: string[]
-  datas: IData[]
-  descHeight?: number // 图表应减少的高度
-  isMock?: boolean
-  chartType?: IType
-  name: string
+interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+  chartId: string
+  option?: any
 }
 
 // 获取默认的前面选中的6个
@@ -34,7 +29,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, isMock, chartType, name = '', names, datas, ...others }: IProps) => {
+const ChartPie = ({ option = {}, isMock, name = '', names, datas }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',
@@ -66,7 +61,19 @@ const ChartPie = ({ option = {}, isMock, chartType, name = '', names, datas, ...
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} {...others} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-export default ChartPie;
+const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => {
+  const chartData = chartDatasMap[chartId] || {};
+  const drawerInfo = drawerInfoMap[chartId] || {};
+  return {
+    name: chartData.name as string,
+    names: chartData.names as string[],
+    datas: chartData.datas as IData[],
+    isMock: chartData.isMock as boolean,
+    chartType: drawerInfo.chartType as string,
+  };
+};
+
+export default connect(mapStateToProps)(ChartPie);

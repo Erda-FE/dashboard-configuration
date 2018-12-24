@@ -1,7 +1,6 @@
 import React from 'react';
 import { Router, Switch, Route } from 'dva/router';
 import dynamic from 'dva/dynamic';
-import AppLayout from 'layout/base';
 import { History } from 'interface/common';
 import DashBoardRoutes from './dashboard';
 
@@ -38,7 +37,7 @@ class AppRouter extends React.PureComponent<IProps> {
         <Switch>
           <Route
             path="/"
-            render={props => (<AppLayout {...props}>
+            render={props => (
               <Switch>
                 {this.childRoutes.map(({ path, Comp }: any) => (
                   <Route
@@ -48,7 +47,7 @@ class AppRouter extends React.PureComponent<IProps> {
                   />
                 ))}
               </Switch>
-            </AppLayout>)}
+            )}
           />
         </Switch>
       </Router>

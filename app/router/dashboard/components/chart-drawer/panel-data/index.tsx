@@ -33,7 +33,6 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
       {
         getFieldDecorator('panneldata#url', {
           rules: [{
-            required: true,
             message: '请输入接口',
           }],
         })(<Input />)
@@ -42,7 +41,7 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
   </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { chartType } }: any) => ({
+const mapStateToProps = ({ biDrawer: { drawerInfo: { chartType } } }: any) => ({
   chartType,
 });
 

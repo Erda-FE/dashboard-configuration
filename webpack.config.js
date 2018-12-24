@@ -140,8 +140,6 @@ module.exports = () => {
       alias: {
         common: path.resolve(__dirname, 'app/common'),
         // 业务域 不含路由
-        user: path.resolve(__dirname, 'app/modules/user'),
-        layout: path.resolve(__dirname, 'app/modules/layout'),
         // 业务域 含有路由
         dashboard: path.resolve(__dirname, 'app/router/dashboard'),
         // 其他
@@ -252,9 +250,6 @@ module.exports = () => {
         hash: false,
         inject: true,
         needDll: !isBuild,
-        skeleton: {
-          html: fs.readFileSync(path.join(__dirname, './app/views/skeleton.html')),
-        },
         minify: isBuild ? {
           collapseWhitespace: true,
           minifyJS: true,

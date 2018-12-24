@@ -8,38 +8,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noarchive">
     <link rel="shortcut icon" href="/images/favicon.ico">
-    <link rel="stylesheet" href="//at.alicdn.com/t/font_946390_52622099c1.css">
     <script src="/ta"></script>
     <%if(htmlWebpackPlugin.options.needDll) {%>
     <script type="text/javascript" src="/dll.js"></script>
     <%}%>
-    <script>
-      var _taConfig = window._taConfig;
-      if (_taConfig && _taConfig.enabled) {
-        !function (e, n, r, t, a, o, c) { e[a] = e[a] || function () { (e[a].q = e[a].q || []).push(arguments) }, e.onerror = function (n, r, t, o, c) { e[a]("sendExecError", n, r, t, o, c) }, n.addEventListener("error", function (n) { e[a]("sendError", n) }, !0), o = n.createElement(r), c = n.getElementsByTagName(r)[0], o.async = 1, o.src = t, c.parentNode.insertBefore(o, c) }(window, document, "script", _taConfig.url, "$ta");
-        $ta('start', { udata: { uid: 0 }, ak: _taConfig.ak, url: _taConfig.collectorUrl });
-      }
-    </script>
   </head>
   <body>
-    <div id="skeleton" class="hide">
-      <%= htmlWebpackPlugin.options.skeleton.html %>
-    </div>
-    <div id="content" class="hide"></div>
-    <script>
-      (function () {
-        const pathname = window.location.pathname;
-        const siderCache = window.localStorage.getItem('ui-sider');
-        if (siderCache) document.querySelector('#sider').outerHTML = siderCache;
-        document.querySelector('#skeleton').classList.remove('hide');
-      })();
-    </script>
-    <script>
-      (function () {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker.register('/sw.js');
-        }
-      })();
-    </script>
+    <div id="content"></div>
   </body>
 </html>

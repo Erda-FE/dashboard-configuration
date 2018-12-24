@@ -32,7 +32,7 @@ const PanelCharts = ({ chartType, chooseChart, ...others }: IProps) => (
   </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { chartType } }: any) => ({
+const mapStateToProps = ({ biDrawer: { drawerInfo: { chartType } } }: any) => ({
   chartType,
 });
 

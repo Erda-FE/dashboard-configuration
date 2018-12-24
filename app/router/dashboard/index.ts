@@ -1,6 +1,6 @@
 export default [
   {
-    path: '/dashboard/board',
+    path: '/board',
     getComponent: () => import('./board'),
   },
 ];

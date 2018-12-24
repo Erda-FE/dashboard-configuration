@@ -8,6 +8,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Icon, Tooltip } from 'antd';
+import { isEqual } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
@@ -17,7 +18,11 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
 
-type IProps = ISizeMe & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+  readOnly?: boolean
+  extra?: any
+  onSave?: (extra: any) => void
+}
 
 const GRID_MARGIN = 10; // Cell间距
 const RECT_BORDER_WIDTH = 1; // rect border宽度
@@ -40,29 +45,48 @@ const getGridBackground = (width: number) => {
 };
 
 class Board extends React.PureComponent<IProps> {
+  static defaultProps = {
+    readOnly: false,
+  };
+
   componentWillMount() {
-    this.props.initDashboardType();
+    this.props.initDashboard(this.props.extra);
+  }
+
+  componentWillReceiveProps({ extra }: IProps) {
+    if (!isEqual(extra, this.props.extra)) {
+      this.props.initDashboard(extra);
+    }
   }
 
   onDragStart = () => this.props.isEdit;
 
+  onSave = () => {
+    const { saveEdit, onSave } = this.props;
+    saveEdit().then((extra: any) => {
+      if (onSave) onSave(extra);
+    });
+  }
+
   render() {
-    const { size, onLayoutChange, layout, openDrawer, chartDatasMap, isEdit, openEdit, saveEdit } = this.props;
+    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly } = this.props;
     const { width } = size;
     return (
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
-        <div className="bi-header">
-          {isEdit && <Icon type="plus" onClick={openDrawer} />}
-          {isEdit ? (
-            <Tooltip placement="bottom" title="保存">
-              <Icon type="save" onClick={saveEdit} />
-            </Tooltip>
-          ) : (
-            <Tooltip placement="bottom" title="编辑">
-              <Icon type="edit" onClick={openEdit} />
-            </Tooltip>
-          )}
-        </div>
+        {!readOnly && (
+          <div className="bi-header">
+            {isEdit && <Icon type="plus" onClick={openDrawerAdd} />}
+            {isEdit ? (
+              <Tooltip placement="bottom" title="保存">
+                <Icon type="save" onClick={this.onSave} />
+              </Tooltip>
+            ) : (
+              <Tooltip placement="bottom" title="编辑">
+                <Icon type="edit" onClick={openEdit} />
+              </Tooltip>
+            )}
+          </div>
+        )}
         <ReactGridLayout
           autoSize
           layout={layout}
@@ -77,7 +101,7 @@ class Board extends React.PureComponent<IProps> {
         >
           {layout.map(({ i, ...others }: any) => {
             // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-            const { chartType } = chartDatasMap[i];
+            const { chartType } = drawerInfoMap[i];
             let ChartNode = null as any;
             switch (chartType) {
               case 'line':
@@ -89,12 +113,12 @@ class Board extends React.PureComponent<IProps> {
                 ChartNode = ChartPie;
                 break;
               default:
-                return null;
+                break;
             }
             return (
               <div key={i} data-grid={{ ...others }}>
                 <ChartOperation chartId={i}>
-                  <ChartNode {...chartDatasMap[i]} />
+                  <ChartNode chartId={i} />
                 </ChartOperation>
               </div>
             );
@@ -106,27 +130,27 @@ class Board extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { layout, chartDatasMap, isEdit } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { layout, drawerInfoMap, isEdit } }: any) => ({
   layout,
-  chartDatasMap,
+  drawerInfoMap,
   isEdit,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  initDashboardType() {
-    dispatch({ type: 'biDashBoard/initDashboardType', dashboardType: 'board' });
+  initDashboard(extra: any) {
+    dispatch({ type: 'biDashBoard/initDashboard', dashboardType: 'board', extra });
   },
   onLayoutChange(layout: []) {
     dispatch({ type: 'biDashBoard/onLayoutChange', layout });
   },
-  openDrawer() {
-    dispatch({ type: 'biDrawer/openDrawer' });
+  openDrawerAdd() {
+    dispatch({ type: 'biDrawer/openDrawerAdd' });
   },
   openEdit() {
     dispatch({ type: 'biDashBoard/openEdit' });
   },
   saveEdit() {
-    dispatch({ type: 'biDashBoard/saveEdit' });
+    return dispatch({ type: 'biDashBoard/saveEdit' });
   },
 });
 

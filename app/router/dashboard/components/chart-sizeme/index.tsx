@@ -30,6 +30,7 @@ ReactEcharts.prototype.componentDidUpdate = function (...arg) {
 class Chart extends React.Component<IProps> {
   static defaultProps = {
     descHeight: 32,
+    notMerge: true, // 因v4.2.0-rc在切换图形类型或者更新数据更新存在bug,所以必须设置为true
   };
 
   shouldComponentUpdate(nextProps: IProps) {

@@ -25,7 +25,7 @@ export default {
       const url = get(drawerInfo, ['panneldata#url']);
       let chartData = { isMock: true };
       try {
-        if (url) chartData = { ...chartData, ...(yield call(url)), isMock: false };
+        if (url) chartData = { ...chartData, ...(yield call(getChartData, url)), isMock: false };
       } catch (error) {
         message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
       }
@@ -42,8 +42,18 @@ export default {
     * saveEdit(_, { put, select }) {
       yield put({ type: 'querySuccess', payload: { isEdit: false } });
       const { layout, chartDatasMap, drawerInfoMap } = yield select(state => state.biDashBoard);
-      // 只输出外部需要的
-      return { layout, chartDatasMap, drawerInfoMap };
+      return { layout, chartDatasMap, drawerInfoMap }; // 只输出外部需要的
+    },
+    * reloadChart({ chartId }, { put, select, call }) { // 刷新图表
+      const { chartDatasMap, drawerInfoMap } = yield select(state => state.biDashBoard);
+      try {
+        const url = get(drawerInfoMap, [chartId, 'panneldata#url']);
+        let chartData = chartDatasMap[chartId];
+        if (url) chartData = { ...chartData, ...(yield call(getChartData, url)), isMock: false };
+        yield put({ type: 'querySuccess', payload: { chartDatasMap: { ...chartDatasMap, [chartId]: chartData } } });
+      } catch (error) {
+        message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
+      }
     },
   },
   reducers: {

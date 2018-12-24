@@ -38,17 +38,22 @@ class ChartOperation extends React.PureComponent<IProps> {
     </Menu>
   )
 
+  reloadChart = () => {
+    this.props.reloadChart(this.props.chartId);
+  }
+
   render() {
     const { children, isEdit } = this.props;
     return (
       <div className="bi-chart-operation">
-        {isEdit && (
-          <div className="bi-chart-operation-header">
+        <div className="bi-chart-operation-header">
+          <Icon type="reload" onClick={this.reloadChart} />
+          {isEdit && (
             <Dropdown overlay={this.getMenu()}>
               <Icon type="dash" />
             </Dropdown>
-          </div>
-        )}
+          )}
+        </div>
         {children}
       </div>
     );
@@ -65,6 +70,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   deleteChart(chartId: string) {
     dispatch({ type: 'biDashBoard/deleteChart', chartId });
+  },
+  reloadChart(chartId: string) {
+    dispatch({ type: 'biDashBoard/reloadChart', chartId });
   },
 });
 

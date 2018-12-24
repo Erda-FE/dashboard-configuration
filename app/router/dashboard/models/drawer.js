@@ -16,7 +16,7 @@ export default {
         yield put({ type: 'querySuccess', payload: { editChartId: chartId } });
         return;
       }
-      // 保存
+      // 与board同步信息
       yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo, editChartId });
     },
     * editChart({ chartId }, { put, select }) {
@@ -29,6 +29,14 @@ export default {
           drawerInfo: drawerInfoMap[chartId],
         },
       });
+    },
+    * onDrawerChange({ payload }, { select, put }) {
+      const { editChartId, drawerInfo } = yield select(state => state.biDrawer);
+      const newDrawerInfo = { ...drawerInfo, ...payload };
+      if (editChartId) { // 与board同步信息
+        yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo: newDrawerInfo, editChartId });
+      }
+      yield put({ type: 'querySuccess', payload: { drawerInfo: newDrawerInfo } });
     },
   },
   reducers: {

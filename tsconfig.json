@@ -29,8 +29,6 @@
       "utils/*": ["./app/utils/*"],
       "models/*": ["./app/models/*"],
       "services/*": ["./app/services/*"],
-      "layout": ["./app/modules/layout"],
-      "layout/*": ["./app/modules/layout/*"],
       "user/*": ["./app/modules/user/*"],
       "dashboard/*": ["./app/router/dashboard/*"],
       "agent": ["./app/agent.js"],

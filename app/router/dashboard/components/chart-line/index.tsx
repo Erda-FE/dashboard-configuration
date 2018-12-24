@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import ChartSizeMe from '../chart-sizeme';
 import { merge, get } from 'lodash';
 import { ReactEchartsPropsTypes } from 'dashboard/types';
-import { getMockLine } from './utils';
+import { mockDataLine } from './utils';
 
 type IType = 'line' | 'bar' | 'area';
 
@@ -36,9 +36,8 @@ const ChartLine = ({ option = {}, names, datas, isMock, chartType }: IProps) => 
   if (xAxisType === 'category' || (!xAxisType && !yAxisType)) {
     xAxisType = 'category';
   }
-  const mockDataLine = getMockLine(chartType);
   const realNames = isMock ? mockDataLine.names : names;
-  const realDatas: any[] = isMock ? mockDataLine.datas.map(single => ({ ...single, type: chartType })) : (datas || []);
+  const realDatas: any[] = isMock ? mockDataLine.datas : (datas || []);
   const source = {
     tooltip: {
       trigger: 'axis',
@@ -51,7 +50,7 @@ const ChartLine = ({ option = {}, names, datas, isMock, chartType }: IProps) => 
       ...baseAxis,
       data: realNames,
     } : { type: yAxisType },
-    series: realDatas.map(({ type, data, ...dataOthers }: any) => ({ type: getAreaType(type), data, ...getOthers(type), ...dataOthers })),
+    series: realDatas.map(({ data, ...dataOthers }: any) => ({ type: getAreaType(chartType), data, ...getOthers(chartType), ...dataOthers })),
   };
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };

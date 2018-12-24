@@ -44,7 +44,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
         </div>
         <div className="bi-drawer-footer">
           <Button onClick={closeDrawer} style={{ marginRight: 8 }}>
-            取消
+            关闭
           </Button>
           <Button onClick={this.submitDrawer} type="primary">
             {editChartId ? '保存' : '添加'}

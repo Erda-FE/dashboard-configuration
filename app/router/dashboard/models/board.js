@@ -39,6 +39,12 @@ export default {
         },
       });
     },
+    * saveEdit(_, { put, select }) {
+      yield put({ type: 'querySuccess', payload: { isEdit: false } });
+      const { layout, chartDatasMap, drawerInfoMap } = yield select(state => state.biDashBoard);
+      // 只输出外部需要的
+      return { layout, chartDatasMap, drawerInfoMap };
+    },
   },
   reducers: {
     querySuccess(state, { payload }) {
@@ -58,14 +64,17 @@ export default {
     onLayoutChange(state, { layout }) {
       return { ...state, layout };
     },
-    initDashboardType(state, { dashboardType }) {
-      return { ...state, dashboardType };
+    initDashboard(state, { dashboardType, extra }) {
+      return {
+        ...state,
+        dashboardType,
+        layout: get(extra, 'layout', []),
+        chartDatasMap: get(extra, 'chartDatasMap', {}),
+        drawerInfoMap: get(extra, 'drawerInfoMap', {}),
+      };
     },
     openEdit(state) {
       return { ...state, isEdit: true };
-    },
-    saveEdit(state) {
-      return { ...state, isEdit: false };
     },
   },
 };

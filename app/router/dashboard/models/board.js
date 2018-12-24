@@ -13,7 +13,7 @@ export default {
     isEdit: false,
     layout: [],
     chartDatasMap: {}, // 图表基本数据信息
-    dashboardType: '', // 布局；类型
+    dashboardType: '', // 布局类型
     drawerInfoMap: {}, // 所有图表配置信息
   },
   effects: {
@@ -30,7 +30,7 @@ export default {
         message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
       }
       chartDatasMap[chartId] = chartData;
-      layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 3, h: 6 });
+      layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
       yield put({ type: 'querySuccess',
         payload: {
           drawerInfoMap: { ...drawerInfoMap, [chartId]: { chartType: drawerInfo.chartType } },

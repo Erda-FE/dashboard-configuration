@@ -97,8 +97,8 @@ class ChartOperation extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  biDashBoard: { isEdit, drawerInfoMap },
-  biDrawer: { editChartId } }: any, { chartId }: any) => ({
+  biDashBoard: { isEdit },
+  biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => ({
     isEdit,
     isChartEdit: editChartId === chartId,
     url: get(drawerInfoMap, [chartId, 'panneldata#url']) as any,

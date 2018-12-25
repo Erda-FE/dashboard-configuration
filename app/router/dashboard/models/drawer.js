@@ -6,6 +6,7 @@ export default {
     drawerInfo: { // 当前编辑的图表配置信息
       chartType: '',
     },
+    drawerInfoMap: {}, // 所有图表配置信息
   },
   effects: {
     * submitDrawer(_, { put, select }) {
@@ -16,8 +17,8 @@ export default {
         yield put({ type: 'querySuccess', payload: { editChartId: chartId } });
         return;
       }
-      // 与board同步信息
-      yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo, editChartId });
+      // 同步信息
+      yield put({ type: 'updateDrawerInfoMap', drawerInfo, editChartId });
     },
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId }, biDashBoard: { drawerInfoMap } } = yield select(state => state);
@@ -33,8 +34,8 @@ export default {
     * onDrawerChange({ payload }, { select, put }) {
       const { editChartId, drawerInfo } = yield select(state => state.biDrawer);
       const newDrawerInfo = { ...drawerInfo, ...payload };
-      if (editChartId) { // 与board同步信息
-        yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo: newDrawerInfo, editChartId });
+      if (editChartId) { // 同步信息
+        yield put({ type: 'updateDrawerInfoMap', drawerInfo: newDrawerInfo, editChartId });
       }
       yield put({ type: 'querySuccess', payload: { drawerInfo: newDrawerInfo } });
     },
@@ -42,6 +43,9 @@ export default {
   reducers: {
     querySuccess(state, { payload }) {
       return { ...state, ...payload };
+    },
+    init(state, { drawerInfoMap }) {
+      return { ...state, drawerInfoMap };
     },
     onDrawerChange(state, { payload }) {
       return { ...state, drawerInfo: { ...state.drawerInfo, ...payload } };
@@ -56,6 +60,15 @@ export default {
       const { drawerInfo } = state;
       if (chartType === drawerInfo.chartType) return state;
       return { ...state, drawerInfo: { ...drawerInfo, chartType } };
+    },
+    updateDrawerInfoMap(state, { drawerInfo, editChartId }) {
+      const { drawerInfoMap } = state;
+      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: drawerInfo } };
+    },
+    deleteDrawerInfo(state, { chartId }) {
+      const { drawerInfoMap } = state;
+      delete drawerInfoMap[chartId];
+      return { ...state, drawerInfoMap: { ...drawerInfoMap } };
     },
   },
 };

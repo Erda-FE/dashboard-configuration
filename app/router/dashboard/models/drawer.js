@@ -1,12 +1,14 @@
-import { find } from 'lodash';
+import { find, cloneDeep } from 'lodash';
+
+const defaultState = {
+  visible: false,
+  editChartId: '',
+  drawerInfoMap: {}, // 所有图表配置信息
+};
 
 export default {
   namespace: 'biDrawer',
-  state: {
-    visible: false,
-    editChartId: '',
-    drawerInfoMap: {}, // 所有图表配置信息
-  },
+  state: cloneDeep(defaultState),
   effects: {
     * submitDrawer(_, { put, select }) {
       const { biDrawer: { editChartId }, biDashBoard: { layout } } = yield select(state => state);
@@ -57,6 +59,9 @@ export default {
       const { drawerInfoMap } = state;
       delete drawerInfoMap[chartId];
       return { ...state, drawerInfoMap: { ...drawerInfoMap } };
+    },
+    reset() {
+      return { ...cloneDeep(defaultState) };
     },
   },
 };

@@ -59,6 +59,10 @@ class Board extends React.PureComponent<IProps> {
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetBoard();
+  }
+
   onDragStart = () => this.props.isEdit;
 
   onSave = () => {
@@ -151,6 +155,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   saveEdit() {
     return dispatch({ type: 'biDashBoard/saveEdit' });
+  },
+  resetBoard() {
+    return dispatch({ type: 'biDashBoard/resetBoard' });
   },
 });
 

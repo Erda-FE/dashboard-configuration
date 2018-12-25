@@ -1,12 +1,14 @@
-import { maxBy, remove, get } from 'lodash';
+import { maxBy, remove, get, cloneDeep } from 'lodash';
+
+const defaultState = {
+  isEdit: false,
+  layout: [],
+  dashboardType: '', // 布局类型
+};
 
 export default {
   namespace: 'biDashBoard',
-  state: {
-    isEdit: false,
-    layout: [],
-    dashboardType: '', // 布局类型
-  },
+  state: cloneDeep(defaultState), // 使用cloneDeep，因为layout在整个运作过程中涉及到引用，而immutable太重
   effects: {
     * initDashboard({ dashboardType, extra }, { put }) {
       yield put({ type: 'querySuccess', payload: { layout: get(extra, 'layout', []), dashboardType } });
@@ -30,6 +32,10 @@ export default {
       yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
       yield put({ type: 'biDrawer/deleteDrawerInfo', chartId });
     },
+    * resetBoard(_, { put }) {
+      yield put({ type: 'reset' });
+      yield put({ type: 'biDrawer/reset' });
+    },
   },
   reducers: {
     querySuccess(state, { payload }) {
@@ -40,6 +46,9 @@ export default {
     },
     openEdit(state) {
       return { ...state, isEdit: true };
+    },
+    reset() {
+      return { ...cloneDeep(defaultState) };
     },
   },
 };

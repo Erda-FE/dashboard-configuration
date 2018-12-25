@@ -13,10 +13,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 
 function getChartData(url: string) {
   return agent.get(url)
-    .then((response: any) => response.body)
-    .catch(() => {
-      message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
-    });
+    .then((response: any) => response.body);
 }
 
 class ChartOperation extends React.PureComponent<IProps> {
@@ -41,6 +38,9 @@ class ChartOperation extends React.PureComponent<IProps> {
     }
     getChartData(url).then((resData: any) => {
       this.setState({ resData });
+    }).catch(() => {
+      this.setState({ resData: { isMock: true } });
+      message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
     });
   }
 
@@ -79,7 +79,7 @@ class ChartOperation extends React.PureComponent<IProps> {
   render() {
     const { children, isEdit, isChartEdit } = this.props;
     const child = React.Children.only(children);
-    console.log('this.state.body', this.state.resData);
+    const { resData } = this.state;
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
@@ -90,7 +90,7 @@ class ChartOperation extends React.PureComponent<IProps> {
             </Dropdown>
           )}
         </div>
-        {!isEmpty(this.state.resData) && React.cloneElement(child, { ...child.props, ...this.state.resData })}
+        {!isEmpty(resData) && React.cloneElement(child, { ...child.props, ...resData })}
       </div>
     );
   }

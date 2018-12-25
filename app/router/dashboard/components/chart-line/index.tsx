@@ -20,6 +20,9 @@ interface IData {
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
   chartId: string
   option?: any
+  names?: string[],
+  datas?: IData[],
+  isMock?: boolean
 }
 
 const baseAxis = {
@@ -55,13 +58,9 @@ const ChartLine = ({ option = {}, names, datas, isMock, chartType }: IProps) => 
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => {
-  const chartData = chartDatasMap[chartId] || {};
+const mapStateToProps = ({ biDashBoard: { drawerInfoMap } }: any, { chartId }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
   return {
-    names: chartData.names as string[],
-    datas: chartData.datas as IData[],
-    isMock: chartData.isMock as boolean,
     chartType: drawerInfo.chartType as string,
   };
 };

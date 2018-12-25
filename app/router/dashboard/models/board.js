@@ -1,4 +1,4 @@
-import { maxBy, remove, get } from 'lodash';
+import { maxBy, remove, get, forIn } from 'lodash';
 import agent from 'agent';
 import { message } from 'antd';
 
@@ -41,8 +41,8 @@ export default {
     },
     * saveEdit(_, { put, select }) {
       yield put({ type: 'querySuccess', payload: { isEdit: false } });
-      const { layout, chartDatasMap, drawerInfoMap } = yield select(state => state.biDashBoard);
-      return { layout, chartDatasMap, drawerInfoMap }; // 只输出外部需要的
+      const { layout, drawerInfoMap } = yield select(state => state.biDashBoard);
+      return { layout, drawerInfoMap }; // 只输出外部需要的
     },
     * reloadChart({ chartId }, { put, select, call }) { // 刷新图表
       const { chartDatasMap, drawerInfoMap } = yield select(state => state.biDashBoard);
@@ -75,12 +75,22 @@ export default {
       return { ...state, layout };
     },
     initDashboard(state, { dashboardType, extra }) {
+      const drawerInfoMap = get(extra, 'drawerInfoMap', {});
+      const chartDatasMap = {};
+      forIn(drawerInfoMap, (drawerInfo, chartId) => {
+        const url = get(drawerInfo, ['panneldata#url']);
+        if (url) {
+          chartDatasMap[chartId] = { isMock: false };
+        } else {
+          chartDatasMap[chartId] = { isMock: true };
+        }
+      });
       return {
         ...state,
         dashboardType,
         layout: get(extra, 'layout', []),
         chartDatasMap: get(extra, 'chartDatasMap', {}),
-        drawerInfoMap: get(extra, 'drawerInfoMap', {}),
+        drawerInfoMap,
       };
     },
     openEdit(state) {

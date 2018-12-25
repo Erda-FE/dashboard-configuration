@@ -17,7 +17,6 @@
   // 非必传, 默认如下
   extra: { 
     layout: [], 布局信息
-    chartDatasMap: {}, // 图表基本数据信息
     drawerInfoMap: {}, // 所有图表配置信息
   }
 

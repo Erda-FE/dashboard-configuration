@@ -43,6 +43,11 @@ export default {
       }
       yield put({ type: 'querySuccess', payload: { visible: false, editChartId: '' } });
     },
+    * deleteDrawer(_, { put, select }) { // 编辑时移除
+      const { editChartId } = yield select(state => state.biDrawer);
+      yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
+      yield put({ type: 'querySuccess', payload: { visible: false, editChartId: '' } });
+    },
   },
   reducers: {
     querySuccess(state, { payload }) {

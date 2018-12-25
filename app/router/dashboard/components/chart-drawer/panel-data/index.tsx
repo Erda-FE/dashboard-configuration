@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash';
 import { connect } from 'dva';
 import { Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -41,8 +42,8 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
   </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { drawerInfo: { chartType } } }: any) => ({
-  chartType,
+const mapStateToProps = ({ biDrawer: { drawerInfoMap, editChartId } }: any) => ({
+  chartType: get(drawerInfoMap, [editChartId, 'chartType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

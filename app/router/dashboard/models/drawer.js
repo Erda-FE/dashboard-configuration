@@ -1,61 +1,62 @@
+import { find } from 'lodash';
+
 export default {
   namespace: 'biDrawer',
   state: {
     visible: false,
     editChartId: '',
-    drawerInfo: { // 当前编辑的图表配置信息
-      chartType: '',
-    },
+    drawerInfoMap: {}, // 所有图表配置信息
   },
   effects: {
     * submitDrawer(_, { put, select }) {
-      const { editChartId, drawerInfo } = yield select(state => state.biDrawer);
-      if (!editChartId) { // 添加
-        const chartId = `chart-${generateUUID()}`;
-        yield put({ type: 'biDashBoard/generateChart', chartId });
-        yield put({ type: 'querySuccess', payload: { editChartId: chartId } });
-        return;
+      const { biDrawer: { editChartId }, biDashBoard: { layout } } = yield select(state => state);
+      const isExist = find(layout, ({ i }) => i === editChartId);
+      if (!isExist) { // 添加
+        yield put({ type: 'biDashBoard/generateChart', chartId: editChartId });
       }
-      // 与board同步信息
-      yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo, editChartId });
     },
     * editChart({ chartId }, { put, select }) {
-      const { biDrawer: { editChartId }, biDashBoard: { drawerInfoMap } } = yield select(state => state);
+      const { biDrawer: { editChartId } } = yield select(state => state);
       if (chartId === editChartId) return;
-      yield put({ type: 'querySuccess',
-        payload: {
-          visible: true,
-          editChartId: chartId,
-          drawerInfo: drawerInfoMap[chartId],
-        },
-      });
+      yield put({ type: 'querySuccess', payload: { visible: true, editChartId: chartId } });
     },
     * onDrawerChange({ payload }, { select, put }) {
-      const { editChartId, drawerInfo } = yield select(state => state.biDrawer);
-      const newDrawerInfo = { ...drawerInfo, ...payload };
-      if (editChartId) { // 与board同步信息
-        yield put({ type: 'biDashBoard/updateDrawerInfoMap', drawerInfo: newDrawerInfo, editChartId });
-      }
-      yield put({ type: 'querySuccess', payload: { drawerInfo: newDrawerInfo } });
+      const { editChartId, drawerInfoMap } = yield select(state => state.biDrawer);
+      yield put({ type: 'querySuccess',
+        payload: {
+          drawerInfoMap: {
+            ...drawerInfoMap,
+            [editChartId]: { ...drawerInfoMap[editChartId], ...payload },
+          },
+        },
+      });
     },
   },
   reducers: {
     querySuccess(state, { payload }) {
       return { ...state, ...payload };
     },
-    onDrawerChange(state, { payload }) {
-      return { ...state, drawerInfo: { ...state.drawerInfo, ...payload } };
+    init(state, { drawerInfoMap }) {
+      return { ...state, drawerInfoMap };
     },
     openDrawerAdd(state) {
-      return { ...state, visible: true, editChartId: '', drawerInfo: {} };
+      const chartId = `chart-${generateUUID()}`;
+      const { drawerInfoMap } = state;
+      return { ...state, visible: true, editChartId: chartId, drawerInfoMap: { ...drawerInfoMap, [chartId]: {} } };
     },
     closeDrawer(state) {
-      return { ...state, visible: false, editChartId: '', drawerInfo: {} };
+      return { ...state, visible: false, editChartId: '' };
     },
     chooseChart(state, { chartType }) {
-      const { drawerInfo } = state;
+      const { drawerInfoMap, editChartId } = state;
+      const drawerInfo = drawerInfoMap[editChartId];
       if (chartType === drawerInfo.chartType) return state;
-      return { ...state, drawerInfo: { ...drawerInfo, chartType } };
+      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType } } };
+    },
+    deleteDrawerInfo(state, { chartId }) {
+      const { drawerInfoMap } = state;
+      delete drawerInfoMap[chartId];
+      return { ...state, drawerInfoMap: { ...drawerInfoMap } };
     },
   },
 };

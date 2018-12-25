@@ -1,10 +1,4 @@
 import { maxBy, remove, get } from 'lodash';
-import agent from 'agent';
-
-export function getChartData(url) {
-  return agent.get(url)
-    .then(response => response.body);
-}
 
 export default {
   namespace: 'biDashBoard',
@@ -12,52 +6,37 @@ export default {
     isEdit: false,
     layout: [],
     dashboardType: '', // 布局类型
-    drawerInfoMap: {}, // 所有图表配置信息
   },
   effects: {
+    * initDashboard({ dashboardType, extra }, { put }) {
+      yield put({ type: 'querySuccess', payload: { layout: get(extra, 'layout', []), dashboardType } });
+      yield put({ type: 'biDrawer/init', drawerInfoMap: get(extra, 'drawerInfoMap', {}) });
+    },
     * generateChart({ chartId }, { select, put }) {
       const {
-        biDashBoard: { layout, drawerInfoMap },
-        biDrawer: { drawerInfo },
+        biDashBoard: { layout },
       } = yield select(state => state);
       layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
-      yield put({ type: 'querySuccess',
-        payload: {
-          drawerInfoMap: { ...drawerInfoMap, [chartId]: { chartType: drawerInfo.chartType } },
-          layout,
-        },
-      });
+      yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
     },
     * saveEdit(_, { put, select }) {
       yield put({ type: 'querySuccess', payload: { isEdit: false } });
-      const { layout, drawerInfoMap } = yield select(state => state.biDashBoard);
+      const { biDashBoard: { layout }, biDrawer: { drawerInfoMap } } = yield select(state => state);
       return { layout, drawerInfoMap }; // 只输出外部需要的
+    },
+    * deleteChart({ chartId }, { select, put }) {
+      const { layout } = yield select(state => state.biDashBoard);
+      remove(layout, ({ i }) => chartId === i);
+      yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
+      yield put({ type: 'biDrawer/deleteDrawerInfo', chartId });
     },
   },
   reducers: {
     querySuccess(state, { payload }) {
       return { ...state, ...payload };
     },
-    deleteChart(state, { chartId }) {
-      const { layout, drawerInfoMap } = state;
-      remove(layout, ({ i }) => chartId === i);
-      delete drawerInfoMap[chartId];
-      return { ...state, drawerInfoMap: { ...drawerInfoMap }, layout };
-    },
-    updateDrawerInfoMap(state, { drawerInfo, editChartId }) {
-      const { drawerInfoMap } = state;
-      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: drawerInfo } };
-    },
     onLayoutChange(state, { layout }) {
       return { ...state, layout };
-    },
-    initDashboard(state, { dashboardType, extra }) {
-      return {
-        ...state,
-        dashboardType,
-        layout: get(extra, 'layout', []),
-        drawerInfoMap: get(extra, 'drawerInfoMap', {}),
-      };
     },
     openEdit(state) {
       return { ...state, isEdit: true };

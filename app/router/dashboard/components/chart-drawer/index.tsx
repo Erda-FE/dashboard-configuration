@@ -1,4 +1,4 @@
-import { forEach } from 'lodash';
+import { forEach, get } from 'lodash';
 import React from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Collapse, Form } from 'antd';
@@ -21,7 +21,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { visible, closeDrawer, editChartId, form } = this.props;
+    const { visible, closeDrawer, form } = this.props;
     return (
       <Drawer
         placement="right"
@@ -47,7 +47,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
             关闭
           </Button>
           <Button onClick={this.submitDrawer} type="primary">
-            {editChartId ? '保存' : '添加'}
+            保存
           </Button>
         </div>
       </Drawer>
@@ -55,10 +55,9 @@ class ChartDrawer extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDrawer: { visible, editChartId, drawerInfo } }: any) => ({
+const mapStateToProps = ({ biDrawer: { visible, drawerInfoMap, editChartId } }: any) => ({
   visible,
-  editChartId,
-  drawerInfo,
+  drawerInfo: get(drawerInfoMap, [editChartId]),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

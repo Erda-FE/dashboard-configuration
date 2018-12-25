@@ -130,7 +130,7 @@ class Board extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { layout, drawerInfoMap, isEdit } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { layout, isEdit }, biDrawer: { drawerInfoMap } }: any) => ({
   layout,
   drawerInfoMap,
   isEdit,

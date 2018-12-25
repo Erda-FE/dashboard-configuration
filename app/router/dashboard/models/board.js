@@ -1,10 +1,4 @@
 import { maxBy, remove, get } from 'lodash';
-import agent from 'agent';
-
-export function getChartData(url) {
-  return agent.get(url)
-    .then(response => response.body);
-}
 
 export default {
   namespace: 'biDashBoard',
@@ -21,16 +15,13 @@ export default {
     * generateChart({ chartId }, { select, put }) {
       const {
         biDashBoard: { layout },
-        biDrawer: { drawerInfo },
       } = yield select(state => state);
       layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
-      yield put({ type: 'querySuccess', payload: { layout } });
-      yield put({ type: 'biDrawer/updateDrawerInfoMap', drawerInfo: { chartType: drawerInfo.chartType }, editChartId: chartId });
+      yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
     },
     * saveEdit(_, { put, select }) {
       yield put({ type: 'querySuccess', payload: { isEdit: false } });
       const { biDashBoard: { layout }, biDrawer: { drawerInfoMap } } = yield select(state => state);
-      // @todo  drawerInfoMap过滤和layout没有交集的地方
       return { layout, drawerInfoMap }; // 只输出外部需要的
     },
     * deleteChart({ chartId }, { select, put }) {

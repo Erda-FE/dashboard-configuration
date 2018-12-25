@@ -25,8 +25,8 @@ class ChartOperation extends React.PureComponent<IProps> {
     this.reloadData(this.props.url);
   }
 
-  componentWillReceiveProps({ url }: IProps) {
-    if (url !== this.props.url) {
+  componentWillReceiveProps({ url, isChartEdit }: IProps) {
+    if (isChartEdit !== this.props.isChartEdit) {
       this.reloadData(url);
     }
   }

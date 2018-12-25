@@ -15,7 +15,9 @@ export default {
       const isExist = find(layout, ({ i }) => i === editChartId);
       if (!isExist) { // 添加
         yield put({ type: 'biDashBoard/generateChart', chartId: editChartId });
+        return;
       }
+      yield put({ type: 'closeDrawer' });
     },
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId } } = yield select(state => state);

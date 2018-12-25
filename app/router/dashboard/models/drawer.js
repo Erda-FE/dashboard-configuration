@@ -15,7 +15,9 @@ export default {
       const isExist = find(layout, ({ i }) => i === editChartId);
       if (!isExist) { // 添加
         yield put({ type: 'biDashBoard/generateChart', chartId: editChartId });
+        return;
       }
+      yield put({ type: 'closeDrawer' });
     },
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId } } = yield select(state => state);
@@ -33,6 +35,19 @@ export default {
         },
       });
     },
+    * closeDrawer(_, { put, select }) {
+      const { biDrawer: { editChartId }, biDashBoard: { layout } } = yield select(state => state);
+      const isExist = find(layout, ({ i }) => i === editChartId);
+      if (!isExist) { // 创建时取消就移除
+        yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
+      }
+      yield put({ type: 'querySuccess', payload: { visible: false, editChartId: '' } });
+    },
+    * deleteDrawer(_, { put, select }) { // 编辑时移除
+      const { editChartId } = yield select(state => state.biDrawer);
+      yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
+      yield put({ type: 'querySuccess', payload: { visible: false, editChartId: '' } });
+    },
   },
   reducers: {
     querySuccess(state, { payload }) {
@@ -45,9 +60,6 @@ export default {
       const chartId = `chart-${generateUUID()}`;
       const { drawerInfoMap } = state;
       return { ...state, visible: true, editChartId: chartId, drawerInfoMap: { ...drawerInfoMap, [chartId]: {} } };
-    },
-    closeDrawer(state) {
-      return { ...state, visible: false, editChartId: '' };
     },
     chooseChart(state, { chartType }) {
       const { drawerInfoMap, editChartId } = state;

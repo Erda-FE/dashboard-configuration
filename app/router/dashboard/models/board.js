@@ -15,9 +15,7 @@ export default {
       yield put({ type: 'biDrawer/init', drawerInfoMap: get(extra, 'drawerInfoMap', {}) });
     },
     * generateChart({ chartId }, { select, put }) {
-      const {
-        biDashBoard: { layout },
-      } = yield select(state => state);
+      const { biDashBoard: { layout } } = yield select(state => state);
       layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
       yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
     },

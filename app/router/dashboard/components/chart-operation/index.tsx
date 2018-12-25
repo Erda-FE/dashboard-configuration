@@ -1,14 +1,49 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
+import { get, isEmpty } from 'lodash';
 import { connect } from 'dva';
-import { Icon, Dropdown, Menu, Popconfirm } from 'antd';
+import { Icon, Dropdown, Menu, Popconfirm, message } from 'antd';
 import classnames from 'classnames';
+import agent from 'agent';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   chartId: string
+  children: ReactElement<any>
+}
+
+function getChartData(url: string) {
+  return agent.get(url)
+    .then((response: any) => response.body)
+    .catch(() => {
+      message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
+    });
 }
 
 class ChartOperation extends React.PureComponent<IProps> {
+  state = {
+    resData: {},
+  };
+
+  componentDidMount() {
+    this.reloadData(this.props.url);
+  }
+
+  componentWillReceiveProps({ url }: IProps) {
+    if (url !== this.props.url) {
+      this.reloadData(url);
+    }
+  }
+
+  reloadData = (url: string) => {
+    if (!url) {
+      this.setState({ resData: { isMock: true } });
+      return;
+    }
+    getChartData(url).then((resData: any) => {
+      this.setState({ resData });
+    });
+  }
+
   deleteChart = () => {
     this.props.deleteChart(this.props.chartId);
   }
@@ -32,19 +67,19 @@ class ChartOperation extends React.PureComponent<IProps> {
           placement="top"
           title="是否确认删除"
           onConfirm={this.deleteChart}
-        >
-            删除
-        </Popconfirm>
+        >删除</Popconfirm>
       </Menu.Item>
     </Menu>
   )
 
   reloadChart = () => {
-    this.props.reloadChart(this.props.chartId);
+    this.reloadData(this.props.url);
   }
 
   render() {
     const { children, isEdit, isChartEdit } = this.props;
+    const child = React.Children.only(children);
+    console.log('this.state.body', this.state.resData);
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
@@ -55,16 +90,19 @@ class ChartOperation extends React.PureComponent<IProps> {
             </Dropdown>
           )}
         </div>
-        {children}
+        {!isEmpty(this.state.resData) && React.cloneElement(child, { ...child.props, ...this.state.resData })}
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { isEdit }, biDrawer: { editChartId } }: any, { chartId }: any) => ({
-  isEdit,
-  isChartEdit: editChartId === chartId,
-});
+const mapStateToProps = ({
+  biDashBoard: { isEdit, drawerInfoMap },
+  biDrawer: { editChartId } }: any, { chartId }: any) => ({
+    isEdit,
+    isChartEdit: editChartId === chartId,
+    url: get(drawerInfoMap, [chartId, 'panneldata#url']) as any,
+  });
 
 const mapDispatchToProps = (dispatch: any) => ({
   editChart(chartId: string) {
@@ -72,9 +110,6 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   deleteChart(chartId: string) {
     dispatch({ type: 'biDashBoard/deleteChart', chartId });
-  },
-  reloadChart(chartId: string) {
-    dispatch({ type: 'biDashBoard/reloadChart', chartId });
   },
 });
 

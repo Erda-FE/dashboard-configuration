@@ -44,7 +44,7 @@ const getGridBackground = (width: number) => {
   return `${front}${colsStr}${back}`;
 };
 
-class Board extends React.PureComponent<IProps> {
+class BoardGrid extends React.PureComponent<IProps> {
   static defaultProps = {
     readOnly: false,
   };
@@ -161,4 +161,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default sizeMe({ monitorHeight: true })(connect(mapStateToProps, mapDispatchToProps)(Board));
+export default sizeMe({ monitorHeight: true })(connect(mapStateToProps, mapDispatchToProps)(BoardGrid));

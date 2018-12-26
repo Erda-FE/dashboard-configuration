@@ -28,7 +28,8 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
         className="bi-demo-text"
         download={`mock-${chartType}.json`}
         href={`data:text/json;charset=utf-8,${jsonPretty(getMockData(chartType))}`}
-      >{`${chartNameMap[chartType]}数据示例下载`}</a>
+      >{`${chartNameMap[chartType]}数据示例下载`}
+      </a>
     )}
     <Form.Item label="接口" {...formItemLayout}>
       {

@@ -1,6 +1,6 @@
 {
   "name": "bi-ui-package",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "bi ui package",
   "sideEffects": [
     "*.scss",
@@ -114,18 +114,6 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.5.1",
     "typescript-eslint-parser": "^16.0.1"
-  },
-  "theme": {
-    "@primary-color": "#44C790",
-    "@success-color": "#00D19C",
-    "@error-color": "#F75B60",
-    "@warning-color": "#FBA254",
-    "@border-color-base": "#E8E8E8",
-    "@link-color": "#2786F4",
-    "@menu-collapsed-width": "72px",
-    "@menu-item-height": "45px",
-    "@menu-inline-toplevel-item-height": "45px",
-    "@modal-mask-bg": "rgba(55,55,55,0.6)"
   },
   "lint-staged": {
     "app/**/*.js": [

@@ -40,6 +40,5 @@ globals:
   browser: true,
   context: true,
   jestPuppeteer: true,
-  defaultTheme: true,
   baseUrl: true
       

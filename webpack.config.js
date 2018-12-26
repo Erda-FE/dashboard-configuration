@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -15,24 +14,7 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = () => {
   const isBuild = process.env.NODE_ENV === 'production';
-  const publicPath = path.join(__dirname, '/public');
-  const pkgPath = path.join(process.cwd(), 'package.json');
-  // eslint-disable-next-line
-  const pkg = fs.existsSync(pkgPath) ? require(pkgPath) : {};
 
-  let theme = {};
-  if (pkg.theme && typeof pkg.theme === 'string') {
-    let cfgPath = pkg.theme;
-    // relative path
-    if (cfgPath.charAt(0) === '.') {
-      cfgPath = path.resolve(process.cwd(), cfgPath);
-    }
-    // eslint-disable-next-line
-    const getThemeConfig = require(cfgPath);
-    theme = getThemeConfig();
-  } else if (pkg.theme && typeof pkg.theme === 'object') {
-    theme = pkg.theme;
-  }
   const plugins = [];
 
   if (!isBuild) {
@@ -93,7 +75,7 @@ module.exports = () => {
       children: false,
     },
     output: {
-      path: publicPath,
+      path: path.join(__dirname, '/public'),
       filename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[name].js',
       chunkFilename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[id].chunk.js',
       publicPath: '/',
@@ -239,7 +221,6 @@ module.exports = () => {
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV), // because webpack just do a string replace, so a pair of quotes is needed
         },
-        defaultTheme: JSON.stringify(theme),
       }),
       new CopyWebpackPlugin([
         { from: './app/images', to: 'images' },
@@ -290,7 +271,6 @@ module.exports = () => {
             loader: 'less-loader',
             options: {
               sourceMap: false,
-              modifyVars: theme,
               javascriptEnabled: true,
             },
           },

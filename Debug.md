@@ -2,11 +2,12 @@
 
 基于 `react + antd`
 
-## Run
+## 调试
 
 - `npm i`
 - `npm run dll && npm run web` // 初次启动
-- `npm run web ` 再次启动 (起devServer, 有热加载，实时刷新)
+- `npm run web ` // 再次启动 (起devServer, 有热加载，实时刷新)
+- `http://127.0.0.1:8080/grid` // 删格化调试页面
 
 ## VSCode配置说明
 * 必须安装eslint、tslint、stylelint、prettier、scss-lint

@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash';
 import { connect } from 'dva';
 import { Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -27,7 +28,8 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
         className="bi-demo-text"
         download={`mock-${chartType}.json`}
         href={`data:text/json;charset=utf-8,${jsonPretty(getMockData(chartType))}`}
-      >{`${chartNameMap[chartType]}数据示例下载`}</a>
+      >{`${chartNameMap[chartType]}数据示例下载`}
+      </a>
     )}
     <Form.Item label="接口" {...formItemLayout}>
       {
@@ -41,8 +43,8 @@ const PanelData = ({ chartType, chooseChart, form: { getFieldDecorator }, ...oth
   </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { drawerInfo: { chartType } } }: any) => ({
-  chartType,
+const mapStateToProps = ({ biDrawer: { drawerInfoMap, editChartId } }: any) => ({
+  chartType: get(drawerInfoMap, [editChartId, 'chartType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

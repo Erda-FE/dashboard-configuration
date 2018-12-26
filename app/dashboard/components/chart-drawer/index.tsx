@@ -1,4 +1,4 @@
-import { forEach } from 'lodash';
+import { forEach, get, find } from 'lodash';
 import React from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Collapse, Form } from 'antd';
@@ -21,7 +21,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { visible, closeDrawer, editChartId, form } = this.props;
+    const { visible, closeDrawer, form, isAdd, deleteDrawer } = this.props;
     return (
       <Drawer
         placement="right"
@@ -43,11 +43,11 @@ class ChartDrawer extends React.PureComponent<IProps> {
           </Form>
         </div>
         <div className="bi-drawer-footer">
-          <Button onClick={closeDrawer} style={{ marginRight: 8 }}>
-            关闭
+          <Button onClick={isAdd ? closeDrawer : deleteDrawer} style={{ marginRight: 8 }}>
+            {isAdd ? '取消' : '删除'}
           </Button>
           <Button onClick={this.submitDrawer} type="primary">
-            {editChartId ? '保存' : '添加'}
+            {isAdd ? '新增' : '保存'}
           </Button>
         </div>
       </Drawer>
@@ -55,13 +55,19 @@ class ChartDrawer extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDrawer: { visible, editChartId, drawerInfo } }: any) => ({
+const mapStateToProps = ({
+  biDrawer: { visible, drawerInfoMap, editChartId },
+  biDashBoard: { layout },
+}: any) => ({
   visible,
-  editChartId,
-  drawerInfo,
+  drawerInfo: get(drawerInfoMap, [editChartId]),
+  isAdd: !find(layout, ({ i }) => i === editChartId),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
+  deleteDrawer() {
+    dispatch({ type: 'biDrawer/deleteDrawer' });
+  },
   closeDrawer() {
     dispatch({ type: 'biDrawer/closeDrawer' });
   },

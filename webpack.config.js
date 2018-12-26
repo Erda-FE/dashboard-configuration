@@ -1,5 +1,4 @@
 const path = require('path');
-const fs = require('fs');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -9,30 +8,12 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const HappyPack = require('happypack');
 const os = require('os');
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
 module.exports = () => {
   const isBuild = process.env.NODE_ENV === 'production';
-  const publicPath = path.join(__dirname, '/public');
-  const pkgPath = path.join(process.cwd(), 'package.json');
-  // eslint-disable-next-line
-  const pkg = fs.existsSync(pkgPath) ? require(pkgPath) : {};
 
-  let theme = {};
-  if (pkg.theme && typeof pkg.theme === 'string') {
-    let cfgPath = pkg.theme;
-    // relative path
-    if (cfgPath.charAt(0) === '.') {
-      cfgPath = path.resolve(process.cwd(), cfgPath);
-    }
-    // eslint-disable-next-line
-    const getThemeConfig = require(cfgPath);
-    theme = getThemeConfig();
-  } else if (pkg.theme && typeof pkg.theme === 'object') {
-    theme = pkg.theme;
-  }
   const plugins = [];
 
   if (!isBuild) {
@@ -40,43 +21,6 @@ module.exports = () => {
       new webpack.DllReferencePlugin({
         context: __dirname,
         manifest: require('./manifest.json'),
-      }),
-    );
-  } else {
-    plugins.push(
-      new SWPrecacheWebpackPlugin({
-        cacheId: 'pmp-sw',
-        filename: 'sw.js',
-        minify: isBuild,
-        staticFileGlobs: ['public/**/*.js', 'public/images/**/*.{png,ico,jpg}', 'public/**/*.css'],
-        stripPrefix: 'public/',
-        navigateFallback: '/',
-        staticFileGlobsIgnorePatterns: [/sw\.js$/i],
-        runtimeCaching: [{
-          urlPattern: '/vendors~app*', // 修正vendors~app未被cache的问题,因vendors~app.chunk.js在sw.js之后生成
-          handler: 'cacheFirst',
-          options: {
-            successResponses: /^200$/,
-          },
-        }, {
-          urlPattern: /\/api\/(?!ws\/).*/, // 拦截api请求，但过滤/api/ws,这样可以防止ws断开后可以继续重连
-          handler: 'networkFirst',
-          options: {
-            successResponses: /^200$/,
-          },
-        }, {
-          urlPattern: /\/(overview|admin|electron)\/.*/, // cache页面，这样当没有联网时页面可以正常加载
-          handler: 'networkFirst',
-          options: {
-            successResponses: /^200$/,
-          },
-        }, {
-          urlPattern: '/*', // cache第三方的一些资源
-          handler: 'cacheFirst',
-          options: {
-            origin: /https?:\/\/(at.alicdn)\.com/,
-          },
-        }],
       }),
     );
   }
@@ -93,7 +37,7 @@ module.exports = () => {
       children: false,
     },
     output: {
-      path: publicPath,
+      path: path.join(__dirname, '/public'),
       filename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[name].js',
       chunkFilename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[id].chunk.js',
       publicPath: '/',
@@ -140,13 +84,11 @@ module.exports = () => {
       alias: {
         common: path.resolve(__dirname, 'app/common'),
         // 业务域 不含路由
+        dashboard: path.resolve(__dirname, 'app/dashboard'),
         // 业务域 含有路由
-        dashboard: path.resolve(__dirname, 'app/router/dashboard'),
         // 其他
         agent: path.resolve(__dirname, 'app/agent.js'),
         utils: path.resolve(__dirname, 'app/utils'),
-        models: path.resolve(__dirname, 'app/models'),
-        services: path.resolve(__dirname, 'app/services'),
         app: path.resolve(__dirname, 'app'),
         ws: path.resolve(__dirname, 'app/ws.js'),
         interface: path.resolve(__dirname, 'interface'),
@@ -239,7 +181,6 @@ module.exports = () => {
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV), // because webpack just do a string replace, so a pair of quotes is needed
         },
-        defaultTheme: JSON.stringify(theme),
       }),
       new CopyWebpackPlugin([
         { from: './app/images', to: 'images' },
@@ -290,7 +231,6 @@ module.exports = () => {
             loader: 'less-loader',
             options: {
               sourceMap: false,
-              modifyVars: theme,
               javascriptEnabled: true,
             },
           },

@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'dva';
 import { Collapse, Tooltip } from 'antd';
@@ -32,8 +33,8 @@ const PanelCharts = ({ chartType, chooseChart, ...others }: IProps) => (
   </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { drawerInfo: { chartType } } }: any) => ({
-  chartType,
+const mapStateToProps = ({ biDrawer: { drawerInfoMap, editChartId } }: any) => ({
+  chartType: get(drawerInfoMap, [editChartId, 'chartType']),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

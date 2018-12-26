@@ -1,8 +1,8 @@
 ## 如何使用
 ```js
   // 栅格布局
-  import { Board } from 'bi-package'
-  <Board 
+  import { BoardGrid } from 'bi-package'
+  <BoardGrid 
     readOnly={false}
     extra={extra} 
     onSave={this.onSave}
@@ -13,11 +13,11 @@
   // 只读
   // 默认为false
   readOnly: false
-  // 需要传入的基本信息
+
+  // 仪表盘的基本信息
   // 非必传, 默认如下
   extra: { 
     layout: [], 布局信息
-    chartDatasMap: {}, // 图表基本数据信息
     drawerInfoMap: {}, // 所有图表配置信息
   }
 

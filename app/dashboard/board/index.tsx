@@ -44,7 +44,7 @@ const getGridBackground = (width: number) => {
   return `${front}${colsStr}${back}`;
 };
 
-class Board extends React.PureComponent<IProps> {
+class BoardGrid extends React.PureComponent<IProps> {
   static defaultProps = {
     readOnly: false,
   };
@@ -57,6 +57,10 @@ class Board extends React.PureComponent<IProps> {
     if (!isEqual(extra, this.props.extra)) {
       this.props.initDashboard(extra);
     }
+  }
+
+  componentWillUnmount() {
+    this.props.resetBoard();
   }
 
   onDragStart = () => this.props.isEdit;
@@ -130,7 +134,7 @@ class Board extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { layout, drawerInfoMap, isEdit } }: any) => ({
+const mapStateToProps = ({ biDashBoard: { layout, isEdit }, biDrawer: { drawerInfoMap } }: any) => ({
   layout,
   drawerInfoMap,
   isEdit,
@@ -152,6 +156,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   saveEdit() {
     return dispatch({ type: 'biDashBoard/saveEdit' });
   },
+  resetBoard() {
+    return dispatch({ type: 'biDashBoard/resetBoard' });
+  },
 });
 
-export default sizeMe({ monitorHeight: true })(connect(mapStateToProps, mapDispatchToProps)(Board));
+export default sizeMe({ monitorHeight: true })(connect(mapStateToProps, mapDispatchToProps)(BoardGrid));

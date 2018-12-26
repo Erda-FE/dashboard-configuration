@@ -16,6 +16,10 @@ interface IData {
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
   chartId: string
   option?: any
+  name: string
+  names?: string[],
+  datas?: IData[],
+  isMock?: boolean
 }
 
 // 获取默认的前面选中的6个
@@ -64,14 +68,9 @@ const ChartPie = ({ option = {}, isMock, name = '', names, datas }: IProps) => {
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDashBoard: { drawerInfoMap, chartDatasMap } }: any, { chartId }: any) => {
-  const chartData = chartDatasMap[chartId] || {};
+const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
   return {
-    name: chartData.name as string,
-    names: chartData.names as string[],
-    datas: chartData.datas as IData[],
-    isMock: chartData.isMock as boolean,
     chartType: drawerInfo.chartType as string,
   };
 };

@@ -2,12 +2,12 @@
   "name": "bi-ui-package",
   "version": "0.0.1",
   "description": "bi ui package",
+  "main": "./app/dashboard/index.ts",
   "sideEffects": [
     "*.scss",
     "*.css",
     "*.less"
   ],
-  "main": "./app/dashboard/index.js",
   "scripts": {
     "watch": "rm -rf public/scripts && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d ",
     "web": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development ",
@@ -29,7 +29,12 @@
     "type": "git",
     "url": "git@git.terminus.io:bigdata/bi-ui-package.git"
   },
-  "author": "terminus",
+  "keywords": [
+    "bi",
+    "npm",
+    "package"
+  ],
+  "author": "termimus",
   "license": "ISC",
   "dependencies": {
     "antd": "^3.10.9",

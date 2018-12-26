@@ -1,5 +1,5 @@
-import Board from './board';
+import BoardGrid from './board';
 
 export default {
-  Board,
+  BoardGrid,
 };

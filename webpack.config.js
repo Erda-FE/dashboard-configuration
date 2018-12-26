@@ -140,8 +140,8 @@ module.exports = () => {
       alias: {
         common: path.resolve(__dirname, 'app/common'),
         // 业务域 不含路由
+        dashboard: path.resolve(__dirname, 'app/dashboard'),
         // 业务域 含有路由
-        dashboard: path.resolve(__dirname, 'app/router/dashboard'),
         // 其他
         agent: path.resolve(__dirname, 'app/agent.js'),
         utils: path.resolve(__dirname, 'app/utils'),

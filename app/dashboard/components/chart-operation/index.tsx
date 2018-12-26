@@ -67,7 +67,8 @@ class ChartOperation extends React.PureComponent<IProps> {
           placement="top"
           title="是否确认删除"
           onConfirm={this.deleteChart}
-        >删除</Popconfirm>
+        >删除
+        </Popconfirm>
       </Menu.Item>
     </Menu>
   )

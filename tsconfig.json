@@ -27,8 +27,6 @@
       "common/*": ["./app/common/*"],
       "utils": ["./app/utils"],
       "utils/*": ["./app/utils/*"],
-      "models/*": ["./app/models/*"],
-      "services/*": ["./app/services/*"],
       "dashboard/*": ["./app/dashboard/*"],
       "agent": ["./app/agent.js"],
       "dva/*": ["./node_modules/dva-react-router-3/*"],

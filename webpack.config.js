@@ -8,7 +8,6 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
 const HappyPack = require('happypack');
 const os = require('os');
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 
@@ -22,43 +21,6 @@ module.exports = () => {
       new webpack.DllReferencePlugin({
         context: __dirname,
         manifest: require('./manifest.json'),
-      }),
-    );
-  } else {
-    plugins.push(
-      new SWPrecacheWebpackPlugin({
-        cacheId: 'pmp-sw',
-        filename: 'sw.js',
-        minify: isBuild,
-        staticFileGlobs: ['public/**/*.js', 'public/images/**/*.{png,ico,jpg}', 'public/**/*.css'],
-        stripPrefix: 'public/',
-        navigateFallback: '/',
-        staticFileGlobsIgnorePatterns: [/sw\.js$/i],
-        runtimeCaching: [{
-          urlPattern: '/vendors~app*', // 修正vendors~app未被cache的问题,因vendors~app.chunk.js在sw.js之后生成
-          handler: 'cacheFirst',
-          options: {
-            successResponses: /^200$/,
-          },
-        }, {
-          urlPattern: /\/api\/(?!ws\/).*/, // 拦截api请求，但过滤/api/ws,这样可以防止ws断开后可以继续重连
-          handler: 'networkFirst',
-          options: {
-            successResponses: /^200$/,
-          },
-        }, {
-          urlPattern: /\/(overview|admin|electron)\/.*/, // cache页面，这样当没有联网时页面可以正常加载
-          handler: 'networkFirst',
-          options: {
-            successResponses: /^200$/,
-          },
-        }, {
-          urlPattern: '/*', // cache第三方的一些资源
-          handler: 'cacheFirst',
-          options: {
-            origin: /https?:\/\/(at.alicdn)\.com/,
-          },
-        }],
       }),
     );
   }
@@ -127,8 +89,6 @@ module.exports = () => {
         // 其他
         agent: path.resolve(__dirname, 'app/agent.js'),
         utils: path.resolve(__dirname, 'app/utils'),
-        models: path.resolve(__dirname, 'app/models'),
-        services: path.resolve(__dirname, 'app/services'),
         app: path.resolve(__dirname, 'app'),
         ws: path.resolve(__dirname, 'app/ws.js'),
         interface: path.resolve(__dirname, 'interface'),

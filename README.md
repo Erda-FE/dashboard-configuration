@@ -1,7 +1,7 @@
 ## 如何使用
 ```js
   // 栅格布局
-  import { BoardGrid } from 'bi-package'
+  import { BoardGrid } from 'bi-ui-package'
   
   <BoardGrid 
     readOnly={false}

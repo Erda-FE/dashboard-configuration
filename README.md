@@ -2,6 +2,7 @@
 ```js
   // 栅格布局
   import { BoardGrid } from 'bi-package'
+  
   <BoardGrid 
     readOnly={false}
     extra={extra} 
@@ -25,3 +26,8 @@
   // 非必传
   onSave: (extra) => void,
 ```
+
+## 其他文档
+[如何调试](./README-Debug.md)
+
+[功能规划](https://yuque.antfin-inc.com/docs/share/4d74d1c0-367f-4dd2-94ff-30eb3fcad10a)

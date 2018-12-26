@@ -1,6 +1,6 @@
 ## 如何使用
 ```js
-  // 将model加入项目的model中
+  // 1、将model加入项目的model中
   // 引入
   import dashboardModels from '@terminus/bi-ui-package/app/models'
 
@@ -10,7 +10,7 @@
   ]
   ...
 
-  // 栅格布局
+  // 2、引入组件，栅格布局
   import { BoardGrid } from '@terminus/bi-ui-package'
   
   <BoardGrid 
@@ -18,6 +18,18 @@
     extra={extra} 
     onSave={this.onSave}
   />
+
+  // 3、webpack相关配置变更，因为当前没有转为es5
+  // 1) scss变更
+        test: /\.scss$/,
+        include: [
+          path.resolve(__dirname, 'app'),
+          path.resolve(__dirname, 'node_modules/@terminus/bi-ui-package'),
+        ],
+        exclude: /node_modules\/(?!@terminus\/).*/,
+  // 2) ts变更
+        test: /\.(tsx?|jsx?)$/,
+        exclude: /node_modules\/(?!@terminus\/).*/,
 ```
 
 ```js

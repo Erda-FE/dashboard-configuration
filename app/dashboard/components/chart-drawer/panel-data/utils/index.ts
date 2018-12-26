@@ -1,5 +1,5 @@
-import { mockDataLine } from 'dashboard/components/chart-line/utils';
-import { mockDataPie } from 'dashboard/components/chart-pie/utils';
+import { mockDataLine } from '../../../chart-line/utils';
+import { mockDataPie } from '../../../chart-pie/utils';
 
 export const getMockData = (chartType: string) => {
   switch (chartType) {

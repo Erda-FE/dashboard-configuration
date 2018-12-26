@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import jsonPretty from 'json-stringify-pretty-compact';
-import { chartNameMap } from 'dashboard/utils';
+import { chartNameMap } from '../../../utils';
 import { getMockData } from './utils';
 import './index.scss';
 

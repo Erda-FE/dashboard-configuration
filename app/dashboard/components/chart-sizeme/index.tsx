@@ -2,7 +2,7 @@ import React from 'react';
 import { isEqual } from 'lodash';
 import ReactEcharts, { ReactEchartsPropsTypes, Func } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
-import { ISizeMe } from 'dashboard/types';
+import { ISizeMe } from '../../types';
 import themeInfo from './utils/theme-dice';
 import './index.scss';
 

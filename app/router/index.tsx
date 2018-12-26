@@ -37,7 +37,7 @@ class AppRouter extends React.PureComponent<IProps> {
         <Switch>
           <Route
             path="/"
-            render={props => (
+            render={() => (
               <Switch>
                 {this.childRoutes.map(({ path, Comp }: any) => (
                   <Route

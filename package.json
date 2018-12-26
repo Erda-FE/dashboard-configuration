@@ -136,6 +136,7 @@
     ]
   },
   "files": [
-    "app"
+    "app",
+    "index.js"
   ]
 }

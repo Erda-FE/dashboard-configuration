@@ -34,7 +34,7 @@
     "npm",
     "package"
   ],
-  "author": "termimus",
+  "author": "terminus",
   "license": "ISC",
   "dependencies": {
     "antd": "^3.10.9",

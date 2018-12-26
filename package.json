@@ -135,5 +135,8 @@
       "tslint --fix",
       "git add"
     ]
-  }
+  },
+  "files": [
+    "app"
+  ]
 }

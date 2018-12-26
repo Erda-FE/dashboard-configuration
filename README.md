@@ -1,6 +1,6 @@
 ## 如何使用
 ```js
-  // 将model加入项目的model中
+  // 1、将model加入项目的model中
   // 引入
   import dashboardModels from '@terminus/bi-ui-package/app/models'
 
@@ -10,14 +10,39 @@
   ]
   ...
 
-  // 栅格布局
-  import { BoardGrid } from '@terminus/bi-ui-package'
-  
-  <BoardGrid 
-    readOnly={false}
-    extra={extra} 
-    onSave={this.onSave}
-  />
+  // 2、引入组件，栅格布局
+    import { BoardGrid } from '@terminus/bi-ui-package'
+    
+    <BoardGrid 
+      readOnly={false}
+      extra={extra} 
+      onSave={this.onSave}
+    />
+
+  // 3、webpack相关配置变更，因为当前没有转为es5
+  // 1) scss变更
+      test: /\.scss$/,
+      include: [
+        path.resolve(__dirname, 'app'),
+        path.resolve(__dirname, 'node_modules/@terminus/bi-ui-package'),
+      ],
+      exclude: /node_modules\/(?!@terminus\/).*/,
+  // 2) ts变更
+      test: /\.(tsx?|jsx?)$/,
+      exclude: /node_modules\/(?!@terminus\/).*/,
+  // 3）主题色
+      // a.定义颜色值
+      {
+        loader: 'sass-resources-loader',
+        options: {
+          sourceMap: false,
+          resources: [
+            path.resolve(__dirname, './app/styles/_color.scss'),
+          ],
+        },
+      },
+      // b._color.scss中请务必定义$color-primary的颜色值
+      $color-primary: #44c790; // 举例
 ```
 
 ```js

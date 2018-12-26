@@ -3,7 +3,7 @@ import { get } from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'dva';
 import { Collapse, Tooltip, Icon } from 'antd';
-import { chartNameMap } from 'dashboard/utils';
+import { chartNameMap } from '../../../utils';
 import './index.scss';
 
 const { Panel } = Collapse;

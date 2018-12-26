@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import ChartSizeMe from '../chart-sizeme';
 import { merge } from 'lodash';
-import { ReactEchartsPropsTypes } from 'dashboard/types';
+import { ReactEchartsPropsTypes } from '../../types';
 import { mockDataPie } from './utils';
 
 interface IData {
@@ -33,7 +33,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, isMock, name = '', names, datas }: IProps) => {
+const ChartPie = ({ option = {}, isMock, name = '', names = [], datas }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',

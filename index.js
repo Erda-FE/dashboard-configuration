@@ -1,7 +1,7 @@
 import BoardGrid from './app/dashboard/board-grid';
 import biModels from './app/models';
 
-export default {
+export {
   BoardGrid,
   biModels,
 };

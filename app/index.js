@@ -3,7 +3,7 @@ import 'antd/lib/style/v2-compatible-reset';
 import dva from 'dva';
 import createHistory from 'history/createBrowserHistory';
 import AppRouter from './router';
-import models from 'dashboard/models';
+import models from './models';
 
 const history = createHistory();
 

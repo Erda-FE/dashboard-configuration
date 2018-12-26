@@ -142,7 +142,7 @@ const mapStateToProps = ({ biDashBoard: { layout, isEdit }, biDrawer: { drawerIn
 
 const mapDispatchToProps = (dispatch: any) => ({
   initDashboard(extra: any) {
-    dispatch({ type: 'biDashBoard/initDashboard', dashboardType: 'board', extra });
+    dispatch({ type: 'biDashBoard/initDashboard', dashboardType: 'grid', extra });
   },
   onLayoutChange(layout: []) {
     dispatch({ type: 'biDashBoard/onLayoutChange', layout });

@@ -1,5 +1,15 @@
 ## 如何使用
 ```js
+  // 将model加入项目的model中
+  // 引入
+  import dashboardModels from '@terminus/bi-ui-package/models'
+
+  // 加入，各项目不同，model引入的方式可能不同
+  model = [
+    ...dashboardModels
+  ]
+  ...
+
   // 栅格布局
   import { BoardGrid } from 'bi-ui-package'
   

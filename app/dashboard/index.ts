@@ -1,4 +1,4 @@
-import BoardGrid from './board';
+import BoardGrid from './board-grid';
 
 export default {
   BoardGrid,

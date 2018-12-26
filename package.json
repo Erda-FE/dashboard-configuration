@@ -1,13 +1,13 @@
 {
-  "name": "bi-ui-package",
-  "version": "0.1.0",
+  "name": "@terminus/bi-ui-package",
+  "version": "0.0.1",
   "description": "bi ui package",
+  "main": "app/dashboard/index.ts",
   "sideEffects": [
     "*.scss",
     "*.css",
     "*.less"
   ],
-  "main": "index.js",
   "scripts": {
     "watch": "rm -rf public/scripts && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d ",
     "web": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development ",
@@ -29,13 +29,17 @@
     "type": "git",
     "url": "git@git.terminus.io:bigdata/bi-ui-package.git"
   },
+  "keywords": [
+    "bi",
+    "npm",
+    "package"
+  ],
   "author": "terminus",
   "license": "ISC",
   "dependencies": {
     "antd": "^3.10.9",
     "autoprefixer": "^6.5.3",
     "classnames": "^2.2.5",
-    "copy-webpack-plugin": "^4.5.1",
     "css-loader": "^0.28.11",
     "dva": "^2.3.0",
     "echarts": "^4.2.0-rc.2",
@@ -115,18 +119,6 @@
     "tslint-react": "^3.5.1",
     "typescript-eslint-parser": "^16.0.1"
   },
-  "theme": {
-    "@primary-color": "#44C790",
-    "@success-color": "#00D19C",
-    "@error-color": "#F75B60",
-    "@warning-color": "#FBA254",
-    "@border-color-base": "#E8E8E8",
-    "@link-color": "#2786F4",
-    "@menu-collapsed-width": "72px",
-    "@menu-item-height": "45px",
-    "@menu-inline-toplevel-item-height": "45px",
-    "@modal-mask-bg": "rgba(55,55,55,0.6)"
-  },
   "lint-staged": {
     "app/**/*.js": [
       "eslint --fix",
@@ -142,5 +134,8 @@
       "tslint --fix",
       "git add"
     ]
-  }
+  },
+  "files": [
+    "app"
+  ]
 }

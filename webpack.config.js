@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -182,9 +181,6 @@ module.exports = () => {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV), // because webpack just do a string replace, so a pair of quotes is needed
         },
       }),
-      new CopyWebpackPlugin([
-        { from: './app/images', to: 'images' },
-      ]),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: './app/views/index.ejs',

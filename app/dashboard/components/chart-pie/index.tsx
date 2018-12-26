@@ -33,7 +33,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, isMock, name = '', names, datas }: IProps) => {
+const ChartPie = ({ option = {}, isMock, name = '', names = [], datas }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',

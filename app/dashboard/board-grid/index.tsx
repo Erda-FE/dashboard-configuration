@@ -12,8 +12,10 @@ import { isEqual } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { ChartLine, ChartPie, ChartDrawer, ChartOperation } from '../components';
 import { ISizeMe } from '../types';
+import { theme, themeObj } from './utils/theme-dice';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
@@ -21,7 +23,9 @@ import './index.scss';
 interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   readOnly?: boolean
   extra?: any
-  onSave?: (extra: any) => void
+  onSave?: (extra: any) => void,
+  theme?: string,
+  themeObj?: {},
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -47,7 +51,21 @@ const getGridBackground = (width: number) => {
 class BoardGrid extends React.PureComponent<IProps> {
   static defaultProps = {
     readOnly: false,
+    theme,
+    themeObj,
   };
+
+  static childContextTypes = {
+    theme: PropTypes.string,
+    themeObj: PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      theme: this.props.theme,
+      themeObj: this.props.themeObj,
+    };
+  }
 
   componentWillMount() {
     this.props.initDashboard(this.props.extra);

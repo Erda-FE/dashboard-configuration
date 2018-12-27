@@ -1,6 +1,6 @@
-const theme = 'dice';
+export const theme = 'dice';
 
-const themeObj = {
+export const themeObj = {
   color: [
     'rgb(70, 204, 147)',
     'rgb(244, 194, 84)',
@@ -504,9 +504,4 @@ const themeObj = {
       },
     },
   },
-};
-
-export default {
-  theme,
-  themeObj,
 };

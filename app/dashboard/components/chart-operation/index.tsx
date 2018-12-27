@@ -40,7 +40,7 @@ class ChartOperation extends React.PureComponent<IProps> {
     const { onConvert, chartId } = this.props;
     getChartData(url).then((resData: any) => {
       const res1 = onConvert ? onConvert(resData, chartId, url) : resData;
-      if (res1.then) {
+      if (res1 && res1.then) {
         res1.then((res: any) => this.setState({ resData: res }));
       } else {
         this.setState({ resData: res1 });

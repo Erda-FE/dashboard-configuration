@@ -9,6 +9,7 @@ import './index.scss';
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   chartId: string
   children: ReactElement<any>
+  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
 }
 
 function getChartData(url: string) {
@@ -36,8 +37,14 @@ class ChartOperation extends React.PureComponent<IProps> {
       this.setState({ resData: { isMock: true } });
       return;
     }
+    const { onConvert, chartId } = this.props;
     getChartData(url).then((resData: any) => {
-      this.setState({ resData });
+      const res1 = onConvert ? onConvert(resData, chartId, url) : resData;
+      if (res1 && res1.then) {
+        res1.then((res: any) => this.setState({ resData: res }));
+      } else {
+        this.setState({ resData: res1 });
+      }
     }).catch(() => {
       this.setState({ resData: { isMock: true } });
       message.error('该图表接口获取数据失败,将使用mock数据显示', 3);

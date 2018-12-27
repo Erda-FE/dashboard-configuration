@@ -13,6 +13,7 @@ const charts = [
   { type: 'line' }, // img: '/images/charts/line-on.png'
   { type: 'area' }, // img: '/images/charts/line-area-on.png'
   { type: 'pie' }, // img: '/images/charts/pie-on.png'
+  { type: 'cards' }, // img: '/images/charts/pie-on.png'
 ];
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -26,7 +27,7 @@ const PanelCharts = ({ chartType, chooseChart, ...others }: IProps) => (
         onClick={() => chooseChart(type)}
       >
         <Tooltip placement="bottom" title={chartNameMap[type]}>
-          <Icon type={`${type}-chart`} />
+          { type === 'cards' ? <Icon type="fund" /> : <Icon type={`${type}-chart`} />}
         </Tooltip>
       </div>
     ))}

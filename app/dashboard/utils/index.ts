@@ -3,4 +3,5 @@ export const chartNameMap = {
   bar: '柱状图',
   area: '面积图',
   pie: '饼状图',
+  cards: '卡片图',
 };

@@ -12,7 +12,7 @@ import { isEqual } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
-import { ChartLine, ChartPie, ChartDrawer, ChartOperation } from '../components';
+import { ChartLine, ChartPie, ChartDrawer, ChartOperation, ChartCards } from '../components';
 import { ISizeMe } from '../types';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -115,6 +115,9 @@ class BoardGrid extends React.PureComponent<IProps> {
                 break;
               case 'pie':
                 ChartNode = ChartPie;
+                break;
+              case 'cards':
+                ChartNode = ChartCards;
                 break;
               default:
                 break;

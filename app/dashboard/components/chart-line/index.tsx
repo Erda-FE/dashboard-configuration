@@ -33,14 +33,17 @@ const baseAxis = {
 const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
 const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 
-const ChartLine = ({ option = {}, names, datas, isMock, chartType }: IProps) => {
+const ChartLine = ({ option = {}, isMock, chartType, ...others }: IProps) => {
+  const names = get(others, ['names'], []);
+  const datas = get(others, ['datas'], []);
+
   let xAxisType = get(option, ['xAxis', 'type']);
   const yAxisType = get(option, ['yAxis', 'type']);
   if (xAxisType === 'category' || (!xAxisType && !yAxisType)) {
     xAxisType = 'category';
   }
   const realNames = isMock ? mockDataLine.names : names;
-  const realDatas: any[] = isMock ? mockDataLine.datas : (datas || []);
+  const realDatas: any = isMock ? mockDataLine.datas : datas;
   const source = {
     tooltip: {
       trigger: 'axis',

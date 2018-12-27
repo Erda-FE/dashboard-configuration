@@ -26,6 +26,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   onSave?: (extra: any) => void,
   theme?: string,
   themeObj?: {},
+  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -91,7 +92,7 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly } = this.props;
+    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
     const { width } = size;
     return (
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
@@ -139,7 +140,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             }
             return (
               <div key={i} data-grid={{ ...others }}>
-                <ChartOperation chartId={i}>
+                <ChartOperation chartId={i} onConvert={onConvert}>
                   <ChartNode chartId={i} />
                 </ChartOperation>
               </div>

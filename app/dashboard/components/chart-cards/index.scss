@@ -1,5 +1,9 @@
+$color-background: #f6f6f6;
+$color-border: #e8e8e8;
+$light-black: #606060;
+$label-purple: #8570f7;
 :global {
-  .cards-layout {
+  .bi-cards-layout {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -8,32 +12,31 @@
     > div:last-child {
       margin-bottom: -10px;
     }
-    .cards-row {
+    .bi-cards-row {
       display: flex;
       flex: 1;
       > div:not(:last-child) {
         margin-right: 10px;
       }
     }
-    .cards-block {
+    .bi-cards-block {
       display: flex;
       flex-direction: column;
       margin-bottom: 10px;
       padding: 3px 7px;
-      color: $color-text-primary;
       background: $color-background;
       border: 1px solid $color-border;
       border-radius: 4px;
       box-shadow: 2px 2px 2px $color-border;
       cursor: pointer;
-      .cards-block-title {
+      .bi-cards-block-title {
         height: 21px;
         color: $light-black;
         > span {
           margin-left: 3px;
         }
       }
-      .cards-block-content {
+      .bi-cards-block-content {
         display: flex;
         flex: 1;
         justify-content: center;

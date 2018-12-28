@@ -1,17 +1,18 @@
+
 import React from 'react';
 
-const ChartMask = ({ isMock }: any) => {
-  if (isMock) {
-    return (
-      <React.Fragment>
-        <div className="bi-chart-mask">
-          <div className="bi-mask-inner" />
-          <div className="bi-mask-text">模拟数据展示</div>
-        </div>
-      </React.Fragment>
-    );
-  }
-  return null;
+interface IProps {
+  isMock: boolean
+}
+
+const ChartMask = ({ isMock }: IProps) => {
+  if (!isMock) return null;
+  return (
+    <div className="bi-chart-mask">
+      <div className="bi-mask-inner" />
+      <div className="bi-mask-text">模拟数据展示</div>
+    </div>
+  );
 };
 
 export default ChartMask;

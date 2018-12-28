@@ -30,7 +30,6 @@ const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => 
   const { proportion } = option;
   const layoutSource: any[] = names.map((name: string, i: number) => ({ name, data: datas[0].data[i] }));
   if (proportion.fieldsCount !== layoutSource.length) {
-    console.error('fields count not match');
     return null;
   }
 

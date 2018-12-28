@@ -3,9 +3,9 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import { merge, get } from 'lodash';
+import { merge } from 'lodash';
 import ChartSizeMe from '../chart-sizeme';
-import { ReactEchartsPropsTypes } from '../../types';
+import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataPie } from './utils';
 
 interface IData {
@@ -16,9 +16,6 @@ interface IData {
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
   chartId: string
   option?: any
-  name: string
-  names?: string[],
-  datas?: IData[],
   isMock?: boolean
 }
 
@@ -33,10 +30,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, isMock, name = '', ...others }: IProps) => {
-  const names: any = get(others, ['names'], []);
-  const datas: any = get(others, ['datas'], []);
-
+const ChartPie = ({ option = {}, isMock, name, names, datas }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',
@@ -48,16 +42,16 @@ const ChartPie = ({ option = {}, isMock, name = '', ...others }: IProps) => {
       right: 10,
       top: 20,
       bottom: 20,
-      data: isMock ? mockDataPie.names : names,
-      selected: isMock ? getDefaultSelected(mockDataPie.names) : getDefaultSelected(names),
+      data: names,
+      selected: getDefaultSelected(names),
     },
     series: [
       {
-        name: isMock ? mockDataPie.name : name,
+        name,
         type: 'pie',
         radius: '55%',
         center: ['40%', '50%'],
-        data: isMock ? mockDataPie.datas : datas,
+        data: datas,
         itemStyle: {
           emphasis: {
             shadowBlur: 10,
@@ -71,10 +65,13 @@ const ChartPie = ({ option = {}, isMock, name = '', ...others }: IProps) => {
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => {
+const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
   return {
     chartType: drawerInfo.chartType as string,
+    name: isMock ? mockDataPie.name : (name || '') as string,
+    names: isMock ? mockDataPie.names : (names || []) as string[],
+    datas: isMock ? mockDataPie.datas : (datas || []) as IData[],
   };
 };
 

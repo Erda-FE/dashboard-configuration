@@ -3,9 +3,9 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import ChartSizeMe from '../chart-sizeme';
 import { merge, get } from 'lodash';
-import { ReactEchartsPropsTypes } from '../../types';
+import ChartSizeMe from '../chart-sizeme';
+import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataLine } from './utils';
 
 type IType = 'line' | 'bar' | 'area';
@@ -20,8 +20,6 @@ interface IData {
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
   chartId: string
   option?: any
-  names?: string[],
-  datas?: IData[],
   isMock?: boolean
 }
 
@@ -33,38 +31,35 @@ const baseAxis = {
 const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
 const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 
-const ChartLine = ({ option = {}, isMock, chartType, ...others }: IProps) => {
-  const names = get(others, ['names'], []);
-  const datas = get(others, ['datas'], []);
-
+const ChartLine = ({ option = {}, isMock, chartType, names, datas }: IProps) => {
   let xAxisType = get(option, ['xAxis', 'type']);
   const yAxisType = get(option, ['yAxis', 'type']);
   if (xAxisType === 'category' || (!xAxisType && !yAxisType)) {
     xAxisType = 'category';
   }
-  const realNames = isMock ? mockDataLine.names : names;
-  const realDatas: any = isMock ? mockDataLine.datas : datas;
   const source = {
     tooltip: {
       trigger: 'axis',
     },
     xAxis: xAxisType === 'category' ? {
       ...baseAxis,
-      data: realNames,
+      data: names,
     } : { type: xAxisType },
     yAxis: yAxisType === 'category' ? {
       ...baseAxis,
-      data: realNames,
+      data: names,
     } : { type: yAxisType },
-    series: realDatas.map(({ data, ...dataOthers }: any) => ({ type: getAreaType(chartType), data, ...getOthers(chartType), ...dataOthers })),
+    series: datas.map(({ data, ...dataOthers }: any) => ({ type: getAreaType(chartType), data, ...getOthers(chartType), ...dataOthers })),
   };
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => {
+const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
   return {
     chartType: drawerInfo.chartType as string,
+    names: isMock ? mockDataLine.names : (names || []) as string[],
+    datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
   };
 };
 

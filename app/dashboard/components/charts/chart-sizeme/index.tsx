@@ -1,9 +1,9 @@
 import React from 'react';
 import { isEqual } from 'lodash';
-import ReactEcharts, { ReactEchartsPropsTypes, Func } from 'echarts-for-react';
+import ReactEcharts, { Func } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
 import PropTypes from 'prop-types';
-import { ISizeMe } from '../../types';
+import { ISizeMe, ReactEchartsPropsTypes } from '../../../types';
 import './index.scss';
 
 type IProps = ReactEchartsPropsTypes & ISizeMe & {
@@ -44,6 +44,7 @@ class Chart extends React.Component<IProps> {
 
   render() {
     const { size, descHeight, isMock, ...others } = this.props;
+    const { theme, themeObj } = this.context;
     return (
       <div className="bi-chart-sizeme">
         {isMock && (
@@ -54,7 +55,8 @@ class Chart extends React.Component<IProps> {
         )}
         <ReactEcharts
           {...others}
-          {...this.context}
+          theme={theme}
+          themeObj={themeObj}
           style={{ ...others.style, height: size.height - descHeight }}
         />
       </div>

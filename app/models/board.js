@@ -15,12 +15,8 @@ export default {
       yield put({ type: 'biDrawer/init', drawerInfoMap: get(extra, 'drawerInfoMap', {}) });
     },
     * generateChart({ chartId }, { select, put }) {
-      const { biDashBoard: { layout }, biDrawer: { drawerInfoMap } } = yield select(state => state);
-      if (drawerInfoMap[chartId].chartType === 'cards') {
-        layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 6, h: 5 });
-      } else {
-        layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
-      }
+      const { biDashBoard: { layout } } = yield select(state => state);
+      layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
       yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
     },
     * saveEdit(_, { put, select }) {

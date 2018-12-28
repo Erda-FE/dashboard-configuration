@@ -6,10 +6,11 @@ import { connect } from 'dva';
 import { Icon } from 'antd';
 import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataCards } from './utils';
+import maskChart from '../chart-mask';
 import './index.scss';
 
 interface IData {
-  data: number[]
+  data: any[],
 }
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
@@ -17,7 +18,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTy
   option?: any
   names?: string[],
   datas?: IData[],
-  isMock?: boolean
+  isMock?: boolean,
 }
 
 const convertProportion = (proportionInput: []) => {
@@ -29,22 +30,18 @@ const convertProportion = (proportionInput: []) => {
   return { fieldsCount, config };
 };
 
-const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => {
+const ChartCards = ({ option = {}, isMock = false, names = [], datas = [] }: IProps) => {
   const { proportion } = option;
   const layoutSource: any[] = names.map((name: string, i: number) => ({ name, data: datas[0].data[i] }));
   if (proportion.fieldsCount !== layoutSource.length) {
     console.error('fields count not match');
     return null;
   }
+  console.log(123, isMock);
 
   return (
     <React.Fragment>
-      {isMock && (
-      <div className="bi-chart-mask">
-        <div className="bi-mask-inner" />
-        <div className="bi-mask-text">模拟数据展示</div>
-      </div>
-      )}
+      {maskChart(isMock)}
       <section className="bi-cards-layout">
         {
           proportion.config.map((rowConfig: any) => {
@@ -53,15 +50,15 @@ const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => 
             return (
               <div className="bi-cards-row" key={rowConfig.rowNo}>
                 {
-                    source.map((data, i) => {
-                      const { name, data: { value, status } } = data;
-                      const flex: number = scale ? scale[i] : 1;
-                      return (
-                        <div key={name} className="bi-cards-block" style={{ flex }}>
-                          <div className="bi-cards-block-title"><Icon type="bar-chart" /><span>{name}</span></div>
-                          <div className="bi-cards-block-content"><span>{value}</span>{status !== 'none' && <Icon type={status} />}</div>
-                        </div>);
-                    })
+                  source.map((data, i) => {
+                    const { name, data: { value, status } } = data;
+                    const flex: number = scale ? scale[i] : 1;
+                    return (
+                      <div key={name} className="bi-cards-block" style={{ flex }}>
+                        <div className="bi-cards-block-title"><Icon type="bar-chart" /><span>{name}</span></div>
+                        <div className="bi-cards-block-content"><span>{value}</span>{status !== 'none' && <Icon type={status} />}</div>
+                      </div>);
+                  })
                 }
               </div>);
           })

@@ -12,42 +12,42 @@ $label-purple: #8570f7;
     > div:last-child {
       margin-bottom: -10px;
     }
-    .bi-cards-row {
-      display: flex;
-      flex: 1;
-      > div:not(:last-child) {
-        margin-right: 10px;
+  }
+  .bi-cards-row {
+    display: flex;
+    flex: 1;
+    > div:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
+  .bi-cards-block {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    padding: 3px 7px;
+    background: $color-background;
+    border: 1px solid $color-border;
+    border-radius: 4px;
+    box-shadow: 2px 2px 2px $color-border;
+    cursor: pointer;
+    .bi-cards-block-title {
+      height: 21px;
+      color: $light-black;
+      > span {
+        margin-left: 3px;
       }
     }
-    .bi-cards-block {
+    .bi-cards-block-content {
       display: flex;
-      flex-direction: column;
-      margin-bottom: 10px;
-      padding: 3px 7px;
-      background: $color-background;
-      border: 1px solid $color-border;
-      border-radius: 4px;
-      box-shadow: 2px 2px 2px $color-border;
-      cursor: pointer;
-      .bi-cards-block-title {
-        height: 21px;
-        color: $light-black;
-        > span {
-          margin-left: 3px;
-        }
-      }
-      .bi-cards-block-content {
-        display: flex;
-        flex: 1;
-        justify-content: flex-start;
-        align-items: center;
-        font-weight: 500;
-        font-size: 22px;
-        text-align: center;
-        > span {
-          margin-right: 5px;
-          color: $label-purple;
-        }
+      flex: 1;
+      justify-content: flex-start;
+      align-items: center;
+      font-weight: 500;
+      font-size: 22px;
+      text-align: center;
+      > span {
+        margin-right: 5px;
+        color: $label-purple;
       }
     }
   }

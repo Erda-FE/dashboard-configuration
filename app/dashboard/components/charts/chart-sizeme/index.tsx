@@ -3,7 +3,7 @@ import { isEqual } from 'lodash';
 import ReactEcharts, { ReactEchartsPropsTypes, Func } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
 import PropTypes from 'prop-types';
-import { ISizeMe } from '../../types';
+import { ISizeMe } from '../../../types';
 import './index.scss';
 
 type IProps = ReactEchartsPropsTypes & ISizeMe & {

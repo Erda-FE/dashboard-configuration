@@ -1,12 +1,12 @@
 import React from 'react';
 import { Icon } from 'antd';
+import { IChartsMap } from '../../types';
 // 图表
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
 // mock数据
 import { mockDataLine } from './chart-line/utils';
 import { mockDataPie } from './chart-pie/utils';
-import { IChartsMap } from '../../types';
 
 const defaultChartsMap: IChartsMap = {
   line: {

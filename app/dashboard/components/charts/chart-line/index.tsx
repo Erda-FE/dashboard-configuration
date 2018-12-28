@@ -3,9 +3,9 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import ChartSizeMe from '../chart-sizeme';
 import { merge, get } from 'lodash';
-import { ReactEchartsPropsTypes } from '../../types';
+import ChartSizeMe from '../chart-sizeme';
+import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataLine } from './utils';
 
 type IType = 'line' | 'bar' | 'area';

@@ -8,13 +8,13 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Icon, Tooltip } from 'antd';
-import { isEqual } from 'lodash';
+import { isEqual, get } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { ChartLine, ChartPie, ChartDrawer, ChartOperation } from '../components';
-import { ISizeMe } from '../types';
+import { defaultChartsMap, ChartDrawer, ChartOperation } from '../components';
+import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -27,6 +27,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   theme?: string,
   themeObj?: {},
   onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
+  chartsMap?: IChartsMap
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -59,22 +60,30 @@ class BoardGrid extends React.PureComponent<IProps> {
   static childContextTypes = {
     theme: PropTypes.string,
     themeObj: PropTypes.object,
+    chartsMap: PropTypes.object,
   };
+
+  private chartsMap: IChartsMap;
 
   getChildContext() {
     return {
       theme: this.props.theme,
       themeObj: this.props.themeObj,
+      chartsMap: this.chartsMap,
     };
   }
 
   componentWillMount() {
     this.props.initDashboard(this.props.extra);
+    this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
   }
 
-  componentWillReceiveProps({ extra }: IProps) {
+  componentWillReceiveProps({ extra, chartsMap }: IProps) {
     if (!isEqual(extra, this.props.extra)) {
       this.props.initDashboard(extra);
+    }
+    if (!isEqual(chartsMap, this.props.chartsMap)) {
+      this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
     }
   }
 
@@ -125,19 +134,7 @@ class BoardGrid extends React.PureComponent<IProps> {
           {layout.map(({ i, ...others }: any) => {
             // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
             const { chartType } = drawerInfoMap[i];
-            let ChartNode = null as any;
-            switch (chartType) {
-              case 'line':
-              case 'bar':
-              case 'area':
-                ChartNode = ChartLine;
-                break;
-              case 'pie':
-                ChartNode = ChartPie;
-                break;
-              default:
-                break;
-            }
+            const ChartNode = get(this.chartsMap, [chartType, 'component']) as any;
             return (
               <div key={i} data-grid={{ ...others }}>
                 <ChartOperation chartId={i} onConvert={onConvert}>

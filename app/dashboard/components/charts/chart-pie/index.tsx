@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { merge, get } from 'lodash';
 import ChartSizeMe from '../chart-sizeme';
-import { ReactEchartsPropsTypes } from '../../types';
+import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataPie } from './utils';
 
 interface IData {

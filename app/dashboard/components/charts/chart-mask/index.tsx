@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ChartMask = (isMock: boolean) => {
+const ChartMask = ({ isMock }: any) => {
   if (isMock) {
     return (
       <React.Fragment>

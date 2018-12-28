@@ -4,21 +4,17 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Icon } from 'antd';
-import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataCards } from './utils';
-import maskChart from '../chart-mask';
+import ChartMask from '../chart-mask';
 import './index.scss';
 
 interface IData {
   data: any[],
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  option?: any
-  names?: string[],
-  datas?: IData[],
-  isMock?: boolean,
+  isMock?: boolean
 }
 
 const convertProportion = (proportionInput: []) => {
@@ -37,11 +33,10 @@ const ChartCards = ({ option = {}, isMock = false, names = [], datas = [] }: IPr
     console.error('fields count not match');
     return null;
   }
-  console.log(123, isMock);
 
   return (
     <React.Fragment>
-      {maskChart(isMock)}
+      <ChartMask isMock={isMock} />
       <section className="bi-cards-layout">
         {
           proportion.config.map((rowConfig: any) => {

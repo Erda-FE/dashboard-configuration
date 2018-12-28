@@ -39,7 +39,7 @@ $label-purple: #8570f7;
       .bi-cards-block-content {
         display: flex;
         flex: 1;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
         text-align: center;
         > span {

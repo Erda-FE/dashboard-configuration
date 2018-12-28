@@ -9,10 +9,10 @@ import './index.scss';
 const { Panel } = Collapse;
 
 const charts = [
-  { type: 'bar' }, // img: '/images/charts/bar-heap-on.png'
-  { type: 'line' }, // img: '/images/charts/line-on.png'
-  { type: 'area' }, // img: '/images/charts/line-area-on.png'
-  { type: 'pie' }, // img: '/images/charts/pie-on.png'
+  { type: 'bar' },
+  { type: 'line' },
+  { type: 'area' },
+  { type: 'pie' },
 ];
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;

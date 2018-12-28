@@ -22,11 +22,13 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTy
 
 const ChartCards = ({ option = {}, names = [], datas, isMock }: IProps) => {
   const realDatas: any[] = isMock ? mockDataCards.datas : (datas || []);
-  const { width = '130px', height = '60px' } = option;
-  const dataSource: any[] = realDatas[0].data;
+  const { layout } = isMock ? mockDataCards.option : option;
   const realNames: any[] = isMock ? mockDataCards.names : (names || []);
-  console.log(123, realNames);
-
+  const dataSource: any[] = realNames.map((name, i) => ({ name, data: realDatas[0].data[i] }));
+  if (layout.fieldsCount !== dataSource.length) {
+    console.error('fields count not match');
+    return;
+  }
   return (
     <React.Fragment>
       {isMock && (
@@ -36,15 +38,26 @@ const ChartCards = ({ option = {}, names = [], datas, isMock }: IProps) => {
       </div>
       )}
       <section className="cards-layout">
-        {realNames.map((name, i) => {
-          const blockData = dataSource[i];
-          const { value, status } = blockData;
-          return (
-            <div key={name} className="cards-block" style={{ minWidth: width, height }}>
-              <div className="cards-block-title">{name}</div>
-              <div className="cards-block-content"><span>{value}</span>{status !== 'none' && <Icon type={status} />}</div>
-            </div>);
-        })}
+        {
+          layout.config.map((rowConfig: any) => {
+            const { cols, proportion } = rowConfig;
+            const source = dataSource.splice(0, cols);
+            return (
+              <div className="cards-row" key={rowConfig.rowNo}>
+                {
+                    source.map((data, i) => {
+                      const { name, data: { value, status } } = data;
+                      const flex: number = proportion ? proportion[i] : 1;
+                      return (
+                        <div key={name} className="cards-block" style={{ flex }}>
+                          <div className="cards-block-title"><Icon type="bar-chart" /><span>{name}</span></div>
+                          <div className="cards-block-content"><span>{value}</span>{status !== 'none' && <Icon type={status} />}</div>
+                        </div>);
+                    })
+                }
+              </div>);
+          })
+        }
       </section>
     </React.Fragment>);
 };

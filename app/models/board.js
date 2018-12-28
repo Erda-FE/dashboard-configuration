@@ -17,7 +17,7 @@ export default {
     * generateChart({ chartId }, { select, put }) {
       const { biDashBoard: { layout }, biDrawer: { drawerInfoMap } } = yield select(state => state);
       if (drawerInfoMap[chartId].chartType === 'cards') {
-        layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 4 });
+        layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 6, h: 7 });
       } else {
         layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
       }

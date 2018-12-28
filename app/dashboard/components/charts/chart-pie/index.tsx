@@ -4,8 +4,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { merge } from 'lodash';
+import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import ChartSizeMe from '../chart-sizeme';
-import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataPie } from './utils';
 
 interface IData {

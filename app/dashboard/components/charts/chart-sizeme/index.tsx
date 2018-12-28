@@ -1,9 +1,9 @@
 import React from 'react';
 import { isEqual } from 'lodash';
-import ReactEcharts, { Func } from 'echarts-for-react';
+import ReactEcharts, { Func, ReactEchartsPropsTypes } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
 import PropTypes from 'prop-types';
-import { ISizeMe, ReactEchartsPropsTypes } from '../../../types';
+import { ISizeMe } from '../../../types';
 import ChartMask from '../chart-mask';
 import './index.scss';
 

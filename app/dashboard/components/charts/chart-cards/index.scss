@@ -41,11 +41,12 @@ $label-purple: #8570f7;
         flex: 1;
         justify-content: flex-start;
         align-items: center;
+        font-weight: 500;
+        font-size: 22px;
         text-align: center;
         > span {
           margin-right: 5px;
           color: $label-purple;
-          font-size: 22px;
         }
       }
     }

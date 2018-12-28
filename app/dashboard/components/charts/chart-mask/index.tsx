@@ -1,5 +1,6 @@
 
 import React from 'react';
+import './index.scss';
 
 interface IProps {
   isMock: boolean

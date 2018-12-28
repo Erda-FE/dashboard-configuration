@@ -12,8 +12,10 @@ import { isEqual } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 import { ChartLine, ChartPie, ChartDrawer, ChartOperation, ChartCards } from '../components';
 import { ISizeMe } from '../types';
+import { theme, themeObj } from './utils/theme-dice';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
@@ -21,7 +23,10 @@ import './index.scss';
 interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   readOnly?: boolean
   extra?: any
-  onSave?: (extra: any) => void
+  onSave?: (extra: any) => void,
+  theme?: string,
+  themeObj?: {},
+  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -47,7 +52,21 @@ const getGridBackground = (width: number) => {
 class BoardGrid extends React.PureComponent<IProps> {
   static defaultProps = {
     readOnly: false,
+    theme,
+    themeObj,
   };
+
+  static childContextTypes = {
+    theme: PropTypes.string,
+    themeObj: PropTypes.object,
+  };
+
+  getChildContext() {
+    return {
+      theme: this.props.theme,
+      themeObj: this.props.themeObj,
+    };
+  }
 
   componentWillMount() {
     this.props.initDashboard(this.props.extra);
@@ -73,7 +92,7 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly } = this.props;
+    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
     const { width } = size;
     return (
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
@@ -124,7 +143,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             }
             return (
               <div key={i} data-grid={{ ...others }}>
-                <ChartOperation chartId={i}>
+                <ChartOperation chartId={i} onConvert={onConvert}>
                   <ChartNode chartId={i} />
                 </ChartOperation>
               </div>

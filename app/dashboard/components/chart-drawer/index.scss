@@ -14,8 +14,21 @@
     flex: 1;
   }
   .bi-drawer-footer {
+    display: flex;
+    flex-direction: row;
     height: 44px;
     padding-top: 12px;
+  }
+  .bi-drawer-footer-left {
+    width: 200px;
+    line-height: 32px;
+    cursor: pointer;
+    &:hover {
+      color: $color-primary;
+    }
+  }
+  .bi-drawer-footer-right {
+    flex: 1;
     text-align: right;
   }
 }

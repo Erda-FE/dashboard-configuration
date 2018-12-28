@@ -21,7 +21,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { visible, closeDrawer, form, isAdd, deleteDrawer } = this.props;
+    const { visible, closeDrawer, form, isAdd, deleteDrawer, editChartId } = this.props;
     return (
       <Drawer
         placement="right"
@@ -43,12 +43,17 @@ class ChartDrawer extends React.PureComponent<IProps> {
           </Form>
         </div>
         <div className="bi-drawer-footer">
-          <Button onClick={isAdd ? closeDrawer : deleteDrawer} style={{ marginRight: 8 }}>
-            {isAdd ? '取消' : '删除'}
-          </Button>
-          <Button onClick={this.submitDrawer} type="primary">
-            {isAdd ? '新增' : '保存'}
-          </Button>
+          <div className="bi-drawer-footer-left">
+            {`图表ID: ${editChartId}`}
+          </div>
+          <div className="bi-drawer-footer-right">
+            <Button onClick={isAdd ? closeDrawer : deleteDrawer} style={{ marginRight: 8 }}>
+              {isAdd ? '取消' : '删除'}
+            </Button>
+            <Button onClick={this.submitDrawer} type="primary">
+              {isAdd ? '新增' : '保存'}
+            </Button>
+          </div>
         </div>
       </Drawer>
     );
@@ -60,6 +65,7 @@ const mapStateToProps = ({
   biDashBoard: { layout },
 }: any) => ({
   visible,
+  editChartId,
   drawerInfo: get(drawerInfoMap, [editChartId]),
   isAdd: !find(layout, ({ i }) => i === editChartId),
 });

@@ -2,8 +2,8 @@ import React from 'react';
 import { isEqual } from 'lodash';
 import ReactEcharts, { ReactEchartsPropsTypes, Func } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
+import PropTypes from 'prop-types';
 import { ISizeMe } from '../../types';
-import themeInfo from './utils/theme-dice';
 import './index.scss';
 
 type IProps = ReactEchartsPropsTypes & ISizeMe & {
@@ -33,6 +33,11 @@ class Chart extends React.Component<IProps> {
     notMerge: true, // 因v4.2.0-rc在切换图形类型或者更新数据更新存在bug,所以必须设置为true
   };
 
+  static contextTypes = {
+    theme: PropTypes.string,
+    themeObj: PropTypes.object,
+  };
+
   shouldComponentUpdate(nextProps: IProps) {
     return !isEqual(nextProps, this.props);
   }
@@ -49,7 +54,7 @@ class Chart extends React.Component<IProps> {
         )}
         <ReactEcharts
           {...others}
-          {...themeInfo}
+          {...this.context}
           style={{ ...others.style, height: size.height - descHeight }}
         />
       </div>

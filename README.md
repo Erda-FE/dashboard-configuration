@@ -5,48 +5,52 @@
   import { biModels } from '@terminus/bi-ui-package'
 
   // 加入，各项目不同，model引入的方式可能不同
-    model = [
-      ...biModels
-    ]
+  model = [
+    ...biModels
+  ]
   ...
 
   // 2、引入组件，栅格布局
-    import { BoardGrid } from '@terminus/bi-ui-package'
-    
-    <BoardGrid 
-      readOnly={false}
-      extra={extra} 
-      onSave={this.onSave}
-    />
+  import { BoardGrid } from '@terminus/bi-ui-package'
+  
+  <BoardGrid 
+    readOnly={false}
+    extra={extra} 
+    onSave={this.onSave}
+    theme={theme}
+    themeObj={themeObj}
+    onConvert={this.onConvert}
+  />
 
   // 3、webpack相关配置变更，因为当前没有转为es5
   // 1) scss变更
-    test: /\.scss$/,
-    include: [
-      path.resolve(__dirname, 'app'),
-      path.resolve(__dirname, 'node_modules/@terminus/bi-ui-package'),
-    ],
-    exclude: /node_modules\/(?!@terminus\/).*/,
+  test: /\.scss$/,
+  include: [
+    path.resolve(__dirname, 'app'),
+    path.resolve(__dirname, 'node_modules/@terminus/bi-ui-package'),
+  ],
+  exclude: /node_modules\/(?!@terminus\/).*/,
 
   // 2) ts变更
-    test: /\.(tsx?|jsx?)$/,
-    exclude: /node_modules\/(?!@terminus\/).*/,
+  test: /\.(tsx?|jsx?)$/,
+  exclude: /node_modules\/(?!@terminus\/).*/,
     
   // 3）主题色
-    // a.定义颜色值
-    {
-      loader: 'sass-resources-loader',
-      options: {
-        sourceMap: false,
-        resources: [
-          path.resolve(__dirname, './app/styles/_color.scss'),
-        ],
-      },
+  // a.定义颜色值
+  {
+    loader: 'sass-resources-loader',
+    options: {
+      sourceMap: false,
+      resources: [
+        path.resolve(__dirname, './app/styles/_color.scss'),
+      ],
     },
-    // b._color.scss中请务必定义$color-primary的颜色值
-    $color-primary: #44c790; // 举例
+  },
+  // b._color.scss中请务必定义$color-primary的颜色值
+  $color-primary: #44c790; // 举例
 ```
 
+## 属性Props说明
 ```js
   // 只读
   // 默认为false
@@ -62,6 +66,16 @@
   // 保存时的回调接口
   // 非必传
   onSave: (extra) => void,
+
+  // echarts的主题
+  // 非必传, 默认如下, 如果传入必须同时传入
+  // 用户可以去http://www.echartsjs.com/download-theme.html 这里去下载或者定制自己的主题
+  theme: 'dice'
+  themeObj: dice的themeObj
+
+  // 当要自行处理数据时
+  // 非必传, 不建议使用, 一旦使用，对于不想处理的resData返回原值即可
+  onConvert: (resData: object, chartId: string, url: string) => object | Promise<any>
 ```
 
 ## 其他文档

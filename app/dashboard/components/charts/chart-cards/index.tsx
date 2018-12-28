@@ -26,7 +26,7 @@ const convertProportion = (proportionInput: []) => {
   return { fieldsCount, config };
 };
 
-const ChartCards = ({ option = {}, isMock = false, names = [], datas = [] }: IProps) => {
+const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => {
   const { proportion } = option;
   const layoutSource: any[] = names.map((name: string, i: number) => ({ name, data: datas[0].data[i] }));
   if (proportion.fieldsCount !== layoutSource.length) {

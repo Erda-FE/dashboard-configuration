@@ -4,7 +4,7 @@ import ReactEcharts, { Func } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
 import PropTypes from 'prop-types';
 import { ISizeMe, ReactEchartsPropsTypes } from '../../../types';
-import maskChart from '../chart-mask';
+import ChartMask from '../chart-mask';
 import './index.scss';
 
 type IProps = ReactEchartsPropsTypes & ISizeMe & {
@@ -44,11 +44,11 @@ class Chart extends React.Component<IProps> {
   }
 
   render() {
-    const { size, descHeight, isMock = false, ...others } = this.props;
+    const { size, descHeight, isMock, ...others } = this.props;
     const { theme, themeObj } = this.context;
     return (
       <div className="bi-chart-sizeme">
-        {maskChart(isMock)}
+        <ChartMask isMock={isMock} />
         <ReactEcharts
           {...others}
           theme={theme}

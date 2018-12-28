@@ -29,6 +29,7 @@ export interface ReactEchartsPropsTypes {
   echarts?: object;
   opts?: OptsMap;
   shouldSetOption?: Func;
+  themeObj?: {}
 }
 
 export interface ISizeMe {

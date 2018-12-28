@@ -44,7 +44,7 @@ class Chart extends React.Component<IProps> {
   }
 
   render() {
-    const { size, descHeight, isMock = false, ...others } = this.props;
+    const { size, descHeight, isMock, ...others } = this.props;
     const { theme, themeObj } = this.context;
     return (
       <div className="bi-chart-sizeme">

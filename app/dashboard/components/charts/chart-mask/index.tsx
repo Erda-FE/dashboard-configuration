@@ -3,10 +3,10 @@ import React from 'react';
 import './index.scss';
 
 interface IProps {
-  isMock: boolean
+  isMock?: boolean
 }
 
-const ChartMask = ({ isMock }: IProps) => {
+const ChartMask = ({ isMock = false }: IProps) => {
   if (!isMock) return null;
   return (
     <div className="bi-chart-mask">

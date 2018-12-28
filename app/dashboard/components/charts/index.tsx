@@ -3,9 +3,11 @@ import { Icon } from 'antd';
 // 图表
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
+import ChartCards from './chart-cards';
 // mock数据
 import { mockDataLine } from './chart-line/utils';
 import { mockDataPie } from './chart-pie/utils';
+import { mockDataCards } from './chart-cards/utils';
 import { IChartsMap } from '../../types';
 
 const defaultChartsMap: IChartsMap = {
@@ -32,6 +34,12 @@ const defaultChartsMap: IChartsMap = {
     icon: <Icon type="pie-chart" />,
     component: ChartPie,
     mockData: mockDataPie,
+  },
+  cards: {
+    name: '卡片图',
+    icon: <Icon type="fund" />,
+    component: ChartCards,
+    mockData: mockDataCards,
   },
 };
 

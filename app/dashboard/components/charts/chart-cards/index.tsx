@@ -3,9 +3,8 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import { get } from 'lodash';
 import { Icon } from 'antd';
-import { ReactEchartsPropsTypes } from '../../types';
+import { ReactEchartsPropsTypes } from '../../../types';
 import { mockDataCards } from './utils';
 import './index.scss';
 
@@ -30,15 +29,10 @@ const convertProportion = (proportionInput: []) => {
   return { fieldsCount, config };
 };
 
-const ChartCards = ({ option = {}, isMock, ...others }: IProps) => {
-  const names = get(others, ['names'], []);
-  const datas = get(others, ['datas'], []);
-  const realNames: any = isMock ? mockDataCards.names : names;
-  const realDatas: any = isMock ? mockDataCards.datas : datas;
-  const { proportion = [] } = isMock ? mockDataCards.option : option;
-  const layoutSource: any[] = realNames.map((name: string, i: number) => ({ name, data: realDatas[0].data[i] }));
-  const cardsProportion = convertProportion(proportion);
-  if (cardsProportion.fieldsCount !== layoutSource.length) {
+const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => {
+  const { proportion } = option;
+  const layoutSource: any[] = names.map((name: string, i: number) => ({ name, data: datas[0].data[i] }));
+  if (proportion.fieldsCount !== layoutSource.length) {
     console.error('fields count not match');
     return null;
   }
@@ -53,7 +47,7 @@ const ChartCards = ({ option = {}, isMock, ...others }: IProps) => {
       )}
       <section className="bi-cards-layout">
         {
-          cardsProportion.config.map((rowConfig: any) => {
+          proportion.config.map((rowConfig: any) => {
             const { cols, scale } = rowConfig;
             const source = layoutSource.splice(0, cols);
             return (
@@ -76,10 +70,15 @@ const ChartCards = ({ option = {}, isMock, ...others }: IProps) => {
     </React.Fragment>);
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => {
+const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas, option }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
+  const { proportion = [] } = isMock ? mockDataCards.option : (option || {});
+  const cardsProportion = convertProportion(proportion);
   return {
     chartType: drawerInfo.chartType as string,
+    names: isMock ? mockDataCards.names : (names || []) as string[],
+    datas: isMock ? mockDataCards.datas : (datas || []) as IData[],
+    option: { ...option, proportion: cardsProportion },
   };
 };
 

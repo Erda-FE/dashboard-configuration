@@ -1,37 +1,39 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, map } from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'dva';
-import { Collapse, Tooltip, Icon } from 'antd';
-import { chartNameMap } from '../../../utils';
+import { Collapse, Tooltip } from 'antd';
+import PropTypes from 'prop-types';
 import './index.scss';
 
 const { Panel } = Collapse;
 
-const charts = [
-  { type: 'bar' },
-  { type: 'line' },
-  { type: 'area' },
-  { type: 'pie' },
-];
-
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const PanelCharts = ({ chartType, chooseChart, ...others }: IProps) => (
-  <Panel {...others} header="图表" key="charts">
-    {charts.map(({ type }) => (
-      <div
-        key={type}
-        className={classnames({ 'bi-drawer-charts': true, active: type === chartType })}
-        onClick={() => chooseChart(type)}
-      >
-        <Tooltip placement="bottom" title={chartNameMap[type]}>
-          <Icon type={`${type}-chart`} />
-        </Tooltip>
-      </div>
-    ))}
-  </Panel>
-);
+class PanelCharts extends React.Component<IProps> {
+  static contextTypes = {
+    chartsMap: PropTypes.object,
+  };
+
+  render() {
+    const { chartType, chooseChart, ...others } = this.props;
+    return (
+      <Panel {...others} header="图表" key="charts">
+        {map(this.context.chartsMap, ({ icon, name }, type) => (
+          <div
+            key={type}
+            className={classnames({ 'bi-drawer-charts': true, active: type === chartType })}
+            onClick={() => chooseChart(type)}
+          >
+            <Tooltip placement="bottom" title={name}>
+              {icon}
+            </Tooltip>
+          </div>
+        ))}
+      </Panel>
+    );
+  }
+}
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap, editChartId } }: any) => ({
   chartType: get(drawerInfoMap, [editChartId, 'chartType']),

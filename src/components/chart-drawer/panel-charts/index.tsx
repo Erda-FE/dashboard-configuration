@@ -10,7 +10,7 @@ const { Panel } = Collapse;
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-class PanelCharts extends React.Component<IProps> {
+class PanelCharts extends React.PureComponent<IProps> {
   static contextTypes = {
     chartsMap: PropTypes.object,
   };

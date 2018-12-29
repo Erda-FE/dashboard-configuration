@@ -2,8 +2,8 @@ import React from 'react';
 import 'antd/lib/style/v2-compatible-reset';
 import dva from 'dva';
 import createHistory from 'history/createBrowserHistory';
+import models from 'src/models';
 import AppRouter from './router';
-import models from './models';
 
 const history = createHistory();
 

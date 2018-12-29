@@ -1,6 +1,6 @@
-import BoardGrid from './app/dashboard/board-grid';
-import biModels from './app/models';
-import DataSettingsCommon from './app/dashboard/components/charts/data-settings';
+import BoardGrid from './src/board-grid';
+import biModels from './src/models';
+import DataSettingsCommon from './src/components/charts/data-settings';
 
 export {
   BoardGrid,

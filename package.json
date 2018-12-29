@@ -16,9 +16,9 @@
     "analyze": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --config webpack.analyze.js",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
-    "lint-fix": "eslint --fix app ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
-    "tslint-fix": "tslint --fix 'app/**/*.tsx' ",
-    "stylelint-fix": "stylelint 'app/**/*.scss' --config .stylelintrc.json --fix"
+    "lint-fix": "eslint --fix example ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
+    "tslint-fix": "tslint --fix 'example/**/*.tsx' ",
+    "stylelint-fix": "stylelint 'example/**/*.scss' --config .stylelintrc.json --fix"
   },
   "config": {
     "commitizen": {
@@ -120,23 +120,23 @@
     "typescript-eslint-parser": "^16.0.1"
   },
   "lint-staged": {
-    "app/**/*.js": [
+    "example/**/*.js": [
       "eslint --fix",
       "git add"
     ],
-    "app/**/*.ts": [
+    "example/**/*.ts": [
       "eslint --fix",
       "tslint --fix",
       "git add"
     ],
-    "app/**/*.tsx": [
+    "example/**/*.tsx": [
       "eslint --fix",
       "tslint --fix",
       "git add"
     ]
   },
   "files": [
-    "app",
+    "src",
     "index.js"
   ]
 }

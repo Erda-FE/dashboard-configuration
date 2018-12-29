@@ -13,7 +13,8 @@ settings:
     node:
       moduleDirectory:
         - node_modules
-        - app
+        - example
+        - src
         - router
         - router/modules
 rules:

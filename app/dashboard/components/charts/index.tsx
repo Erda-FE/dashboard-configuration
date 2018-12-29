@@ -5,10 +5,12 @@ import { IChartsMap } from '../../types';
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
 import ChartCards from './chart-cards';
+import ChartRadar from './chart-radar';
 // mock数据
 import { mockDataLine } from './chart-line/utils';
 import { mockDataPie } from './chart-pie/utils';
 import { mockDataCards } from './chart-cards/utils';
+import { mockDataRadar } from './chart-radar/utils';
 
 const defaultChartsMap: IChartsMap = {
   line: {
@@ -40,6 +42,12 @@ const defaultChartsMap: IChartsMap = {
     icon: <Icon type="fund" />,
     component: ChartCards,
     mockData: mockDataCards,
+  },
+  radar: {
+    name: '雷达图',
+    icon: <Icon type="radar-chart" />,
+    component: ChartRadar,
+    mockData: mockDataRadar,
   },
 };
 

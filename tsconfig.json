@@ -22,13 +22,10 @@
     "moduleResolution": "node",            /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
-      "app/*": ["./app/*"],
-      "common": ["./app/common"],
-      "common/*": ["./app/common/*"],
-      "utils": ["./app/utils"],
-      "utils/*": ["./app/utils/*"],
-      "dashboard/*": ["./app/dashboard/*"],
-      "agent": ["./app/agent.js"],
+      "example/*": ["./example/*"],
+      "src/*": ["./src/*"],
+      "board-grid": ["./src/board-grid"],
+      "agent": ["./example/agent.js"],
       "dva/*": ["./node_modules/dva-react-router-3/*"],
       "interface": ["./interface"]
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
@@ -42,7 +39,7 @@
   },
   "include": [
     "./interface/*",
-    "./app/**/*",
+    "./example/**/*",
     "./node_modules/@types/*"
   ]
 }

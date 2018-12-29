@@ -5,12 +5,13 @@ import { IChartsMap } from '../../types';
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
 import ChartCards from './chart-cards';
-import ChartRadar from './chart-radar';
 // mock数据
 import { mockDataLine } from './chart-line/utils';
 import { mockDataPie } from './chart-pie/utils';
 import { mockDataCards } from './chart-cards/utils';
-import { mockDataRadar } from './chart-radar/utils';
+// 数据配置项
+import DataSettingsCommon from './data-settings';
+import DataSettingsCards from './chart-cards/data-settings';
 
 const defaultChartsMap: IChartsMap = {
   line: {
@@ -18,36 +19,35 @@ const defaultChartsMap: IChartsMap = {
     icon: <Icon type="line-chart" />,
     component: ChartLine,
     mockData: mockDataLine,
+    dataSettings: [DataSettingsCommon],
   },
   bar: {
     name: '柱状',
     icon: <Icon type="bar-chart" />,
     component: ChartLine,
     mockData: mockDataLine,
+    dataSettings: [DataSettingsCommon],
   },
   area: {
     name: '面积图',
     icon: <Icon type="area-chart" />,
     component: ChartLine,
     mockData: mockDataLine,
+    dataSettings: [DataSettingsCommon],
   },
   pie: {
     name: '饼图',
     icon: <Icon type="pie-chart" />,
     component: ChartPie,
     mockData: mockDataPie,
+    dataSettings: [DataSettingsCommon],
   },
   cards: {
     name: '卡片图',
     icon: <Icon type="fund" />,
     component: ChartCards,
     mockData: mockDataCards,
-  },
-  radar: {
-    name: '雷达图',
-    icon: <Icon type="radar-chart" />,
-    component: ChartRadar,
-    mockData: mockDataRadar,
+    dataSettings: [DataSettingsCommon, DataSettingsCards],
   },
 };
 

@@ -29,7 +29,7 @@ module.exports = () => {
       net: 'empty',
     },
     entry: {
-      app: ['./app/index.js'],
+      app: ['./example/index.js'],
     },
     stats: {
       assets: false,
@@ -46,7 +46,8 @@ module.exports = () => {
         {
           test: /\.scss$/,
           include: [
-            path.resolve(__dirname, 'app'),
+            path.resolve(__dirname, 'example'),
+            path.resolve(__dirname, 'src'),
           ],
           exclude: /node_modules/,
           loaders: [
@@ -61,7 +62,8 @@ module.exports = () => {
             'happypack/loader?id=less',
           ],
           include: [
-            path.resolve(__dirname, 'app'),
+            path.resolve(__dirname, 'example'),
+            path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'node_modules/antd'),
           ],
         },
@@ -81,19 +83,19 @@ module.exports = () => {
     },
     resolve: {
       alias: {
-        common: path.resolve(__dirname, 'app/common'),
+        src: path.resolve(__dirname, 'src'),
         // 业务域 不含路由
-        dashboard: path.resolve(__dirname, 'app/dashboard'),
+        'board-grid': path.resolve(__dirname, 'src/board-grid'),
         // 业务域 含有路由
         // 其他
-        agent: path.resolve(__dirname, 'app/agent.js'),
-        utils: path.resolve(__dirname, 'app/utils'),
-        app: path.resolve(__dirname, 'app'),
-        ws: path.resolve(__dirname, 'app/ws.js'),
+        agent: path.resolve(__dirname, 'example/agent.js'),
+        utils: path.resolve(__dirname, 'example/utils'),
+        app: path.resolve(__dirname, 'example'),
+        ws: path.resolve(__dirname, 'example/ws.js'),
         interface: path.resolve(__dirname, 'interface'),
       },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
-      modules: [path.resolve(__dirname, 'app'), 'node_modules'],
+      modules: [path.resolve(__dirname, 'example'), path.resolve(__dirname, 'src'), 'node_modules'],
     },
     optimization: {
       minimize: isBuild,
@@ -117,7 +119,7 @@ module.exports = () => {
           },
           commons: {
             name: 'chunk-commons',
-            test: path.resolve(__dirname, 'app/common'),
+            test: path.resolve(__dirname, 'example/common'),
             minChunks: 2, // 最小公用次数
             priority: 2,
             chunks: 'all',
@@ -183,7 +185,7 @@ module.exports = () => {
       }),
       new HtmlWebpackPlugin({
         filename: 'index.html',
-        template: './app/views/index.ejs',
+        template: './example/views/index.ejs',
         hash: false,
         inject: true,
         needDll: !isBuild,
@@ -255,7 +257,7 @@ module.exports = () => {
             options: {
               sourceMap: false,
               resources: [
-                path.resolve(__dirname, './app/styles/_color.scss'),
+                path.resolve(__dirname, './example/styles/_color.scss'),
               ],
             },
           },

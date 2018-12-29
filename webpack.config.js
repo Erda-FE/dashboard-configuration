@@ -47,6 +47,7 @@ module.exports = () => {
           test: /\.scss$/,
           include: [
             path.resolve(__dirname, 'app'),
+            path.resolve(__dirname, 'src'),
           ],
           exclude: /node_modules/,
           loaders: [
@@ -62,6 +63,7 @@ module.exports = () => {
           ],
           include: [
             path.resolve(__dirname, 'app'),
+            path.resolve(__dirname, 'src'),
             path.resolve(__dirname, 'node_modules/antd'),
           ],
         },
@@ -81,9 +83,9 @@ module.exports = () => {
     },
     resolve: {
       alias: {
-        common: path.resolve(__dirname, 'app/common'),
+        src: path.resolve(__dirname, 'src'),
         // 业务域 不含路由
-        dashboard: path.resolve(__dirname, 'app/dashboard'),
+        'board-grid': path.resolve(__dirname, 'src/board-grid'),
         // 业务域 含有路由
         // 其他
         agent: path.resolve(__dirname, 'app/agent.js'),
@@ -93,7 +95,7 @@ module.exports = () => {
         interface: path.resolve(__dirname, 'interface'),
       },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
-      modules: [path.resolve(__dirname, 'app'), 'node_modules'],
+      modules: [path.resolve(__dirname, 'app'), path.resolve(__dirname, 'src'), 'node_modules'],
     },
     optimization: {
       minimize: isBuild,

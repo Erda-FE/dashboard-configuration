@@ -86,13 +86,16 @@
   onConvert: (resData: object, chartId: string, url: string) => object | Promise<any>
 
   // 图表扩充
-  // 非必传，可以覆盖已经存在的样式, 也可以新增新的图表
+  // 非必传，可以覆盖已经存在的样式, 也可以新增新的图表, DataSettingsCommon可以不用
+  import { DataSettingsCommon } from '@terminus/bi-ui-package'
+
   chartsMap: {
     line: {
       name: '折线图',
-      icon: <Icon type="line-chart" />,
-      component: ChartLine,
-      mockData: mockDataLine,
+      icon: <Icon type="line-chart" />, // icon
+      component: ChartLine,  // 图表组件
+      mockData: mockDataLine, // mock数据
+      dataSettings: [DataSettingsCommon], // 数据配置
     },
   };
 

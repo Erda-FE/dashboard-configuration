@@ -1,5 +1,5 @@
 import React from 'react';
-import { get } from 'lodash';
+import { get, map } from 'lodash';
 import { connect } from 'dva';
 import { Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -11,23 +11,14 @@ const { Panel } = Collapse;
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-const formItemLayout = {
-  labelCol: {
-    span: 4,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
-
 class PanelData extends React.Component<IProps> {
   static contextTypes = {
     chartsMap: PropTypes.object,
   };
 
   render() {
-    const { chartType, chooseChart, form: { getFieldDecorator }, ...others } = this.props;
-    const { name, mockData } = get(this.context.chartsMap, [chartType], {});
+    const { chartType, chooseChart, form, ...others } = this.props;
+    const { name, mockData, dataSettings } = get(this.context.chartsMap, [chartType], {});
     return (
       <Panel {...others} header="数据" key="data">
         {chartType && (
@@ -38,15 +29,7 @@ class PanelData extends React.Component<IProps> {
           >{`${name}数据示例下载`}
           </a>
         )}
-        <Form.Item label="接口" {...formItemLayout}>
-          {
-            getFieldDecorator('panneldata#url', {
-              rules: [{
-                message: '请输入接口',
-              }],
-            })(<Input />)
-          }
-        </Form.Item>
+        {map(dataSettings, (Setting, i) => <Setting form={form} key={i} />)}
       </Panel>
     );
   }

@@ -5,7 +5,7 @@ import { IChartsMap } from '../../types';
 const defaultControlsMap: IChartsMap = {
   select: {
     name: '下拉框',
-    icon: <Icon type="question" />,
+    icon: '下拉框',
   }
 };
 

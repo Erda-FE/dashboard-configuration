@@ -1,7 +1,7 @@
 import React from 'react';
 import { get, map } from 'lodash';
 import { connect } from 'dva';
-import { Collapse } from 'antd';
+import { Collapse, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './index.scss';
@@ -18,12 +18,16 @@ class PanelControls extends React.PureComponent<IProps> {
     const { controlType, onChoose, ...others } = this.props;
     return (
       <Panel {...others} header="控件" key="controls">
-        {map(this.context.controlsMap, ({ name }, type) => (
+        {map(this.context.controlsMap, ({ name, icon }, type) => (
           <div
             key={type}
             className={classnames({ 'bi-drawer-controls': true, active: type === controlType })}
             onClick={() => onChoose(type)}
-          >{name}</div>
+          >
+            <Tooltip placement="bottom" title={name}>
+              {icon}
+            </Tooltip>
+          </div>
         ))}
       </Panel>
     );

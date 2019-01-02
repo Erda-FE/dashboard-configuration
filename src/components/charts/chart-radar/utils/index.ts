@@ -1,4 +1,4 @@
-const indicator = [
+export const mockIndicator = [
   { name: '销售', max: 6500 },
   { name: '管理', max: 16000 },
   { name: '信息技术', max: 30000 },
@@ -19,10 +19,8 @@ const datas = [
 const names = ['预算分配', '实际开销'];
 
 const mockDataRadar = {
-  name: '预算 vs 开销',
-  names,
-  indicator,
   datas,
+  names,
 };
 
 export { mockDataRadar };

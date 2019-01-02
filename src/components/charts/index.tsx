@@ -12,10 +12,11 @@ import { mockDataLine } from './chart-line/utils';
 import { mockDataPie } from './chart-pie/utils';
 import { mockDataCards } from './chart-cards/utils';
 import { mockDataRadar } from './chart-radar/utils';
+import { mockDataGauge } from './chart-gauge/utils';
 // 数据配置项
 import DataSettingsCommon from './data-settings';
 import DataSettingsCards from './chart-cards/data-settings';
-import { mockDataGauge } from './chart-gauge/utils';
+import DataSettingsRadar from './chart-radar/data-settings';
 
 const defaultChartsMap: IChartsMap = {
   line: {
@@ -58,7 +59,7 @@ const defaultChartsMap: IChartsMap = {
     icon: <Icon type="radar-chart" />,
     component: ChartRadar,
     mockData: mockDataRadar,
-    dataSettings: [DataSettingsCommon],
+    dataSettings: [DataSettingsCommon, DataSettingsRadar],
   },
   gauge: {
     name: '仪表盘',

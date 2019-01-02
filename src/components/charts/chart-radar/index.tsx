@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import { merge } from 'lodash';
 import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import ChartSizeMe from '../chart-sizeme';
-import { mockDataRadar } from './utils';
+import { mockDataRadar, mockIndicator } from './utils';
 
 interface IData {
   name: string,
@@ -36,7 +36,6 @@ const ChartRadar = ({ option = {}, isMock, name, datas, names, indicator }: IPro
     },
     series: [
       {
-        name,
         type: 'radar',
         data: datas,
       },
@@ -45,13 +44,25 @@ const ChartRadar = ({ option = {}, isMock, name, datas, names, indicator }: IPro
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, names, indicator }: any) => {
+const getIndicator = (drawerInfo: any) => {
+  let indicator: {name: string, max: number}[] = [];
+  const radarKeys = Object.keys(drawerInfo).filter(key => key.includes('radarConfigKey'));
+  indicator = radarKeys.map((key) => {
+    const name = drawerInfo[key];
+    const maxKey = `panneldata#radarConfigMax${key.slice(-1)}`;
+    const max = drawerInfo[maxKey];
+    return { name, max };
+  });
+  return indicator;
+};
+
+const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, names }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
+  const indicator = isMock ? mockIndicator : getIndicator(drawerInfo);
   return {
     chartType: drawerInfo.chartType as string,
-    name: isMock ? mockDataRadar.name : (name || '') as string,
     names: isMock ? mockDataRadar.names : (names || []) as string[],
-    indicator: isMock ? mockDataRadar.indicator : (indicator || []) as string[],
+    indicator,
     datas: isMock ? mockDataRadar.datas : (datas || []) as IData[],
   };
 };

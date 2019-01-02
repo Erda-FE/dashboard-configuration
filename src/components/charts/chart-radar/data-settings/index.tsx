@@ -59,7 +59,8 @@ class DataSettings extends React.PureComponent<IProps> {
                   {
                     getFieldDecorator(`${pannelDataPrefix}${configKey}`, {
                       rules: [{
-                        message: '请输入指标配置',
+                        message: '请输入指标配置名称',
+                        required: true,
                       }],
                     })(<Input placeholder="示例：市场" />)
                   }
@@ -70,7 +71,9 @@ class DataSettings extends React.PureComponent<IProps> {
                   {
                     getFieldDecorator(`${pannelDataPrefix}${configMax}`, {
                       rules: [{
-                        message: '请输入指标配置',
+                        message: '请输入指标配置最大值(数字)',
+                        required: true,
+                        type: 'number',
                       }],
                     })(<Input placeholder="示例：3600" />)
                   }

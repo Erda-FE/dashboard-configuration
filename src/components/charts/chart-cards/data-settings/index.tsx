@@ -4,6 +4,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { formItemLayout, pannelDataPrefix } from '../../utils';
 
 const { TextArea } = Input;
+const errorMessage = '请输入正确二维数组， 如：[[1,1,1,1],[1,1]]';
 
 const DataSettings = ({ form }: FormComponentProps) => {
   const { getFieldDecorator } = form;
@@ -17,10 +18,14 @@ const DataSettings = ({ form }: FormComponentProps) => {
             validator: (rule, values, callback) => {
               if (values && values.length > 0) {
                 try {
-                  JSON.parse(values);
-                  callback();
+                  const inputArray = JSON.parse(values);
+                  if (Array.isArray(inputArray) && inputArray.length > 0 && inputArray.every(arr => Array.isArray(arr))) {
+                    callback();
+                  } else {
+                    callback(errorMessage);
+                  }
                 } catch (error) {
-                  callback('请输入正确二维数组， 如：[[1,1,1,1],[1,1]] ');
+                  callback(errorMessage);
                 }
               } else {
                 callback();

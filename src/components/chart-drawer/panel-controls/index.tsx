@@ -2,12 +2,13 @@ import React from 'react';
 import { get, map } from 'lodash';
 import { connect } from 'dva';
 import { Collapse, Tooltip } from 'antd';
+import { FormComponentProps } from 'antd/lib/form';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './index.scss';
 const { Panel } = Collapse;
 
-type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class PanelControls extends React.PureComponent<IProps> {
   static contextTypes = {
@@ -15,7 +16,8 @@ class PanelControls extends React.PureComponent<IProps> {
   };
 
   render() {
-    const { controlType, onChoose, ...others } = this.props;
+    const { controlType, onChoose, form, ...others } = this.props;
+    const { dataSettings } = get(this.context.controlsMap, [controlType], {});
     return (
       <Panel {...others} header="控件" key="controls">
         {map(this.context.controlsMap, ({ name, icon }, type) => (
@@ -29,13 +31,14 @@ class PanelControls extends React.PureComponent<IProps> {
             </Tooltip>
           </div>
         ))}
+        {map(dataSettings, (Setting, i) => <Setting form={form} key={i} />)}
       </Panel>
     );
   }
 }
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap, editChartId } }: any) => ({
-  controlType: get(drawerInfoMap, [editChartId, 'controlType']),
+  controlType: get(drawerInfoMap, [editChartId, 'controlType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

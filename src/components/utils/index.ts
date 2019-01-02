@@ -8,3 +8,4 @@ export const formItemLayout = {
 };
 
 export const pannelDataPrefix = 'panneldata#';
+export const pannelControlPrefix = 'pannelcontrol#';

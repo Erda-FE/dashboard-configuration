@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form, Input, Icon, Row, Col } from 'antd';
-import { isEqual, max } from 'lodash';
+import { Form, Input, Icon, Row, Col, InputNumber } from 'antd';
+import { isEqual, max, toNumber } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { pannelDataPrefix } from '../../utils';
 
@@ -14,7 +14,7 @@ class DataSettings extends React.PureComponent<IProps> {
     const keys: string[][] = form.getFieldValue('radarKeys');
     let id = 1;
     if (keys.length > 0) {
-      id = max(keys.map((x: string[]) => parseInt(x[0].slice(-1), 10))) || 0;
+      id = max(keys.map((x: string[]) => toNumber(x[0].slice(-1)))) || 0;
       id += 1;
     }
     const nextKeys = [...keys, [`radarConfigKey${id}`, `radarConfigMax${id}`]];
@@ -73,9 +73,9 @@ class DataSettings extends React.PureComponent<IProps> {
                       rules: [{
                         message: '请输入指标配置最大值(数字)',
                         required: true,
-                        type: 'number',
+                        type: 'integer',
                       }],
-                    })(<Input placeholder="示例：3600" />)
+                    })(<InputNumber style={{ width: '100%' }} min={1} placeholder="示例：3600" />)
                   }
                 </Form.Item>
               </Col>

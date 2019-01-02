@@ -5,7 +5,7 @@ import SelectNormal from './select-normal';
 import DataSettingsSelectNormal from './select-normal/data-settings';
 
 const defaultControlsMap: IChartsMap = {
-  select: {
+  selectNormal: {
     name: '常规下拉框',
     icon: '常规下拉框',
     component: SelectNormal,

@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm, message } from 'antd';
 import classnames from 'classnames';
 import agent from 'agent';
+import { pannelDataPrefix } from '../utils';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -109,7 +110,7 @@ const mapStateToProps = ({
   biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => ({
     isEdit,
     isChartEdit: editChartId === chartId,
-    url: get(drawerInfoMap, [chartId, 'panneldata#url']) as any,
+    url: get(drawerInfoMap, [chartId, `${pannelDataPrefix}url`]) as any,
   });
 
 const mapDispatchToProps = (dispatch: any) => ({

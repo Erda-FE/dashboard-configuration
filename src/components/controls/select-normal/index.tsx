@@ -7,7 +7,7 @@ const Option = Select.Option;
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class SelectNormal extends React.PureComponent<IProps> {
-  onChange = () => {
+  onChange = (value: string) => {
 
   }
 

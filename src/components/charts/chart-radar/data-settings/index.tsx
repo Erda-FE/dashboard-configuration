@@ -51,7 +51,7 @@ class DataSettings extends React.PureComponent<IProps> {
           const [configKey, configMax] = config;
           return (
             <Row key={configKey} className="bi-radar-config-row">
-              <Col className="bi-radar-config-label" span={4}>
+              <Col className="bi-radar-config-label" span={5}>
                 <label>指标{i + 1}</label>
               </Col>
               <Col span={9}>
@@ -66,12 +66,12 @@ class DataSettings extends React.PureComponent<IProps> {
                   }
                 </Form.Item>
               </Col>
-              <Col span={9}>
+              <Col span={7}>
                 <Form.Item style={{ display: 'inline-block' }} >
                   {
                     getFieldDecorator(`${pannelDataPrefix}${configMax}`, {
                       rules: [{
-                        message: '请输入指标配置最大值(数字)',
+                        message: '请输入指标最大值',
                         required: true,
                         type: 'integer',
                       }],

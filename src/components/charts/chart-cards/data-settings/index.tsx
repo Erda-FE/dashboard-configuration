@@ -13,6 +13,19 @@ const DataSettings = ({ form }: FormComponentProps) => {
         getFieldDecorator(`${pannelDataPrefix}proportion`, {
           rules: [{
             message: '请输入栅格比例',
+          }, {
+            validator: (rule, values, callback) => {
+              if (values && values.length > 0) {
+                try {
+                  JSON.parse(values);
+                  callback();
+                } catch (error) {
+                  callback('请输入正确二维数组， 如：[[1,1,1,1],[1,1]] ');
+                }
+              } else {
+                callback();
+              }
+            },
           }],
         })(<TextArea placeholder="示例：[[1,1,1,1],[1,1]]" />)
       }

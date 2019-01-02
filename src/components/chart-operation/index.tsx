@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm, message } from 'antd';
 import classnames from 'classnames';
 import agent from 'agent';
+import Control from './control';
 import { pannelDataPrefix } from '../utils';
 import './index.scss';
 
@@ -86,12 +87,13 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { children, isEdit, isChartEdit, url } = this.props;
+    const { children, isEdit, isChartEdit, url, chartId } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
+          <Control chartId={chartId} />
           {url && <Icon type="reload" onClick={this.reloadChart} />}
           {isEdit && (
             <Dropdown overlay={this.getMenu()}>

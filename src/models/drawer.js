@@ -1,4 +1,5 @@
-import { find, cloneDeep } from 'lodash';
+import { find, cloneDeep, forEach, startsWith } from 'lodash';
+import { pannelControlPrefix, pannelDataPrefix } from '../components/utils';
 
 const defaultState = {
   visible: false,
@@ -64,13 +65,27 @@ export default {
     chooseChart(state, { chartType }) {
       const { drawerInfoMap, editChartId } = state;
       const drawerInfo = drawerInfoMap[editChartId];
-      if (chartType === drawerInfo.chartType) return state;
+      if (chartType === drawerInfo.chartType) {
+        forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
+          if (startsWith(key, pannelDataPrefix)) {
+            delete drawerInfo[key];
+          }
+        });
+        return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
+      }
       return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType } } };
     },
     chooseControl(state, { controlType }) {
       const { drawerInfoMap, editChartId } = state;
       const drawerInfo = drawerInfoMap[editChartId];
-      if (controlType === drawerInfo.controlType) return state;
+      if (controlType === drawerInfo.controlType) {
+        forEach(drawerInfo, (value, key) => { // 移除填写的控件配置
+          if (startsWith(key, pannelControlPrefix)) {
+            delete drawerInfo[key];
+          }
+        });
+        return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, controlType: '' } } };
+      }
       return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, controlType } } };
     },
     deleteDrawerInfo(state, { chartId }) {

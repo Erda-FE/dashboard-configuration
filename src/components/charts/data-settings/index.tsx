@@ -4,7 +4,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout, pannelDataPrefix } from '../utils';
+import { formItemLayout, pannelDataPrefix } from '../../utils';
 
 const DataSettings = ({ form }: FormComponentProps) => {
   const { getFieldDecorator } = form;

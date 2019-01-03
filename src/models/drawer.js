@@ -67,6 +67,12 @@ export default {
       if (chartType === drawerInfo.chartType) return state;
       return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType } } };
     },
+    chooseControl(state, { controlType }) {
+      const { drawerInfoMap, editChartId } = state;
+      const drawerInfo = drawerInfoMap[editChartId];
+      if (controlType === drawerInfo.controlType) return state;
+      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, controlType } } };
+    },
     deleteDrawerInfo(state, { chartId }) {
       const { drawerInfoMap } = state;
       delete drawerInfoMap[chartId];

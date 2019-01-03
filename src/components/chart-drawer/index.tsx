@@ -36,7 +36,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
           <Form >
             <Collapse defaultActiveKey={['charts']}>
               <PanelCharts />
-              <PanelControls />
+              <PanelControls form={form} />
               <PanelStyles />
               <PanelData form={form} />
             </Collapse>

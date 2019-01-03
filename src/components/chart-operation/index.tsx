@@ -3,7 +3,8 @@ import { get, isEmpty } from 'lodash';
 import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm, message } from 'antd';
 import classnames from 'classnames';
-import agent from 'agent';
+import Control from './control';
+import { pannelDataPrefix, getData } from '../utils';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -12,15 +13,12 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
 }
 
-function getChartData(url: string) {
-  return agent.get(url)
-    .then((response: any) => response.body);
-}
-
 class ChartOperation extends React.PureComponent<IProps> {
   state = {
     resData: {},
   };
+
+  private query: any;
 
   componentDidMount() {
     this.reloadData(this.props.url);
@@ -32,13 +30,18 @@ class ChartOperation extends React.PureComponent<IProps> {
     }
   }
 
+  onControlChange = (query: any) => {
+    this.query = query;
+    this.reloadData(this.props.url);
+  }
+
   reloadData = (url: string) => {
     if (!url) {
       this.setState({ resData: { isMock: true } });
       return;
     }
     const { onConvert, chartId } = this.props;
-    getChartData(url).then((resData: any) => {
+    getData(url, this.query).then((resData: any) => {
       const res1 = onConvert ? onConvert(resData, chartId, url) : resData;
       if (res1 && res1.then) {
         res1.then((res: any) => this.setState({ resData: res }));
@@ -85,13 +88,14 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { children, isEdit, isChartEdit, url } = this.props;
+    const { children, isEdit, isChartEdit, url, chartId } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
           {url && <Icon type="reload" onClick={this.reloadChart} />}
+          <Control chartId={chartId} onChange={this.onControlChange}/>
           {isEdit && (
             <Dropdown overlay={this.getMenu()}>
               <Icon type="dash" />
@@ -109,7 +113,7 @@ const mapStateToProps = ({
   biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => ({
     isEdit,
     isChartEdit: editChartId === chartId,
-    url: get(drawerInfoMap, [chartId, 'panneldata#url']) as any,
+    url: get(drawerInfoMap, [chartId, `${pannelDataPrefix}url`]) as any,
   });
 
 const mapDispatchToProps = (dispatch: any) => ({

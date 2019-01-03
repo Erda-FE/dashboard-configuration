@@ -122,4 +122,6 @@
 ## 其他文档
 [如何调试](./Debug.md)
 
+[如何开发](./Develop.md)
+
 [功能规划](https://yuque.antfin-inc.com/docs/share/4d74d1c0-367f-4dd2-94ff-30eb3fcad10a)

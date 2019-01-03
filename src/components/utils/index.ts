@@ -1,3 +1,5 @@
+import agent from 'agent';
+
 export const formItemLayout = {
   labelCol: {
     span: 4,
@@ -9,3 +11,8 @@ export const formItemLayout = {
 
 export const pannelDataPrefix = 'panneldata#';
 export const pannelControlPrefix = 'pannelcontrol#';
+
+export function getData(url: string) {
+  return agent.get(url)
+    .then((response: any) => response.body);
+}

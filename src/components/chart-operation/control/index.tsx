@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
+  onChange: (...args: any) => void | Promise<any>
 }
 
 class Control extends React.PureComponent<IProps> {
@@ -14,9 +14,9 @@ class Control extends React.PureComponent<IProps> {
   };
 
   render() {
-    const { controlType } = this.props;
+    const { controlType, ...others } = this.props;
     const { component: Comp } = get(this.context.controlsMap, [controlType], {});
-    return Comp ? <Comp /> : null;
+    return Comp ? <Comp {...others}/> : null;
   }
 }
 

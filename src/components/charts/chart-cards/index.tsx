@@ -4,7 +4,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import { Icon } from 'antd';
-import { mockDataCards } from './utils';
+import { mockDataCards, mockProportion } from './utils';
+import { pannelDataPrefix } from '../../utils';
 import ChartMask from '../chart-mask';
 import './index.scss';
 
@@ -19,11 +20,19 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
 
 const convertProportion = (proportionInput: []) => {
   let fieldsCount: number = 0;
-  const config = proportionInput.map((proportion: any, i) => {
-    fieldsCount += proportion.cols;
-    return { rowNo: i + 1, ...proportion };
+  const config = proportionInput.map((rowProportion: any, i) => {
+    fieldsCount += rowProportion.length;
+    return { rowNo: i + 1, scale: rowProportion, cols: rowProportion.length };
   });
   return { fieldsCount, config };
+};
+
+const getProportion = (proportion: string) => {
+  try {
+    return JSON.parse(proportion);
+  } catch (error) {
+    throw error;
+  }
 };
 
 const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => {
@@ -63,7 +72,7 @@ const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => 
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas, option }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
-  const { proportion = [] } = isMock ? mockDataCards.option : (option || {});
+  const proportion = isMock ? mockProportion : getProportion(drawerInfo[`${pannelDataPrefix}proportion`]);
   const cardsProportion = convertProportion(proportion);
   return {
     chartType: drawerInfo.chartType as string,

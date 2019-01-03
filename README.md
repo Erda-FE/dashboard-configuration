@@ -22,6 +22,7 @@
     themeObj={themeObj}
     onConvert={this.onConvert}
     chartsMap={chartsMap}
+    controlsMap={controlsMap}
   />
 
   // 3、webpack相关配置变更，因为当前没有转为es5
@@ -86,13 +87,29 @@
   onConvert: (resData: object, chartId: string, url: string) => object | Promise<any>
 
   // 图表扩充
-  // 非必传，可以覆盖已经存在的样式, 也可以新增新的图表
+  // 非必传，可以覆盖已经存在的图表, 也可以新增新的图表, DataSettingsCommonCharts可以不用
+  import { DataSettingsCommonCharts } from '@terminus/bi-ui-package'
+
   chartsMap: {
     line: {
       name: '折线图',
-      icon: <Icon type="line-chart" />,
-      component: ChartLine,
-      mockData: mockDataLine,
+      icon: <Icon type="line-chart" />, // icon
+      component: ChartLine,  // 图表组件
+      mockData: mockDataLine, // mock数据
+      dataSettings: [DataSettingsCommonCharts], // 数据配置
+    },
+  };
+
+  // 控件扩充
+  // 非必传，可以覆盖已经存在的控件, 也可以新增新的, DataSettingsCommonControls可以不用
+  import { DataSettingsCommonControls } from '@terminus/bi-ui-package'
+
+  controlsMap: {
+    selectNormal: {
+      name: '常规下拉框',
+      icon: '常规下拉框',
+      component: SelectNormal,
+      dataSettings: [DataSettingsCommonControls],
     },
   };
 

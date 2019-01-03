@@ -23,6 +23,7 @@
     onConvert={this.onConvert}
     chartsMap={chartsMap}
     controlsMap={controlsMap}
+    UrlComponent={UrlComponent}
   />
 
   // 3、webpack相关配置变更，因为当前没有转为es5
@@ -113,6 +114,9 @@
     },
   };
 
+  // 第三方系统的url配置器
+  // 非必传，可以覆盖内置的Input填写方式
+  UrlComponent: Input
 ```
 
 ## 其他文档

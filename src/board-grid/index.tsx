@@ -7,7 +7,7 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import { Icon, Tooltip } from 'antd';
+import { Icon, Tooltip, Input } from 'antd';
 import { isEqual, get } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
@@ -21,14 +21,15 @@ import 'react-resizable/css/styles.css';
 import './index.scss';
 
 interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
-  readOnly?: boolean
-  extra?: any
-  onSave?: (extra: any) => void,
-  theme?: string,
-  themeObj?: {},
-  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
-  chartsMap?: IChartsMap
-  controlsMap?: IChartsMap
+  readOnly?: boolean // 只读
+  extra?: any // 配置信息，包含图表布局、各图表配置信息
+  onSave?: (extra: any) => void, // 保存
+  theme?: string, // 主题名
+  themeObj?: {},  // 主题内容
+  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any> // 数据转化
+  chartsMap?: IChartsMap // 图表
+  controlsMap?: IChartsMap // 控件
+  UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -56,6 +57,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     readOnly: false,
     theme,
     themeObj,
+    UrlComponent: Input
   };
 
   static childContextTypes = {
@@ -63,6 +65,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     themeObj: PropTypes.object,
     chartsMap: PropTypes.object,
     controlsMap: PropTypes.object,
+    UrlComponent: PropTypes.func,
   };
 
   private chartsMap: IChartsMap;
@@ -74,6 +77,7 @@ class BoardGrid extends React.PureComponent<IProps> {
       themeObj: this.props.themeObj,
       chartsMap: this.chartsMap,
       controlsMap: this.controlsMap,
+      UrlComponent: this.props.UrlComponent,
     };
   }
 

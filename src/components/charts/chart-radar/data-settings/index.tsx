@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Icon, Row, Col, InputNumber } from 'antd';
 import { isEqual, max, toNumber } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
-import { pannelDataPrefix } from '../../utils';
+import { pannelDataPrefix } from '../../../utils';
 
 import './index.scss';
 
@@ -50,8 +50,8 @@ class DataSettings extends React.PureComponent<IProps> {
         {keys.map((config: string[], i: number) => {
           const [configKey, configMax] = config;
           return (
-            <Row key={configKey} className="bi-radar-config-row">
-              <Col className="bi-radar-config-label" span={5}>
+            <Row key={configKey} className="bi-radar-settings-row">
+              <Col className="bi-radar-settings-label" span={5}>
                 <label>指标{i + 1}</label>
               </Col>
               <Col span={9}>

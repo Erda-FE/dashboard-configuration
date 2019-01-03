@@ -37,7 +37,7 @@ const ChartGauge = ({ option = {}, isMock, name, datas }: IProps) => {
   return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas }: any) => {
+const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, name }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
   return {
     chartType: drawerInfo.chartType as string,

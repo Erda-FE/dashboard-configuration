@@ -7,7 +7,7 @@ import { merge } from 'lodash';
 import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import ChartSizeMe from '../chart-sizeme';
 import { mockDataRadar, mockIndicator } from './utils';
-import { pannelDataPrefix } from '../utils';
+import { pannelDataPrefix } from '../../utils';
 
 interface IData {
   name: string,

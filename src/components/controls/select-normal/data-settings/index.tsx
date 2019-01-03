@@ -9,15 +9,6 @@ const DataSettings = ({ form }: FormComponentProps) => {
   const { getFieldDecorator } = form;
   return (
     <React.Fragment>
-      <Form.Item label="控件宽度" {...formItemLayout}>
-        {getFieldDecorator(`${pannelControlPrefix}width`, {
-          initialValue: 120,
-          rules: [{
-            required: true,
-            message: '请输入控件宽度',
-          }],
-        })(<Input placeholder="请输入控件宽度"/>)}
-      </Form.Item>
       <Form.Item label="参数名称" {...formItemLayout}>
         {getFieldDecorator(`${pannelControlPrefix}searchName`, {
           rules: [{

@@ -19,7 +19,7 @@ const DataSettings = ({ form }: FormComponentProps) => {
               if (values && values.length > 0) {
                 try {
                   const inputArray = JSON.parse(values);
-                  if (Array.isArray(inputArray) && inputArray.length > 0 && inputArray.every(arr => Array.isArray(arr))) {
+                  if (Array.isArray(inputArray) && inputArray.length > 0 && inputArray.every(arr => Array.isArray(arr) && arr.length > 0)) {
                     callback();
                   } else {
                     callback(errorMessage);

@@ -9,6 +9,15 @@ const DataSettings = ({ form }: FormComponentProps) => {
   const { getFieldDecorator } = form;
   return (
     <React.Fragment>
+      <Form.Item label="控件宽度" {...formItemLayout}>
+        {getFieldDecorator(`${pannelControlPrefix}width`, {
+          initialValue: 120,
+          rules: [{
+            required: true,
+            message: '请输入控件宽度',
+          }],
+        })(<Input placeholder="请输入控件宽度"/>)}
+      </Form.Item>
       <Form.Item label="参数名称" {...formItemLayout}>
         {getFieldDecorator(`${pannelControlPrefix}searchName`, {
           rules: [{
@@ -29,7 +38,7 @@ const DataSettings = ({ form }: FormComponentProps) => {
           rules: [{
             message: '请输入固定数据',
           }],
-        })(<TextArea placeholder="请输入固定数据，用于静态的控件数据，示例：[{name: 'lucy', value: '1'}]" />)}
+        })(<TextArea placeholder={`${''}请输入标准JSON格式的固定数据，用于静态的控件数据，示例：[{"name": 'lucy', "value": 1}]`} />)}
       </Form.Item>
     </React.Fragment>
   );

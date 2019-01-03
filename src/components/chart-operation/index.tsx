@@ -3,20 +3,14 @@ import { get, isEmpty } from 'lodash';
 import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm, message } from 'antd';
 import classnames from 'classnames';
-import agent from 'agent';
 import Control from './control';
-import { pannelDataPrefix } from '../utils';
+import { pannelDataPrefix, getData } from '../utils';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   chartId: string
   children: ReactElement<any>
   onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
-}
-
-function getChartData(url: string) {
-  return agent.get(url)
-    .then((response: any) => response.body);
 }
 
 class ChartOperation extends React.PureComponent<IProps> {
@@ -40,7 +34,7 @@ class ChartOperation extends React.PureComponent<IProps> {
       return;
     }
     const { onConvert, chartId } = this.props;
-    getChartData(url).then((resData: any) => {
+    getData(url).then((resData: any) => {
       const res1 = onConvert ? onConvert(resData, chartId, url) : resData;
       if (res1 && res1.then) {
         res1.then((res: any) => this.setState({ resData: res }));
@@ -93,8 +87,8 @@ class ChartOperation extends React.PureComponent<IProps> {
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
-          <Control chartId={chartId} />
           {url && <Icon type="reload" onClick={this.reloadChart} />}
+          <Control chartId={chartId} />
           {isEdit && (
             <Dropdown overlay={this.getMenu()}>
               <Icon type="dash" />

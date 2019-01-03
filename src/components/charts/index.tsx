@@ -7,6 +7,7 @@ import ChartPie from './chart-pie';
 import ChartCards from './chart-cards';
 import ChartRadar from './chart-radar';
 import ChartGauge from './chart-gauge';
+import ChartMap from './chart-map';
 // mock数据
 import { mockDataLine } from './chart-line/utils';
 import { mockDataPie } from './chart-pie/utils';
@@ -17,6 +18,8 @@ import { mockDataGauge } from './chart-gauge/utils';
 import DataSettingsCommon from './data-settings';
 import DataSettingsCards from './chart-cards/data-settings';
 import DataSettingsRadar from './chart-radar/data-settings';
+
+import mapIcon from 'images/ChinaMap.svg';
 
 const defaultChartsMap: IChartsMap = {
   line: {
@@ -65,6 +68,13 @@ const defaultChartsMap: IChartsMap = {
     name: '仪表盘',
     icon: <Icon type="dashboard" />,
     component: ChartGauge,
+    mockData: mockDataGauge,
+    dataSettings: [DataSettingsCommon],
+  },
+  map: {
+    name: '全国地图',
+    icon: <img style={{ width: '30px', height: '30px', paddingTop: '5px', position: 'relative', top: '-6px' }} src={mapIcon} />,
+    component: ChartMap,
     mockData: mockDataGauge,
     dataSettings: [DataSettingsCommon],
   },

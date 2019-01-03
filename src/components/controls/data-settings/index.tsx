@@ -4,7 +4,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout, pannelControlPrefix } from '../../utils';
+import { formItemLayout, pannelControlPrefix, positiveIntRegExp } from '../../utils';
 
 const DataSettings = ({ form }: FormComponentProps) => {
   const { getFieldDecorator } = form;
@@ -15,8 +15,11 @@ const DataSettings = ({ form }: FormComponentProps) => {
         rules: [{
           required: true,
           message: '请输入控件宽度',
+        }, {
+          pattern: positiveIntRegExp,
+          message: '请输入正整数',
         }],
-      })(<Input placeholder="请输入控件宽度"/>)}
+      })(<Input placeholder="请输入控件宽度" />)}
     </Form.Item>
   );
 };

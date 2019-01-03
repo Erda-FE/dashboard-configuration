@@ -12,6 +12,8 @@ export const formItemLayout = {
 export const pannelDataPrefix = 'panneldata#';
 export const pannelControlPrefix = 'pannelcontrol#';
 
+export const positiveIntRegExp = /^[1-9]\d*$/;
+
 export function getData(url: string, query?: any) {
   return agent.get(url)
     .query(query)

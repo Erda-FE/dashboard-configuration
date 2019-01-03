@@ -13,7 +13,7 @@ import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { defaultChartsMap, ChartDrawer, ChartOperation } from '../components';
+import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
 import 'react-grid-layout/css/styles.css';
@@ -28,6 +28,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   themeObj?: {},
   onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
   chartsMap?: IChartsMap
+  controlsMap?: IChartsMap
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -61,29 +62,36 @@ class BoardGrid extends React.PureComponent<IProps> {
     theme: PropTypes.string,
     themeObj: PropTypes.object,
     chartsMap: PropTypes.object,
+    controlsMap: PropTypes.object,
   };
 
   private chartsMap: IChartsMap;
+  private controlsMap: IChartsMap;
 
   getChildContext() {
     return {
       theme: this.props.theme,
       themeObj: this.props.themeObj,
       chartsMap: this.chartsMap,
+      controlsMap: this.controlsMap,
     };
   }
 
   componentWillMount() {
     this.props.initDashboard(this.props.extra);
     this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
+    this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
   }
 
-  componentWillReceiveProps({ extra, chartsMap }: IProps) {
+  componentWillReceiveProps({ extra, chartsMap, controlsMap }: IProps) {
     if (!isEqual(extra, this.props.extra)) {
       this.props.initDashboard(extra);
     }
     if (!isEqual(chartsMap, this.props.chartsMap)) {
-      this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
+      this.chartsMap = { ...defaultChartsMap, ...chartsMap };
+    }
+    if (!isEqual(controlsMap, this.props.controlsMap)) {
+      this.controlsMap = { ...defaultControlsMap, ...controlsMap };
     }
   }
 

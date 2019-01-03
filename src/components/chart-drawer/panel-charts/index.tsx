@@ -10,20 +10,20 @@ const { Panel } = Collapse;
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
-class PanelCharts extends React.Component<IProps> {
+class PanelCharts extends React.PureComponent<IProps> {
   static contextTypes = {
     chartsMap: PropTypes.object,
   };
 
   render() {
-    const { chartType, chooseChart, ...others } = this.props;
+    const { chartType, onChoose, ...others } = this.props;
     return (
       <Panel {...others} header="图表" key="charts">
         {map(this.context.chartsMap, ({ icon, name }, type) => (
           <div
             key={type}
             className={classnames({ 'bi-drawer-charts': true, active: type === chartType })}
-            onClick={() => chooseChart(type)}
+            onClick={() => onChoose(type)}
           >
             <Tooltip placement="bottom" title={name}>
               {icon}
@@ -40,7 +40,7 @@ const mapStateToProps = ({ biDrawer: { drawerInfoMap, editChartId } }: any) => (
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  chooseChart(chartType: string) {
+  onChoose(chartType: string) {
     dispatch({ type: 'biDrawer/chooseChart', chartType });
   },
 });

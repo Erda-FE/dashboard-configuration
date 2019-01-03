@@ -5,7 +5,9 @@ import { Select, message } from 'antd';
 import { pannelControlPrefix, getData } from '../../utils';
 
 const Option = Select.Option;
-type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+  onChange: (query: any) => void
+}
 
 class SelectNormal extends React.PureComponent<IProps> {
   state = {
@@ -23,7 +25,9 @@ class SelectNormal extends React.PureComponent<IProps> {
   }
 
   onChange = (value: string) => {
-
+    const { searchName, onChange } = this.props;
+    if (!onChange) return;
+    onChange({ [searchName]: value});
   }
 
   handleData = ({ url, fixedData }: IProps) => {
@@ -31,7 +35,7 @@ class SelectNormal extends React.PureComponent<IProps> {
       getData(url).then((resData: any) => {
         this.setState({ resData });
       }).catch(() => {
-        message.error('该常规下拉框接口获取数据失败', 3);
+        message.error('常规下拉框接口获取动态数据失败', 3);
       });
     } else { // 静态数据
       try {
@@ -47,7 +51,7 @@ class SelectNormal extends React.PureComponent<IProps> {
     const { width } = this.props;
     const { resData } = this.state;
     return (
-      <Select defaultValue="" style={{ width }} onChange={this.onChange}>
+      <Select defaultValue="" style={{ marginLeft: 12, width }} onChange={this.onChange}>
         <Option key="all" value="">请选择</Option>
         {map(resData, ({ name, value }, i) => {
           return <Option key={value || `${i}`} value={value}>{name}</Option>;

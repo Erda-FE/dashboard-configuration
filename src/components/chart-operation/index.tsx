@@ -18,6 +18,8 @@ class ChartOperation extends React.PureComponent<IProps> {
     resData: {},
   };
 
+  private query: any;
+
   componentDidMount() {
     this.reloadData(this.props.url);
   }
@@ -28,13 +30,18 @@ class ChartOperation extends React.PureComponent<IProps> {
     }
   }
 
+  onControlChange = (query: any) => {
+    this.query = query;
+    this.reloadData(this.props.url);
+  }
+
   reloadData = (url: string) => {
     if (!url) {
       this.setState({ resData: { isMock: true } });
       return;
     }
     const { onConvert, chartId } = this.props;
-    getData(url).then((resData: any) => {
+    getData(url, this.query).then((resData: any) => {
       const res1 = onConvert ? onConvert(resData, chartId, url) : resData;
       if (res1 && res1.then) {
         res1.then((res: any) => this.setState({ resData: res }));
@@ -88,7 +95,7 @@ class ChartOperation extends React.PureComponent<IProps> {
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
           {url && <Icon type="reload" onClick={this.reloadChart} />}
-          <Control chartId={chartId} />
+          <Control chartId={chartId} onChange={this.onControlChange}/>
           {isEdit && (
             <Dropdown overlay={this.getMenu()}>
               <Icon type="dash" />

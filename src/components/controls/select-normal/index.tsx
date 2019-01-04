@@ -3,6 +3,7 @@ import { get, isEqual, map } from 'lodash';
 import { connect } from 'dva';
 import { Select, message } from 'antd';
 import { pannelControlPrefix, getData } from '../../utils';
+import { strToObject } from './utils';
 
 const Option = Select.Option;
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -39,7 +40,7 @@ class SelectNormal extends React.PureComponent<IProps> {
       });
     } else { // 静态数据
       try {
-        const resData = JSON.parse(fixedData);
+        const resData = strToObject(fixedData);
         this.setState({ resData });
       } catch (error) {
         console.error('常规下拉框静态数据转化失败', fixedData);

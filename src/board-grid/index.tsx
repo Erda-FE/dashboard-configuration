@@ -26,7 +26,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   extra?: any // 配置信息，包含图表布局、各图表配置信息
   onSave?: (extra: any) => void, // 保存
   theme?: string, // 主题名
-  themeObj?: {},  // 主题内容
+  themeObj?: {}, // 主题内容
   onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any> // 数据转化
   chartsMap?: IChartsMap // 图表
   controlsMap?: IChartsMap // 控件
@@ -59,7 +59,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     readOnly: false,
     theme,
     themeObj,
-    UrlComponent: Input
+    UrlComponent: Input,
   };
 
   static childContextTypes = {
@@ -71,6 +71,7 @@ class BoardGrid extends React.PureComponent<IProps> {
   };
 
   private chartsMap: IChartsMap;
+
   private controlsMap: IChartsMap;
 
   getChildContext() {

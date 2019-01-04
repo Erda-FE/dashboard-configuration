@@ -1,4 +1,8 @@
-export function checkFixedData(str: string) {
+export function checkFixedData(str: string): boolean {
+  // 空的满足校验规则
+  if (str === undefined || str === '') {
+    return true;
+  }
   try {
     if (str.indexOf('[') > -1) {
       const fixedData = strToObject(str);

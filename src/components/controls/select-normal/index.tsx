@@ -27,7 +27,7 @@ class SelectNormal extends React.PureComponent<IProps> {
   onChange = (value: string) => {
     const { searchName, onChange } = this.props;
     if (!onChange) return;
-    onChange({ [searchName]: value});
+    onChange({ [searchName]: value });
   }
 
   handleData = ({ url, fixedData }: IProps) => {
@@ -53,9 +53,7 @@ class SelectNormal extends React.PureComponent<IProps> {
     return (
       <Select defaultValue="" style={{ marginLeft: 12, width }} onChange={this.onChange}>
         <Option key="all" value="">请选择</Option>
-        {map(resData, ({ name, value }, i) => {
-          return <Option key={value || `${i}`} value={value}>{name}</Option>;
-        })}
+        {map(resData, ({ name, value }, i) => <Option key={value || `${i}`} value={value}>{name}</Option>)}
       </Select>
     );
   }

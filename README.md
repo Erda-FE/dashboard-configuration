@@ -117,6 +117,11 @@
   // 第三方系统的url配置器
   // 非必传，可以覆盖内置的Input填写方式
   UrlComponent: Input
+
+  // url参数映射
+  // 非必传，可以映射url中的类似{paramName}字段
+  // 举例：urlParamsMap={id: 1}，接口如 '/api/{id}?pro={id}' 会在请求时被转换为/api/1?pro=1
+  urlParamsMap: undefined
 ```
 
 ## 其他文档

@@ -3,6 +3,7 @@ import { get, isEqual, map } from 'lodash';
 import { connect } from 'dva';
 import { Select, message } from 'antd';
 import { pannelControlPrefix, getData } from '../../utils';
+import { strToObject } from './utils';
 
 const Option = Select.Option;
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -27,7 +28,7 @@ class SelectNormal extends React.PureComponent<IProps> {
   onChange = (value: string) => {
     const { searchName, onChange } = this.props;
     if (!onChange) return;
-    onChange({ [searchName]: value});
+    onChange({ [searchName]: value });
   }
 
   handleData = ({ url, fixedData }: IProps) => {
@@ -39,7 +40,7 @@ class SelectNormal extends React.PureComponent<IProps> {
       });
     } else { // 静态数据
       try {
-        const resData = JSON.parse(fixedData);
+        const resData = strToObject(fixedData);
         this.setState({ resData });
       } catch (error) {
         console.error('常规下拉框静态数据转化失败', fixedData);
@@ -53,9 +54,7 @@ class SelectNormal extends React.PureComponent<IProps> {
     return (
       <Select defaultValue="" style={{ marginLeft: 12, width }} onChange={this.onChange}>
         <Option key="all" value="">请选择</Option>
-        {map(resData, ({ name, value }, i) => {
-          return <Option key={value || `${i}`} value={value}>{name}</Option>;
-        })}
+        {map(resData, ({ name, value }, i) => <Option key={value || `${i}`} value={value}>{name}</Option>)}
       </Select>
     );
   }

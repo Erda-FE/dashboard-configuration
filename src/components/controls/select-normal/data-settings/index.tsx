@@ -3,7 +3,7 @@ import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PropTypes from 'prop-types';
 import { formItemLayout, pannelControlPrefix } from '../../../utils';
-import { checkJSON } from '../utils';
+import { checkFixedData } from '../utils';
 
 const { TextArea } = Input;
 
@@ -12,11 +12,11 @@ export default class DataSettings extends React.PureComponent<FormComponentProps
     UrlComponent: PropTypes.func,
   };
 
-  validateJSON = (rule: any, value: string, callback: Function) => {
-    if (checkJSON(value)) {
+  validateFixedData = (rule: any, value: string, callback: Function) => {
+    if (checkFixedData(value)) {
       callback();
     }
-    callback('请输入合法的json');
+    callback('请输入合法的数据格式，示例 [{"name": "lucy", "value": 1}]');
   }
 
   render() {
@@ -44,7 +44,7 @@ export default class DataSettings extends React.PureComponent<FormComponentProps
             rules: [{
               message: '请输入固定数据',
             }, {
-              validator: this.validateJSON,
+              validator: this.validateFixedData,
             }],
           })(<TextArea placeholder={`${''}请输入标准JSON格式的固定数据，用于静态的控件数据，示例：[{"name": 'lucy', "value": 1}]`} />)}
         </Form.Item>

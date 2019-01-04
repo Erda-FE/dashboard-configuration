@@ -101,7 +101,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     if (!isEqual(controlsMap, this.props.controlsMap)) {
       this.controlsMap = { ...defaultControlsMap, ...controlsMap };
     }
-    if (!isEqual(controlsMap, this.props.urlParamsMap)) {
+    if (!isEqual(urlParamsMap, this.props.urlParamsMap)) {
       paramsManage.set(urlParamsMap);
     }
   }

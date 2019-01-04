@@ -38,15 +38,9 @@ class SelectNormal extends React.PureComponent<IProps> {
       }).catch(() => {
         message.error('常规下拉框接口获取动态数据失败', 3);
       });
-    } else { // 静态数据
-      try {
-        if (checkFixedData(fixedData)) {
-          const resData = strToObject(fixedData);
-          this.setState({ resData });
-        }
-      } catch (error) {
-        console.error('常规下拉框静态数据转化失败', fixedData);
-      }
+    } else if (checkFixedData(fixedData)) { // 静态数据
+      const resData = strToObject(fixedData);
+      this.setState({ resData });
     }
   }
 

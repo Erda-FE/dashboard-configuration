@@ -135,8 +135,8 @@ class BoardGrid extends React.PureComponent<IProps> {
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
         {!readOnly && (
           <div className="bi-header">
-            {isEdit && (
-              <Tooltip placement="bottom" title="保存图片">
+            {!isEdit && (
+              <Tooltip placement="bottom" title="导出图片">
                 <Icon type="camera" onClick={this.onSaveImg} />
               </Tooltip>)
             }

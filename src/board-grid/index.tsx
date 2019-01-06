@@ -17,8 +17,7 @@ import PropTypes from 'prop-types';
 import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
-import { paramsManage } from '../components/utils';
-import { saveImage } from './utils';
+import { paramsManage, saveImage } from '../components/utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
@@ -72,7 +71,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     UrlComponent: PropTypes.func,
   };
 
-  private chartRef: React.ReactInstance;
+  private boardGridRef: React.ReactInstance;
 
   private chartsMap: IChartsMap;
 
@@ -123,9 +122,9 @@ class BoardGrid extends React.PureComponent<IProps> {
     });
   }
 
-  onSaveImg = (chartId: string) => {
+  onSaveImg = () => {
     /* eslint-disable */
-    saveImage(ReactDOM.findDOMNode(this.chartRef), chartId);
+    saveImage(ReactDOM.findDOMNode(this.boardGridRef), '仪表盘');
     /* eslint-enable */
   }
 
@@ -136,6 +135,11 @@ class BoardGrid extends React.PureComponent<IProps> {
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
         {!readOnly && (
           <div className="bi-header">
+            {isEdit && (
+              <Tooltip placement="bottom" title="保存图片">
+                <Icon type="camera" onClick={this.onSaveImg} />
+              </Tooltip>)
+            }
             {isEdit && <Icon type="plus" onClick={openDrawerAdd} />}
             {isEdit ? (
               <Tooltip placement="bottom" title="保存">
@@ -149,6 +153,7 @@ class BoardGrid extends React.PureComponent<IProps> {
           </div>
         )}
         <ReactGridLayout
+          ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
           autoSize
           layout={layout}
           cols={cols}
@@ -166,8 +171,8 @@ class BoardGrid extends React.PureComponent<IProps> {
             const ChartNode = get(this.chartsMap, [chartType, 'component']) as any;
             return (
               <div key={i} data-grid={{ ...others }}>
-                <ChartOperation chartId={i} onConvert={onConvert} onSaveImg={() => this.onSaveImg(i)}>
-                  <ChartNode chartId={i} ref={(ref: React.ReactInstance) => { this.chartRef = ref; }} />
+                <ChartOperation chartId={i} onConvert={onConvert}>
+                  <ChartNode chartId={i} />
                 </ChartOperation>
               </div>
             );

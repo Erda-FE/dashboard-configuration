@@ -103,9 +103,11 @@ class ChartOperation extends React.PureComponent<IProps> {
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
-          <Tooltip placement="bottom" title="导出图片">
-            <Icon type="camera" onClick={this.onSaveImg} />
-          </Tooltip>
+          {isEdit && (
+            <Tooltip placement="bottom" title="导出图片">
+              <Icon type="camera" onClick={this.onSaveImg} />
+            </Tooltip>)
+          }
           {url && <Icon type="reload" onClick={this.reloadChart} />}
           <Control chartId={chartId} onChange={this.onControlChange} />
           {isEdit && (

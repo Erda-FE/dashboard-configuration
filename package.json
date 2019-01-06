@@ -101,7 +101,7 @@
     "superagent": "^3.3.1",
     "superagent-use": "^0.1.0",
     "ts-import-plugin": "^1.4.4",
-    "ts-loader": "^5.3.0",
+    "ts-loader": "^4.5.0",
     "tslint": "^5.11.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.5.1",

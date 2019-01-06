@@ -12,7 +12,6 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   chartId: string
   children: ReactElement<any>
   onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
-  onSaveImg: () => void
 }
 
 class ChartOperation extends React.PureComponent<IProps> {

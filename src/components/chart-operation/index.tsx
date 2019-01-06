@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react';
 import { get, isEmpty } from 'lodash';
 import { connect } from 'dva';
-import { Icon, Dropdown, Menu, Popconfirm, message } from 'antd';
+import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
 import classnames from 'classnames';
 import Control from './control';
 import { pannelDataPrefix, getData } from '../utils';
@@ -11,6 +11,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   chartId: string
   children: ReactElement<any>
   onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
+  onSaveImg: () => void
 }
 
 class ChartOperation extends React.PureComponent<IProps> {
@@ -88,14 +89,17 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { children, isEdit, isChartEdit, url, chartId } = this.props;
+    const { children, isEdit, isChartEdit, url, chartId, onSaveImg } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
+          <Tooltip placement="bottom" title="保存图片">
+            <Icon type="save" onClick={onSaveImg} />
+          </Tooltip>
           {url && <Icon type="reload" onClick={this.reloadChart} />}
-          <Control chartId={chartId} onChange={this.onControlChange}/>
+          <Control chartId={chartId} onChange={this.onControlChange} />
           {isEdit && (
             <Dropdown overlay={this.getMenu()}>
               <Icon type="dash" />

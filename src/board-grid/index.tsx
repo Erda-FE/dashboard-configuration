@@ -6,6 +6,7 @@
  * 见GridItem相关实现即知,https://github.com/STRML/react-grid-layout/blob/master/lib/GridItem.jsx
  */
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'dva';
 import { Icon, Tooltip, Input } from 'antd';
 import { isEqual, get } from 'lodash';
@@ -17,6 +18,7 @@ import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation } fro
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
 import { paramsManage } from '../components/utils';
+import { saveImage } from './utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
@@ -70,6 +72,8 @@ class BoardGrid extends React.PureComponent<IProps> {
     UrlComponent: PropTypes.func,
   };
 
+  private chartRef: React.ReactInstance;
+
   private chartsMap: IChartsMap;
 
   private controlsMap: IChartsMap;
@@ -119,6 +123,12 @@ class BoardGrid extends React.PureComponent<IProps> {
     });
   }
 
+  onSaveImg = (chartId: string) => {
+    /* eslint-disable */
+    saveImage(ReactDOM.findDOMNode(this.chartRef), chartId);
+    /* eslint-enable */
+  }
+
   render() {
     const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
     const { width } = size;
@@ -156,8 +166,8 @@ class BoardGrid extends React.PureComponent<IProps> {
             const ChartNode = get(this.chartsMap, [chartType, 'component']) as any;
             return (
               <div key={i} data-grid={{ ...others }}>
-                <ChartOperation chartId={i} onConvert={onConvert}>
-                  <ChartNode chartId={i} />
+                <ChartOperation chartId={i} onConvert={onConvert} onSaveImg={() => this.onSaveImg(i)}>
+                  <ChartNode chartId={i} ref={(ref: React.ReactInstance) => { this.chartRef = ref; }} />
                 </ChartOperation>
               </div>
             );

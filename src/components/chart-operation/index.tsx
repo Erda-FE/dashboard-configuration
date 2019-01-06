@@ -1,10 +1,11 @@
 import React, { ReactElement } from 'react';
+import ReactDOM from 'react-dom';
 import { get, isEmpty } from 'lodash';
 import { connect } from 'dva';
-import { Icon, Dropdown, Menu, Popconfirm, message } from 'antd';
+import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
 import classnames from 'classnames';
 import Control from './control';
-import { pannelDataPrefix, getData } from '../utils';
+import { pannelDataPrefix, getData, saveImage } from '../utils';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -19,6 +20,8 @@ class ChartOperation extends React.PureComponent<IProps> {
   };
 
   private query: any;
+
+  private chartRef: React.ReactInstance;
 
   componentDidMount() {
     this.reloadData(this.props.url);
@@ -87,6 +90,12 @@ class ChartOperation extends React.PureComponent<IProps> {
     this.reloadData(this.props.url);
   }
 
+  onSaveImg = () => {
+    /* eslint-disable */
+    saveImage(ReactDOM.findDOMNode(this.chartRef), this.props.chartId);
+    /* eslint-enable */
+  }
+
   render() {
     const { children, isEdit, isChartEdit, url, chartId } = this.props;
     const child = React.Children.only(children);
@@ -94,15 +103,20 @@ class ChartOperation extends React.PureComponent<IProps> {
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
+          {isEdit && (
+            <Tooltip placement="bottom" title="导出图片">
+              <Icon type="camera" onClick={this.onSaveImg} />
+            </Tooltip>)
+          }
           {url && <Icon type="reload" onClick={this.reloadChart} />}
-          <Control chartId={chartId} onChange={this.onControlChange}/>
+          <Control chartId={chartId} onChange={this.onControlChange} />
           {isEdit && (
             <Dropdown overlay={this.getMenu()}>
               <Icon type="dash" />
             </Dropdown>
           )}
         </div>
-        {!isEmpty(resData) && React.cloneElement(child, { ...child.props, ...resData })}
+        {!isEmpty(resData) && React.cloneElement(child, { ...child.props, ...resData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );
   }

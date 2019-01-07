@@ -3,57 +3,59 @@
  */
 import React from 'react';
 import { connect } from 'dva';
-import { merge } from 'lodash';
+import { merge, map } from 'lodash';
 import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import echarts from 'echarts';
 import ChartSizeMe from '../chart-sizeme';
-// import { mockDataGauge } from './utils';
+import { mockDataMap } from './utils';
 import ChinaMap from 'files/china.json';
-
-interface IData {
-  name: string,
-  value: number,
-}
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
   chartId: string
   isMock?: boolean
 }
 
+const formatter = (params: any) => {
+  const { data } = params;
+  if (!data) return null;
+  const value = data.value ? `${data.value}s` : '暂无数据';
+  return `${data.name} <br /> ${value} `;
+};
+
 class ChartMap extends React.Component<IProps> {
   private source = {
     tooltip: {
       trigger: 'item',
-      showDelay: 0,
-      transitionDuration: 0.2,
-      formatter(params: any) {
-        let value: any[] = (`${params.value}`).split('.');
-        value = value[0].replace(/(\d{1,3})(?=(?:\d{3})+(?!\d))/g, '$1,');
-        return `${params.seriesName}<br/>${params.name}: ${value}`;
-      },
+      formatter,
     },
     visualMap: {
-      // left: 'right',
-      // min: 500000,
-      // max: 38000000,
-      // inRange: {
-      //     color: ['#313695', '#4575b4', '#74add1', '#abd9e9', '#e0f3f8', '#ffffbf', '#fee090', '#fdae61', '#f46d43', '#d73027', '#a50026']
-      // },
-      // text:['High','Low'],           // 文本，默认为数值文本
-      // calculable: true
+      type: 'piecewise',
+      pieces: [{ gte: 5 }, { lt: 10 }],
+      left: 'left',
+      top: 'bottom',
+      calculable: true,
     },
-    series: [
-      {
-        name: '中国地图',
-        type: 'map',
-        roam: true,
-        map: 'china',
-        itemStyle: {
-          emphasis: { label: { show: true } },
-        },
-        // data: this.props.datas,
+    series: map(this.props.datas, value => ({
+      name: '全国地图',
+      type: 'map',
+      mapType: 'china',
+      roam: true,
+      scaleLimit: {
+        min: 0.9,
+        max: 6,
       },
-    ],
+      layoutCenter: ['50%', '50%'],
+      layoutSize: '130%',
+      label: {
+        normal: {
+          show: true,
+        },
+        emphasis: {
+          show: true,
+        },
+      },
+      data: value.data,
+    })),
   };
 
   componentDidMount() {
@@ -67,14 +69,11 @@ class ChartMap extends React.Component<IProps> {
   }
 }
 
-// const ChartMap = ({ option = {}, isMock, name, datas }: IProps) => ;
-
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
   return {
     chartType: drawerInfo.chartType as string,
-    // name: isMock ? mockDataGauge.name : (name || '') as string,
-    // datas: isMock ? mockDataGauge.datas : (datas || []) as IData[],
+    datas: isMock ? mockDataMap.datas : (datas || []),
   };
 };
 

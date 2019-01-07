@@ -14,6 +14,7 @@ import { mockDataPie } from './chart-pie/utils';
 import { mockDataCards } from './chart-cards/utils';
 import { mockDataRadar } from './chart-radar/utils';
 import { mockDataGauge } from './chart-gauge/utils';
+import { mockDataMap } from './chart-map/utils';
 // 数据配置项
 import DataSettingsCommon from './data-settings';
 import DataSettingsCards from './chart-cards/data-settings';
@@ -75,7 +76,7 @@ const defaultChartsMap: IChartsMap = {
     name: '全国地图',
     icon: <img style={{ width: '30px', height: '30px', paddingTop: '5px', position: 'relative', top: '-6px' }} src={mapIcon} />,
     component: ChartMap,
-    mockData: mockDataGauge,
+    mockData: mockDataMap,
     dataSettings: [DataSettingsCommon],
   },
 };

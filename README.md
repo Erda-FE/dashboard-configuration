@@ -23,6 +23,7 @@
     onConvert={this.onConvert}
     chartsMap={chartsMap}
     controlsMap={controlsMap}
+    UrlComponent={UrlComponent}
   />
 
   // 3、webpack相关配置变更，因为当前没有转为es5
@@ -113,9 +114,19 @@
     },
   };
 
+  // 第三方系统的url配置器
+  // 非必传，可以覆盖内置的Input填写方式
+  UrlComponent: Input
+
+  // url参数映射
+  // 非必传，可以映射url中的类似{paramName}字段
+  // 举例：urlParamsMap={id: 1}，接口如 '/api/{id}?pro={id}' 会在请求时被转换为/api/1?pro=1
+  urlParamsMap: undefined
 ```
 
 ## 其他文档
 [如何调试](./Debug.md)
+
+[如何开发](./Develop.md)
 
 [功能规划](https://yuque.antfin-inc.com/docs/share/4d74d1c0-367f-4dd2-94ff-30eb3fcad10a)

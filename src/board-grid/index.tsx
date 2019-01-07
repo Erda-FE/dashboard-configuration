@@ -2,12 +2,13 @@
  * 栅格化仪表盘
  * 1、阻止拖动是通过onDragStart来实现而非isDraggable
  * 2、阻止缩放，是通过隐藏样式，而非isResizable
- * 因为react-grid-layout会在相关变化时子组件注销重新加载，从而导致图表重绘操作，
+ * 因为react-grid-layout会在相关变化时子组件注销重新加载，从而导致图表重绘，
  * 见GridItem相关实现即知,https://github.com/STRML/react-grid-layout/blob/master/lib/GridItem.jsx
  */
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'dva';
-import { Icon, Tooltip } from 'antd';
+import { Icon, Tooltip, Input } from 'antd';
 import { isEqual, get } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
@@ -16,19 +17,22 @@ import PropTypes from 'prop-types';
 import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
+import { paramsManage, saveImage } from '../components/utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
 
 interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
-  readOnly?: boolean
-  extra?: any
-  onSave?: (extra: any) => void,
-  theme?: string,
-  themeObj?: {},
-  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
-  chartsMap?: IChartsMap
-  controlsMap?: IChartsMap
+  readOnly?: boolean // 只读
+  extra?: any // 配置信息，包含图表布局、各图表配置信息
+  onSave?: (extra: any) => void, // 保存
+  theme?: string, // 主题名
+  themeObj?: {}, // 主题内容
+  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any> // 数据转化
+  chartsMap?: IChartsMap // 图表
+  controlsMap?: IChartsMap // 控件
+  UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
+  urlParamsMap?: { [name: string]: any } // 外部url参数映射
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -56,6 +60,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     readOnly: false,
     theme,
     themeObj,
+    UrlComponent: Input,
   };
 
   static childContextTypes = {
@@ -63,9 +68,13 @@ class BoardGrid extends React.PureComponent<IProps> {
     themeObj: PropTypes.object,
     chartsMap: PropTypes.object,
     controlsMap: PropTypes.object,
+    UrlComponent: PropTypes.func,
   };
 
+  private boardGridRef: React.ReactInstance;
+
   private chartsMap: IChartsMap;
+
   private controlsMap: IChartsMap;
 
   getChildContext() {
@@ -74,6 +83,7 @@ class BoardGrid extends React.PureComponent<IProps> {
       themeObj: this.props.themeObj,
       chartsMap: this.chartsMap,
       controlsMap: this.controlsMap,
+      UrlComponent: this.props.UrlComponent,
     };
   }
 
@@ -81,9 +91,10 @@ class BoardGrid extends React.PureComponent<IProps> {
     this.props.initDashboard(this.props.extra);
     this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
     this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
+    paramsManage.set(this.props.urlParamsMap);
   }
 
-  componentWillReceiveProps({ extra, chartsMap, controlsMap }: IProps) {
+  componentWillReceiveProps({ extra, chartsMap, controlsMap, urlParamsMap }: IProps) {
     if (!isEqual(extra, this.props.extra)) {
       this.props.initDashboard(extra);
     }
@@ -92,6 +103,9 @@ class BoardGrid extends React.PureComponent<IProps> {
     }
     if (!isEqual(controlsMap, this.props.controlsMap)) {
       this.controlsMap = { ...defaultControlsMap, ...controlsMap };
+    }
+    if (!isEqual(urlParamsMap, this.props.urlParamsMap)) {
+      paramsManage.set(urlParamsMap);
     }
   }
 
@@ -108,6 +122,12 @@ class BoardGrid extends React.PureComponent<IProps> {
     });
   }
 
+  onSaveImg = () => {
+    /* eslint-disable */
+    saveImage(ReactDOM.findDOMNode(this.boardGridRef), '仪表盘');
+    /* eslint-enable */
+  }
+
   render() {
     const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
     const { width } = size;
@@ -115,6 +135,11 @@ class BoardGrid extends React.PureComponent<IProps> {
       <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
         {!readOnly && (
           <div className="bi-header">
+            {!isEdit && (
+              <Tooltip placement="bottom" title="导出图片">
+                <Icon type="camera" onClick={this.onSaveImg} />
+              </Tooltip>)
+            }
             {isEdit && <Icon type="plus" onClick={openDrawerAdd} />}
             {isEdit ? (
               <Tooltip placement="bottom" title="保存">
@@ -128,6 +153,7 @@ class BoardGrid extends React.PureComponent<IProps> {
           </div>
         )}
         <ReactGridLayout
+          ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
           autoSize
           layout={layout}
           cols={cols}

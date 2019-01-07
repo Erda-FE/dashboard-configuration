@@ -1,8 +1,10 @@
 import React from 'react';
-import { get, isEqual, map } from 'lodash';
+import { get, isEqual, map, isEmpty } from 'lodash';
 import { connect } from 'dva';
 import { Select, message } from 'antd';
+import { OptionProps } from 'antd/lib/select';
 import { pannelControlPrefix, getData } from '../../utils';
+import { checkFixedData, strToObject } from './utils';
 
 const Option = Select.Option;
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -14,10 +16,6 @@ class SelectNormal extends React.PureComponent<IProps> {
     resData: [],
   };
 
-  componentDidMount() {
-    this.handleData(this.props);
-  }
-
   componentWillReceiveProps(nextProps: IProps) {
     if (!isEqual(nextProps.url, this.props.url) || !isEqual(nextProps.fixedData, this.props.fixedData)) {
       this.handleData(nextProps);
@@ -27,7 +25,7 @@ class SelectNormal extends React.PureComponent<IProps> {
   onChange = (value: string) => {
     const { searchName, onChange } = this.props;
     if (!onChange) return;
-    onChange({ [searchName]: value});
+    onChange({ [searchName]: value });
   }
 
   handleData = ({ url, fixedData }: IProps) => {
@@ -37,25 +35,41 @@ class SelectNormal extends React.PureComponent<IProps> {
       }).catch(() => {
         message.error('常规下拉框接口获取动态数据失败', 3);
       });
-    } else { // 静态数据
-      try {
-        const resData = JSON.parse(fixedData);
-        this.setState({ resData });
-      } catch (error) {
-        console.error('常规下拉框静态数据转化失败', fixedData);
-      }
+    } else if (checkFixedData(fixedData)) { // 静态数据
+      const resData = strToObject(fixedData);
+      this.setState({ resData });
+    }
+  }
+
+  onFocus = () => {
+    if (isEmpty(this.state.resData)) {
+      this.handleData(this.props);
     }
   }
 
   render() {
-    const { width } = this.props;
+    const { width, multiple, canSearch } = this.props;
     const { resData } = this.state;
+    const otherProps: any = {};
+    if (multiple) {
+      otherProps.mode = 'multiple';
+    }
+    if (canSearch) {
+      otherProps.showSearch = true;
+      otherProps.optionFilterProp = 'children';
+      // @ts-ignore
+      otherProps.filterOption = (input: string, option: React.ReactElement<OptionProps>) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    }
     return (
-      <Select defaultValue="" style={{ marginLeft: 12, width }} onChange={this.onChange}>
+      <Select
+        placeholder="请选择"
+        style={{ marginLeft: 12, width }}
+        onChange={this.onChange}
+        onFocus={this.onFocus}
+        {...otherProps}
+      >
         <Option key="all" value="">请选择</Option>
-        {map(resData, ({ name, value }, i) => {
-          return <Option key={value || `${i}`} value={value}>{name}</Option>;
-        })}
+        {map(resData, ({ name, value }, i) => <Option key={value || `${i}`} value={value}>{name}</Option>)}
       </Select>
     );
   }
@@ -64,6 +78,8 @@ class SelectNormal extends React.PureComponent<IProps> {
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
   width: get(drawerInfoMap, [chartId, `${pannelControlPrefix}width`], 120),
   searchName: get(drawerInfoMap, [chartId, `${pannelControlPrefix}searchName`], ''),
+  multiple: get(drawerInfoMap, [chartId, `${pannelControlPrefix}multiple`], false),
+  canSearch: get(drawerInfoMap, [chartId, `${pannelControlPrefix}canSearch`], false),
   url: get(drawerInfoMap, [chartId, `${pannelControlPrefix}url`], ''),
   fixedData: get(drawerInfoMap, [chartId, `${pannelControlPrefix}fixedData`], '[]'),
 });

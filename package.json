@@ -50,7 +50,8 @@
     "react-dom": "^16.3.2",
     "react-grid-layout": "^0.16.6",
     "react-redux": "^5.0.7",
-    "react-sizeme": "^2.5.2"
+    "react-sizeme": "^2.5.2",
+    "screenfull": "^4.0.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",

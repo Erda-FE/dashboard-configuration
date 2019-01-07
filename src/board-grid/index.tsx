@@ -17,7 +17,7 @@ import PropTypes from 'prop-types';
 import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
-import { paramsManage, saveImage } from '../components/utils';
+import { paramsManage, saveImage, setScreenFull } from '../components/utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
@@ -128,17 +128,29 @@ class BoardGrid extends React.PureComponent<IProps> {
     /* eslint-enable */
   }
 
+  onSetScreenFull = () => {
+    /* eslint-disable */
+    const container = document.getElementById('boardContainer');
+    setScreenFull(container, false);
+    /* eslint-enable */
+  }
+
   render() {
     const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
     const { width } = size;
     return (
-      <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
+      <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })} id="boardContainer">
         {!readOnly && (
           <div className="bi-header">
             {!isEdit && (
-              <Tooltip placement="bottom" title="导出图片">
-                <Icon type="camera" onClick={this.onSaveImg} />
-              </Tooltip>)
+              <span>
+                <Tooltip placement="bottom" title="图表全屏">
+                  <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
+                </Tooltip>
+                <Tooltip placement="bottom" title="导出图片">
+                  <Icon type="camera" onClick={this.onSaveImg} />
+                </Tooltip>
+              </span>)
             }
             {isEdit && <Icon type="plus" onClick={openDrawerAdd} />}
             {isEdit ? (

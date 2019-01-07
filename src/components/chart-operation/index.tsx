@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
 import classnames from 'classnames';
 import Control from './control';
-import { pannelDataPrefix, getData, saveImage } from '../utils';
+import { pannelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -17,6 +17,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 class ChartOperation extends React.PureComponent<IProps> {
   state = {
     resData: {},
+    isFull: false,
   };
 
   private query: any;
@@ -96,25 +97,36 @@ class ChartOperation extends React.PureComponent<IProps> {
     /* eslint-enable */
   }
 
+  onSetScreenFull = () => {
+    const { isFull } = this.state;
+    /* eslint-disable */
+    setScreenFull(ReactDOM.findDOMNode(this.chartRef), isFull);
+    this.setState({isFull: !isFull});
+    /* eslint-enable */
+  }
+
   render() {
     const { children, isEdit, isChartEdit, url, chartId } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
     return (
-      <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
+      <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit, full: true })}>
         <div className="bi-chart-operation-header">
-          {isEdit && (
-            <Tooltip placement="bottom" title="导出图片">
-              <Icon type="camera" onClick={this.onSaveImg} />
-            </Tooltip>)
-          }
           {url && <Icon type="reload" onClick={this.reloadChart} />}
-          <Control chartId={chartId} onChange={this.onControlChange} />
           {isEdit && (
-            <Dropdown overlay={this.getMenu()}>
-              <Icon type="dash" />
-            </Dropdown>
-          )}
+            <span>
+              <Tooltip placement="bottom" title="图表全屏">
+                <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
+              </Tooltip>
+              <Tooltip placement="bottom" title="导出图片">
+                <Icon type="camera" onClick={this.onSaveImg} />
+              </Tooltip>
+              <Dropdown overlay={this.getMenu()}>
+                <Icon type="dash" />
+              </Dropdown>
+            </span>)
+          }
+          <Control chartId={chartId} onChange={this.onControlChange} />
         </div>
         {!isEmpty(resData) && React.cloneElement(child, { ...child.props, ...resData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>

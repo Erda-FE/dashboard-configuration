@@ -34,7 +34,9 @@ declare module 'echarts-for-react' {
     shouldSetOption?: Func;
     themeObj?: {}
   }
-  export default class ReactEcharts extends React.Component<ReactEchartsPropsTypes, any>{}
+  export default class ReactEcharts extends React.Component<ReactEchartsPropsTypes, any> {}
 }
 
 declare module 'dom-to-image';
+
+declare module 'screenfull';

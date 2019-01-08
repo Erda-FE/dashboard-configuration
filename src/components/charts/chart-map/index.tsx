@@ -8,8 +8,7 @@ import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import echarts from 'echarts';
 import ChartSizeMe from '../chart-sizeme';
 import { mockDataMap } from './utils';
-import ChinaMap from '../../../files/china.json';
-// import { MapJson } from './utils/files';
+import ChinaMap from './utils/china.json';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
   chartId: string

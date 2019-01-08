@@ -92,15 +92,11 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   onSaveImg = () => {
-    /* eslint-disable */
-    saveImage(ReactDOM.findDOMNode(this.chartRef), this.props.chartId);
-    /* eslint-enable */
+    saveImage(ReactDOM.findDOMNode(this.chartRef), this.props.chartId);  // eslint-disable-line
   }
 
   onSetScreenFull = () => {
-    /* eslint-disable */
-    setScreenFull(ReactDOM.findDOMNode(this.chartRef), screenfull.isFullscreen);
-    /* eslint-enable */
+    setScreenFull(ReactDOM.findDOMNode(this.chartRef), screenfull.isFullscreen); // eslint-disable-line
   }
 
   render() {

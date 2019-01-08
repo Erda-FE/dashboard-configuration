@@ -125,15 +125,11 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   onSaveImg = () => {
-    /* eslint-disable */
-    saveImage(ReactDOM.findDOMNode(this.boardGridRef), '仪表盘');
-    /* eslint-enable */
+    saveImage(ReactDOM.findDOMNode(this.boardGridRef), '仪表盘'); // eslint-disable-line
   }
 
   onSetScreenFull = () => {
-    /* eslint-disable */
     setScreenFull(this.boardRef, false);
-    /* eslint-enable */
   }
 
   render() {

@@ -108,7 +108,7 @@ class ChartOperation extends React.PureComponent<IProps> {
     const child = React.Children.only(children);
     const { resData } = this.state;
     return (
-      <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit, full: true })}>
+      <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header">
           {url && <Icon type="reload" onClick={this.reloadChart} />}
           {isEdit && (

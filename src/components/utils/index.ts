@@ -1,6 +1,7 @@
 import { message } from 'antd';
 import domtoimage from 'dom-to-image';
 import { forEach, replace } from 'lodash';
+import screenfull from 'screenfull';
 import agent from 'agent';
 
 export const formItemLayout = {
@@ -71,3 +72,11 @@ export function saveImage(dom: Element | null | Text, name: string) {
   });
 }
 
+
+export function setScreenFull(dom: Element | null | Text, isFullscreen: boolean) {
+  if (dom && !isFullscreen) {
+    screenfull.request(dom);
+  } else {
+    screenfull.exit();
+  }
+}

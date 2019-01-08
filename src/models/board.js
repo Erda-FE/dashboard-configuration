@@ -11,8 +11,8 @@ export default {
   state: cloneDeep(defaultState), // 使用cloneDeep，因为layout在整个运作过程中涉及到引用，而immutable太重
   effects: {
     * initDashboard({ dashboardType, extra }, { put }) {
-      yield put({ type: 'querySuccess', payload: { layout: get(extra, 'layout', []), dashboardType } });
-      yield put({ type: 'biDrawer/init', drawerInfoMap: get(extra, 'drawerInfoMap', {}) });
+      yield yield put({ type: 'biDrawer/init', drawerInfoMap: get(extra, 'drawerInfoMap', {}) });
+      yield yield put({ type: 'querySuccess', payload: { layout: get(extra, 'layout', []), dashboardType } });
     },
     * generateChart({ chartId }, { select, put }) {
       const { biDashBoard: { layout } } = yield select(state => state);

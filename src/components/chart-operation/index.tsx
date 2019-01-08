@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { get, isEmpty } from 'lodash';
 import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
+import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
 import { pannelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
@@ -17,7 +18,6 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 class ChartOperation extends React.PureComponent<IProps> {
   state = {
     resData: {},
-    isFull: false,
   };
 
   private query: any;
@@ -98,10 +98,8 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   onSetScreenFull = () => {
-    const { isFull } = this.state;
     /* eslint-disable */
-    setScreenFull(ReactDOM.findDOMNode(this.chartRef), isFull);
-    this.setState({isFull: !isFull});
+    setScreenFull(ReactDOM.findDOMNode(this.chartRef), screenfull.isFullscreen);
     /* eslint-enable */
   }
 

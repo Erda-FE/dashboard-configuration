@@ -73,7 +73,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   private boardGridRef: React.ReactInstance;
 
-  private bordRef: HTMLDivElement;
+  private boardRef: HTMLDivElement;
 
   private chartsMap: IChartsMap;
 
@@ -132,7 +132,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   onSetScreenFull = () => {
     /* eslint-disable */
-    setScreenFull(this.bordRef, false);
+    setScreenFull(this.boardRef, false);
     /* eslint-enable */
   }
 
@@ -142,7 +142,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     return (
       <div
         className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}
-        ref={(ref: HTMLDivElement) => { this.bordRef = ref; }}
+        ref={(ref: HTMLDivElement) => { this.boardRef = ref; }}
       >
         {!readOnly && (
           <div className="bi-header">

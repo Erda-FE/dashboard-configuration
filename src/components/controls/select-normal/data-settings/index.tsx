@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input } from 'antd';
+import { Form, Input, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PropTypes from 'prop-types';
 import { formItemLayout, pannelControlPrefix } from '../../../utils';
@@ -47,6 +47,18 @@ export default class DataSettings extends React.PureComponent<FormComponentProps
               validator: this.validateFixedData,
             }],
           })(<TextArea placeholder={`${''}请输入标准JSON格式的固定数据，用于静态的控件数据，示例：[{"name": 'lucy', "value": 1}]`} />)}
+        </Form.Item>
+        <Form.Item label="多选" {...formItemLayout}>
+          {getFieldDecorator(`${pannelControlPrefix}multiple`, {
+            valuePropName: 'checked',
+            initialValue: false,
+          })(<Checkbox />)}
+        </Form.Item>
+        <Form.Item label="搜索" {...formItemLayout}>
+          {getFieldDecorator(`${pannelControlPrefix}canSearch`, {
+            valuePropName: 'checked',
+            initialValue: false,
+          })(<Checkbox />)}
         </Form.Item>
       </React.Fragment>
     );

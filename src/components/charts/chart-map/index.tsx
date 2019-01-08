@@ -8,7 +8,8 @@ import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import echarts from 'echarts';
 import ChartSizeMe from '../chart-sizeme';
 import { mockDataMap } from './utils';
-import ChinaMap from 'files/china.json';
+import ChinaMap from '../../../files/china.json';
+// import { MapJson } from './utils/files';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
   chartId: string
@@ -22,7 +23,7 @@ const formatter = (params: any) => {
   return `${data.name} <br /> ${value} `;
 };
 
-class ChartMap extends React.Component<IProps> {
+class ChartMap extends React.PureComponent<IProps> {
   private source = {
     tooltip: {
       trigger: 'item',

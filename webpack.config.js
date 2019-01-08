@@ -79,10 +79,6 @@ module.exports = () => {
           loader: 'happypack/loader?id=ts',
           exclude: /node_modules/,
         },
-        {
-          test: /\.(svg)$/,
-          loader: 'file-loader?name=src/files/images/[name].[ext]',
-        },
       ],
     },
     resolve: {
@@ -92,7 +88,6 @@ module.exports = () => {
         'board-grid': path.resolve(__dirname, 'src/board-grid'),
         // 业务域 含有路由
         // 其他
-        images: path.resolve(__dirname, './src/files/images'),
         agent: path.resolve(__dirname, 'example/agent.js'),
         utils: path.resolve(__dirname, 'example/utils'),
         app: path.resolve(__dirname, 'example'),

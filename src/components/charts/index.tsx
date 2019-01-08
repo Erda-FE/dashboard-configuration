@@ -19,8 +19,8 @@ import { mockDataMap } from './chart-map/utils';
 import DataSettingsCommon from './data-settings';
 import DataSettingsCards from './chart-cards/data-settings';
 import DataSettingsRadar from './chart-radar/data-settings';
-
-import mapIcon from 'images/ChinaMap.svg';
+// Icon
+import { mapIcon } from './chart-map/utils/files';
 
 const defaultChartsMap: IChartsMap = {
   line: {
@@ -74,7 +74,8 @@ const defaultChartsMap: IChartsMap = {
   },
   map: {
     name: '全国地图',
-    icon: <img style={{ width: '30px', height: '30px', paddingTop: '5px', position: 'relative', top: '-6px' }} src={mapIcon} />,
+    /* eslint-disable react/no-danger */
+    icon: <i className="anticon" dangerouslySetInnerHTML={mapIcon} />,
     component: ChartMap,
     mockData: mockDataMap,
     dataSettings: [DataSettingsCommon],

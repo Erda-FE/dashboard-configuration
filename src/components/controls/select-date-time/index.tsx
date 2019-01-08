@@ -9,7 +9,6 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   onChange: (query: any) => void
 }
 
-
 class SelectDateTime extends React.PureComponent<IProps> {
   onOk = (selectDateTime: any) => {
     const { onChange } = this.props;

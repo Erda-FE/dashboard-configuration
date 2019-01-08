@@ -73,6 +73,8 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   private boardGridRef: React.ReactInstance;
 
+  private bordRef: HTMLDivElement;
+
   private chartsMap: IChartsMap;
 
   private controlsMap: IChartsMap;
@@ -130,8 +132,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   onSetScreenFull = () => {
     /* eslint-disable */
-    const container = document.getElementById('boardContainer');
-    setScreenFull(container, false);
+    setScreenFull(this.bordRef, false);
     /* eslint-enable */
   }
 
@@ -139,7 +140,10 @@ class BoardGrid extends React.PureComponent<IProps> {
     const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
     const { width } = size;
     return (
-      <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })} id="boardContainer">
+      <div
+        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}
+        ref={(ref: HTMLDivElement) => { this.bordRef = ref; }}
+      >
         {!readOnly && (
           <div className="bi-header">
             {!isEdit && (

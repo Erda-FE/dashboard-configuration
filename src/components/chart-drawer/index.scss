@@ -12,6 +12,7 @@
   }
   .bi-drawer-content {
     flex: 1;
+    overflow-y: auto;
   }
   .bi-drawer-footer {
     display: flex;

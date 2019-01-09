@@ -6,6 +6,7 @@
  * 见GridItem相关实现即知,https://github.com/STRML/react-grid-layout/blob/master/lib/GridItem.jsx
  */
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { connect } from 'dva';
 import { Icon, Tooltip, Input } from 'antd';
 import { isEqual, get } from 'lodash';
@@ -16,7 +17,7 @@ import PropTypes from 'prop-types';
 import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
-import { paramsManage } from '../components/utils';
+import { paramsManage, saveImage, setScreenFull } from '../components/utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
@@ -70,6 +71,10 @@ class BoardGrid extends React.PureComponent<IProps> {
     UrlComponent: PropTypes.func,
   };
 
+  private boardGridRef: React.ReactInstance;
+
+  private boardRef: HTMLDivElement;
+
   private chartsMap: IChartsMap;
 
   private controlsMap: IChartsMap;
@@ -119,13 +124,34 @@ class BoardGrid extends React.PureComponent<IProps> {
     });
   }
 
+  onSaveImg = () => {
+    saveImage(ReactDOM.findDOMNode(this.boardGridRef), '仪表盘'); // eslint-disable-line
+  }
+
+  onSetScreenFull = () => {
+    setScreenFull(this.boardRef, false);
+  }
+
   render() {
     const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
     const { width } = size;
     return (
-      <div className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}>
+      <div
+        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}
+        ref={(ref: HTMLDivElement) => { this.boardRef = ref; }}
+      >
         {!readOnly && (
           <div className="bi-header">
+            {!isEdit && (
+              <span>
+                <Tooltip placement="bottom" title="图表全屏">
+                  <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
+                </Tooltip>
+                <Tooltip placement="bottom" title="导出图片">
+                  <Icon type="camera" onClick={this.onSaveImg} />
+                </Tooltip>
+              </span>)
+            }
             {isEdit && <Icon type="plus" onClick={openDrawerAdd} />}
             {isEdit ? (
               <Tooltip placement="bottom" title="保存">
@@ -139,6 +165,7 @@ class BoardGrid extends React.PureComponent<IProps> {
           </div>
         )}
         <ReactGridLayout
+          ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
           autoSize
           layout={layout}
           cols={cols}

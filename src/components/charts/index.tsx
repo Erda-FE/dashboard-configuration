@@ -7,16 +7,22 @@ import ChartPie from './chart-pie';
 import ChartCards from './chart-cards';
 import ChartRadar from './chart-radar';
 import ChartGauge from './chart-gauge';
+import ChartMap from './chart-map';
+import ChartScatter from './chart-scatter';
 // mock数据
 import { mockDataLine } from './chart-line/utils';
 import { mockDataPie } from './chart-pie/utils';
 import { mockDataCards } from './chart-cards/utils';
 import { mockDataRadar } from './chart-radar/utils';
 import { mockDataGauge } from './chart-gauge/utils';
+import { mockDataMap } from './chart-map/utils';
+import { mockDataScatter } from './chart-scatter/utils';
 // 数据配置项
 import DataSettingsCommon from './data-settings';
 import DataSettingsCards from './chart-cards/data-settings';
 import DataSettingsRadar from './chart-radar/data-settings';
+// Icon
+import { mapIcon } from './chart-map/utils/files';
 
 const defaultChartsMap: IChartsMap = {
   line: {
@@ -67,6 +73,20 @@ const defaultChartsMap: IChartsMap = {
     component: ChartGauge,
     mockData: mockDataGauge,
     dataSettings: [DataSettingsCommon],
+  },
+  map: {
+    name: '全国地图',
+    /* eslint-disable react/no-danger */
+    icon: <i className="anticon" dangerouslySetInnerHTML={mapIcon} />,
+    component: ChartMap,
+    mockData: mockDataMap,
+    dataSettings: [DataSettingsCommon],
+  },
+  dot: {
+    name: '散点图',
+    icon: <Icon type="dot-chart" />,
+    component: ChartScatter,
+    mockData: mockDataScatter,
   },
 };
 

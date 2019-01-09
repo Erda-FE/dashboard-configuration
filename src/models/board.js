@@ -24,10 +24,8 @@ export default {
       const { biDashBoard: { layout }, biDrawer: { drawerInfoMap } } = yield select(state => state);
       return { layout, drawerInfoMap }; // 只输出外部需要的
     },
-    * deleteChart({ chartId }, { select, put }) {
-      const { layout } = yield select(state => state.biDashBoard);
-      remove(layout, ({ i }) => chartId === i);
-      yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
+    * deleteChart({ chartId }, { put }) {
+      yield put({ type: 'deleteLayout', chartId });
       yield put({ type: 'biDrawer/deleteDrawerInfo', chartId });
     },
     * resetBoard(_, { put }) {
@@ -44,6 +42,11 @@ export default {
     },
     openEdit(state) {
       return { ...state, isEdit: true };
+    },
+    deleteLayout(state, { chartId }) {
+      const { layout } = state;
+      remove(layout, ({ i }) => chartId === i);
+      return { ...state, layout: [...layout] };
     },
     reset() {
       return { ...cloneDeep(defaultState) };

@@ -6,6 +6,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './index.scss';
+
 const { Panel } = Collapse;
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;

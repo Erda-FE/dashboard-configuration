@@ -5,7 +5,7 @@ import { Drawer, Button, Collapse, Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PanelCharts from './panel-charts';
 import PanelControls from './panel-controls';
-import PanelStyles from './panel-styles';
+import PanelSettings from './panel-settings';
 import PanelData from './panel-data';
 import './index.scss';
 
@@ -37,7 +37,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
             <Collapse defaultActiveKey={['charts']}>
               <PanelCharts />
               <PanelControls form={form} />
-              <PanelStyles />
+              <PanelSettings form={form} />
               <PanelData form={form} />
             </Collapse>
           </Form>

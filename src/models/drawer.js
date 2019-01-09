@@ -49,6 +49,23 @@ export default {
       yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
       yield put({ type: 'querySuccess', payload: { visible: false, editChartId: '' } });
     },
+    * chooseChart({ chartType }, { put, select }) { // 编辑时移除
+      const { drawerInfoMap, editChartId } = yield select(state => state.biDrawer);
+      const drawerInfo = drawerInfoMap[editChartId];
+      let tempPayload = {};
+      if (chartType === drawerInfo.chartType) {
+        forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
+          if (startsWith(key, pannelDataPrefix)) {
+            delete drawerInfo[key];
+          }
+        });
+        yield yield put({ type: 'biDashBoard/deleteLayout', chartId: editChartId });
+        tempPayload = { drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
+      } else {
+        tempPayload = { drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType } } };
+      }
+      yield put({ type: 'querySuccess', payload: tempPayload });
+    },
   },
   reducers: {
     querySuccess(state, { payload }) {
@@ -61,19 +78,6 @@ export default {
       const chartId = `chart-${generateUUID()}`;
       const { drawerInfoMap } = state;
       return { ...state, visible: true, editChartId: chartId, drawerInfoMap: { ...drawerInfoMap, [chartId]: {} } };
-    },
-    chooseChart(state, { chartType }) {
-      const { drawerInfoMap, editChartId } = state;
-      const drawerInfo = drawerInfoMap[editChartId];
-      if (chartType === drawerInfo.chartType) {
-        forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
-          if (startsWith(key, pannelDataPrefix)) {
-            delete drawerInfo[key];
-          }
-        });
-        return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
-      }
-      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType } } };
     },
     chooseControl(state, { controlType }) {
       const { drawerInfoMap, editChartId } = state;

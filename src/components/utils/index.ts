@@ -15,6 +15,7 @@ export const formItemLayout = {
 
 export const pannelDataPrefix = 'panneldata#';
 export const pannelControlPrefix = 'pannelcontrol#';
+export const pannelSettingPrefix = 'pannelsetting#';
 
 export const positiveIntRegExp = /^[1-9]\d*$/;
 
@@ -24,6 +25,7 @@ class ParamsManage {
   set(params: IParams | undefined) {
     this.params = params;
   }
+
   get() {
     return this.params || {};
   }

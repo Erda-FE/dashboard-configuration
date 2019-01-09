@@ -6,18 +6,18 @@ declare module 'echarts-for-react' {
   interface EventMap {
     [key: string]: Func,
   }
-  
+
   interface ObjectMap {
     [key: string]: any,
   }
-  
+
   interface OptsMap {
     devicePixelRatio?: number,
     renderer?: 'canvas' | 'svg',
     width?: number | null | undefined | 'auto',
     height?: number | null | undefined | 'auto',
   }
-  
+
   interface ReactEchartsPropsTypes {
     option?: ObjectMap;
     notMerge?: boolean;
@@ -34,5 +34,9 @@ declare module 'echarts-for-react' {
     shouldSetOption?: Func;
     themeObj?: {}
   }
-  export default class ReactEcharts extends React.Component<ReactEchartsPropsTypes, any>{}
+  export default class ReactEcharts extends React.Component<ReactEchartsPropsTypes, any> {}
 }
+
+declare module 'dom-to-image';
+
+declare module 'screenfull';

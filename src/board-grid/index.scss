@@ -20,4 +20,18 @@ $color-text: #666666;
   .bi-off-edit .react-resizable-handle {
     display: none;
   }
+
+  // 全屏样式，不能合并一起简写，否则不生效
+  :not(:root):-webkit-full-screen::backdrop {
+    background: rgba(55, 55, 55, .6);
+  }
+  :not(:root):-moz-full-screen::backdrop {
+    background: rgba(55, 55, 55, .6);
+  }
+  :not(:root):-ms-full-screen::backdrop {
+    background: rgba(55, 55, 55, .6);
+  }
+  :not(:root):-o-full-screen::backdrop {
+    background: rgba(55, 55, 55, .6);
+  }
 }

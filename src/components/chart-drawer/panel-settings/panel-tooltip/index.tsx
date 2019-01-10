@@ -15,9 +15,9 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
     <Form.Item label="formatter" {...formItemLayout}>
       {getFieldDecorator(`${panelSettingTooltipPrefix}formatter`, {
         rules: [{
-          message: '请输入formatter',
+          message: '请输入formatter, 正则或者es5函数',
         }],
-      })(<TextArea placeholder="请输入formatter，示例：{a} <br/>{b}: {c} ({d})%" />)}
+      })(<TextArea placeholder="请输入formatter，示例：{a} <br/>{b}: {c} ({d})% 或 function(params) { return params[0].value; }" />)}
     </Form.Item>
   </Panel>
 );

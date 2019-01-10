@@ -4,13 +4,13 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout, pannelControlPrefix, positiveIntRegExp } from '../../utils';
+import { formItemLayout, panelControlPrefix, positiveIntRegExp } from '../../utils';
 
 const DataSettings = ({ form }: FormComponentProps) => {
   const { getFieldDecorator } = form;
   return (
     <Form.Item label="控件宽度" {...formItemLayout}>
-      {getFieldDecorator(`${pannelControlPrefix}width`, {
+      {getFieldDecorator(`${panelControlPrefix}width`, {
         initialValue: 120,
         rules: [{
           required: true,

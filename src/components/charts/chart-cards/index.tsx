@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Icon } from 'antd';
 import { mockDataCards, mockProportion } from './utils';
-import { pannelDataPrefix } from '../../utils';
+import { panelDataPrefix } from '../../utils';
 import ChartMask from '../chart-mask';
 import './index.scss';
 
@@ -72,7 +72,7 @@ const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => 
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas, option }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
-  const proportion = isMock ? mockProportion : getProportion(drawerInfo[`${pannelDataPrefix}proportion`]);
+  const proportion = isMock ? mockProportion : getProportion(drawerInfo[`${panelDataPrefix}proportion`]);
   const cardsProportion = convertProportion(proportion);
   return {
     chartType: drawerInfo.chartType as string,

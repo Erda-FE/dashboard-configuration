@@ -10,3 +10,4 @@ dist/
 lib/
 manifest.json
 *.log
+.DS_Store

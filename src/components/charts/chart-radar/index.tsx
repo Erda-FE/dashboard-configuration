@@ -7,7 +7,7 @@ import { merge } from 'lodash';
 import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import ChartSizeMe from '../chart-sizeme';
 import { mockDataRadar, mockIndicator } from './utils';
-import { pannelDataPrefix } from '../../utils';
+import { panelDataPrefix } from '../../utils';
 
 interface IData {
   name: string,
@@ -50,7 +50,7 @@ const getIndicator = (drawerInfo: any) => {
   const radarKeys = Object.keys(drawerInfo).filter(key => key.includes('radarConfigKey'));
   indicator = radarKeys.map((key) => {
     const name = drawerInfo[key];
-    const maxKey = `${pannelDataPrefix}radarConfigMax${key.slice(-1)}`;
+    const maxKey = `${panelDataPrefix}radarConfigMax${key.slice(-1)}`;
     const max = drawerInfo[maxKey];
     return { name, max };
   });

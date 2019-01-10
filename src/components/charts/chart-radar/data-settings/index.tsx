@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Icon, Row, Col, InputNumber } from 'antd';
 import { isEqual, max, toNumber } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
-import { pannelDataPrefix } from '../../../utils';
+import { panelDataPrefix } from '../../../utils';
 
 import './index.scss';
 
@@ -57,7 +57,7 @@ class DataSettings extends React.PureComponent<IProps> {
               <Col span={9}>
                 <Form.Item style={{ display: 'inline-block' }} >
                   {
-                    getFieldDecorator(`${pannelDataPrefix}${configKey}`, {
+                    getFieldDecorator(`${panelDataPrefix}${configKey}`, {
                       rules: [{
                         message: '请输入指标配置名称',
                         required: true,
@@ -69,7 +69,7 @@ class DataSettings extends React.PureComponent<IProps> {
               <Col span={7}>
                 <Form.Item style={{ display: 'inline-block' }} >
                   {
-                    getFieldDecorator(`${pannelDataPrefix}${configMax}`, {
+                    getFieldDecorator(`${panelDataPrefix}${configMax}`, {
                       rules: [{
                         message: '请输入指标最大值',
                         required: true,

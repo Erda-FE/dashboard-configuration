@@ -3,7 +3,7 @@ import { get, isEqual, map, isEmpty } from 'lodash';
 import { connect } from 'dva';
 import { Select, message } from 'antd';
 import { OptionProps } from 'antd/lib/select';
-import { pannelControlPrefix, getData } from '../../utils';
+import { panelControlPrefix, getData } from '../../utils';
 import { checkFixedData, strToObject } from './utils';
 
 const Option = Select.Option;
@@ -76,12 +76,12 @@ class SelectNormal extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
-  width: get(drawerInfoMap, [chartId, `${pannelControlPrefix}width`], 120),
-  searchName: get(drawerInfoMap, [chartId, `${pannelControlPrefix}searchName`], ''),
-  multiple: get(drawerInfoMap, [chartId, `${pannelControlPrefix}multiple`], false),
-  canSearch: get(drawerInfoMap, [chartId, `${pannelControlPrefix}canSearch`], false),
-  url: get(drawerInfoMap, [chartId, `${pannelControlPrefix}url`], ''),
-  fixedData: get(drawerInfoMap, [chartId, `${pannelControlPrefix}fixedData`], '[]'),
+  width: get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120),
+  searchName: get(drawerInfoMap, [chartId, `${panelControlPrefix}searchName`], ''),
+  multiple: get(drawerInfoMap, [chartId, `${panelControlPrefix}multiple`], false),
+  canSearch: get(drawerInfoMap, [chartId, `${panelControlPrefix}canSearch`], false),
+  url: get(drawerInfoMap, [chartId, `${panelControlPrefix}url`], ''),
+  fixedData: get(drawerInfoMap, [chartId, `${panelControlPrefix}fixedData`], '[]'),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

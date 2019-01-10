@@ -21,6 +21,6 @@ export function checkFixedData(str: string): boolean {
 }
 
 export function strToObject(str: string) {
-  /* eslint-disable */
+  // eslint-disable-next-line
   return  (new Function(`return ${str}`))();
 }

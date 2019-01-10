@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formItemLayout, pannelSettingPrefix } from '../../../utils';
@@ -7,11 +6,11 @@ import { formItemLayout, pannelSettingPrefix } from '../../../utils';
 const { Panel } = Collapse;
 const { TextArea } = Input;
 
-type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type IProps = FormComponentProps;
 
 const pannelSettingTooltipPrefix = `${pannelSettingPrefix}tooltip#`;
 
-const PanelSettings = ({ visible, chooseChart, form: { getFieldDecorator }, ...others }: IProps) => (
+const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
   <Panel {...others} header="tooltip" key="tooltip">
     <Form.Item label="formatter" {...formItemLayout}>
       {getFieldDecorator(`${pannelSettingTooltipPrefix}formatter`, {
@@ -23,14 +22,4 @@ const PanelSettings = ({ visible, chooseChart, form: { getFieldDecorator }, ...o
   </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { visible } }: any) => ({
-  visible,
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  chooseChart() {
-    dispatch({ type: 'biDrawer/chooseChart' });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PanelSettings);
+export default PanelSettings;

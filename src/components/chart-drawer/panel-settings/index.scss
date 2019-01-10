@@ -1,0 +1,12 @@
+$color-text: #666666;
+:global {
+  .bi-panel-setting-header {
+    i {
+      margin-left: 8px;
+      color: $color-text;
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+}

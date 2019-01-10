@@ -4,9 +4,9 @@
 import React from 'react';
 import { connect } from 'dva';
 import { merge, get } from 'lodash';
-import { ReactEchartsPropsTypes } from 'echarts-for-react';
 import ChartSizeMe from '../chart-sizeme';
 import { mockDataLine } from './utils';
+import { convertSettingToOption } from '../utils';
 
 type IType = 'line' | 'bar' | 'area';
 
@@ -17,9 +17,8 @@ interface IData {
   areaStyle?: object // 基本面积图时，传入空的{}即可
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  option?: any
   isMock?: boolean
 }
 
@@ -60,6 +59,7 @@ const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],
     datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
+    option: convertSettingToOption(drawerInfo),
   };
 };
 

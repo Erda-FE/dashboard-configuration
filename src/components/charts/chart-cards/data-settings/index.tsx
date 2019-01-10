@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout, pannelDataPrefix } from '../../../utils';
+import { formItemLayout, panelDataPrefix } from '../../../utils';
 
 const { TextArea } = Input;
 const errorMessage = '请输入正确二维数组， 如：[[1,1,1,1],[1,1]]';
@@ -11,7 +11,7 @@ const DataSettings = ({ form }: FormComponentProps) => {
   return (
     <Form.Item label="栅格比例" {...formItemLayout}>
       {
-        getFieldDecorator(`${pannelDataPrefix}proportion`, {
+        getFieldDecorator(`${panelDataPrefix}proportion`, {
           rules: [{
             message: '请输入栅格比例',
           }, {

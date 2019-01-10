@@ -2,7 +2,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { connect } from 'dva';
 import { DatePicker } from 'antd';
-import { pannelControlPrefix } from '../../utils';
+import { panelControlPrefix } from '../../utils';
 
 const { RangePicker } = DatePicker;
 
@@ -32,7 +32,7 @@ class SelectDateRange extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
-  width: `${get(drawerInfoMap, [chartId, `${pannelControlPrefix}width`], 120)}px`,
+  width: `${get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120)}px`,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

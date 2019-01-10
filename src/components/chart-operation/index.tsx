@@ -6,7 +6,7 @@ import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
 import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
-import { pannelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
+import { panelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -133,7 +133,7 @@ const mapStateToProps = ({
   biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => ({
     isEdit,
     isChartEdit: editChartId === chartId,
-    url: get(drawerInfoMap, [chartId, `${pannelDataPrefix}url`]) as any,
+    url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,
   });
 
 const mapDispatchToProps = (dispatch: any) => ({

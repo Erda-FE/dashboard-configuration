@@ -13,9 +13,9 @@ export const formItemLayout = {
   },
 };
 
-export const pannelDataPrefix = 'panneldata#';
-export const pannelControlPrefix = 'pannelcontrol#';
-export const pannelSettingPrefix = 'pannelsetting#';
+export const panelDataPrefix = 'paneldata#';
+export const panelControlPrefix = 'panelcontrol#';
+export const panelSettingPrefix = 'panelsetting#';
 
 export const positiveIntRegExp = /^[1-9]\d*$/;
 

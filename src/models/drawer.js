@@ -1,5 +1,5 @@
 import { find, cloneDeep, forEach, startsWith } from 'lodash';
-import { pannelControlPrefix, pannelDataPrefix } from '../components/utils';
+import { panelControlPrefix, panelDataPrefix } from '../components/utils';
 
 const defaultState = {
   visible: false,
@@ -55,7 +55,7 @@ export default {
       let tempPayload = {};
       if (chartType === drawerInfo.chartType) {
         forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
-          if (startsWith(key, pannelDataPrefix)) {
+          if (startsWith(key, panelDataPrefix)) {
             delete drawerInfo[key];
           }
         });
@@ -84,7 +84,7 @@ export default {
       const drawerInfo = drawerInfoMap[editChartId];
       if (controlType === drawerInfo.controlType) {
         forEach(drawerInfo, (value, key) => { // 移除填写的控件配置
-          if (startsWith(key, pannelControlPrefix)) {
+          if (startsWith(key, panelControlPrefix)) {
             delete drawerInfo[key];
           }
         });

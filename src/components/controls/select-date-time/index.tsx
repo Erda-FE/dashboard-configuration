@@ -2,7 +2,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { connect } from 'dva';
 import { DatePicker } from 'antd';
-import { pannelControlPrefix } from '../../utils';
+import { panelControlPrefix } from '../../utils';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -32,7 +32,7 @@ class SelectDateTime extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
-  width: `${get(drawerInfoMap, [chartId, `${pannelControlPrefix}width`], 120)}px`,
+  width: `${get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120)}px`,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

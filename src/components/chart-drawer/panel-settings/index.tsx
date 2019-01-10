@@ -1,24 +1,32 @@
 import React from 'react';
-import { connect } from 'dva';
-import { Collapse } from 'antd';
+import { Collapse, Icon, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import PanelToolTip from './panel-tooltip';
+import './index.scss';
 
 const { Panel } = Collapse;
 
-type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type IProps = FormComponentProps;
 
-const PanelSettings = ({ visible, chooseChart, ...others }: IProps) => (
-  <Panel {...others} header="配置" key="settings" />
+const PanelSettings = ({ form, ...others }: IProps) => (
+  <Panel
+    {...others}
+    key="settings"
+    header={
+      <div className="bi-panel-setting-header">
+        <span>配置</span>
+        <Tooltip placement="right" title="配置帮助">
+          <a target="_blank" rel="noopener noreferrer" href="https://echarts.baidu.com/option.html">
+            <Icon type="question-circle" />
+          </a>
+        </Tooltip>
+      </div>
+    }
+  >
+    <Collapse>
+      <PanelToolTip form={form} />
+    </Collapse>
+  </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { visible } }: any) => ({
-  visible,
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  chooseChart() {
-    dispatch({ type: 'biDrawer/chooseChart' });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PanelSettings);
+export default PanelSettings;

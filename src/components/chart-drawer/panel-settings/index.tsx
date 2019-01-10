@@ -1,24 +1,18 @@
 import React from 'react';
-import { connect } from 'dva';
 import { Collapse } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import PanelToolTip from './panel-tooltip';
 
 const { Panel } = Collapse;
 
-type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
+type IProps = FormComponentProps;
 
-const PanelSettings = ({ visible, chooseChart, ...others }: IProps) => (
-  <Panel {...others} header="配置" key="settings" />
+const PanelSettings = ({ form, ...others }: IProps) => (
+  <Panel {...others} header="配置" key="settings">
+    <Collapse>
+      <PanelToolTip form={form} />
+    </Collapse>
+  </Panel>
 );
 
-const mapStateToProps = ({ biDrawer: { visible } }: any) => ({
-  visible,
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  chooseChart() {
-    dispatch({ type: 'biDrawer/chooseChart' });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PanelSettings);
+export default PanelSettings;

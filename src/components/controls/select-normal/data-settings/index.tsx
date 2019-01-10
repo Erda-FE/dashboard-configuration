@@ -20,7 +20,7 @@ export default class DataSettings extends React.PureComponent<FormComponentProps
   }
 
   render() {
-    const UrlComponent = this.context.UrlComponent;
+    const { UrlComponent } = this.context;
     const { getFieldDecorator } = this.props.form;
     return (
       <React.Fragment>

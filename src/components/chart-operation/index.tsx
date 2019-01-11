@@ -66,6 +66,8 @@ class ChartOperation extends React.PureComponent<IProps> {
     switch (key) {
       case 'edit':
         return this.props.editChart(this.props.chartId);
+      case 'link':
+        return this.props.editChart(this.props.chartId);
       default:
         break;
     }
@@ -74,6 +76,7 @@ class ChartOperation extends React.PureComponent<IProps> {
   getMenu = () => (
     <Menu onClick={this.doAction}>
       <Menu.Item key="edit">编辑</Menu.Item>
+      <Menu.Item key="link">联动设置</Menu.Item>
       <Menu.Item key="delete">
         <Popconfirm
           okText="确认"
@@ -130,7 +133,8 @@ class ChartOperation extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({
   biDashBoard: { isEdit },
-  biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => ({
+  biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => (
+  {
     isEdit,
     isChartEdit: editChartId === chartId,
     url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,

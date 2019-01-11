@@ -1,3 +1,6 @@
+/**
+ * 图表-控件机制
+ */
 import React from 'react';
 import { get } from 'lodash';
 import { connect } from 'dva';
@@ -16,7 +19,7 @@ class Control extends React.PureComponent<IProps> {
   render() {
     const { controlType, ...others } = this.props;
     const { component: Comp } = get(this.context.controlsMap, [controlType], {});
-    return Comp ? <Comp {...others}/> : null;
+    return Comp ? <Comp {...others} /> : null;
   }
 }
 

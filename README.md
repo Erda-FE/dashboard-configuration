@@ -115,7 +115,7 @@
   };
 
   // 第三方系统的url配置器
-  // 非必传，可以覆盖内置的Input填写方式
+  // 非必传，可以覆盖内置的Input填写方式，会传入当前编辑的chartid(必须小写，否则Input时会有warning提示)
   UrlComponent: Input
 
   // url参数映射

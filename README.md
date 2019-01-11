@@ -115,13 +115,17 @@
   };
 
   // 第三方系统的url配置器
-  // 非必传，可以覆盖内置的Input填写方式
+  // 非必传，可以覆盖内置的Input填写方式，会传入当前编辑的chartid(必须小写，否则Input时会有warning提示)
   UrlComponent: Input
 
   // url参数映射
   // 非必传，可以映射url中的类似{paramName}字段
   // 举例：urlParamsMap={id: 1}，接口如 '/api/{id}?pro={id}' 会在请求时被转换为/api/1?pro=1
   urlParamsMap: undefined
+
+  // url的Form Item Layout 控制
+  // 非必传，默认是全局的formItemLayout
+  urlItemLayout: formItemLayout
 ```
 
 ## 其他文档

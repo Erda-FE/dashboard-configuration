@@ -13,6 +13,7 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
 class DataSettings extends React.PureComponent<IProps> {
   static contextTypes = {
     UrlComponent: PropTypes.func,
+    urlItemLayout: PropTypes.object,
   };
 
   validateFixedData = (rule: any, value: string, callback: Function) => {
@@ -23,7 +24,7 @@ class DataSettings extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { UrlComponent } = this.context;
+    const { UrlComponent, urlItemLayout } = this.context;
     const { editChartId, form: { getFieldDecorator } } = this.props;
     return (
       <React.Fragment>
@@ -35,7 +36,7 @@ class DataSettings extends React.PureComponent<IProps> {
             }],
           })(<Input placeholder="请输入在接口中的查询名称，一般为英文，示例：id" />)}
         </Form.Item>
-        <Form.Item label="控件接口" {...formItemLayout}>
+        <Form.Item label="控件接口" {...urlItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}url`, {
             rules: [{
               message: '请输入控件接口',

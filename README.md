@@ -122,6 +122,10 @@
   // 非必传，可以映射url中的类似{paramName}字段
   // 举例：urlParamsMap={id: 1}，接口如 '/api/{id}?pro={id}' 会在请求时被转换为/api/1?pro=1
   urlParamsMap: undefined
+
+  // url的Form Item Layout 控制
+  // 非必传，默认是全局的formItemLayout
+  urlItemLayout: formItemLayout
 ```
 
 ## 其他文档

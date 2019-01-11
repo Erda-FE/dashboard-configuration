@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout, panelDataPrefix } from '../../utils';
+import { panelDataPrefix } from '../../utils';
 import PropTypes from 'prop-types';
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
@@ -13,13 +13,14 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
 class DataSettings extends React.PureComponent<IProps> {
   static contextTypes = {
     UrlComponent: PropTypes.func,
+    urlItemLayout: PropTypes.object,
   };
 
   render() {
-    const { UrlComponent } = this.context;
+    const { UrlComponent, urlItemLayout } = this.context;
     const { editChartId, form: { getFieldDecorator } } = this.props;
     return (
-      <Form.Item label="接口" {...formItemLayout}>
+      <Form.Item label="接口" {...urlItemLayout}>
         {getFieldDecorator(`${panelDataPrefix}url`, {
           rules: [{
             message: '请输入接口',

@@ -37,6 +37,7 @@ export default {
     * resetBoard(_, { put }) {
       yield put({ type: 'reset' });
       yield put({ type: 'biDrawer/reset' });
+      yield put({ type: 'linkSetting/reset' });
     },
   },
   reducers: {

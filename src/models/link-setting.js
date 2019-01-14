@@ -29,5 +29,8 @@ export default {
     closeLinkSetting(state) {
       return { ...state, linkId: '' };
     },
+    reset() {
+      return { ...cloneDeep(defaultState) };
+    },
   },
 };

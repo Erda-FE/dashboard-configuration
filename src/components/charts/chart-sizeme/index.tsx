@@ -3,11 +3,12 @@ import { isEqual } from 'lodash';
 import ReactEcharts, { Func, ReactEchartsPropsTypes } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
 import PropTypes from 'prop-types';
+import { connect } from 'dva';
 import { ISizeMe } from '../../../types';
 import ChartMask from '../chart-mask';
 import './index.scss';
 
-type IProps = ReactEchartsPropsTypes & ISizeMe & {
+type IProps = ReactEchartsPropsTypes & ISizeMe & ReturnType<typeof mapDispatchToProps> & {
   chartId: string
   descHeight: number // 图表应减少的高度
   isMock?: boolean
@@ -53,7 +54,7 @@ class Chart extends React.Component<IProps> {
   }
 
   click = ({ name }: any) => {
-    console.log('ReactEcharts click', name);
+    this.props.updateLinkDataMap(this.props.chartId, { name });
   }
 
   render() {
@@ -74,4 +75,10 @@ class Chart extends React.Component<IProps> {
   }
 }
 
-export default sizeMe({ monitorHeight: true })(Chart);
+const mapDispatchToProps = (dispatch: any) => ({
+  updateLinkDataMap(linkId: string, values: object) {
+    dispatch({ type: 'biDrawer/updateLinkDataMap', linkId, values });
+  },
+});
+
+export default sizeMe({ monitorHeight: true })(connect(undefined, mapDispatchToProps)(Chart));

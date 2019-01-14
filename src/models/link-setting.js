@@ -7,11 +7,11 @@ const defaultState = {
 
 export default {
   namespace: 'linkSetting',
-  state: cloneDeep(defaultState), // 使用cloneDeep，因为layout在整个运作过程中涉及到引用，而immutable太重
-  effects: {
-
-  },
+  state: cloneDeep(defaultState),
   reducers: {
+    init(state, { linkMap }) {
+      return { ...state, linkMap };
+    },
     deleteLinkMap(state, { linkId }) {
       const { linkMap } = state;
       delete linkMap[linkId];

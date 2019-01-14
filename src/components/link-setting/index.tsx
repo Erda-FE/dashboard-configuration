@@ -30,10 +30,11 @@ class LinkSettingModal extends React.Component<IProps> {
   }
 
   onOk = () => {
-    const { form: { validateFields }, updateLinkMap, linkId } = this.props;
+    const { form: { validateFields }, updateLinkMap, closeLinkSetting, linkId } = this.props;
     validateFields((err: any, values) => {
       if (err) return;
       updateLinkMap(linkId, values);
+      closeLinkSetting();
     });
   }
 

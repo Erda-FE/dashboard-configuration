@@ -67,7 +67,7 @@ class ChartOperation extends React.PureComponent<IProps> {
       case 'edit':
         return this.props.editChart(this.props.chartId);
       case 'link':
-        return this.props.editChart(this.props.chartId);
+        return this.props.openLinkSetting(this.props.chartId);
       default:
         break;
     }
@@ -146,6 +146,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   deleteChart(chartId: string) {
     dispatch({ type: 'biDashBoard/deleteChart', chartId });
+  },
+  openLinkSetting(linkId: string) {
+    dispatch({ type: 'linkSetting/openLinkSetting', linkId });
   },
 });
 

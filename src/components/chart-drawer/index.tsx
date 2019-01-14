@@ -1,4 +1,4 @@
-import { forEach, get, find } from 'lodash';
+import { forEach, get, find, isEmpty } from 'lodash';
 import React from 'react';
 import { connect } from 'dva';
 import { Drawer, Button, Collapse, Form } from 'antd';
@@ -13,7 +13,10 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 
 class ChartDrawer extends React.PureComponent<IProps> {
   submitDrawer = () => {
-    const { form: { validateFields }, submitDrawer } = this.props;
+    const { form: { validateFields }, submitDrawer, drawerInfo } = this.props;
+    if (isEmpty(drawerInfo)) {
+      return;
+    }
     validateFields((err: any) => {
       if (err) return;
       submitDrawer();

@@ -25,7 +25,7 @@ export default {
       return { ...state, linkMap: { ...state.linkMap, [linkId]: values } };
     },
     updateLinkDataMap(state, { linkId, values }) {
-      return { ...state, linkMap: { ...state.linkDataMap, [linkId]: values } };
+      return { ...state, linkDataMap: { ...state.linkDataMap, [linkId]: values } };
     },
     openLinkSetting(state, { linkId }) {
       return { ...state, linkId };

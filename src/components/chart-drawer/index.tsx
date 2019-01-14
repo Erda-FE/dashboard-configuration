@@ -14,7 +14,7 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 class ChartDrawer extends React.PureComponent<IProps> {
   submitDrawer = () => {
     const { form: { validateFields }, submitDrawer, drawerInfo } = this.props;
-    if (isEmpty(drawerInfo)) {
+    if (isEmpty(drawerInfo) || !drawerInfo.chartType) {
       return;
     }
     validateFields((err: any) => {

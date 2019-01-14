@@ -2,6 +2,7 @@ import React from 'react';
 import { Collapse, Icon, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PanelToolTip from './panel-tooltip';
+import PanelLegend from './panel-legend';
 import './index.scss';
 
 const { Panel } = Collapse;
@@ -25,6 +26,7 @@ const PanelSettings = ({ form, ...others }: IProps) => (
   >
     <Collapse>
       <PanelToolTip form={form} />
+      <PanelLegend form={form} />
     </Collapse>
   </Panel>
 );

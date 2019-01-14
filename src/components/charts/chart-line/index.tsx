@@ -55,11 +55,20 @@ const ChartLine = ({ option = {}, isMock, chartType, names, datas }: IProps) => 
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
+  let settingOptions = convertSettingToOption(drawerInfo);
+  let sourceData = isMock ? mockDataLine.datas as IData[] : (datas || []) as IData[];
+  const enableLegend = get(settingOptions, 'legend.enableLegend');
+  let legend = get(settingOptions, 'legend') || {};
+  if (enableLegend) {
+    legend = { ...legend, data: sourceData.map((data: any) => data.label) };
+    sourceData = sourceData.map((data: any) => ({ ...data, name: data.label }));
+  }
+  settingOptions = { ...settingOptions, ...legend };
   return {
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],
-    datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
-    option: convertSettingToOption(drawerInfo),
+    datas: sourceData,
+    option: settingOptions,
   };
 };
 

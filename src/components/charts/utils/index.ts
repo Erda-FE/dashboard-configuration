@@ -1,11 +1,11 @@
 import { forEach, startsWith, set, endsWith } from 'lodash';
 import xss from 'xss';
-import { IChartsMap } from '../../../types';
+// import { IChartsMap } from '../../../types';
 import { panelSettingPrefix } from '../../utils';
 import { Func } from 'echarts-for-react';
 
 // 转化为option对象
-export const convertSettingToOption = (drawerInfo: any): IChartsMap => {
+export const convertSettingToOption = (drawerInfo: any): any => {
   const option = {};
   forEach(drawerInfo, (value, key) => {
     if (startsWith(key, panelSettingPrefix)) {
@@ -13,6 +13,13 @@ export const convertSettingToOption = (drawerInfo: any): IChartsMap => {
       let tempValue = value;
       if (endsWith(key, 'formatter')) {
         tempValue = convertFormatter(value);
+      }
+      if (endsWith(key, 'enableLegend')) {
+        tempValue = value;
+      }
+      if (endsWith(key, 'legend#position')) {
+        set(option, ['legend', value], 0);
+        return;
       }
       set(option, list.splice(1, list.length - 1), tempValue);
     }

@@ -30,7 +30,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, isMock, name, names, datas }: IProps) => {
+const ChartPie = ({ option = {}, isMock, name, names, datas, chartId }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',
@@ -62,7 +62,7 @@ const ChartPie = ({ option = {}, isMock, name, names, datas }: IProps) => {
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {

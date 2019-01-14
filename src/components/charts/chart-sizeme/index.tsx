@@ -8,6 +8,7 @@ import ChartMask from '../chart-mask';
 import './index.scss';
 
 type IProps = ReactEchartsPropsTypes & ISizeMe & {
+  chartId: string
   descHeight: number // 图表应减少的高度
   isMock?: boolean
 };
@@ -39,8 +40,20 @@ class Chart extends React.Component<IProps> {
     themeObj: PropTypes.object,
   };
 
+  private onEvents: { [event: string]: Func };
+
+  componentWillMount() {
+    this.onEvents = {
+      click: this.click,
+    };
+  }
+
   shouldComponentUpdate(nextProps: IProps) {
     return !isEqual(nextProps, this.props);
+  }
+
+  click = ({ name }: any) => {
+    console.log('ReactEcharts click', name);
   }
 
   render() {
@@ -54,6 +67,7 @@ class Chart extends React.Component<IProps> {
           theme={theme}
           themeObj={themeObj}
           style={{ ...others.style, height: size.height - descHeight }}
+          onEvents={this.onEvents}
         />
       </div>
     );

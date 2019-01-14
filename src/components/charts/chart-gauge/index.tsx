@@ -18,7 +18,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTy
   isMock?: boolean
 }
 
-const ChartGauge = ({ option = {}, isMock, name, datas }: IProps) => {
+const ChartGauge = ({ option = {}, isMock, name, datas, chartId }: IProps) => {
   const source = {
     tooltip: {
       formatter: '{a} <br/>{b} : {c}%',
@@ -34,7 +34,7 @@ const ChartGauge = ({ option = {}, isMock, name, datas }: IProps) => {
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, name }: any) => {

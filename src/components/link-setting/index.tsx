@@ -76,7 +76,7 @@ const mapStateToProps = ({
   linkId,
   layout,
   drawerInfoMap,
-  linkInfo: linkMap[linkId],
+  linkInfo: get(linkMap, [linkId], {}),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

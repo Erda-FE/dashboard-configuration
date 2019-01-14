@@ -18,12 +18,22 @@ export const formItemLayout = {
   },
 };
 
-class LinkSettingModal extends React.PureComponent<IProps> {
+class LinkSettingModal extends React.Component<IProps> {
+  shouldComponentUpdate() {
+    return !!this.props.linkId;
+  }
+
+  componentWillReceiveProps({ linkInfo, linkId, form: { setFieldsValue } }: IProps) {
+    if (linkId && linkId !== this.props.linkId) {
+      setFieldsValue(linkInfo);
+    }
+  }
+
   onOk = () => {
-    const { form: { validateFields } } = this.props;
+    const { form: { validateFields }, updateLinkMap, linkId } = this.props;
     validateFields((err: any, values) => {
       if (err) return;
-      console.log('values', values);
+      updateLinkMap(linkId, values);
     });
   }
 
@@ -58,18 +68,22 @@ class LinkSettingModal extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  linkSetting: { linkId },
+  linkSetting: { linkId, linkMap },
   biDashBoard: { layout },
   biDrawer: { drawerInfoMap },
 }: any) => ({
   linkId,
   layout,
   drawerInfoMap,
+  linkInfo: linkMap[linkId],
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   closeLinkSetting() {
     dispatch({ type: 'linkSetting/closeLinkSetting' });
+  },
+  updateLinkMap(linkId: string, values: object) {
+    dispatch({ type: 'linkSetting/updateLinkMap', linkId, values });
   },
 });
 

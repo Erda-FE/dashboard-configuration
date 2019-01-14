@@ -27,6 +27,7 @@ export default {
     * deleteChart({ chartId }, { put }) {
       yield put({ type: 'deleteLayout', chartId });
       yield put({ type: 'biDrawer/deleteDrawerInfo', chartId });
+      yield put({ type: 'linkSetting/deleteLinkMap', linkId: chartId });
     },
     * resetBoard(_, { put }) {
       yield put({ type: 'reset' });

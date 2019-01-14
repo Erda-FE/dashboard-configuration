@@ -1,4 +1,4 @@
-import { cloneDeep } from 'lodash';
+import { cloneDeep, forEach } from 'lodash';
 
 const defaultState = {
   linkId: '',
@@ -12,6 +12,17 @@ export default {
 
   },
   reducers: {
+    deleteLinkMap(state, { linkId }) {
+      const { linkMap } = state;
+      delete linkMap[linkId];
+      forEach(linkMap, ((linkInfo) => {
+        delete linkInfo[linkId];
+      }));
+      return { ...state, linkMap: { ...linkMap } };
+    },
+    updateLinkMap(state, { linkId, values }) {
+      return { ...state, linkMap: { ...state.linkMap, [linkId]: values } };
+    },
     openLinkSetting(state, { linkId }) {
       return { ...state, linkId };
     },

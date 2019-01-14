@@ -9,6 +9,9 @@
     .ant-collapse-content > .ant-collapse-content-box {
       padding: 8px;
     }
+    .ant-col-0 {
+      display: none !important;
+    }
   }
   .bi-drawer-content {
     flex: 1;

@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import { merge, get } from 'lodash';
 import ChartSizeMe from '../chart-sizeme';
 import { mockDataLine } from './utils';
-import { convertSettingToOption } from '../utils';
+import { convertSettingToOption, legendConvert } from '../utils';
 
 type IType = 'line' | 'bar' | 'area';
 
@@ -55,20 +55,14 @@ const ChartLine = ({ option = {}, isMock, chartType, names, datas }: IProps) => 
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
-  let settingOptions = convertSettingToOption(drawerInfo);
-  let sourceData = isMock ? mockDataLine.datas as IData[] : (datas || []) as IData[];
-  const enableLegend = get(settingOptions, 'legend.enableLegend');
-  let legend = get(settingOptions, 'legend') || {};
-  if (enableLegend) {
-    legend = { ...legend, data: sourceData.map((data: any) => data.label) };
-    sourceData = sourceData.map((data: any) => ({ ...data, name: data.label }));
-  }
-  settingOptions = { ...settingOptions, ...legend };
+  const settingOptions = convertSettingToOption(drawerInfo);
+  const sourceData = isMock ? mockDataLine.datas as IData[] : (datas || []) as IData[];
+  const { convertedOptions, convertedData } = legendConvert(sourceData, settingOptions);
   return {
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],
-    datas: sourceData,
-    option: settingOptions,
+    datas: convertedData,
+    option: convertedOptions,
   };
 };
 

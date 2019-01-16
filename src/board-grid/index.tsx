@@ -14,10 +14,10 @@ import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation } from '../components';
+import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation, LinkSettingModal } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
-import { paramsManage, saveImage, setScreenFull } from '../components/utils';
+import { paramsManage, saveImage, setScreenFull, formItemLayout } from '../components/utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
@@ -33,6 +33,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
+  urlItemLayout?: { [name: string]: any }
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -61,6 +62,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     theme,
     themeObj,
     UrlComponent: Input,
+    urlItemLayout: formItemLayout,
   };
 
   static childContextTypes = {
@@ -69,6 +71,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     chartsMap: PropTypes.object,
     controlsMap: PropTypes.object,
     UrlComponent: PropTypes.func,
+    urlItemLayout: PropTypes.object,
   };
 
   private boardGridRef: React.ReactInstance;
@@ -86,6 +89,7 @@ class BoardGrid extends React.PureComponent<IProps> {
       chartsMap: this.chartsMap,
       controlsMap: this.controlsMap,
       UrlComponent: this.props.UrlComponent,
+      urlItemLayout: this.props.urlItemLayout,
     };
   }
 
@@ -191,6 +195,7 @@ class BoardGrid extends React.PureComponent<IProps> {
           })}
         </ReactGridLayout>
         <ChartDrawer />
+        <LinkSettingModal />
       </div>
     );
   }

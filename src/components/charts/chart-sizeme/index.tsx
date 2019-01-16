@@ -3,11 +3,13 @@ import { isEqual } from 'lodash';
 import ReactEcharts, { Func, ReactEchartsPropsTypes } from 'echarts-for-react';
 import sizeMe from 'react-sizeme';
 import PropTypes from 'prop-types';
+import { connect } from 'dva';
 import { ISizeMe } from '../../../types';
 import ChartMask from '../chart-mask';
 import './index.scss';
 
-type IProps = ReactEchartsPropsTypes & ISizeMe & {
+type IProps = ReactEchartsPropsTypes & ISizeMe & ReturnType<typeof mapDispatchToProps> & {
+  chartId: string
   descHeight: number // 图表应减少的高度
   isMock?: boolean
 };
@@ -39,8 +41,20 @@ class Chart extends React.Component<IProps> {
     themeObj: PropTypes.object,
   };
 
+  private onEvents: { [event: string]: Func };
+
+  componentWillMount() {
+    this.onEvents = {
+      click: this.click,
+    };
+  }
+
   shouldComponentUpdate(nextProps: IProps) {
     return !isEqual(nextProps, this.props);
+  }
+
+  click = ({ name }: any) => {
+    this.props.updateLinkDataMap(this.props.chartId, { name });
   }
 
   render() {
@@ -54,10 +68,17 @@ class Chart extends React.Component<IProps> {
           theme={theme}
           themeObj={themeObj}
           style={{ ...others.style, height: size.height - descHeight }}
+          onEvents={this.onEvents}
         />
       </div>
     );
   }
 }
 
-export default sizeMe({ monitorHeight: true })(Chart);
+const mapDispatchToProps = (dispatch: any) => ({
+  updateLinkDataMap(linkId: string, values: object) {
+    dispatch({ type: 'linkSetting/updateLinkDataMap', linkId, values });
+  },
+});
+
+export default sizeMe({ monitorHeight: true })(connect(undefined, mapDispatchToProps)(Chart));

@@ -34,7 +34,7 @@ const gradientSwitch = (color: any) => {
   return color;
 };
 
-const ChartScatter = ({ option = {}, isMock, names, titles, datas }: IProps) => {
+const ChartScatter = ({ option = {}, isMock, names, titles, datas, chartId }: IProps) => {
   const source = {
     tooltip: {
       formatter: (params: any) => {
@@ -50,7 +50,7 @@ const ChartScatter = ({ option = {}, isMock, names, titles, datas }: IProps) => 
       data: datas.map((data: number[], i: number) => ({ name: names, value: data, title: titles[i] })),
     }],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas, titles }: any) => {

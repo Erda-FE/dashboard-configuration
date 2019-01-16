@@ -1,13 +1,23 @@
 import { forEach, get, find } from 'lodash';
 import React from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Collapse, Form } from 'antd';
+import { Drawer, Button, Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PanelCharts from './panel-charts';
 import PanelControls from './panel-controls';
 import PanelSettings from './panel-settings';
 import PanelData from './panel-data';
 import './index.scss';
+
+const formItemLayout = {
+  labelCol: {
+    span: 0,
+  },
+  wrapperCol: {
+    span: 24,
+  },
+};
+const { TextArea } = Input;
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -21,7 +31,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { visible, closeDrawer, form, isAdd, deleteDrawer, editChartId } = this.props;
+    const { visible, closeDrawer, form, isAdd, deleteDrawer, editChartId, form: { getFieldDecorator } } = this.props;
     return (
       <Drawer
         placement="right"
@@ -34,12 +44,27 @@ class ChartDrawer extends React.PureComponent<IProps> {
       >
         <div className="bi-drawer-content">
           <Form >
+            <Form.Item key="name" label="名称" {...formItemLayout}>
+              {getFieldDecorator('name', {
+                rules: [{
+                  required: true,
+                  message: '请输入名称',
+                }],
+              })(<Input placeholder="请输入名称" />)}
+            </Form.Item>
             <Collapse defaultActiveKey={['charts']}>
               <PanelCharts />
               <PanelControls form={form} />
               <PanelSettings form={form} />
               <PanelData form={form} />
             </Collapse>
+            <Form.Item label="formatter" {...formItemLayout}>
+              {getFieldDecorator('remarks', {
+                rules: [{
+                  message: '可以备注一些关键信息',
+                }],
+              })(<TextArea placeholder="可以备注一些关键信息" style={{ marginTop: 12 }} />)}
+            </Form.Item>
           </Form>
         </div>
         <div className="bi-drawer-footer">

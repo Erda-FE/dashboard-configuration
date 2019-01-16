@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'dva';
 import { Form, Input, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PropTypes from 'prop-types';
@@ -7,9 +8,12 @@ import { checkFixedData } from '../utils';
 
 const { TextArea } = Input;
 
-export default class DataSettings extends React.PureComponent<FormComponentProps> {
+type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
+
+class DataSettings extends React.PureComponent<IProps> {
   static contextTypes = {
     UrlComponent: PropTypes.func,
+    urlItemLayout: PropTypes.object,
   };
 
   validateFixedData = (rule: any, value: string, callback: Function) => {
@@ -20,8 +24,8 @@ export default class DataSettings extends React.PureComponent<FormComponentProps
   }
 
   render() {
-    const { UrlComponent } = this.context;
-    const { getFieldDecorator } = this.props.form;
+    const { UrlComponent, urlItemLayout } = this.context;
+    const { editChartId, form: { getFieldDecorator } } = this.props;
     return (
       <React.Fragment>
         <Form.Item label="参数名称" {...formItemLayout}>
@@ -32,12 +36,12 @@ export default class DataSettings extends React.PureComponent<FormComponentProps
             }],
           })(<Input placeholder="请输入在接口中的查询名称，一般为英文，示例：id" />)}
         </Form.Item>
-        <Form.Item label="控件接口" {...formItemLayout}>
+        <Form.Item label="控件接口" {...urlItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}url`, {
             rules: [{
               message: '请输入控件接口',
             }],
-          })(<UrlComponent placeholder="请输入控件接口，用于动态获取控件数据" />)}
+          })(<UrlComponent placeholder="请输入控件接口，用于动态获取控件数据" chartid={editChartId} />)}
         </Form.Item>
         <Form.Item label="固定数据" {...formItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}fixedData`, {
@@ -64,3 +68,11 @@ export default class DataSettings extends React.PureComponent<FormComponentProps
     );
   }
 }
+
+const mapStateToProps = ({
+  biDrawer: { editChartId },
+}: any) => ({
+  editChartId,
+});
+
+export default connect(mapStateToProps)(DataSettings);

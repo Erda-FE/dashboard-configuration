@@ -2,7 +2,7 @@
  * 联动设置
  */
 import React from 'react';
-import { filter, isEmpty, get } from 'lodash';
+import { filter, isEmpty, get, reduce, forEach } from 'lodash';
 import { connect } from 'dva';
 import { Modal, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
@@ -39,8 +39,8 @@ class LinkSettingModal extends React.Component<IProps> {
   }
 
   render() {
-    const { linkId, closeLinkSetting, drawerInfoMap, layout, form: { getFieldDecorator } } = this.props;
-    const otherCharts = filter(layout, ({ i }) => i !== linkId);
+    const { linkId, closeLinkSetting, drawerInfoMap, layout, form: { getFieldDecorator }, hasLinkedIds } = this.props;
+    const otherCharts = filter(layout, ({ i }) => i !== linkId && !hasLinkedIds.includes(i));
     return (
       <Modal
         title="联动设置"
@@ -77,6 +77,19 @@ const mapStateToProps = ({
   layout,
   drawerInfoMap,
   linkInfo: get(linkMap, [linkId], {}),
+  // 已经被非当前图表联动图表id
+  hasLinkedIds: reduce(linkMap, (result: string[], linkInfo: object, chartId: string) => {
+    if (chartId === linkId) {
+      return result;
+    }
+    const ids: string[] = [];
+    forEach(linkInfo, (value, key) => {
+      if (value) {
+        ids.push(key);
+      }
+    });
+    return [...result, ...ids];
+  }, []),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

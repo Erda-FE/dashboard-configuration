@@ -21,17 +21,7 @@ export const formItemLayout = {
   },
 };
 
-class LinkSettingModal extends React.Component<IProps> {
-  shouldComponentUpdate() {
-    return !!this.props.linkId;
-  }
-
-  componentWillReceiveProps({ linkInfo, linkId, form: { setFieldsValue } }: IProps) {
-    if (linkId && linkId !== this.props.linkId) {
-      setFieldsValue(linkInfo);
-    }
-  }
-
+class LinkSettingModal extends React.PureComponent<IProps> {
   onOk = () => {
     const { form: { validateFields }, updateLinkMap, closeLinkSetting, linkId } = this.props;
     validateFields((err: any, values) => {
@@ -104,4 +94,10 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Form.create()(LinkSettingModal));
+export default connect(mapStateToProps, mapDispatchToProps)(Form.create({
+  mapPropsToFields({ linkInfo }: IProps) {
+    const values = {};
+    forEach(linkInfo, (value, key) => { values[key] = Form.createFormField({ value }); });
+    return values;
+  },
+})(LinkSettingModal));

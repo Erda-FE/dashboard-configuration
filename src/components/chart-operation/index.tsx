@@ -1,6 +1,6 @@
 import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, find, isEqual } from 'lodash';
 import { connect } from 'dva';
 import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
 import screenfull from 'screenfull';
@@ -28,14 +28,17 @@ class ChartOperation extends React.PureComponent<IProps> {
     this.reloadData(this.props.url);
   }
 
-  componentWillReceiveProps({ url, isChartEdit }: IProps) {
+  componentWillReceiveProps({ url, isChartEdit, linkQuery }: IProps) {
     if (isChartEdit !== this.props.isChartEdit) {
+      this.reloadData(url);
+    } else if (!isEqual(linkQuery, this.props.linkQuery)) {
+      this.query = { ...this.query, ...linkQuery };
       this.reloadData(url);
     }
   }
 
   onControlChange = (query: any) => {
-    this.query = query;
+    this.query = { ...query, ...this.props.linkQuery };
     this.reloadData(this.props.url);
   }
 
@@ -130,15 +133,32 @@ class ChartOperation extends React.PureComponent<IProps> {
     );
   }
 }
+// 从2级对象中获取对应的参数名称、和触发图表id
+const getKeyValue = (temp: any, chartId: string) => {
+  let paramName = '';
+  let clickId = '';
+  find(temp, (value: object, key: string) => {
+    clickId = key;
+    paramName = get(value, chartId, '');
+    return paramName;
+  });
+  return { paramName, clickId };
+};
+
+const defaultEmpty = {};
 
 const mapStateToProps = ({
   biDashBoard: { isEdit },
-  biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => (
-  {
+  linkSetting: { linkMap, linkDataMap },
+  biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => {
+  const { paramName, clickId } = getKeyValue(linkMap, chartId);
+  return {
     isEdit,
     isChartEdit: editChartId === chartId,
     url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,
-  });
+    linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'name'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
+  };
+};
 
 const mapDispatchToProps = (dispatch: any) => ({
   editChart(chartId: string) {

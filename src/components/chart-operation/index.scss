@@ -8,13 +8,24 @@
       border-radius: 6px;
     }
   }
-  .bi-chart-operation-header {
+  .bi-chart-operation-header-left {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 999;
+    text-align: left;
+    i {
+      color: $color-primary;
+      cursor: pointer;
+    }
+  }
+  .bi-chart-operation-header-right {
     position: absolute;
     top: 12px;
     right: 15px;
     z-index: 999;
     text-align: right;
-    .anticon {
+    i {
       margin-left: 12px;
       cursor: pointer;
       &:hover {

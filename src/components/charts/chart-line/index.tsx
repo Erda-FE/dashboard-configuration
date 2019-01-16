@@ -30,7 +30,7 @@ const baseAxis = {
 const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
 const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 
-const ChartLine = ({ option = {}, isMock, chartType, names, datas }: IProps) => {
+const ChartLine = ({ option = {}, isMock, chartType, names, datas, chartId }: IProps) => {
   let xAxisType = get(option, ['xAxis', 'type']);
   const yAxisType = get(option, ['yAxis', 'type']);
   if (xAxisType === 'category' || (!xAxisType && !yAxisType)) {
@@ -50,7 +50,7 @@ const ChartLine = ({ option = {}, isMock, chartType, names, datas }: IProps) => 
     } : { type: yAxisType },
     series: datas.map(({ data, ...dataOthers }: any) => ({ type: getAreaType(chartType), data, ...getOthers(chartType), ...dataOthers })),
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {

@@ -19,7 +19,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTy
   isMock?: boolean
 }
 
-const ChartRadar = ({ option = {}, isMock, datas, names, indicator }: IProps) => {
+const ChartRadar = ({ option = {}, isMock, datas, names, indicator, chartId }: IProps) => {
   const source = {
     legend: {
       data: names,
@@ -42,7 +42,7 @@ const ChartRadar = ({ option = {}, isMock, datas, names, indicator }: IProps) =>
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} />;
+  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
 };
 
 const getIndicator = (drawerInfo: any) => {

@@ -1,5 +1,5 @@
 /**
- * 图表-控件机制
+ * 图表操作-控件读取
  */
 import React from 'react';
 import { get } from 'lodash';

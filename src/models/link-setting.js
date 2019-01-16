@@ -14,12 +14,13 @@ export default {
       return { ...state, linkMap };
     },
     deleteLinkMap(state, { linkId }) {
-      const { linkMap } = state;
+      const { linkMap, linkDataMap } = state;
       delete linkMap[linkId];
       forEach(linkMap, ((linkInfo) => {
         delete linkInfo[linkId];
+        delete linkDataMap[linkId];
       }));
-      return { ...state, linkMap: { ...linkMap } };
+      return { ...state, linkMap: { ...linkMap }, linkDataMap: { ...linkDataMap } };
     },
     updateLinkMap(state, { linkId, values }) {
       return { ...state, linkMap: { ...state.linkMap, [linkId]: values } };

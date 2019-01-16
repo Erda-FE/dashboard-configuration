@@ -85,7 +85,8 @@ class ChartOperation extends React.PureComponent<IProps> {
     <Menu onClick={this.doAction}>
       <Menu.Item key="edit">编辑</Menu.Item>
       <Menu.Item key="link" disabled={this.props.canLinked}>
-        联动设置 <Icon type="delete" onClick={this.deleteLink} style={{ marginLeft: 8, marginRight: 0 }} />
+        <span>联动设置</span>
+        {this.props.hasLinked && <Icon type="delete" onClick={this.deleteLink} style={{ marginLeft: 8, marginRight: 0 }} />}
       </Menu.Item>
       <Menu.Item key="delete">
         <Popconfirm
@@ -131,7 +132,7 @@ class ChartOperation extends React.PureComponent<IProps> {
               <Tooltip placement="bottom" title="导出图片">
                 <Icon type="camera" onClick={this.onSaveImg} />
               </Tooltip>
-              <Dropdown overlay={this.getMenu()} visible>
+              <Dropdown overlay={this.getMenu()}>
                 <Icon type="dash" />
               </Dropdown>
             </span>)

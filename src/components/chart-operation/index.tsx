@@ -76,10 +76,17 @@ class ChartOperation extends React.PureComponent<IProps> {
     }
   }
 
+  deleteLink = (e: any) => {
+    e.stopPropagation();
+    this.props.deleteLinkMap(this.props.chartId);
+  }
+
   getMenu = () => (
     <Menu onClick={this.doAction}>
       <Menu.Item key="edit">编辑</Menu.Item>
-      <Menu.Item key="link" disabled={this.props.canLinked}>联动设置</Menu.Item>
+      <Menu.Item key="link" disabled={this.props.canLinked}>
+        联动设置 <Icon type="delete" onClick={this.deleteLink} style={{ marginLeft: 8, marginRight: 0 }} />
+      </Menu.Item>
       <Menu.Item key="delete">
         <Popconfirm
           okText="确认"
@@ -106,12 +113,15 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { children, isEdit, isChartEdit, url, chartId } = this.props;
+    const { children, isEdit, isChartEdit, url, chartId, hasLinked } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
-        <div className="bi-chart-operation-header">
+        <div className="bi-chart-operation-header-left">
+          {hasLinked && <Tooltip placement="bottom" title="已设置联动"><Icon type="link" /></Tooltip>}
+        </div>
+        <div className="bi-chart-operation-header-right">
           {url && <Icon type="reload" onClick={this.reloadChart} />}
           {isEdit && (
             <span>
@@ -121,7 +131,7 @@ class ChartOperation extends React.PureComponent<IProps> {
               <Tooltip placement="bottom" title="导出图片">
                 <Icon type="camera" onClick={this.onSaveImg} />
               </Tooltip>
-              <Dropdown overlay={this.getMenu()}>
+              <Dropdown overlay={this.getMenu()} visible>
                 <Icon type="dash" />
               </Dropdown>
             </span>)
@@ -160,7 +170,8 @@ const mapStateToProps = ({
     isChartEdit: editChartId === chartId,
     url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,
     linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'name'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
-    canLinked: !!clickId,
+    canLinked: !!clickId, // 是否可以进行联动设置
+    hasLinked: !!find(linkMap[chartId], value => value), // 是否已经设置了联动
   };
 };
 
@@ -173,6 +184,9 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   openLinkSetting(linkId: string) {
     dispatch({ type: 'linkSetting/openLinkSetting', linkId });
+  },
+  deleteLinkMap(linkId: string) {
+    dispatch({ type: 'linkSetting/deleteLinkMap', linkId });
   },
 });
 

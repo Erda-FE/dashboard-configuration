@@ -11,7 +11,7 @@ export default {
   state: cloneDeep(defaultState),
   reducers: {
     init(state, { linkMap }) {
-      return { ...state, linkMap };
+      return { ...state, linkMap: { ...linkMap } };
     },
     deleteLinkMap(state, { linkId }) {
       const { linkMap, linkDataMap } = state;

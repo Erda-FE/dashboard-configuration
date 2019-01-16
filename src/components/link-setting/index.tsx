@@ -1,5 +1,8 @@
 /**
  * 联动设置
+ * 与chart-operation
+ * 1、不进行多级联动
+ * 2、已联动、被联动时不可被再次进行联动
  */
 import React from 'react';
 import { filter, isEmpty, get, reduce, forEach } from 'lodash';

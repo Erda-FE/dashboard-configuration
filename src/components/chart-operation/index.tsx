@@ -79,7 +79,7 @@ class ChartOperation extends React.PureComponent<IProps> {
   getMenu = () => (
     <Menu onClick={this.doAction}>
       <Menu.Item key="edit">编辑</Menu.Item>
-      <Menu.Item key="link">联动设置</Menu.Item>
+      <Menu.Item key="link" disabled={this.props.canLinked}>联动设置</Menu.Item>
       <Menu.Item key="delete">
         <Popconfirm
           okText="确认"
@@ -138,9 +138,12 @@ const getKeyValue = (temp: any, chartId: string) => {
   let paramName = '';
   let clickId = '';
   find(temp, (value: object, key: string) => {
-    clickId = key;
-    paramName = get(value, chartId, '');
-    return paramName;
+    const tempName = get(value, chartId, '');
+    if (tempName) {
+      clickId = key;
+      paramName = tempName;
+    }
+    return tempName;
   });
   return { paramName, clickId };
 };
@@ -157,6 +160,7 @@ const mapStateToProps = ({
     isChartEdit: editChartId === chartId,
     url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,
     linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'name'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
+    canLinked: !!clickId,
   };
 };
 

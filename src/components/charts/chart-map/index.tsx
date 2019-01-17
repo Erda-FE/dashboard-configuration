@@ -64,8 +64,8 @@ class ChartMap extends React.PureComponent<IProps> {
 
 
   render() {
-    const { option, isMock } = this.props;
-    return <ChartSizeMe option={merge(this.source, option)} isMock={isMock} />;
+    const { option, isMock, chartId } = this.props;
+    return <ChartSizeMe option={merge(this.source, option)} isMock={isMock} chartId={chartId} />;
   }
 }
 

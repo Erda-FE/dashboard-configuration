@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import { merge, get } from 'lodash';
 import ChartSizeMe from '../chart-sizeme';
 import { mockDataLine } from './utils';
-import { convertSettingToOption, legendConvert } from '../utils';
+import { convertSettingToOption } from '../utils';
 
 type IType = 'line' | 'bar' | 'area';
 
@@ -55,14 +55,11 @@ const ChartLine = ({ option = {}, isMock, chartType, names, datas }: IProps) => 
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {
   const drawerInfo = drawerInfoMap[chartId] || {};
-  const settingOptions = convertSettingToOption(drawerInfo);
-  const sourceData = isMock ? mockDataLine.datas as IData[] : (datas || []) as IData[];
-  const { convertedOptions, convertedData } = legendConvert(sourceData, settingOptions);
   return {
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],
-    datas: convertedData,
-    option: convertedOptions,
+    datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
+    option: convertSettingToOption(drawerInfo),
   };
 };
 

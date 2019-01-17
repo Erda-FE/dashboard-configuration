@@ -33,7 +33,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
-  urlItemLayout?: { [name: string]: any }
+  urlItemLayout?: { [name: string]: any } // url的Form.Item布局
 }
 
 const GRID_MARGIN = 10; // Cell间距

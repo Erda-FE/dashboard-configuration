@@ -5,6 +5,7 @@ const defaultState = {
   visible: false,
   editChartId: '',
   drawerInfoMap: {}, // 所有图表配置信息
+  codeVisible: false, // 代码编辑
 };
 
 export default {
@@ -96,6 +97,12 @@ export default {
       const { drawerInfoMap } = state;
       delete drawerInfoMap[chartId];
       return { ...state, drawerInfoMap: { ...drawerInfoMap } };
+    },
+    openCodeModal(state) {
+      return { ...state, codeVisible: true };
+    },
+    closeCodeModal(state) {
+      return { ...state, codeVisible: false };
     },
     reset() {
       return { ...cloneDeep(defaultState) };

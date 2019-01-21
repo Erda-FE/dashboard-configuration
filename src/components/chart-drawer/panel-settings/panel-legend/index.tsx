@@ -8,41 +8,41 @@ const { Panel } = Collapse;
 const { TextArea } = Input;
 type IProps = FormComponentProps;
 const panelSettingLegendPrefix = `${panelSettingPrefix}legend#`;
-const LegendFormItemLayout =
+const legendFormItemLayout =
   {
     labelCol: {
       span: 6,
     },
     wrapperCol: {
-      span: 18,
+      span: 12,
     },
   };
 
 const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
   <Panel {...others} header="legend" key="legend">
-    <Form.Item label="show" {...LegendFormItemLayout}>
+    <Form.Item label="show" {...legendFormItemLayout}>
       {getFieldDecorator(`${panelSettingLegendPrefix}show`, {
         initialValue: false,
       })(<Switch />)}
     </Form.Item>
-    <Form.Item label="top" {...LegendFormItemLayout}>
+    <Form.Item label="top" {...legendFormItemLayout}>
       {getFieldDecorator(`${panelSettingLegendPrefix}top`, {
       })(<Input />)}
     </Form.Item>
-    <Form.Item label="left" {...LegendFormItemLayout}>
+    <Form.Item label="left" {...legendFormItemLayout}>
       {getFieldDecorator(`${panelSettingLegendPrefix}left`, {
       })(<Input />)}
     </Form.Item>
-    <Form.Item label="right" {...LegendFormItemLayout}>
+    <Form.Item label="right" {...legendFormItemLayout}>
       {getFieldDecorator(`${panelSettingLegendPrefix}right`, {
       })(<Input />)}
     </Form.Item>
-    <Form.Item label="bottom" {...LegendFormItemLayout}>
+    <Form.Item label="bottom" {...legendFormItemLayout}>
       {getFieldDecorator(`${panelSettingLegendPrefix}bottom`, {
       })(<Input />)}
     </Form.Item>
-    <Form.Item label="标题对应" {...LegendFormItemLayout}>
-      {getFieldDecorator(`${panelSettingLegendPrefix}legendMapping`, {
+    <Form.Item label="标题对应" {...legendFormItemLayout}>
+      {getFieldDecorator(`${panelSettingLegendPrefix}data`, {
         initialValue: '',
         rules: [{
           message: '请输入正确的JSON对象字符串',

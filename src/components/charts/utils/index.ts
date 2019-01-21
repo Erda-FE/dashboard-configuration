@@ -1,6 +1,5 @@
 import { forEach, startsWith, get, set, endsWith } from 'lodash';
 import xss from 'xss';
-// import { IChartsMap } from '../../../types';
 import { panelSettingPrefix } from '../../utils';
 import { Func } from 'echarts-for-react';
 
@@ -14,51 +13,13 @@ export const convertSettingToOption = (drawerInfo: any): any => {
       if (endsWith(key, 'formatter')) {
         tempValue = convertFormatter(value);
       }
-      if (endsWith(key, 'enableLegend')) {
-        tempValue = value;
-      }
-      if (endsWith(key, 'legend#position')) {
-        set(option, ['legend', value], 0);
-        return;
-      }
-      if (endsWith(key, 'legendMapping')) {
-        try {
-          tempValue = JSON.parse(value);
-        } catch (error) {
-          tempValue = {};
-        }
+      if (endsWith(key, 'legend#data')) {
+        tempValue = convertFormatter(value);
       }
       set(option, list.splice(1, list.length - 1), tempValue);
     }
   });
   return option;
-};
-
-export const legendConvert = (sourceData: any[], settingOptions: any): any => {
-  const enableLegend = get(settingOptions, 'legend.enableLegend');
-  let legend = get(settingOptions, 'legend') || {};
-  let convertedData = sourceData;
-  if (enableLegend) {
-    const mapping = legend.legendMapping || {};
-    legend = {
-      ...legend,
-      data: sourceData.map((data: any) => {
-        let legendName = data.label;
-        if (mapping[legendName]) {
-          legendName = mapping[legendName];
-        }
-        return legendName;
-      }),
-    };
-    convertedData = sourceData.map((data: any) => {
-      let legendName = data.label;
-      if (mapping[legendName]) {
-        legendName = mapping[legendName];
-      }
-      return { ...data, name: legendName };
-    });
-  }
-  return { convertedOptions: { ...settingOptions, ...legend }, convertedData };
 };
 
 const convertFormatter = (value: string): string | Func => {

@@ -10,10 +10,7 @@ export const convertSettingToOption = (drawerInfo: any): any => {
     if (startsWith(key, panelSettingPrefix)) {
       const list = key.split('#');
       let tempValue = value;
-      if (endsWith(key, 'formatter')) {
-        tempValue = convertFormatter(value);
-      }
-      if (endsWith(key, 'legend#data')) {
+      if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
         tempValue = convertFormatter(value);
       }
       set(option, list.splice(1, list.length - 1), tempValue);

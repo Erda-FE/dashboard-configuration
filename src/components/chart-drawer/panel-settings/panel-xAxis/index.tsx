@@ -44,7 +44,12 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
     </Form.Item>
     <Form.Item label="axisLabel.fomater" {...formPositionLayout}>
       {getFieldDecorator(`${panelSettingXAxisPrefix}axisLabel#formatter`, {
-      })(<TextArea onKeyDown={tab} />)}
+      })(<TextArea onKeyDown={tab}
+        autosize
+        placeholder="输入fommater的函数体，参数预定义为value. e.g.
+        if(value > 1024) return value/1024 + 'MB';
+        else return value + 'KB';"
+      />)}
     </Form.Item>
   </Panel >
 );

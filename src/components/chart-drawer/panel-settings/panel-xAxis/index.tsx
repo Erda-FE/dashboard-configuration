@@ -5,7 +5,7 @@ import { formItemLayout, panelSettingPrefix } from '../../../utils';
 
 const { Panel } = Collapse;
 const { Option } = Select;
-const panelSettingYAxisPrefix = `${panelSettingPrefix}yAxis#`;
+const panelSettingXAxisPrefix = `${panelSettingPrefix}xAxis#`;
 
 export const formPositionLayout = {
   labelCol: {
@@ -19,15 +19,15 @@ export const formPositionLayout = {
 type IProps = FormComponentProps;
 
 const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
-  <Panel {...others} header="yAxis" key="yAxis">
+  <Panel {...others} header="xAxis" key="xAxis">
     <Form.Item label="show" {...formItemLayout}>
-      {getFieldDecorator(`${panelSettingYAxisPrefix}show`, {
+      {getFieldDecorator(`${panelSettingXAxisPrefix}show`, {
         initialValue: true,
         valuePropName: 'checked',
       })(<Switch />)}
     </Form.Item>
     <Form.Item label="type" {...formItemLayout}>
-      {getFieldDecorator(`${panelSettingYAxisPrefix}type`, {
+      {getFieldDecorator(`${panelSettingXAxisPrefix}type`, {
         initialValue: 'value',
       })(
         <Select>
@@ -38,7 +38,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
       )}
     </Form.Item>
     <Form.Item label="name" {...formItemLayout}>
-      {getFieldDecorator(`${panelSettingYAxisPrefix}name`, {
+      {getFieldDecorator(`${panelSettingXAxisPrefix}name`, {
       })(<Input />)}
     </Form.Item>
   </Panel >

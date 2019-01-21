@@ -5,6 +5,7 @@ import PanelToolTip from './panel-tooltip';
 import PanelLegend from './panel-legend';
 import PanelTitle from './panel-title';
 import PanelYAxis from './panel-yAxis';
+import PanelXAxis from './panel-xAxis';
 import './index.scss';
 
 const { Panel } = Collapse;
@@ -31,6 +32,7 @@ const PanelSettings = ({ form, ...others }: IProps) => (
       <PanelToolTip form={form} />
       <PanelLegend form={form} />
       <PanelYAxis form={form} />
+      <PanelXAxis form={form} />
     </Collapse>
   </Panel>
 );

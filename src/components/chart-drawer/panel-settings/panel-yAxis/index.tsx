@@ -1,13 +1,14 @@
 import React from 'react';
 import { Collapse, Form, Input, Switch, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout, panelSettingPrefix } from '../../../utils';
+import { panelSettingPrefix, tab } from '../../../utils';
 
 const { Panel } = Collapse;
 const { Option } = Select;
+const { TextArea } = Input;
 const panelSettingYAxisPrefix = `${panelSettingPrefix}yAxis#`;
 
-export const formPositionLayout = {
+const formPositionLayout = {
   labelCol: {
     span: 8,
   },
@@ -20,13 +21,13 @@ type IProps = FormComponentProps;
 
 const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
   <Panel {...others} header="yAxis" key="yAxis">
-    <Form.Item label="show" {...formItemLayout}>
+    <Form.Item label="show" {...formPositionLayout}>
       {getFieldDecorator(`${panelSettingYAxisPrefix}show`, {
         initialValue: true,
         valuePropName: 'checked',
       })(<Switch />)}
     </Form.Item>
-    <Form.Item label="type" {...formItemLayout}>
+    <Form.Item label="type" {...formPositionLayout}>
       {getFieldDecorator(`${panelSettingYAxisPrefix}type`, {
         initialValue: 'value',
       })(
@@ -37,9 +38,13 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
         </Select>
       )}
     </Form.Item>
-    <Form.Item label="name" {...formItemLayout}>
+    <Form.Item label="name" {...formPositionLayout}>
       {getFieldDecorator(`${panelSettingYAxisPrefix}name`, {
       })(<Input />)}
+    </Form.Item>
+    <Form.Item label="axisLabel.fomater" {...formPositionLayout}>
+      {getFieldDecorator(`${panelSettingYAxisPrefix}axisLabel#formatter`, {
+      })(<TextArea onKeyDown={tab} />)}
     </Form.Item>
   </Panel >
 );

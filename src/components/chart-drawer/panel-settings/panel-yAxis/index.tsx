@@ -1,7 +1,7 @@
 import React from 'react';
 import { Collapse, Form, Input, Switch, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelSettingPrefix, tab } from '../../../utils';
+import { panelSettingPrefix } from '../../../utils';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -44,11 +44,13 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
     </Form.Item>
     <Form.Item label="axisLabel.fomater" {...formPositionLayout}>
       {getFieldDecorator(`${panelSettingYAxisPrefix}axisLabel#formatter`, {
-      })(<TextArea onKeyDown={tab}
+      })(<TextArea
         autosize
-        placeholder="输入fomater的函数体，参数预定义为value. e.g.
-        if(value > 1024) return value/1024 + 'MB';
-        else return value + 'KB';"
+        placeholder="输入fomater函数. e.g.
+        function(value){
+            if(value > 1024) return value/1024 + 'MB';
+            else return value + 'KB';
+        }"
       />)}
     </Form.Item>
   </Panel>

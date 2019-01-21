@@ -82,11 +82,3 @@ export function setScreenFull(dom: Element | null | Text, isFullscreen: boolean)
     screenfull.exit();
   }
 }
-
-export const tab = (event: any) => {
-  if (event.keyCode === 9) {
-    // eslint-disable-next-line
-    event.target.value += '  ';
-    event.preventDefault();
-  }
-};

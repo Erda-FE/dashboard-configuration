@@ -2,6 +2,10 @@ import React from 'react';
 import { Collapse, Icon, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PanelToolTip from './panel-tooltip';
+import PanelLegend from './panel-legend';
+import PanelTitle from './panel-title';
+import PanelYAxis from './panel-yAxis';
+import PanelXAxis from './panel-xAxis';
 import './index.scss';
 
 const { Panel } = Collapse;
@@ -24,7 +28,11 @@ const PanelSettings = ({ form, ...others }: IProps) => (
     }
   >
     <Collapse>
+      <PanelTitle form={form} />
       <PanelToolTip form={form} />
+      <PanelLegend form={form} />
+      <PanelYAxis form={form} />
+      <PanelXAxis form={form} />
     </Collapse>
   </Panel>
 );

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Collapse, Form, Input, Switch } from 'antd';
+import { Collapse, Form, Input, Switch, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formItemLayout, panelSettingPrefix } from '../../../utils';
 
 const { Panel } = Collapse;
+const { Option } = Select;
 const panelSettingYAxisPrefix = `${panelSettingPrefix}yAxis#`;
 
 export const formPositionLayout = {
@@ -27,7 +28,13 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
     </Form.Item>
     <Form.Item label="type" {...formItemLayout}>
       {getFieldDecorator(`${panelSettingYAxisPrefix}type`, {
-      })(<Input />)}
+        initialValue: 'value',
+      })(
+        <Select>
+          <Option value="value">value</Option>
+          <Option value="time">time</Option>
+        </Select>
+      )}
     </Form.Item>
     <Form.Item label="name" {...formItemLayout}>
       {getFieldDecorator(`${panelSettingYAxisPrefix}name`, {

@@ -1,8 +1,7 @@
-import { forEach, startsWith, get, set, endsWith } from 'lodash';
+import { forEach, startsWith, set, endsWith } from 'lodash';
 // import xss from 'xss';
 import { panelSettingPrefix } from '../../utils';
 import { Func } from 'echarts-for-react';
-
 
 // 转化为option对象
 export const convertSettingToOption = (drawerInfo: any): any => {

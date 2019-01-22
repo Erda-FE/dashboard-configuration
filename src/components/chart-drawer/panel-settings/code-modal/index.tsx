@@ -5,8 +5,11 @@
  * 3、通过链接引入，防止第三方系统使用时包过大
  */
 import React from 'react';
+import { get } from 'lodash';
 import { Modal, Tooltip, Icon } from 'antd';
 import { connect } from 'dva';
+import { pretty } from 'js-object-pretty-print';
+import { convertSettingToOption } from '../../../charts/utils';
 import './index.scss';
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -38,13 +41,13 @@ function loadJsFile(src: string) {
 }
 
 // 初始化编辑器，配置项和百度的配置一致
-function initEditor(editor: any) {
+function initEditor(editor: any, option: object) {
   editor.setOptions({
     enableBasicAutocompletion: true,
     enableSnippets: true,
     enableLiveAutocompletion: true
   });
-  editor.setValue('option = {\n    \n};\n');
+  editor.setValue(`option = ${pretty(option, 4, 'PRINT', true)};\n`);
   editor.selection.setSelectionRange({
     start: {
       row: 1,
@@ -81,7 +84,7 @@ class CodeModal extends React.PureComponent<IProps> {
     initEditor(ace.edit('editor', {
       mode: 'ace/mode/javascript',
       selectionStyle: 'text',
-    }));
+    }), this.props.option);
   }
 
   onOk = () => {
@@ -89,7 +92,7 @@ class CodeModal extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { closeCodeModal, codeVisible } = this.props;
+    const { closeCodeModal, codeVisible, option } = this.props;
     return (
       <Modal
         title={
@@ -117,9 +120,10 @@ class CodeModal extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  biDrawer: { codeVisible },
+  biDrawer: { codeVisible, drawerInfoMap, editChartId },
 }: any) => ({
   codeVisible,
+  option: convertSettingToOption(get(drawerInfoMap, [editChartId], {})),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -7,6 +7,7 @@ import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
 import { panelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
+import { convertFunction } from '../charts/utils';
 import './index.scss';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
@@ -114,9 +115,13 @@ class ChartOperation extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { children, isEdit, isChartEdit, url, chartId, hasLinked } = this.props;
+    const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
+    let renderData = resData;
+    if (typeof dataConvertor === 'function') {
+      renderData = dataConvertor(resData);
+    }
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header-left">
@@ -139,7 +144,7 @@ class ChartOperation extends React.PureComponent<IProps> {
           }
           <Control chartId={chartId} onChange={this.onControlChange} />
         </div>
-        {!isEmpty(resData) && React.cloneElement(child, { ...child.props, ...resData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
+        {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );
   }
@@ -166,6 +171,11 @@ const mapStateToProps = ({
   linkSetting: { linkMap, linkDataMap },
   biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => {
   const { paramName, clickId } = getKeyValue(linkMap, chartId);
+  let dataConvertorFunction;
+  const dataConvertor = get(drawerInfoMap, [chartId, `${panelDataPrefix}dataConvertor`]);
+  if (dataConvertor) {
+    dataConvertorFunction = convertFunction(dataConvertor, { names: [], datas: [] });
+  }
   return {
     isEdit,
     isChartEdit: editChartId === chartId,
@@ -173,6 +183,7 @@ const mapStateToProps = ({
     linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'name'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
     canLinked: !!clickId, // 是否可以进行联动设置
     hasLinked: !!find(linkMap[chartId], value => value), // 是否已经设置了联动
+    dataConvertor: dataConvertorFunction as any,
   };
 };
 

@@ -14,7 +14,12 @@ export const convertSettingToOption = (drawerInfo: any): any => {
     if (startsWith(key, panelSettingPrefix)) {
       const list = key.split('#');
       let tempValue = value;
-      if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
+      if (endsWith(key, 'axisLabel#formatter')) {
+        tempValue = convertFunction(value, '');
+        if (typeof tempValue !== 'function') {
+          return;
+        }
+      } else if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
         tempValue = convertFormatter(value);
       }
       set(option, list.splice(1, list.length - 1), tempValue);
@@ -27,6 +32,19 @@ const convertFormatter = (value: string): string | Func => {
   try {
     // eslint-disable-next-line
     return (new Function(`return ${value}`))();
+  } catch (error) {
+    return '';
+  }
+};
+
+export const convertFunction = (funcStr: string, testValue: any): string | Func => {
+  try {
+    const func = convertFormatter(funcStr);
+    if (typeof func === 'function') {
+      func(testValue);
+      return func;
+    }
+    return '';
   } catch (error) {
     return '';
   }

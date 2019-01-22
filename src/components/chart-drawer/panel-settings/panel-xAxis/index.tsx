@@ -2,20 +2,12 @@ import React from 'react';
 import { Collapse, Form, Input, Switch, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelSettingPrefix } from '../../../utils';
+import { formPositionLayout } from '../utils';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 const { TextArea } = Input;
 const panelSettingXAxisPrefix = `${panelSettingPrefix}xAxis#`;
-
-const formPositionLayout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
 
 type IProps = FormComponentProps;
 

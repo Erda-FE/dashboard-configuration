@@ -5,7 +5,7 @@
  * 3、通过链接引入，防止第三方系统使用时包过大
  */
 import React from 'react';
-import { Modal } from 'antd';
+import { Modal, Tooltip, Icon } from 'antd';
 import { connect } from 'dva';
 import './index.scss';
 
@@ -92,7 +92,16 @@ class CodeModal extends React.PureComponent<IProps> {
     const { closeCodeModal, codeVisible } = this.props;
     return (
       <Modal
-        title="代码编辑"
+        title={
+          <div className="bi-in-a-icon">
+            <span>代码编辑</span>
+            <Tooltip placement="right" title="点击进行示例跳转,编写过程与Echarts编辑器一致">
+              <a target="_blank" rel="noopener noreferrer" href="https://www.echartsjs.com/examples/editor.html?c=pie-doughnut">
+                <Icon type="question-circle" />
+              </a>
+            </Tooltip>
+          </div>
+        }
         visible={codeVisible}
         onOk={this.onOk}
         onCancel={closeCodeModal}

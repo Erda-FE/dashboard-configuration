@@ -20,7 +20,7 @@ const PanelSettings = ({ form, openCodeModal, ...others }: IProps) => (
       {...others}
       key="settings"
       header={
-        <div className="bi-panel-setting-header">
+        <div className="bi-in-a-icon">
           <span>配置</span>
           <Tooltip placement="bottom" title="Echarts配置帮助">
             <a target="_blank" rel="noopener noreferrer" href="https://echarts.baidu.com/option.html">

@@ -1,6 +1,7 @@
 declare module 'react-grid-layout';
 declare module 'react-sizeme';
-declare var ace: any;
+declare module 'js-object-pretty-print';
+let var ace: any;
 declare module 'echarts-for-react' {
   type Func = (...args: any[]) => any;
 

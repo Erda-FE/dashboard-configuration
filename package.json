@@ -43,7 +43,7 @@
     "dva": "^2.3.0",
     "echarts": "^4.2.0-rc.2",
     "echarts-for-react": "^2.0.15-beta.0",
-    "json-stringify-pretty-compact": "^1.2.0",
+    "js-object-pretty-print": "^0.3.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.5.8",
     "react": "^16.3.2",

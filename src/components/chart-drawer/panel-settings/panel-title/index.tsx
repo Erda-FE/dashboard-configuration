@@ -15,6 +15,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
     <Form.Item label="show" {...formItemLayout}>
       {getFieldDecorator(`${panelSettingTitlePrefix}show`, {
         initialValue: false,
+        valuePropName: 'checked',
       })(<Switch />)}
     </Form.Item>
     <Form.Item label="text" {...formItemLayout}>

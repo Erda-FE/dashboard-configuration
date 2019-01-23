@@ -1,9 +1,9 @@
 import React from 'react';
 import { get, map } from 'lodash';
 import { connect } from 'dva';
-import { Collapse, Form, Input } from 'antd';
+import { Collapse } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import jsonPretty from 'json-stringify-pretty-compact';
+import { pretty } from 'js-object-pretty-print';
 import PropTypes from 'prop-types';
 import './index.scss';
 
@@ -25,7 +25,7 @@ class PanelData extends React.Component<IProps> {
           <a
             className="bi-demo-text"
             download={`mock-${chartType}.json`}
-            href={`data:text/json;charset=utf-8,${jsonPretty(mockData)}`}
+            href={`data:text/json;charset=utf-8,${pretty(mockData, 4, 'JSON', true)}`}
           >{`${name}数据示例下载`}
           </a>
         )}

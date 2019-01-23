@@ -1,10 +1,9 @@
-import { forEach, startsWith, get, set, endsWith } from 'lodash';
+import { forEach, startsWith, set, endsWith, reduce } from 'lodash';
 // import xss from 'xss';
 import { panelSettingPrefix } from '../../utils';
 import { Func } from 'echarts-for-react';
 
-
-// 转化为option对象
+// drawerInfo转化为option对象
 export const convertSettingToOption = (drawerInfo: any): any => {
   const option = {};
   forEach(drawerInfo, (value, key) => {
@@ -14,18 +13,35 @@ export const convertSettingToOption = (drawerInfo: any): any => {
     if (startsWith(key, panelSettingPrefix)) {
       const list = key.split('#');
       let tempValue = value;
-      if (endsWith(key, 'axisLabel#formatter')) {
-        tempValue = convertFormatter(value);
-        if (typeof tempValue !== 'function') {
-          return;
-        }
-      } else if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
+      if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
         tempValue = convertFormatter(value);
       }
       set(option, list.splice(1, list.length - 1), tempValue);
     }
   });
   return option;
+};
+
+// option转化为drawerInfo对象
+const whiteList = ['boolean', 'string'];
+const convertOption = (object: object) => reduce(object, (result: object, val: any, key: string): object => {
+  if (typeof val === 'object') {
+    const obj = convertOption(val) as any;
+    forEach(obj, (val1, key1) => {
+      result[`${key}#${key1}`] = whiteList.includes(typeof val1) ? val1 : val1.toString();
+    });
+  } else {
+    result[key] = val;
+  }
+  return result;
+}, {});
+
+export const convertOptionToSetting = (option: any): any => {
+  const settingInfo = {};
+  forEach(convertOption(option), (val1, key1) => {
+    settingInfo[`${panelSettingPrefix}${key1}`] = val1;
+  });
+  return settingInfo;
 };
 
 export const convertFormatter = (value: string): string | Func => {

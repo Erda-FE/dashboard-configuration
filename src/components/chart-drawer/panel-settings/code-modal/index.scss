@@ -1,0 +1,9 @@
+:global {
+  .bi-code-editor {
+    width: 650px;
+    height: 500px;
+    .ace_print-margin {
+      display: none;
+    }
+  }
+}

@@ -118,7 +118,7 @@ class ChartOperation extends React.PureComponent<IProps> {
     const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
-    let renderData;
+    let renderData = resData;
     if (typeof dataConvertor === 'function') {
       try {
         renderData = dataConvertor(resData);

@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelDataPrefix } from '../../utils';
-import { convertFormatter } from '../utils';
+import { funcValidator } from '../utils';
 import PropTypes from 'prop-types';
 
 const { TextArea } = Input;
@@ -34,17 +34,7 @@ class DataSettings extends React.PureComponent<IProps> {
         <Form.Item label="转换函数" {...urlItemLayout}>
           {getFieldDecorator(`${panelDataPrefix}dataConvertor`, {
             rules: [{
-              validator: (_rule, value, callback) => {
-                if (!value) {
-                  callback();
-                }
-                const func = convertFormatter(value);
-                if (typeof func === 'function') {
-                  callback();
-                } else {
-                  callback('请输入正确函数体');
-                }
-              },
+              validator: funcValidator,
             }],
           })(<TextArea autosize
             placeholder="请输入完整转换函数,e.g.

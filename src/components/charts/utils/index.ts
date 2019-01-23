@@ -36,3 +36,16 @@ export const convertFormatter = (value: string): string | Func => {
     return '';
   }
 };
+
+export const funcValidator = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback();
+  }
+  const func = convertFormatter(value);
+  if (typeof func === 'function') {
+    callback();
+  } else {
+    callback('请输入正确函数体');
+  }
+};
+

@@ -9,7 +9,7 @@ import { get } from 'lodash';
 import { Modal, Tooltip, Icon } from 'antd';
 import { connect } from 'dva';
 import { pretty } from 'js-object-pretty-print';
-import { convertSettingToOption } from '../../../charts/utils';
+import { convertSettingToOption, convertOptionToSetting, convertFormatter } from '../../../charts/utils';
 import './index.scss';
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
@@ -83,15 +83,20 @@ class CodeModal extends React.PureComponent<IProps> {
     if (typeof ace === 'undefined') {
       return;
     }
-    this.editor = ace.edit('editor', {
-      mode: 'ace/mode/javascript',
-      selectionStyle: 'text',
-    });
-    initEditor(this.editor, this.props.option);
+    if (!this.editor) {
+      this.editor = ace.edit('editor', {
+        mode: 'ace/mode/javascript',
+        selectionStyle: 'text',
+      });
+      initEditor(this.editor, this.props.option);
+    } else {
+      this.editor.setValue(`option = ${pretty(this.props.option, 4, 'PRINT', true)}`);
+    }
   }
 
   onOk = () => {
-    this.editor.getValue();
+    this.props.submitCode(convertOptionToSetting(convertFormatter(this.editor.getValue())));
+    this.props.closeCodeModal();
   }
 
   render() {
@@ -132,6 +137,9 @@ const mapStateToProps = ({
 const mapDispatchToProps = (dispatch: any) => ({
   closeCodeModal() {
     dispatch({ type: 'biDrawer/closeCodeModal' });
+  },
+  submitCode(settingInfo: object) {
+    dispatch({ type: 'biDrawer/submitCode', settingInfo });
   },
 });
 

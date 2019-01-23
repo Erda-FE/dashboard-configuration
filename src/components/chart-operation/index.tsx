@@ -123,7 +123,7 @@ class ChartOperation extends React.PureComponent<IProps> {
       try {
         renderData = dataConvertor(resData);
       } catch (error) {
-        renderData = resData;
+        console.error('catch error in dataConvertor', error); // eslint-disable-line
       }
     }
     return (

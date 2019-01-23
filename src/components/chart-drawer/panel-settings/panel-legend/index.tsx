@@ -23,6 +23,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
     <Form.Item label="show" {...legendFormItemLayout}>
       {getFieldDecorator(`${panelSettingLegendPrefix}show`, {
         initialValue: false,
+        valuePropName: 'checked',
       })(<Switch />)}
     </Form.Item>
     <Form.Item label="top" {...legendFormItemLayout}>

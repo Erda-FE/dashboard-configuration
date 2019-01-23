@@ -14,7 +14,12 @@ export const convertSettingToOption = (drawerInfo: any): any => {
     if (startsWith(key, panelSettingPrefix)) {
       const list = key.split('#');
       let tempValue = value;
-      if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
+      if (endsWith(key, 'axisLabel#formatter')) {
+        tempValue = convertFormatter(value);
+        if (typeof tempValue !== 'function') {
+          return;
+        }
+      } else if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
         tempValue = convertFormatter(value);
       }
       set(option, list.splice(1, list.length - 1), tempValue);
@@ -23,7 +28,7 @@ export const convertSettingToOption = (drawerInfo: any): any => {
   return option;
 };
 
-const convertFormatter = (value: string): string | Func => {
+export const convertFormatter = (value: string): string | Func => {
   try {
     // eslint-disable-next-line
     return (new Function(`return ${value}`))();
@@ -31,3 +36,16 @@ const convertFormatter = (value: string): string | Func => {
     return '';
   }
 };
+
+export const funcValidator = (_rule: any, value: string, callback: any) => {
+  if (!value) {
+    callback();
+  }
+  const func = convertFormatter(value);
+  if (typeof func === 'function') {
+    callback();
+  } else {
+    callback('请输入正确函数体');
+  }
+};
+

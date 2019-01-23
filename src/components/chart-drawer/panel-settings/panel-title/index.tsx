@@ -2,19 +2,11 @@ import React from 'react';
 import { Collapse, Form, Input, Switch, Row, Col } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formItemLayout, panelSettingPrefix } from '../../../utils';
+import { formPositionLayout } from '../utils';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
 const panelSettingTitlePrefix = `${panelSettingPrefix}title#`;
-
-export const formPositionLayout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
 
 type IProps = FormComponentProps;
 

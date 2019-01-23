@@ -2,20 +2,13 @@ import React from 'react';
 import { Collapse, Form, Input, Switch, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelSettingPrefix } from '../../../utils';
+import { formPositionLayout } from '../utils';
+import { funcValidator } from '../../../charts/utils';
 
 const { Panel } = Collapse;
 const { Option } = Select;
 const { TextArea } = Input;
 const panelSettingXAxisPrefix = `${panelSettingPrefix}xAxis#`;
-
-const formPositionLayout = {
-  labelCol: {
-    span: 8,
-  },
-  wrapperCol: {
-    span: 16,
-  },
-};
 
 type IProps = FormComponentProps;
 
@@ -44,6 +37,9 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
     </Form.Item>
     <Form.Item label="axisLabel.fomater" {...formPositionLayout}>
       {getFieldDecorator(`${panelSettingXAxisPrefix}axisLabel#formatter`, {
+        rules: [{
+          validator: funcValidator,
+        }],
       })(<TextArea
         autosize
         placeholder="输入fomater函数. e.g.

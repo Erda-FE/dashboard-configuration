@@ -7,8 +7,8 @@ import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
 import { panelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
-import { convertFunction } from '../charts/utils';
 import './index.scss';
+import { convertFormatter } from '../charts/utils';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   chartId: string
@@ -118,9 +118,13 @@ class ChartOperation extends React.PureComponent<IProps> {
     const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
-    let renderData = resData;
+    let renderData;
     if (typeof dataConvertor === 'function') {
-      renderData = dataConvertor(resData);
+      try {
+        renderData = dataConvertor(resData);
+      } catch (error) {
+        renderData = resData;
+      }
     }
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
@@ -174,7 +178,7 @@ const mapStateToProps = ({
   let dataConvertorFunction;
   const dataConvertor = get(drawerInfoMap, [chartId, `${panelDataPrefix}dataConvertor`]);
   if (dataConvertor) {
-    dataConvertorFunction = convertFunction(dataConvertor, { names: [], datas: [] });
+    dataConvertorFunction = convertFormatter(dataConvertor);
   }
   return {
     isEdit,

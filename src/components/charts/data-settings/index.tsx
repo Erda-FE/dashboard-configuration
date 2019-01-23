@@ -6,7 +6,7 @@ import { connect } from 'dva';
 import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelDataPrefix } from '../../utils';
-import { convertFunction } from '../utils';
+import { convertFormatter } from '../utils';
 import PropTypes from 'prop-types';
 
 const { TextArea } = Input;
@@ -38,7 +38,7 @@ class DataSettings extends React.PureComponent<IProps> {
                 if (!value) {
                   callback();
                 }
-                const func = convertFunction(value, { names: [], datas: [] });
+                const func = convertFormatter(value);
                 if (typeof func === 'function') {
                   callback();
                 } else {
@@ -46,7 +46,25 @@ class DataSettings extends React.PureComponent<IProps> {
                 }
               },
             }],
-          })(<TextArea autosize placeholder="请输入完整转换函数" />)}
+          })(<TextArea autosize
+            placeholder="请输入完整转换函数,e.g.
+            function(values) {
+              if(!values.datas) {
+                  return values;
+              }
+              let {names, datas} = values;
+              datas = datas.map(v => {
+                  let {name} = v;
+                  if (name === 'demo1') {
+                      v.name = '测试1';
+                  }else if (name === 'demo2') {
+                      v.name = '测试2';
+                  }
+                  return { ...v };
+              });
+              return {names, datas};
+          }"
+          />)}
         </Form.Item>
       </div>
 

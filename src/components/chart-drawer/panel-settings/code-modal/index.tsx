@@ -45,23 +45,25 @@ function initEditor(editor: any, option: object) {
   editor.setOptions({
     enableBasicAutocompletion: true,
     enableSnippets: true,
-    enableLiveAutocompletion: true
+    enableLiveAutocompletion: true,
   });
-  editor.setValue(`option = ${pretty(option, 4, 'PRINT', true)};\n`);
+  editor.setValue(`option = ${pretty(option, 4, 'PRINT', true)}`);
   editor.selection.setSelectionRange({
     start: {
       row: 1,
-      column: 4
+      column: 4,
     },
     end: {
       row: 1,
-      column: 4
-    }
+      column: 4,
+    },
   });
 }
 
 class CodeModal extends React.PureComponent<IProps> {
   private hasLoaded: boolean;
+
+  private editor: any;
 
   componentWillReceiveProps({ codeVisible }: IProps) {
     if (!this.hasLoaded && codeVisible && codeVisible !== this.props.codeVisible) {
@@ -81,18 +83,19 @@ class CodeModal extends React.PureComponent<IProps> {
     if (typeof ace === 'undefined') {
       return;
     }
-    initEditor(ace.edit('editor', {
+    this.editor = ace.edit('editor', {
       mode: 'ace/mode/javascript',
       selectionStyle: 'text',
-    }), this.props.option);
+    });
+    initEditor(this.editor, this.props.option);
   }
 
   onOk = () => {
-
+    this.editor.getValue();
   }
 
   render() {
-    const { closeCodeModal, codeVisible, option } = this.props;
+    const { closeCodeModal, codeVisible } = this.props;
     return (
       <Modal
         title={
@@ -113,7 +116,7 @@ class CodeModal extends React.PureComponent<IProps> {
         maskClosable={false}
         width={700}
       >
-        {this.hasLoaded && <div id="editor" className="bi-code-editor"></div>}
+        {this.hasLoaded && <div id="editor" className="bi-code-editor" />}
       </Modal>
     );
   }

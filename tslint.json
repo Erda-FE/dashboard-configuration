@@ -1,5 +1,5 @@
 {
-  "extends": "@terminus/tslint-config",
+  "extends": "@terminus/tslint-config/typescript",
   // 规则自定义
   "rules": {
   },

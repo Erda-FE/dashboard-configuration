@@ -1,35 +1,11 @@
 {
-  "extends": "./tslint-base",
-  "linterOptions": {
-      "include": [
-          "example/"
-      ]
-  },
+  "extends": "@terminus/tslint-config",
+  // 规则自定义
   "rules": {
-    "no-constant-condition": true,
-    "ter-indent": [true, 2, {
-      "SwitchCase": 1,
-      "VariableDeclarator": 1,
-      "outerIIFEBody": 1,
-      "FunctionDeclaration": {
-        "parameters": 1,
-        "body": 1
-      },
-      "FunctionExpression": {
-        "parameters": 1,
-        "body": 1
-      },
-      "CallExpression": {
-        "arguments": 1
-      },
-      "ArrayExpression": 1,
-      "ObjectExpression": 1,
-      "ImportDeclaration": 1,
-      "flatTernaryExpressions": false
-    }],
-    "no-empty": [true, "allow-empty-functions"]
   },
+  // 其他规则所在目录
   "rulesDirectory": [
+    // 务必搭配tslint-eslint-rules使用
     "node_modules/tslint-eslint-rules/dist/rules"
   ]
 }

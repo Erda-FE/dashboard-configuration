@@ -7,6 +7,7 @@ import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
 import { panelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
+import ChartMask from '../charts/chart-mask';
 import './index.scss';
 import { convertFormatter } from '../charts/utils';
 
@@ -43,6 +44,14 @@ class ChartOperation extends React.PureComponent<IProps> {
     this.reloadData(this.props.url);
   }
 
+  setData = (res:object) => {
+    if (!res || isEmpty(res)) {
+      this.setState({ resData: { isMock: true, maskContent: '获取到的接口数据为空,使用mock数据展示' } });
+    } else {
+      this.setState({ resData: res });
+    }
+  }
+
   reloadData = (url: string) => {
     if (!url) {
       this.setState({ resData: { isMock: true } });
@@ -52,13 +61,12 @@ class ChartOperation extends React.PureComponent<IProps> {
     getData(url, this.query).then((resData: any) => {
       const res1 = onConvert ? onConvert(resData, chartId, url) : resData;
       if (res1 && res1.then) {
-        res1.then((res: any) => this.setState({ resData: res }));
+        res1.then((res: any) => this.setData(res));
       } else {
-        this.setState({ resData: res1 });
+        this.setData(res1);
       }
     }).catch(() => {
-      this.setState({ resData: { isMock: true } });
-      message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
+      this.setState({ resData: { isMock: true, maskContent: '接口获取失败，使用mock数据展示' } });
     });
   }
 
@@ -118,6 +126,7 @@ class ChartOperation extends React.PureComponent<IProps> {
     const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
+    const { isMock, maskContent } = resData as {isMock: boolean, maskContent:string };
     let renderData = resData;
     if (typeof dataConvertor === 'function') {
       try {
@@ -148,6 +157,7 @@ class ChartOperation extends React.PureComponent<IProps> {
           }
           <Control chartId={chartId} onChange={this.onControlChange} />
         </div>
+        <ChartMask isMock={isMock} maskContent={maskContent} />
         {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );

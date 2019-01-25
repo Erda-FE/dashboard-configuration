@@ -62,7 +62,6 @@ class Chart extends React.Component<IProps> {
     const { theme, themeObj } = this.context;
     return (
       <div className="bi-chart-sizeme">
-        <ChartMask isMock={isMock} />
         <ReactEcharts
           {...others}
           theme={theme}

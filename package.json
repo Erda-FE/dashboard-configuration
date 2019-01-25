@@ -55,7 +55,7 @@
     "xss": "^1.0.3"
   },
   "devDependencies": {
-    "@terminus/lint-config": "^0.3.1",
+    "@terminus/lint-config": "^0.3.2",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
     "@types/classnames": "^2.2.3",

@@ -1,3 +1,9 @@
 {
-  "extends": ["stylelint-config-rational-order", "@terminus/lint-config/style"]
+  "extends": ["stylelint-config-rational-order", "@terminus/lint-config/style"],
+  "ignoreFiles": [
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx"
+  ]  
 }

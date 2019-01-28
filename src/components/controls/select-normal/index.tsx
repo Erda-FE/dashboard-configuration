@@ -3,8 +3,8 @@ import { get, isEqual, map, isEmpty } from 'lodash';
 import { connect } from 'dva';
 import { Select, message } from 'antd';
 import { OptionProps } from 'antd/lib/select';
-import { panelControlPrefix, getData } from '../../utils';
-import { checkFixedData, strToObject } from './utils';
+import { panelControlPrefix, getData, strToObject } from '../../utils';
+import { checkFixedData } from './utils';
 
 const Option = Select.Option;
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {

@@ -82,3 +82,25 @@ export function setScreenFull(dom: Element | null | Text, isFullscreen: boolean)
     screenfull.exit();
   }
 }
+
+export function plainArrayValidator(_rule: any, text: string, callback: any): void {
+  if (!text) {
+    callback();
+    return;
+  }
+  try {
+    const arrayData = strToObject(text);
+    if (Array.isArray(arrayData) && arrayData.every(x => typeof x === 'string')) {
+      callback();
+      return;
+    }
+    callback('请输入正确的字符串数组');
+  } catch (e) {
+    callback('请输入正确的字符串数组');
+  }
+}
+
+export function strToObject(str: string) {
+  // eslint-disable-next-line
+  return  (new Function(`return ${str}`))();
+}

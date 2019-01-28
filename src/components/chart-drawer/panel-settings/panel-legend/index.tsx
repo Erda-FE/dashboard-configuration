@@ -1,8 +1,7 @@
 import React from 'react';
 import { Collapse, Form, Switch, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelSettingPrefix } from '../../../utils';
-import { plainArrayValidator } from '../../../controls/select-normal/utils';
+import { panelSettingPrefix, plainArrayValidator } from '../../../utils';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;

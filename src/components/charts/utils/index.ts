@@ -56,6 +56,7 @@ export const convertFormatter = (value: string): string | Func => {
 export const funcValidator = (_rule: any, value: string, callback: any) => {
   if (!value) {
     callback();
+    return;
   }
   const func = convertFormatter(value);
   if (typeof func === 'function') {

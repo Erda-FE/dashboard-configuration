@@ -1,8 +1,7 @@
 import React from 'react';
 import { Collapse, Form, Switch, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelSettingPrefix } from '../../../utils';
-import { checkFixedData } from '../../../controls/select-normal/utils';
+import { panelSettingPrefix, plainArrayValidator } from '../../../utils';
 
 const { Panel } = Collapse;
 const { TextArea } = Input;
@@ -47,9 +46,9 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
         initialValue: '',
         rules: [{
           message: '请输入正确的JSON对象字符串',
-          validator: checkFixedData,
+          validator: plainArrayValidator,
         }],
-      })(<TextArea placeholder='请输入JSON 如： {"demo1": "测试1", "demo2": "测试2"}' />)}
+      })(<TextArea placeholder='请输入字符串数组 如： ["demo1", "demo2"]' />)}
     </Form.Item>
   </Panel >
 );

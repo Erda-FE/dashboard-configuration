@@ -184,13 +184,22 @@ class BoardGrid extends React.PureComponent<IProps> {
         >
           {layout.map(({ i, ...others }: any) => {
             // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-            const { chartType } = drawerInfoMap[i];
-            const ChartNode = get(this.chartsMap, [chartType, 'component']) as any;
-            return (
-              <div key={i} data-grid={{ ...others }}>
+            const { chartType, controlType } = drawerInfoMap[i];
+            let child = null;
+            let ChartNode = get(this.chartsMap, [chartType, 'component']);
+            if (ChartNode) { // 图表
+              child = (
                 <ChartOperation chartId={i} onConvert={onConvert}>
                   <ChartNode chartId={i} />
                 </ChartOperation>
+              );
+            } else { // 控件
+              ChartNode = get(this.controlsMap, [controlType, 'component']);
+              child = <ChartNode chartId={i} />;
+            }
+            return (
+              <div key={i} data-grid={{ ...others }}>
+                {child}
               </div>
             );
           })}

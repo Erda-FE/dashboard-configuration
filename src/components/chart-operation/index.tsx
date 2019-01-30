@@ -146,7 +146,7 @@ class ChartOperation extends React.PureComponent<IProps> {
               </Dropdown>
             </span>)
           }
-          <Control chartId={chartId} onChange={this.onControlChange} />
+          <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
         {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>

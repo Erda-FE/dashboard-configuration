@@ -7,6 +7,7 @@ import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   onChange: (query: any) => void
+  style?: React.CSSProperties
 }
 
 class SelectDateTime extends React.PureComponent<IProps> {
@@ -17,9 +18,9 @@ class SelectDateTime extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { width } = this.props;
+    const { width, style } = this.props;
     return (
-      <DatePicker style={{ marginLeft: 12, width }}
+      <DatePicker style={{ ...style, width }}
         locale={locale}
         showTime
         format="YYYY-MM-DD HH:mm:ss"

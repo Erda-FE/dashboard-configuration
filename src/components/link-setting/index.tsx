@@ -16,10 +16,10 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 
 export const formItemLayout = {
   labelCol: {
-    span: 12,
+    span: 8,
   },
   wrapperCol: {
-    span: 12,
+    span: 16,
   },
 };
 
@@ -79,7 +79,7 @@ class LinkSettingModal extends React.PureComponent<IProps> {
         {(isEmpty(controlList) && isEmpty(chartList)) || !visible ? '无可联动图表或者控件' : (
           <React.Fragment>
             {isEmpty(controlList) ? null : this.renderList(controlList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的控件</span>)}
-            {isEmpty(chartList) ? null : this.renderList(controlList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的图表</span>)}
+            {isEmpty(chartList) ? null : this.renderList(chartList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的图表</span>)}
           </React.Fragment>
         )}
       </Modal>

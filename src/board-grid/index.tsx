@@ -28,7 +28,6 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   onSave?: (extra: any) => void, // 保存
   theme?: string, // 主题名
   themeObj?: {}, // 主题内容
-  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any> // 数据转化
   chartsMap?: IChartsMap // 图表
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
@@ -137,7 +136,7 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
+    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly } = this.props;
     const { width } = size;
     return (
       <div
@@ -189,7 +188,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             let ChartNode = get(this.chartsMap, [chartType, 'component']);
             if (ChartNode) { // 图表
               child = (
-                <ChartOperation chartId={i} onConvert={onConvert}>
+                <ChartOperation chartId={i}>
                   <ChartNode chartId={i} />
                 </ChartOperation>
               );

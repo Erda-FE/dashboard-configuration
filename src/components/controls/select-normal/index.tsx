@@ -6,9 +6,10 @@ import { OptionProps } from 'antd/lib/select';
 import { panelControlPrefix, getData, strToObject } from '../../utils';
 import { checkFixedData } from './utils';
 
-const Option = Select.Option;
+const { Option } = Select;
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   onChange: (query: any) => void
+  style?: React.CSSProperties
 }
 
 class SelectNormal extends React.PureComponent<IProps> {
@@ -48,7 +49,7 @@ class SelectNormal extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { width, multiple, canSearch } = this.props;
+    const { width, multiple, canSearch, style } = this.props;
     const { resData } = this.state;
     const otherProps: any = {};
     if (multiple) {
@@ -63,7 +64,7 @@ class SelectNormal extends React.PureComponent<IProps> {
     return (
       <Select
         placeholder="请选择"
-        style={{ marginLeft: 12, width }}
+        style={{ ...style, width }}
         onChange={this.onChange}
         onFocus={this.onFocus}
         {...otherProps}

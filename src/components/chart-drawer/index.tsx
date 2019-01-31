@@ -1,7 +1,7 @@
 import { forEach, get, find, isEmpty } from 'lodash';
 import React from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Collapse, Form, Input } from 'antd';
+import { Drawer, Button, Collapse, Form, Input, message } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PanelCharts from './panel-charts';
 import PanelControls from './panel-controls';
@@ -22,9 +22,12 @@ const { TextArea } = Input;
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class ChartDrawer extends React.PureComponent<IProps> {
-  submitDrawer = () => {
+  submitDrawer = () => { // 可以提交图表或控件
     const { form: { validateFields }, submitDrawer, drawerInfo } = this.props;
-    if (isEmpty(drawerInfo) || !drawerInfo.chartType) {
+    if (isEmpty(drawerInfo)) {
+      return;
+    } else if (!drawerInfo.chartType && !drawerInfo.controlType) {
+      message.error('请选择图表或者控件');
       return;
     }
     validateFields((err: any) => {

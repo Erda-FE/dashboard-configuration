@@ -8,6 +8,7 @@ const { RangePicker } = DatePicker;
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   onChange: (query: any) => void
+  style?: React.CSSProperties
 }
 
 class SelectDateRange extends React.PureComponent<IProps> {
@@ -19,9 +20,9 @@ class SelectDateRange extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { width } = this.props;
+    const { width, style } = this.props;
     return (
-      <RangePicker style={{ marginLeft: 12, width }}
+      <RangePicker style={{ ...style, width }}
         format="YYYY-MM-DD"
         placeholder={['开始时间', '结束时间']}
         onChange={this.onChange}

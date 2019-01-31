@@ -136,7 +136,7 @@ const mapStateToProps = ({
     isEdit,
     isChartEdit: editChartId === chartId,
     url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,
-    linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'name'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
+    linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'chartValue'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
     hasLinked: !!find(linkMap[chartId], value => value), // 是否已经设置了联动
     dataConvertor: dataConvertorFunction as any,
   };

@@ -54,7 +54,7 @@ class Chart extends React.Component<IProps> {
   }
 
   click = ({ name }: any) => {
-    this.props.updateLinkDataMap(this.props.chartId, { name });
+    this.props.updateLinkDataMap(this.props.chartId, { chartValue: name });
   }
 
   render() {

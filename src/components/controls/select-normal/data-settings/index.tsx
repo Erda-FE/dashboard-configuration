@@ -28,14 +28,6 @@ class DataSettings extends React.PureComponent<IProps> {
     const { editChartId, form: { getFieldDecorator } } = this.props;
     return (
       <React.Fragment>
-        <Form.Item label="参数名称" {...formItemLayout}>
-          {getFieldDecorator(`${panelControlPrefix}searchName`, {
-            rules: [{
-              required: true,
-              message: '请输入在接口中的查询名称',
-            }],
-          })(<Input placeholder="请输入在接口中的查询名称，一般为英文，示例：id" />)}
-        </Form.Item>
         <Form.Item label="控件接口" {...urlItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}url`, {
             rules: [{

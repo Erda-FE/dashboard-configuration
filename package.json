@@ -1,6 +1,6 @@
 {
   "name": "@terminus/bi-ui-package",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "bi ui package",
   "main": "./index.js",
   "sideEffects": [
@@ -43,7 +43,7 @@
     "dva": "^2.3.0",
     "echarts": "^4.2.0-rc.2",
     "echarts-for-react": "^2.0.15-beta.0",
-    "json-stringify-pretty-compact": "^1.2.0",
+    "js-object-pretty-print": "^0.3.0",
     "lodash": "^4.17.11",
     "prop-types": "^15.5.8",
     "react": "^16.3.2",
@@ -55,6 +55,7 @@
     "xss": "^1.0.3"
   },
   "devDependencies": {
+    "@terminus/lint-config": "^0.3.2",
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.1",
     "@types/classnames": "^2.2.3",
@@ -97,15 +98,11 @@
     "sockjs-client": "~1.1.4",
     "stompjs": "^2.3.3",
     "style-loader": "^0.13.2",
-    "stylelint": "^9.7.1",
-    "stylelint-config-rational-order": "0.0.2",
-    "stylelint-scss": "^3.3.2",
     "superagent": "^3.3.1",
     "superagent-use": "^0.1.0",
     "ts-import-plugin": "^1.4.4",
     "ts-loader": "^4.5.0",
     "tslint": "^5.11.0",
-    "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.5.1",
     "typescript": "^2.8.3",
     "typescript-eslint-parser": "^16.0.1",

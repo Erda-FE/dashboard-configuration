@@ -8,20 +8,21 @@ const { RangePicker } = DatePicker;
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   onChange: (query: any) => void
+  style?: React.CSSProperties
 }
 
 class SelectDateRange extends React.PureComponent<IProps> {
   onChange = (selectDateRange: any[]) => {
     const [start, end] = selectDateRange;
-    const { onChange } = this.props;
+    const { onChange, searchName } = this.props;
     if (!onChange) return;
-    onChange({ dateRange: [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')] });
+    onChange({ [searchName]: [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')] });
   }
 
   render() {
-    const { width } = this.props;
+    const { width, style } = this.props;
     return (
-      <RangePicker style={{ marginLeft: 12, width }}
+      <RangePicker style={{ ...style, width }}
         format="YYYY-MM-DD"
         placeholder={['开始时间', '结束时间']}
         onChange={this.onChange}
@@ -33,6 +34,7 @@ class SelectDateRange extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
   width: `${get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120)}px`,
+  searchName: get(drawerInfoMap, [chartId, `${panelControlPrefix}searchName`], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

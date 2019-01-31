@@ -1,3 +1,5 @@
+import { strToObject } from '../../../utils';
+
 export function checkFixedData(str: string): boolean {
   // 空的满足校验规则
   if (!str) {
@@ -18,9 +20,4 @@ export function checkFixedData(str: string): boolean {
     return false;
   }
   return false;
-}
-
-export function strToObject(str: string) {
-  // eslint-disable-next-line
-  return  (new Function(`return ${str}`))();
 }

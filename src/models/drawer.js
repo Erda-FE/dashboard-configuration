@@ -1,10 +1,11 @@
 import { find, cloneDeep, forEach, startsWith } from 'lodash';
-import { panelControlPrefix, panelDataPrefix } from '../components/utils';
+import { panelControlPrefix, panelDataPrefix, panelSettingPrefix } from '../components/utils';
 
 const defaultState = {
   visible: false,
   editChartId: '',
   drawerInfoMap: {}, // 所有图表配置信息
+  codeVisible: false, // 代码编辑
 };
 
 export default {
@@ -96,6 +97,22 @@ export default {
       const { drawerInfoMap } = state;
       delete drawerInfoMap[chartId];
       return { ...state, drawerInfoMap: { ...drawerInfoMap } };
+    },
+    openCodeModal(state) {
+      return { ...state, codeVisible: true };
+    },
+    closeCodeModal(state) {
+      return { ...state, codeVisible: false };
+    },
+    submitCode(state, { settingInfo }) {
+      const { drawerInfoMap, editChartId } = state;
+      const drawerInfo = drawerInfoMap[editChartId];
+      forEach(drawerInfo, (value, key) => { // 移除过去设置的的Echarts配置信息
+        if (startsWith(key, panelSettingPrefix)) {
+          delete drawerInfo[key];
+        }
+      });
+      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, ...settingInfo } } };
     },
     reset() {
       return { ...cloneDeep(defaultState) };

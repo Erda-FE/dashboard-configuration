@@ -3,12 +3,14 @@
  * 与chart-operation
  * 1、不进行多级联动
  * 2、已联动、被联动时不可被再次进行联动
+ * 3、独立的控件可以联动独立的控件或图表，但图表不能联动独立的控件
  */
 import React from 'react';
-import { filter, isEmpty, get, reduce, forEach } from 'lodash';
+import { filter, isEmpty, get, reduce, forEach, groupBy } from 'lodash';
 import { connect } from 'dva';
 import { Modal, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import './index.scss';
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -31,9 +33,38 @@ class LinkSettingModal extends React.PureComponent<IProps> {
     });
   }
 
+  renderList = (list: any, label: React.ReactElement<any>) => {
+    const { drawerInfoMap, form: { getFieldDecorator } } = this.props;
+    return (
+      <div>
+        <div>{label}</div>
+        {list.map(({ i }: any) => {
+          const key = i as string;
+          return (
+            <Form.Item key={key} label={get(drawerInfoMap, [key, 'name'], key)} {...formItemLayout}>
+              {getFieldDecorator(key, {
+                rules: [{
+                  message: '请输入联动参数的名称，一般为英文',
+                }],
+              })(<Input placeholder="请输入联动参数的名称，一般为英文" />)}
+            </Form.Item>
+          );
+        })}
+      </div>
+    );
+  }
+
   render() {
-    const { linkId, closeLinkSetting, drawerInfoMap, layout, form: { getFieldDecorator }, hasLinkedIds } = this.props;
+    const { linkId, closeLinkSetting, drawerInfoMap, layout, hasLinkedIds } = this.props;
     const otherCharts = filter(layout, ({ i }) => i !== linkId && !hasLinkedIds.includes(i));
+    const settingMap = groupBy(otherCharts, ({ i }) => {
+      if (drawerInfoMap[i].chartType) return 'chart';
+      return 'control';
+    });
+    const currentName = get(drawerInfoMap, [linkId, 'name'], linkId);
+    const isChartType = !!get(drawerInfoMap, [linkId, 'chartType'], linkId);
+    const controlList = get(settingMap, 'control', []);
+    const chartList = get(settingMap, 'chart', []);
     return (
       <Modal
         title="联动设置"
@@ -44,18 +75,12 @@ class LinkSettingModal extends React.PureComponent<IProps> {
         cancelText="取消"
         maskClosable={false}
       >
-        {isEmpty(otherCharts) ? '无可联动图表' : otherCharts.map(({ i }: any) => {
-          const key = i as string;
-          return (
-            <Form.Item key={key} label={get(drawerInfoMap, [key, 'name'], key)} {...formItemLayout}>
-              {getFieldDecorator(key, {
-                rules: [{
-                  message: '请输入联动参数名称，一般为英文',
-                }],
-              })(<Input placeholder="请输入联动参数名称，一般为英文" />)}
-            </Form.Item>
-          );
-        })}
+        {isEmpty(otherCharts) ? '无可联动图表' : (
+          <React.Fragment>
+            {!isChartType && isEmpty(controlList) ? null : this.renderList(controlList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的控件</span>)}
+            {isEmpty(chartList) ? null : this.renderList(controlList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的图表</span>)}
+          </React.Fragment>
+        )}
       </Modal>
     );
   }

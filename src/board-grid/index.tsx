@@ -14,7 +14,7 @@ import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation, LinkSettingModal } from '../components';
+import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation, LinkSettingModal, ControlOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
 import { paramsManage, saveImage, setScreenFull, formItemLayout } from '../components/utils';
@@ -194,7 +194,11 @@ class BoardGrid extends React.PureComponent<IProps> {
               );
             } else { // 控件
               ChartNode = get(this.controlsMap, [controlType, 'component']);
-              child = <ChartNode chartId={i} />;
+              child = (
+                <ControlOperation chartId={i}>
+                  <ChartNode chartId={i} />
+                </ControlOperation>
+              );
             }
             return (
               <div key={i} data-grid={{ ...others }}>

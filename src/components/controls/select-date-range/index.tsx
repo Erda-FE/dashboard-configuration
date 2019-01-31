@@ -14,9 +14,9 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 class SelectDateRange extends React.PureComponent<IProps> {
   onChange = (selectDateRange: any[]) => {
     const [start, end] = selectDateRange;
-    const { onChange } = this.props;
+    const { onChange, searchName } = this.props;
     if (!onChange) return;
-    onChange({ dateRange: [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')] });
+    onChange({ [searchName]: [start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD')] });
   }
 
   render() {
@@ -34,6 +34,7 @@ class SelectDateRange extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
   width: `${get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120)}px`,
+  searchName: get(drawerInfoMap, [chartId, `${panelControlPrefix}searchName`], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -6,9 +6,9 @@ import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
 import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
-import { panelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
+import { panelDataPrefix, getData, saveImage, setScreenFull } from '../../utils';
 import './index.scss';
-import { convertFormatter } from '../charts/utils';
+import { convertFormatter } from '../../charts/utils';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   chartId: string

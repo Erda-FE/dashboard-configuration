@@ -63,21 +63,22 @@ class LinkSettingModal extends React.PureComponent<IProps> {
     });
     const currentName = get(drawerInfoMap, [linkId, 'name'], linkId);
     const isChartType = !!get(drawerInfoMap, [linkId, 'chartType'], linkId);
-    const controlList = get(settingMap, 'control', []);
+    const controlList = isChartType ? [] : get(settingMap, 'control', []);
     const chartList = get(settingMap, 'chart', []);
+    const visible = !!linkId;
     return (
       <Modal
         title="联动设置"
-        visible={!!linkId}
+        visible={visible}
         onOk={this.onOk}
         onCancel={closeLinkSetting}
         okText="保存"
         cancelText="取消"
         maskClosable={false}
       >
-        {isEmpty(otherCharts) ? '无可联动图表' : (
+        {(isEmpty(controlList) && isEmpty(chartList)) || !visible ? '无可联动图表或者控件' : (
           <React.Fragment>
-            {!isChartType && isEmpty(controlList) ? null : this.renderList(controlList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的控件</span>)}
+            {isEmpty(controlList) ? null : this.renderList(controlList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的控件</span>)}
             {isEmpty(chartList) ? null : this.renderList(controlList, <span>请选择需要与<span className="bi-link-name">{currentName}</span>联动的图表</span>)}
           </React.Fragment>
         )}
@@ -95,7 +96,7 @@ const mapStateToProps = ({
   layout,
   drawerInfoMap,
   linkInfo: get(linkMap, [linkId], {}),
-  // 已经被非当前图表联动图表id
+  // 已经被非当前图表/控件  联动的 图表/控件id
   hasLinkedIds: reduce(linkMap, (result: string[], linkInfo: object, chartId: string) => {
     if (chartId === linkId) {
       return result;

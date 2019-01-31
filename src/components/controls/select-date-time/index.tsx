@@ -12,9 +12,9 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 
 class SelectDateTime extends React.PureComponent<IProps> {
   onOk = (selectDateTime: any) => {
-    const { onChange } = this.props;
+    const { onChange, searchName } = this.props;
     if (!onChange) return;
-    onChange({ dateTime: selectDateTime.format('YYYY-MM-DD HH:mm:ss') });
+    onChange({ [searchName]: selectDateTime.format('YYYY-MM-DD HH:mm:ss') });
   }
 
   render() {
@@ -34,6 +34,7 @@ class SelectDateTime extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
   width: `${get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120)}px`,
+  searchName: get(drawerInfoMap, [chartId, `${panelControlPrefix}searchName`], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

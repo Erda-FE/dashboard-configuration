@@ -31,14 +31,18 @@ export default class AceEditor extends Component<IProps> {
       return;
     }
 
-    const { options: nextOpt, value } = nextProps;
-    const { options } = this.props;
+    const { options: nextOpt, value, selectionRange: nextSelectRange } = nextProps;
+    const { options, selectionRange } = this.props;
 
     if (!isEqual(nextOpt, options)) {
       this.editor.setOptions(nextOpt);
     }
     if (this.editor && this.editor.getValue() !== value) {
       this.editor.setValue(value);
+    }
+
+    if (!isEqual(selectionRange, nextSelectRange)) {
+      this.editor.selection.setSelectionRange(nextSelectRange);
     }
   }
 

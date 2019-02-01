@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { debounce, isEqual } from 'lodash';
+import { isEqual, forEach } from 'lodash';
 
 interface IProps{
   value?: string;
-  onEvents?: object;
+  onEvents?: {[event: string]:Function};
+  autoChange?: boolean;
   options?: object;
-  width?:string;
-  height?:string;
-  onChange?: (value:string, event:any)=>void;
+  width?:string | number;
+  height?:string | number;
   style?: object
-  onBeforeLoad?: (ace:any)=>void;
+  selectionRange?: object;
 }
 
 export default class AceEditor extends Component<IProps> {
@@ -17,94 +17,95 @@ export default class AceEditor extends Component<IProps> {
 
   private editor: any;
 
-  private silent: boolean;
-
-  constructor(props:IProps) {
-    super(props);
-    if (typeof ace === 'undefined') {
-      (async () => {
-        for (let i = 0; i < aceEditor.length; i++) {
-          // js 文件有先后依赖关系
-          // eslint-disable-next-line
-          await loadJsFile(aceEditor[i]);
-        }
-        if (!this.editor) {
-          this.configEditor();
-        }
-      })();
-    }
-  }
-
   componentWillUnmount() {
     this.editor.destroy();
     this.editor = null;
   }
 
-  componentDidUpdate(oldProps:IProps) {
+  componentDidMount() {
+    this.configEditor();
+  }
+
+  componentWillReceiveProps(nextProps:IProps) {
     if (!this.editor) {
       return;
     }
-    const { options: oldOpt } = oldProps;
-    const { options, value } = this.props;
-    if (!isEqual(oldOpt, options)) {
-      this.editor.setOptions(options);
+
+    const { options: nextOpt, value } = nextProps;
+    const { options } = this.props;
+
+    if (!isEqual(nextOpt, options)) {
+      this.editor.setOptions(nextOpt);
     }
     if (this.editor && this.editor.getValue() !== value) {
       this.editor.setValue(value);
     }
   }
 
-  configEditor = () => {
+  configEditor = async () => {
+    if (typeof ace === 'undefined') {
+      for (let i = 0; i < aceEditor.length; i++) {
+        // js 文件有先后依赖关系
+        // eslint-disable-next-line
+        await loadJsFile(aceEditor[i]);
+      }
+    }
     const {
-      onBeforeLoad,
       value = '',
       onEvents = {},
       options = {},
+      selectionRange,
     } = this.props;
 
     this.editor = ace.edit(this.refEditor, options);
-
-    if (onBeforeLoad) {
-      onBeforeLoad(ace);
-    }
-
-    this.onChange = debounce(this.onChange, 200);
-
     this.editor.setValue(value);
 
-    this.bindEvents(this.editor, onEvents);
+    if (selectionRange) {
+      this.editor.selection.setSelectionRange(selectionRange);
+    }
+
+    // set event
+    this.bindEvents(onEvents);
   }
 
-  onChange = (event:any) => {
-    if (this.props.onChange && !this.silent) {
-      const value = this.editor.getValue();
-      this.props.onChange(value, event);
+  onChange = (event?:any) => {
+    const {
+      autoChange,
+    } = this.props;
+
+    if (!autoChange) {
+      this.manulChange(event);
     }
   }
 
-  bindEvents = (instance:any, events:object) => {
-    const _bindEvent = (eventName:string, func:Function) => {
+  manulChange = (event?:any) => {
+    const { onEvents = {} } = this.props;
+    const { change } = onEvents;
+    change(this.editor.getValue(), event);
+  }
+
+  bindEvents = (onEvents:any) => {
+    let events = onEvents;
+    if (onEvents.change) {
+      events = { ...onEvents, change: this.onChange };
+    }
+
+    forEach(events, (func, eventName) => {
       if (typeof eventName === 'string' && typeof func === 'function') {
-        instance.on(eventName, (param:any) => {
-          func(param, instance);
+        this.editor.on(eventName, (param:any) => {
+          func(param, this.editor);
         });
       }
-    };
-
-    for (const eventName in events) {
-      if (Object.prototype.hasOwnProperty.call(events, eventName)) {
-        _bindEvent(eventName, events[eventName]);
-      }
-    }
+    });
   };
 
   render() {
-    const { style = {}, width = '500px', height = '500px' } = this.props;
+    const { style = {}, width = 500, height = 500, autoChange } = this.props;
     const editorStyle = { width, height, ...style };
     return (
       <div>
         <div ref={(ref) => { this.refEditor = ref; }} style={editorStyle} />
-        格式化
+        { autoChange && <a onClick={this.manulChange}>保存</a>}
       </div>
     );
   }

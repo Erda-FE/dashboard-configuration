@@ -10,6 +10,7 @@ interface IProps{
   height?:string | number;
   style?: object;
   selectionRange?: object;
+  placeholder?:string;
 }
 
 export default class AceEditor extends Component<IProps> {
@@ -68,6 +69,8 @@ export default class AceEditor extends Component<IProps> {
       this.editor.selection.setSelectionRange(selectionRange);
     }
 
+    this.showPlaceholder();
+
     // set event
     this.bindEvents(onEvents);
   }
@@ -82,6 +85,25 @@ export default class AceEditor extends Component<IProps> {
     }
   }
 
+  showPlaceholder = () => {
+    // 处理placeholder
+    const shouldShow = !this.editor.getValue().length;
+    const { renderer } = this.editor;
+    let node = renderer.emptyMessageNode;
+    if (!shouldShow && node) {
+      renderer.scroller.removeChild(node);
+      renderer.emptyMessageNode = null;
+    } else if (shouldShow && !node) {
+      const { placeholder } = this.props;
+      node = document.createElement('div');
+      node.textContent = placeholder;
+      node.className = 'ace_invisible ace_emptyMessage';
+      node.style.padding = '0 9px';
+      renderer.emptyMessageNode = node;
+      renderer.scroller.appendChild(node);
+    }
+  }
+
   manulChange = (event?:any) => {
     const { onEvents = {} } = this.props;
     const { change } = onEvents;
@@ -93,6 +115,7 @@ export default class AceEditor extends Component<IProps> {
     if (onEvents.change) {
       events = { ...onEvents, change: this.onChange };
     }
+    events = { ...event, input: this.showPlaceholder };
 
     forEach(events, (func, eventName) => {
       if (typeof eventName === 'string' && typeof func === 'function') {

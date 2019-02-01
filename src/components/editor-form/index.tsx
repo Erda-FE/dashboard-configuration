@@ -7,6 +7,7 @@ interface IProps{
   height?: string | number;
   width? :string | number;
   style? : object;
+  placeholder?:string;
 }
 const editorOption = {
   enableBasicAutocompletion: true,
@@ -36,7 +37,7 @@ export default class EditorFrom extends Component<IProps> {
   }
 
   render() {
-    const { value, height, width, style } = this.props;
+    const { value, height, width, style, placeholder } = this.props;
     return (
       <AceEditor
         value={value || ''}
@@ -47,6 +48,7 @@ export default class EditorFrom extends Component<IProps> {
         options={editorOption}
         selectionRange={selectionRange}
         style={style}
+        placeholder={placeholder}
       />
     );
   }

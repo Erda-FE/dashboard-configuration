@@ -9,6 +9,8 @@ import PanelSettings from './panel-settings';
 import PanelData from './panel-data';
 import './index.scss';
 
+import AceEditor from '../ace-editor';
+
 const formItemLayout = {
   labelCol: {
     span: 0,
@@ -69,6 +71,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
               })(<TextArea placeholder="可以备注一些关键信息" style={{ marginTop: 12 }} />)}
             </Form.Item>
           </Form>
+          <AceEditor value={'111'} onEvents={{ copy: () => { console.log(arguments); } }} />
         </div>
         <div className="bi-drawer-footer">
           <div className="bi-drawer-footer-left">

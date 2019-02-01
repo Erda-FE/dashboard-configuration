@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'dva';
 import { Form, Input, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import EditorFrom from '../../../editor-form';
 import PropTypes from 'prop-types';
 import { formItemLayout, panelControlPrefix } from '../../../utils';
 import { checkFixedData } from '../utils';
-
-const { TextArea } = Input;
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
 
@@ -50,7 +49,7 @@ class DataSettings extends React.PureComponent<IProps> {
             }, {
               validator: this.validateFixedData,
             }],
-          })(<TextArea placeholder={`${''}请输入标准JSON格式的固定数据，用于静态的控件数据，示例：[{"name": 'lucy', "value": 1}]`} />)}
+          })(<EditorFrom placeholder={`${''}请输入标准JSON格式的固定数据，用于静态的控件数据，示例：[{"name": 'lucy', "value": 1}]`} />)}
         </Form.Item>
         <Form.Item label="多选" {...formItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}multiple`, {

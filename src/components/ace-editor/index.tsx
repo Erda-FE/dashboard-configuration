@@ -8,7 +8,7 @@ interface IProps{
   options?: object;
   width?:string | number;
   height?:string | number;
-  style?: object
+  style?: object;
   selectionRange?: object;
 }
 
@@ -74,10 +74,10 @@ export default class AceEditor extends Component<IProps> {
 
   onChange = (event?:any) => {
     const {
-      autoChange,
+      autoChange = true,
     } = this.props;
 
-    if (!autoChange) {
+    if (autoChange) {
       this.manulChange(event);
     }
   }
@@ -104,12 +104,12 @@ export default class AceEditor extends Component<IProps> {
   };
 
   render() {
-    const { style = {}, width = 500, height = 500, autoChange } = this.props;
+    const { style = {}, width = 500, height = 500, autoChange = true } = this.props;
     const editorStyle = { width, height, ...style };
     return (
       <div>
         <div ref={(ref) => { this.refEditor = ref; }} style={editorStyle} />
-        { autoChange && <a onClick={this.manulChange}>保存</a>}
+        { !autoChange && <a onClick={this.manulChange}>保存</a>}
       </div>
     );
   }

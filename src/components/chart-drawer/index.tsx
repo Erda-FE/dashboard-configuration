@@ -113,11 +113,15 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
+let changedFields = {};
 export default connect(mapStateToProps, mapDispatchToProps)(Form.create({
   mapPropsToFields({ drawerInfo }: IProps) {
     const values = {};
-    forEach(drawerInfo, (value, key) => { values[key] = Form.createFormField({ value }); });
+    forEach(drawerInfo, (value, key) => { values[key] = Form.createFormField({ ...changedFields[key], value }); });
     return values;
+  },
+  onFieldsChange(props: IProps, fields) {
+    changedFields = fields;
   },
   onValuesChange({ onDrawerChange }: IProps, _, allValues) {
     onDrawerChange(allValues);

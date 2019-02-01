@@ -4,6 +4,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { panelSettingPrefix } from '../../../utils';
 import { formPositionLayout } from '../utils';
 import { funcValidator } from '../../../charts/utils';
+import EditorForm from '../../../editor-form';
 
 const { Panel } = Collapse;
 const { Option } = Select;
@@ -40,8 +41,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
         rules: [{
           validator: funcValidator,
         }],
-      })(<TextArea
-        autosize
+      })(<EditorForm
         placeholder="输入fomater函数. e.g.
         function(value){
             if(value > 1024) return value/1024 + 'MB';

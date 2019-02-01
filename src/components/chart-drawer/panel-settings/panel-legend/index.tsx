@@ -3,8 +3,9 @@ import { Collapse, Form, Switch, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelSettingPrefix, plainArrayValidator } from '../../../utils';
 
+import EditorForm from '../../../editor-form';
+
 const { Panel } = Collapse;
-const { TextArea } = Input;
 type IProps = FormComponentProps;
 const panelSettingLegendPrefix = `${panelSettingPrefix}legend#`;
 const legendFormItemLayout =
@@ -48,7 +49,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
           message: '请输入正确的JSON对象字符串',
           validator: plainArrayValidator,
         }],
-      })(<TextArea placeholder='请输入字符串数组 如： ["demo1", "demo2"]' />)}
+      })(<EditorForm height={50} placeholder='请输入字符串数组 如： ["demo1", "demo2"]' />)}
     </Form.Item>
   </Panel >
 );

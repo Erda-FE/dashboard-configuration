@@ -8,8 +8,9 @@ interface IProps{
   options?: object;
   width?:string | number;
   height?:string | number;
-  style?: object
+  style?: object;
   selectionRange?: object;
+  placeholder?:string;
 }
 
 export default class AceEditor extends Component<IProps> {
@@ -68,17 +69,38 @@ export default class AceEditor extends Component<IProps> {
       this.editor.selection.setSelectionRange(selectionRange);
     }
 
+    this.showPlaceholder();
+
     // set event
     this.bindEvents(onEvents);
   }
 
   onChange = (event?:any) => {
     const {
-      autoChange,
+      autoChange = true,
     } = this.props;
 
-    if (!autoChange) {
+    if (autoChange) {
       this.manulChange(event);
+    }
+  }
+
+  showPlaceholder = () => {
+    // 处理placeholder
+    const shouldShow = !this.editor.getValue().length;
+    const { renderer } = this.editor;
+    let node = renderer.emptyMessageNode;
+    if (!shouldShow && node) {
+      renderer.scroller.removeChild(node);
+      renderer.emptyMessageNode = null;
+    } else if (shouldShow && !node) {
+      const { placeholder } = this.props;
+      node = document.createElement('div');
+      node.textContent = placeholder;
+      node.className = 'ace_invisible ace_emptyMessage';
+      node.style.padding = '0 9px';
+      renderer.emptyMessageNode = node;
+      renderer.scroller.appendChild(node);
     }
   }
 
@@ -93,6 +115,7 @@ export default class AceEditor extends Component<IProps> {
     if (onEvents.change) {
       events = { ...onEvents, change: this.onChange };
     }
+    events = { ...event, input: this.showPlaceholder };
 
     forEach(events, (func, eventName) => {
       if (typeof eventName === 'string' && typeof func === 'function') {
@@ -104,12 +127,12 @@ export default class AceEditor extends Component<IProps> {
   };
 
   render() {
-    const { style = {}, width = 500, height = 500, autoChange } = this.props;
+    const { style = {}, width = 500, height = 500, autoChange = true } = this.props;
     const editorStyle = { width, height, ...style };
     return (
       <div>
         <div ref={(ref) => { this.refEditor = ref; }} style={editorStyle} />
-        { autoChange && <a onClick={this.manulChange}>保存</a>}
+        { !autoChange && <a onClick={this.manulChange}>保存</a>}
       </div>
     );
   }

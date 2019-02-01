@@ -41,7 +41,7 @@ export default class EditorFrom extends Component<IProps> {
       <AceEditor
         value={value || ''}
         width={width || '100%'}
-        height={height || 150}
+        height={height || 100}
         onEvents={{ change: this.handleChange }}
         autoChange={false}
         options={editorOption}

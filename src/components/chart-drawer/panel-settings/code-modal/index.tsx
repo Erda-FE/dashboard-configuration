@@ -75,6 +75,7 @@ class CodeModal extends React.PureComponent<IProps> {
           height={500}
           onEvents={{ change: this.onChange }}
           selectionRange={selectionRange}
+          showDiff
         />
       </Modal>
     );

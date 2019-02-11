@@ -104,7 +104,7 @@ export default class AceEditor extends Component<IProps, IState> {
 
   onChange = (event?:any) => {
     const { autoChange } = this.props;
-
+    
     if (autoChange) {
       this.manulChange(event);
     }
@@ -177,7 +177,7 @@ export default class AceEditor extends Component<IProps, IState> {
     if (onEvents.change) {
       events = { ...onEvents, change: this.onChange };
     }
-    events = { ...event, input: this.showPlaceholder };
+    events = { ...events, input: this.showPlaceholder };
 
     forEach(events, (func, eventName) => {
       if (typeof eventName === 'string' && typeof func === 'function') {

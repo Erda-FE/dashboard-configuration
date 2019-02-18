@@ -1,9 +1,9 @@
 :global {
-  .editor-operate a {
+  .bi-editor-operate a {
     margin-right: 10px;
     cursor: pointer;
   }
-  .editor-diff {
+  .bi-editor-diff {
     overflow: auto;
     font-size: 12px;
     font-family: Monaco, Menlo, "Ubuntu Mono", Consolas, source-code-pro,
@@ -15,14 +15,14 @@
         counter-reset: code-line-num;
       }
     }
-    .diff-line-del {
+    .bi-diff-line-del {
       color: #b30000;
       background: #fadad7;
       del {
         text-decoration: none;
       }
     }
-    .diff-line-ins {
+    .bi-diff-line-ins {
       color: #406619;
       text-decoration: none;
       background: #eaf2c2;
@@ -30,8 +30,8 @@
         text-decoration: none;
       }
     }
-    .diff-line-ins:before,
-    .diff-line-old:before {
+    .bi-diff-line-ins:before,
+    .bi-diff-line-old:before {
       display: inline-block;
       width: 41px;
       margin-right: 4px;
@@ -42,7 +42,7 @@
       counter-increment: code-line-num;
       content: counter(code-line-num);
     }
-    .diff-line-del:before {
+    .bi-diff-line-del:before {
       display: inline-block;
       width: 41px;
       margin-right: 4px;

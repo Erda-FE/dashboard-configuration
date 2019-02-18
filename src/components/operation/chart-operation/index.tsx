@@ -2,10 +2,11 @@ import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import { get, isEmpty, find, isEqual } from 'lodash';
 import { connect } from 'dva';
-import { Icon, message, Tooltip } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
+import ChartMask from '../../charts/chart-mask';
 import OperationMenu from '../operation-menu';
 import { panelDataPrefix, getData, saveImage, setScreenFull } from '../../utils';
 import './index.scss';
@@ -49,10 +50,13 @@ class ChartOperation extends React.PureComponent<IProps> {
       return;
     }
     getData(url, this.query).then((resData: any) => {
-      this.setState({ resData });
+      if (!resData || isEmpty(resData)) {
+        this.setState({ resData: { message: '暂无数据' } });
+      } else {
+        this.setState({ resData });
+      }
     }).catch(() => {
-      this.setState({ resData: { isMock: true } });
-      message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
+      this.setState({ resData: { message: '数据获取失败' } });
     });
   }
 
@@ -72,6 +76,7 @@ class ChartOperation extends React.PureComponent<IProps> {
     const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
+    const { isMock, message } = resData as {isMock: boolean, message:string };
     let renderData = resData;
     if (typeof dataConvertor === 'function') {
       try {
@@ -100,6 +105,7 @@ class ChartOperation extends React.PureComponent<IProps> {
           }
           <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
+        <ChartMask isMock={isMock} message={message} />
         {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );

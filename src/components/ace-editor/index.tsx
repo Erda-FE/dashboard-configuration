@@ -104,7 +104,7 @@ export default class AceEditor extends Component<IProps, IState> {
 
   onChange = (event?:any) => {
     const { autoChange } = this.props;
-    
+
     if (autoChange) {
       this.manulChange(event);
     }
@@ -159,11 +159,11 @@ export default class AceEditor extends Component<IProps, IState> {
       lineValue.split('\n').forEach((v, k) => {
         if (k < diffInfo[i].count) {
           if (diffInfo[i].removed) {
-            childNode.push(<div key={`${i}-${k}`} className="diff-line-del"><del>{v}</del></div>);
+            childNode.push(<div key={`${i}-${k}`} className="bi-diff-line-del"><del>{v}</del></div>);
           } else if (diffInfo[i].added) {
-            childNode.push(<div key={`${i}-${k}`} className="diff-line-ins"><ins>{v}</ins></div>);
+            childNode.push(<div key={`${i}-${k}`} className="bi-diff-line-ins"><ins>{v}</ins></div>);
           } else {
-            childNode.push(<div key={`${i}-${k}`} className="diff-line-old">{v}</div>);
+            childNode.push(<div key={`${i}-${k}`} className="bi-diff-line-old">{v}</div>);
           }
         }
       });
@@ -195,10 +195,12 @@ export default class AceEditor extends Component<IProps, IState> {
     const diffStyle = { ...style, width, height, display: !isDiff ? 'none' : 'block' };
     return (
       <div>
-        <div className="editor-diff" style={diffStyle}>{this.renderDiff()}</div>
+        <div className="bi-editor-diff" style={diffStyle}>{this.renderDiff()}</div>
         <div ref={(ref) => { this.refEditor = ref; }} style={editorStyle} />
-        { !autoChange && <a onClick={this.manulChange}>保存</a>}
-        { showDiff && <a onClick={this.handleDiff}>{ !isDiff ? '对比' : '取消对比'}</a>}
+        <div className="bi-editor-operate">
+          { !autoChange && <a onClick={this.manulChange}>保存</a>}
+          { showDiff && <a onClick={this.handleDiff}>{ !isDiff ? '对比' : '取消对比'}</a>}
+        </div>
       </div>
     );
   }

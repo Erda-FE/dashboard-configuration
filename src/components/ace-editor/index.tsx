@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { isEqual, forEach } from 'lodash';
+import './index.scss';
 
 interface IProps{
   value?: string;
@@ -11,12 +12,37 @@ interface IProps{
   style?: object;
   selectionRange?: object;
   placeholder?:string;
+  showDiff?:boolean;
 }
+interface DiffInfo{
+  added?: boolean;
+  removed?: boolean;
+  value?:string;
+  count:number;
+}
+interface IState{
+  isDiff:boolean;
+  diffInfo: DiffInfo[];
+}
+export default class AceEditor extends Component<IProps, IState> {
+  static defaultProps = {
+    width: 500,
+    height: 500,
+    autoChange: true,
+    value: '',
+    showDiff: false,
+  }
 
-export default class AceEditor extends Component<IProps> {
+  state = {
+    isDiff: false,
+    diffInfo: [],
+  }
+
   private refEditor: any;
 
   private editor: any;
+
+  private oldValue:string;
 
   componentWillUnmount() {
     this.editor.destroy();
@@ -64,6 +90,7 @@ export default class AceEditor extends Component<IProps> {
 
     this.editor = ace.edit(this.refEditor, options);
     this.editor.setValue(value);
+    this.oldValue = value;
 
     if (selectionRange) {
       this.editor.selection.setSelectionRange(selectionRange);
@@ -76,10 +103,8 @@ export default class AceEditor extends Component<IProps> {
   }
 
   onChange = (event?:any) => {
-    const {
-      autoChange = true,
-    } = this.props;
-
+    const { autoChange } = this.props;
+    
     if (autoChange) {
       this.manulChange(event);
     }
@@ -110,12 +135,49 @@ export default class AceEditor extends Component<IProps> {
     change(this.editor.getValue(), event);
   }
 
+  handleDiff = () => {
+    const { isDiff } = this.state;
+    if (Diff) {
+      const diffInfo = Diff.diffLines(this.oldValue, this.editor.getValue());
+      this.setState({ isDiff: !isDiff, diffInfo });
+    } else {
+      console.error('load Diff error');
+    }
+  }
+
+  renderDiff = () => {
+    const { diffInfo }:IState = this.state;
+    const renderNode = [];
+    for (let i = 0; i < diffInfo.length; i++) {
+      if (diffInfo[i].added && diffInfo[i + 1] && diffInfo[i + 1].removed) {
+        const swap = diffInfo[i];
+        diffInfo[i] = diffInfo[i + 1];
+        diffInfo[i + 1] = swap;
+      }
+      const childNode:any = [];
+      const lineValue = diffInfo[i].value || '';
+      lineValue.split('\n').forEach((v, k) => {
+        if (k < diffInfo[i].count) {
+          if (diffInfo[i].removed) {
+            childNode.push(<div key={`${i}-${k}`} className="diff-line-del"><del>{v}</del></div>);
+          } else if (diffInfo[i].added) {
+            childNode.push(<div key={`${i}-${k}`} className="diff-line-ins"><ins>{v}</ins></div>);
+          } else {
+            childNode.push(<div key={`${i}-${k}`} className="diff-line-old">{v}</div>);
+          }
+        }
+      });
+      renderNode.push(childNode);
+    }
+    return <pre><code>{renderNode}</code></pre>;
+  }
+
   bindEvents = (onEvents:any) => {
     let events = onEvents;
     if (onEvents.change) {
       events = { ...onEvents, change: this.onChange };
     }
-    events = { ...event, input: this.showPlaceholder };
+    events = { ...events, input: this.showPlaceholder };
 
     forEach(events, (func, eventName) => {
       if (typeof eventName === 'string' && typeof func === 'function') {
@@ -127,12 +189,16 @@ export default class AceEditor extends Component<IProps> {
   };
 
   render() {
-    const { style = {}, width = 500, height = 500, autoChange = true } = this.props;
-    const editorStyle = { width, height, ...style };
+    const { style = {}, width, height, autoChange, showDiff } = this.props;
+    const { isDiff } = this.state;
+    const editorStyle = { ...style, width, height, display: isDiff ? 'none' : 'block' };
+    const diffStyle = { ...style, width, height, display: !isDiff ? 'none' : 'block' };
     return (
       <div>
+        <div className="editor-diff" style={diffStyle}>{this.renderDiff()}</div>
         <div ref={(ref) => { this.refEditor = ref; }} style={editorStyle} />
         { !autoChange && <a onClick={this.manulChange}>保存</a>}
+        { showDiff && <a onClick={this.handleDiff}>{ !isDiff ? '对比' : '取消对比'}</a>}
       </div>
     );
   }
@@ -146,6 +212,7 @@ const aceEditor = [
   `https://cdn.bootcss.com/ace/${aceversion}/mode-javascript.js`,
   `https://cdn.bootcss.com/ace/${aceversion}/snippets/text.js`,
   `https://cdn.bootcss.com/ace/${aceversion}/snippets/javascript.js`,
+  'https://cdn.bootcss.com/jsdiff/4.0.1/diff.min.js',
 ];
 
 function loadJsFile(src: string) {

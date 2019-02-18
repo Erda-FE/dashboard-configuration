@@ -7,19 +7,20 @@ import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   onChange: (query: any) => void
+  style?: React.CSSProperties
 }
 
 class SelectDateTime extends React.PureComponent<IProps> {
   onOk = (selectDateTime: any) => {
-    const { onChange } = this.props;
+    const { onChange, searchName } = this.props;
     if (!onChange) return;
-    onChange({ dateTime: selectDateTime.format('YYYY-MM-DD HH:mm:ss') });
+    onChange({ [searchName]: selectDateTime.format('YYYY-MM-DD HH:mm:ss') });
   }
 
   render() {
-    const { width } = this.props;
+    const { width, style } = this.props;
     return (
-      <DatePicker style={{ marginLeft: 12, width }}
+      <DatePicker style={{ ...style, width }}
         locale={locale}
         showTime
         format="YYYY-MM-DD HH:mm:ss"
@@ -33,6 +34,7 @@ class SelectDateTime extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
   width: `${get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120)}px`,
+  searchName: get(drawerInfoMap, [chartId, `${panelControlPrefix}searchName`], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

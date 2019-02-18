@@ -1,6 +1,6 @@
 {
   "name": "@terminus/bi-ui-package",
-  "version": "0.0.11",
+  "version": "0.1.1",
   "description": "bi ui package",
   "main": "./index.js",
   "sideEffects": [

@@ -20,7 +20,6 @@
 
     theme={theme}
     themeObj={themeObj}
-    onConvert={this.onConvert}
     chartsMap={chartsMap}
     controlsMap={controlsMap}
     UrlComponent={UrlComponent}
@@ -83,10 +82,6 @@
   // 用户可以去http://www.echartsjs.com/download-theme.html 这里去下载或者定制自己的主题
   theme: 'dice'
   themeObj: dice的themeObj
-
-  // 当要自行处理数据时
-  // 非必传, 不建议使用, 一旦使用，对于不想处理的resData返回原值即可
-  onConvert: (resData: object, chartId: string, url: string) => object | Promise<any>
 
   // 图表扩充
   // 非必传，可以覆盖已经存在的图表, 也可以新增新的图表, DataSettingsCommonCharts可以不用

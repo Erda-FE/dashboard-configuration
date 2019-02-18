@@ -1,6 +1,6 @@
 import { forEach, startsWith, set, endsWith, reduce } from 'lodash';
 // import xss from 'xss';
-import { panelSettingPrefix } from '../../utils';
+import { panelSettingPrefix, strToObject } from '../../utils';
 import { Func } from 'echarts-for-react';
 
 // drawerInfo转化为option对象
@@ -46,8 +46,7 @@ export const convertOptionToSetting = (option: any): any => {
 
 export const convertFormatter = (value: string): string | Func => {
   try {
-    // eslint-disable-next-line
-    return (new Function(`return ${value}`))();
+    return strToObject(value);
   } catch (error) {
     return '';
   }
@@ -56,6 +55,7 @@ export const convertFormatter = (value: string): string | Func => {
 export const funcValidator = (_rule: any, value: string, callback: any) => {
   if (!value) {
     callback();
+    return;
   }
   const func = convertFormatter(value);
   if (typeof func === 'function') {

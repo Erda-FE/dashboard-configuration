@@ -8,8 +8,8 @@ import { FormComponentProps } from 'antd/lib/form';
 import { panelDataPrefix } from '../../utils';
 import { funcValidator } from '../utils';
 import PropTypes from 'prop-types';
+import EditorFrom from '../../editor-form';
 
-const { TextArea } = Input;
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
 
@@ -36,7 +36,7 @@ class DataSettings extends React.PureComponent<IProps> {
             rules: [{
               validator: funcValidator,
             }],
-          })(<TextArea autosize
+          })(<EditorFrom
             placeholder="请输入完整转换函数,e.g.
             function(values) {
               if(!values.datas) {

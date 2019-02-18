@@ -2,19 +2,19 @@ import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import { get, isEmpty, find, isEqual } from 'lodash';
 import { connect } from 'dva';
-import { Icon, Dropdown, Menu, Popconfirm, message, Tooltip } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import screenfull from 'screenfull';
 import classnames from 'classnames';
 import Control from './control';
-import { panelDataPrefix, getData, saveImage, setScreenFull } from '../utils';
-import ChartMask from '../charts/chart-mask';
+import ChartMask from '../../charts/chart-mask';
+import OperationMenu from '../operation-menu';
+import { panelDataPrefix, getData, saveImage, setScreenFull } from '../../utils';
 import './index.scss';
-import { convertFormatter } from '../charts/utils';
+import { convertFormatter } from '../../charts/utils';
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
   children: ReactElement<any>
-  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any>
 }
 
 class ChartOperation extends React.PureComponent<IProps> {
@@ -44,71 +44,21 @@ class ChartOperation extends React.PureComponent<IProps> {
     this.reloadData(this.props.url);
   }
 
-  setData = (res:object) => {
-    if (!res || isEmpty(res)) {
-      this.setState({ resData: { message: '暂无数据' } });
-    } else {
-      this.setState({ resData: res });
-    }
-  }
-
   reloadData = (url: string) => {
     if (!url) {
       this.setState({ resData: { isMock: true } });
       return;
     }
-    const { onConvert, chartId } = this.props;
     getData(url, this.query).then((resData: any) => {
-      const res1 = onConvert ? onConvert(resData, chartId, url) : resData;
-      if (res1 && res1.then) {
-        res1.then((res: any) => this.setData(res));
+      if (!resData || isEmpty(resData)) {
+        this.setState({ resData: { message: '暂无数据' } });
       } else {
-        this.setData(res1);
+        this.setState({ resData });
       }
     }).catch(() => {
       this.setState({ resData: { message: '数据获取失败' } });
     });
   }
-
-  deleteChart = () => {
-    this.props.deleteChart(this.props.chartId);
-  }
-
-  doAction = ({ key }: any) => {
-    switch (key) {
-      case 'edit':
-        return this.props.editChart(this.props.chartId);
-      case 'link':
-        return this.props.openLinkSetting(this.props.chartId);
-      default:
-        break;
-    }
-  }
-
-  deleteLink = (e: any) => {
-    e.stopPropagation();
-    this.props.deleteLinkMap(this.props.chartId);
-  }
-
-  getMenu = () => (
-    <Menu onClick={this.doAction}>
-      <Menu.Item key="edit">编辑</Menu.Item>
-      <Menu.Item key="link" disabled={this.props.canLinked}>
-        <span>联动设置</span>
-        {this.props.hasLinked && <Icon type="delete" onClick={this.deleteLink} style={{ marginLeft: 8, marginRight: 0 }} />}
-      </Menu.Item>
-      <Menu.Item key="delete">
-        <Popconfirm
-          okText="确认"
-          cancelText="取消"
-          placement="top"
-          title="是否确认删除"
-          onConfirm={this.deleteChart}
-        >删除
-        </Popconfirm>
-      </Menu.Item>
-    </Menu>
-  )
 
   reloadChart = () => {
     this.reloadData(this.props.url);
@@ -150,12 +100,10 @@ class ChartOperation extends React.PureComponent<IProps> {
               <Tooltip placement="bottom" title="导出图片">
                 <Icon type="camera" onClick={this.onSaveImg} />
               </Tooltip>
-              <Dropdown overlay={this.getMenu()}>
-                <Icon type="dash" />
-              </Dropdown>
+              <OperationMenu chartId={chartId} />
             </span>)
           }
-          <Control chartId={chartId} onChange={this.onControlChange} />
+          <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
         <ChartMask isMock={isMock} message={message} />
         {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
@@ -194,26 +142,10 @@ const mapStateToProps = ({
     isEdit,
     isChartEdit: editChartId === chartId,
     url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,
-    linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'name'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
-    canLinked: !!clickId, // 是否可以进行联动设置
+    linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'chartValue'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
     hasLinked: !!find(linkMap[chartId], value => value), // 是否已经设置了联动
     dataConvertor: dataConvertorFunction as any,
   };
 };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  editChart(chartId: string) {
-    dispatch({ type: 'biDrawer/editChart', chartId });
-  },
-  deleteChart(chartId: string) {
-    dispatch({ type: 'biDashBoard/deleteChart', chartId });
-  },
-  openLinkSetting(linkId: string) {
-    dispatch({ type: 'linkSetting/openLinkSetting', linkId });
-  },
-  deleteLinkMap(linkId: string) {
-    dispatch({ type: 'linkSetting/deleteLinkMap', linkId });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChartOperation);
+export default connect(mapStateToProps)(ChartOperation);

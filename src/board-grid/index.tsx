@@ -14,7 +14,7 @@ import ReactGridLayout from 'react-grid-layout';
 import sizeMe from 'react-sizeme';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
-import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation, LinkSettingModal } from '../components';
+import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation, LinkSettingModal, ControlOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
 import { paramsManage, saveImage, setScreenFull, formItemLayout } from '../components/utils';
@@ -28,7 +28,6 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   onSave?: (extra: any) => void, // 保存
   theme?: string, // 主题名
   themeObj?: {}, // 主题内容
-  onConvert?: (resData: object, chartId: string, url: string) => object | Promise<any> // 数据转化
   chartsMap?: IChartsMap // 图表
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
@@ -137,7 +136,7 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly, onConvert } = this.props;
+    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly } = this.props;
     const { width } = size;
     return (
       <div
@@ -184,13 +183,26 @@ class BoardGrid extends React.PureComponent<IProps> {
         >
           {layout.map(({ i, ...others }: any) => {
             // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-            const { chartType } = drawerInfoMap[i];
-            const ChartNode = get(this.chartsMap, [chartType, 'component']) as any;
-            return (
-              <div key={i} data-grid={{ ...others }}>
-                <ChartOperation chartId={i} onConvert={onConvert}>
+            const { chartType, controlType } = drawerInfoMap[i];
+            let child = null;
+            let ChartNode = get(this.chartsMap, [chartType, 'component']);
+            if (ChartNode) { // 图表
+              child = (
+                <ChartOperation chartId={i}>
                   <ChartNode chartId={i} />
                 </ChartOperation>
+              );
+            } else { // 控件
+              ChartNode = get(this.controlsMap, [controlType, 'component']);
+              child = (
+                <ControlOperation chartId={i}>
+                  <ChartNode chartId={i} />
+                </ControlOperation>
+              );
+            }
+            return (
+              <div key={i} data-grid={{ ...others }}>
+                {child}
               </div>
             );
           })}

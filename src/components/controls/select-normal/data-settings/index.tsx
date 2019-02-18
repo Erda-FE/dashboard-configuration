@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'dva';
 import { Form, Input, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
+import EditorFrom from '../../../editor-form';
 import PropTypes from 'prop-types';
 import { formItemLayout, panelControlPrefix } from '../../../utils';
 import { checkFixedData } from '../utils';
-
-const { TextArea } = Input;
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
 
@@ -28,14 +27,6 @@ class DataSettings extends React.PureComponent<IProps> {
     const { editChartId, form: { getFieldDecorator } } = this.props;
     return (
       <React.Fragment>
-        <Form.Item label="参数名称" {...formItemLayout}>
-          {getFieldDecorator(`${panelControlPrefix}searchName`, {
-            rules: [{
-              required: true,
-              message: '请输入在接口中的查询名称',
-            }],
-          })(<Input placeholder="请输入在接口中的查询名称，一般为英文，示例：id" />)}
-        </Form.Item>
         <Form.Item label="控件接口" {...urlItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}url`, {
             rules: [{
@@ -50,7 +41,7 @@ class DataSettings extends React.PureComponent<IProps> {
             }, {
               validator: this.validateFixedData,
             }],
-          })(<TextArea placeholder={`${''}请输入标准JSON格式的固定数据，用于静态的控件数据，示例：[{"name": 'lucy', "value": 1}]`} />)}
+          })(<EditorFrom placeholder={`${''}请输入标准JSON格式的固定数据，用于静态的控件数据，示例：[{"name": 'lucy', "value": 1}]`} />)}
         </Form.Item>
         <Form.Item label="多选" {...formItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}multiple`, {

@@ -122,6 +122,10 @@
   // url的Form Item Layout 控制
   // 非必传，默认是全局的formItemLayout
   urlItemLayout: formItemLayout
+
+  // url 接口数据处理
+  // 非必传
+  urlDataHandle?: ({ type, url, data }) => any // 接口数据处理
 ```
 
 ## 其他文档

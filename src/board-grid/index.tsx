@@ -17,11 +17,16 @@ import PropTypes from 'prop-types';
 import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation, LinkSettingModal, ControlOperation } from '../components';
 import { ISizeMe, IChartsMap } from '../types';
 import { theme, themeObj } from './utils/theme-dice';
-import { paramsManage, saveImage, setScreenFull, formItemLayout } from '../components/utils';
+import { paramsManage, saveImage, setScreenFull, formItemLayout, registerUrlDataHandle } from '../components/utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
 
+interface IUrlData {
+  type: string
+  url: string
+  data: any
+}
 interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   readOnly?: boolean // 只读
   extra?: any // 配置信息，包含图表布局、各图表配置信息
@@ -33,6 +38,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
+  urlDataHandle?: ({ type, url, data }: IUrlData) => any // 接口数据处理
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -97,9 +103,10 @@ class BoardGrid extends React.PureComponent<IProps> {
     this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
     this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
     paramsManage.set(this.props.urlParamsMap);
+    registerUrlDataHandle(this.props.urlDataHandle);
   }
 
-  componentWillReceiveProps({ extra, chartsMap, controlsMap, urlParamsMap }: IProps) {
+  componentWillReceiveProps({ extra, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
     if (!isEqual(extra, this.props.extra)) {
       this.props.initDashboard(extra);
     }
@@ -111,6 +118,9 @@ class BoardGrid extends React.PureComponent<IProps> {
     }
     if (!isEqual(urlParamsMap, this.props.urlParamsMap)) {
       paramsManage.set(urlParamsMap);
+    }
+    if (urlDataHandle !== this.props.urlDataHandle) {
+      registerUrlDataHandle(this.props.urlDataHandle);
     }
   }
 

@@ -50,7 +50,7 @@ export function registerUrlDataHandle(handle: any) {
 export function getData(url: string, query?: any) {
   if (!url) return {};
   const newUrl = convertUrl(url);
-  return agent.get()
+  return agent.get(newUrl)
     .query(query)
     .then((response: any) => {
       const data = response.body;

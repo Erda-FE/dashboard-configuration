@@ -1,12 +1,13 @@
+import { mockDataRadar, mockIndicator } from './utils';
+
+import ChartSizeMe from '../chart-sizeme';
 /**
  * 雷达图
  */
 import React from 'react';
 import { connect } from 'dva';
+import { convertSettingToOption } from '../utils';
 import { merge } from 'lodash';
-import { ReactEchartsPropsTypes } from 'echarts-for-react';
-import ChartSizeMe from '../chart-sizeme';
-import { mockDataRadar, mockIndicator } from './utils';
 import { panelDataPrefix } from '../../utils';
 
 interface IData {
@@ -14,7 +15,7 @@ interface IData {
   value: number,
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
   isMock?: boolean
 }
@@ -65,6 +66,7 @@ const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock
     names: isMock ? mockDataRadar.names : (names || []) as string[],
     indicator,
     datas: isMock ? mockDataRadar.datas : (datas || []) as IData[],
+    option: convertSettingToOption(drawerInfo),
   };
 };
 

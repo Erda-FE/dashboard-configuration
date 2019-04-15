@@ -1,16 +1,17 @@
+import { map, merge } from 'lodash';
+
+import ChartSizeMe from '../chart-sizeme';
+import ChinaMap from './utils/china.json';
 /**
  * 全国地图
  */
 import React from 'react';
 import { connect } from 'dva';
-import { merge, map } from 'lodash';
-import { ReactEchartsPropsTypes } from 'echarts-for-react';
+import { convertSettingToOption } from '../utils';
 import echarts from 'echarts';
-import ChartSizeMe from '../chart-sizeme';
 import { mockDataMap } from './utils';
-import ChinaMap from './utils/china.json';
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
   isMock?: boolean
 }
@@ -74,6 +75,7 @@ const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock
   return {
     chartType: drawerInfo.chartType as string,
     datas: isMock ? mockDataMap.datas : (datas || []),
+    option: convertSettingToOption(drawerInfo),
   };
 };
 

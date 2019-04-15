@@ -102,9 +102,10 @@ class ChartOperation extends React.PureComponent<IProps> {
           }
           <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
-        {isEmpty(get(renderData, 'datas')) ? (
+        {isEmpty(get(renderData, 'datas')) && (
           <div className="bi-empty-tip">暂无数据</div>
-        ) : React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
+        )}
+        {React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );
   }

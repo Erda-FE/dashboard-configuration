@@ -1,12 +1,13 @@
+import { get, merge } from 'lodash';
+
+import ChartSizeMe from '../chart-sizeme';
 /**
  * 2D 线形图：折线、柱状、曲线
  */
 import React from 'react';
 import { connect } from 'dva';
-import { merge, get } from 'lodash';
-import ChartSizeMe from '../chart-sizeme';
-import { mockDataLine } from './utils';
 import { convertSettingToOption } from '../utils';
+import { mockDataLine } from './utils';
 
 type IType = 'line' | 'bar' | 'area';
 
@@ -31,11 +32,8 @@ const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line
 const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 
 const ChartLine = ({ option = {}, isMock, chartType, names, datas, chartId }: IProps) => {
-  let xAxisType = get(option, ['xAxis', 'type']);
-  const yAxisType = get(option, ['yAxis', 'type']);
-  if (xAxisType === 'category' || (!xAxisType && !yAxisType)) {
-    xAxisType = 'category';
-  }
+  let xAxisType = get(option, ['xAxis', 'type'], 'category');
+  const yAxisType = get(option, ['yAxis', 'type'], 'value');
   const source = {
     tooltip: {
       trigger: 'axis',

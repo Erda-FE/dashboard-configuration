@@ -1,15 +1,17 @@
+import './index.scss';
+
+import { Icon, Tooltip, message } from 'antd';
 import React, { ReactElement } from 'react';
-import ReactDOM from 'react-dom';
-import { get, isEmpty, find, isEqual } from 'lodash';
-import { connect } from 'dva';
-import { Icon, message, Tooltip } from 'antd';
-import screenfull from 'screenfull';
-import classnames from 'classnames';
+import { find, get, isEmpty, isEqual } from 'lodash';
+import { getData, panelDataPrefix, saveImage, setScreenFull } from '../../utils';
+
 import Control from './control';
 import OperationMenu from '../operation-menu';
-import { panelDataPrefix, getData, saveImage, setScreenFull } from '../../utils';
-import './index.scss';
+import ReactDOM from 'react-dom';
+import classnames from 'classnames';
+import { connect } from 'dva';
 import { convertFormatter } from '../../charts/utils';
+import screenfull from 'screenfull';
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
@@ -100,7 +102,9 @@ class ChartOperation extends React.PureComponent<IProps> {
           }
           <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
-        {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
+        {isEmpty(get(renderData, 'datas')) ? (
+          <div className="bi-empty-tip">暂无数据</div>
+        ) : React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );
   }

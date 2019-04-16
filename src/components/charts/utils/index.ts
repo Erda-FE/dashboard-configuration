@@ -1,6 +1,7 @@
-import { forEach, startsWith, set, endsWith, reduce } from 'lodash';
+import { endsWith, forEach, reduce, set, startsWith } from 'lodash';
 // import xss from 'xss';
 import { panelSettingPrefix, strToObject } from '../../utils';
+
 import { Func } from 'echarts-for-react';
 
 // drawerInfo转化为option对象
@@ -48,7 +49,7 @@ export const convertFormatter = (value: string): string | Func => {
   try {
     return strToObject(value);
   } catch (error) {
-    return '';
+    return value;
   }
 };
 

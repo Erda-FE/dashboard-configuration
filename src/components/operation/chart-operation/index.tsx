@@ -1,10 +1,11 @@
 import './index.scss';
 
-import { Icon, Tooltip, message } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import React, { ReactElement } from 'react';
 import { find, get, isEmpty, isEqual } from 'lodash';
 import { getData, panelDataPrefix, saveImage, setScreenFull } from '../../utils';
 
+import ChartMask from '../../charts/chart-mask';
 import Control from './control';
 import OperationMenu from '../operation-menu';
 import ReactDOM from 'react-dom';
@@ -51,10 +52,13 @@ class ChartOperation extends React.PureComponent<IProps> {
       return;
     }
     getData(url, this.query).then((resData: any) => {
-      this.setState({ resData });
+      if (!resData || isEmpty(resData)) {
+        this.setState({ resData: { message: '暂无数据' } });
+      } else {
+        this.setState({ resData });
+      }
     }).catch(() => {
-      this.setState({ resData: { isMock: true } });
-      message.error('该图表接口获取数据失败,将使用mock数据显示', 3);
+      this.setState({ resData: { message: '数据获取失败' } });
     });
   }
 
@@ -74,6 +78,7 @@ class ChartOperation extends React.PureComponent<IProps> {
     const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
     const { resData } = this.state;
+    const { isMock, message } = resData as {isMock: boolean, message:string };
     let renderData = resData;
     if (typeof dataConvertor === 'function') {
       try {
@@ -102,10 +107,8 @@ class ChartOperation extends React.PureComponent<IProps> {
           }
           <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
-        {isEmpty(get(renderData, 'datas')) && (
-          <div className="bi-empty-tip">暂无数据</div>
-        )}
-        {React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
+        <ChartMask isMock={isMock} message={message} />
+        {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );
   }

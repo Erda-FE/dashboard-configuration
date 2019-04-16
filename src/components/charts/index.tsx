@@ -33,7 +33,7 @@ const defaultChartsMap: IChartsMap = {
     dataSettings: [DataSettingsCommon],
   },
   bar: {
-    name: '柱状',
+    name: '柱状图',
     icon: <Icon type="bar-chart" />,
     component: ChartLine,
     mockData: mockDataLine,

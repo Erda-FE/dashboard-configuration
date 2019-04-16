@@ -25,4 +25,13 @@ $white: #ffffff;
     font-size: 30px;
     text-align: center;
   }
+  .bi-mask-message {
+    @extend .bi-mask-text;
+    color: unset;
+  }
+  .bi-mask-inner-message {
+    width: 100%;
+    height: 100%;
+    background-color: $white;
+  }
 }

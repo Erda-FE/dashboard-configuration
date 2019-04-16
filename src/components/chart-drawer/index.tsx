@@ -64,7 +64,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
               <PanelSettings form={form} />
               <PanelData form={form} />
             </Collapse>
-            <Form.Item label="formatter" {...formItemLayout}>
+            <Form.Item label="备注" {...formItemLayout}>
               {getFieldDecorator('remarks', {
                 rules: [{
                   message: '可以备注一些关键信息',
@@ -116,11 +116,15 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
+let changedFields = {};
 export default connect(mapStateToProps, mapDispatchToProps)(Form.create({
   mapPropsToFields({ drawerInfo }: IProps) {
     const values = {};
-    forEach(drawerInfo, (value, key) => { values[key] = Form.createFormField({ value }); });
+    forEach(drawerInfo, (value, key) => { values[key] = Form.createFormField({ ...changedFields[key], value }); });
     return values;
+  },
+  onFieldsChange(props: IProps, fields) {
+    changedFields = fields;
   },
   onValuesChange({ onDrawerChange }: IProps, _, allValues) {
     onDrawerChange(allValues);

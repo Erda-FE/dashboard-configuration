@@ -2,9 +2,9 @@ import React from 'react';
 import { Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formItemLayout, panelSettingPrefix } from '../../../utils';
+import EdotorFrom from '../../../editor-form';
 
 const { Panel } = Collapse;
-const { TextArea } = Input;
 
 type IProps = FormComponentProps;
 
@@ -17,7 +17,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
         rules: [{
           message: '请输入formatter, 正则或者es5函数',
         }],
-      })(<TextArea placeholder="请输入formatter，示例：{a} <br/>{b}: {c} ({d})% 或 function(params) { return params[0].value; }" />)}
+      })(<EdotorFrom height={80} placeholder="请输入formatter，示例：{a} <br/>{b}: {c} ({d})% 或 function(params) { return params[0].value; }" />)}
     </Form.Item>
   </Panel>
 );

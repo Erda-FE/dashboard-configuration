@@ -1,9 +1,9 @@
 import React from 'react';
-import { Form, Input } from 'antd';
+import { Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formItemLayout, panelDataPrefix } from '../../../utils';
+import EditorForm from '../../../editor-form';
 
-const { TextArea } = Input;
 const errorMessage = '请输入正确二维数组， 如：[[1,1,1,1],[1,1]]';
 
 const DataSettings = ({ form }: FormComponentProps) => {
@@ -32,7 +32,7 @@ const DataSettings = ({ form }: FormComponentProps) => {
               }
             },
           }],
-        })(<TextArea placeholder="示例：[[1,1,1,1],[1,1]]" />)
+        })(<EditorForm placeholder="示例：[[1,1,1,1],[1,1]]" />)
       }
     </Form.Item>
   );

@@ -19,9 +19,31 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
   children: ReactElement<any>
 }
 
+const MOCK = 'mock';
+const SUCCESSS = 'success';
+const FAIL = 'fail';
+interface IMessage {
+  isMock: boolean,
+  isDataEmpty: boolean,
+  featchStatus: string
+}
+const getMessage = ({ isMock, isDataEmpty, featchStatus }: IMessage): string => {
+  if (isMock) {
+    return '';
+  }
+  if (isDataEmpty) {
+    return '暂无数据';
+  }
+  if (featchStatus === FAIL) {
+    return '数据获取失败';
+  }
+  return '';
+};
+
 class ChartOperation extends React.PureComponent<IProps> {
   state = {
-    resData: {},
+    resData: {}, // 请求的数据
+    featchStatus: MOCK, // 请求方式
   };
 
   private query: any;
@@ -48,17 +70,13 @@ class ChartOperation extends React.PureComponent<IProps> {
 
   reloadData = (url: string) => {
     if (!url) {
-      this.setState({ resData: { isMock: true } });
+      this.setState({ resData: {}, featchStatus: MOCK });
       return;
     }
     getData(url, this.query).then((resData: any) => {
-      if (!resData || isEmpty(resData)) {
-        this.setState({ resData: { message: '暂无数据' } });
-      } else {
-        this.setState({ resData });
-      }
+      this.setState({ resData, featchStatus: SUCCESSS });
     }).catch(() => {
-      this.setState({ resData: { message: '数据获取失败' } });
+      this.setState({ resData: {}, featchStatus: FAIL });
     });
   }
 
@@ -77,8 +95,7 @@ class ChartOperation extends React.PureComponent<IProps> {
   render() {
     const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
-    const { resData } = this.state;
-    const { isMock, message } = resData as {isMock: boolean, message:string };
+    const { resData, featchStatus } = this.state;
     let renderData = resData;
     if (typeof dataConvertor === 'function') {
       try {
@@ -87,6 +104,9 @@ class ChartOperation extends React.PureComponent<IProps> {
         console.error('catch error in dataConvertor', error); // eslint-disable-line
       }
     }
+    const isMock = featchStatus === MOCK;
+    const isDataEmpty = isEmpty(get(renderData, 'datas'));
+    const message = getMessage({ isMock, isDataEmpty, featchStatus });
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header-left">
@@ -108,7 +128,7 @@ class ChartOperation extends React.PureComponent<IProps> {
           <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
         <ChartMask isMock={isMock} message={message} />
-        {!isEmpty(renderData) && React.cloneElement(child, { ...child.props, ...renderData, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
+        {React.cloneElement(child, { ...child.props, ...renderData, isMock, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
       </div>
     );
   }

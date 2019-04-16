@@ -1,11 +1,11 @@
+import ChartSizeMe from '../chart-sizeme';
 /**
  * 2D 饼图
  */
 import React from 'react';
 import { connect } from 'dva';
+import { convertSettingToOption } from '../utils';
 import { merge } from 'lodash';
-import { ReactEchartsPropsTypes } from 'echarts-for-react';
-import ChartSizeMe from '../chart-sizeme';
 import { mockDataPie } from './utils';
 
 interface IData {
@@ -13,9 +13,8 @@ interface IData {
   value: number,
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  option?: any
   isMock?: boolean
 }
 
@@ -72,6 +71,7 @@ const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock
     name: isMock ? mockDataPie.name : (name || '') as string,
     names: isMock ? mockDataPie.names : (names || []) as string[],
     datas: isMock ? mockDataPie.datas : (datas || []) as IData[],
+    option: convertSettingToOption(drawerInfo),
   };
 };
 

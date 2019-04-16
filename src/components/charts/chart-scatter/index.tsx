@@ -1,18 +1,18 @@
+import { isObject, merge } from 'lodash';
+
+import ChartSizeMe from '../chart-sizeme';
 /**
  * 散点图
  */
 import React from 'react';
 import { connect } from 'dva';
-import { merge, isObject } from 'lodash';
-import { ReactEchartsPropsTypes } from 'echarts-for-react';
-import ChartSizeMe from '../chart-sizeme';
+import { convertSettingToOption } from '../utils';
 import { mockDataScatter } from './utils';
 
 type IData = number[];
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReactEchartsPropsTypes {
+interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  option?: any
   isMock?: boolean
 }
 
@@ -60,6 +60,7 @@ const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock
     names: isMock ? mockDataScatter.names : (names || []) as string[],
     titles: isMock ? mockDataScatter.titles : (titles || []) as IData[],
     datas: isMock ? mockDataScatter.datas : (datas || []) as IData[],
+    option: convertSettingToOption(drawerInfo),
   };
 };
 

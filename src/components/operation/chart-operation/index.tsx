@@ -1,16 +1,18 @@
-import React, { ReactElement } from 'react';
-import ReactDOM from 'react-dom';
-import { get, isEmpty, find, isEqual } from 'lodash';
-import { connect } from 'dva';
-import { Icon, Tooltip } from 'antd';
-import screenfull from 'screenfull';
-import classnames from 'classnames';
-import Control from './control';
-import ChartMask from '../../charts/chart-mask';
-import OperationMenu from '../operation-menu';
-import { panelDataPrefix, getData, saveImage, setScreenFull } from '../../utils';
 import './index.scss';
+
+import { Icon, Tooltip } from 'antd';
+import React, { ReactElement } from 'react';
+import { find, get, isEmpty, isEqual } from 'lodash';
+import { getData, panelDataPrefix, saveImage, setScreenFull } from '../../utils';
+
+import ChartMask from '../../charts/chart-mask';
+import Control from './control';
+import OperationMenu from '../operation-menu';
+import ReactDOM from 'react-dom';
+import classnames from 'classnames';
+import { connect } from 'dva';
 import { convertFormatter } from '../../charts/utils';
+import screenfull from 'screenfull';
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string

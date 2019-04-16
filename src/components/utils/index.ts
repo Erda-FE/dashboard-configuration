@@ -3,6 +3,7 @@ import domtoimage from 'dom-to-image';
 import { forEach, replace } from 'lodash';
 import screenfull from 'screenfull';
 import agent from 'agent';
+import { Func } from 'echarts-for-react';
 
 export const formItemLayout = {
   labelCol: {
@@ -42,11 +43,22 @@ function convertUrl(url: string) {
   return newUrl;
 }
 
+let urlDataHandle: any;
+export function registerUrlDataHandle(handle: any) {
+  urlDataHandle = handle;
+}
 export function getData(url: string, query?: any) {
   if (!url) return {};
-  return agent.get(convertUrl(url))
+  const newUrl = convertUrl(url);
+  return agent.get(newUrl)
     .query(query)
-    .then((response: any) => response.body);
+    .then((response: any) => {
+      const data = response.body;
+      if (urlDataHandle) {
+        return urlDataHandle({ type: 'get', url: newUrl, data });
+      }
+      return data;
+    });
 }
 
 interface IParams { [name: string]: any }

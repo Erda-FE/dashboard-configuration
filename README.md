@@ -126,6 +126,10 @@
   // url 接口数据处理
   // 非必传
   urlDataHandle?: ({ type, url, data }) => any // 接口数据处理
+
+  // 扩展图表样式，可自定义外围的全局样式
+  // 非必传
+  expandOption?: ({ chartType, url }: IExpand) => object
 ```
 
 ## 其他文档

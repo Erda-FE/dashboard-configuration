@@ -1,9 +1,9 @@
-import { message } from 'antd';
-import domtoimage from 'dom-to-image';
 import { forEach, replace } from 'lodash';
-import screenfull from 'screenfull';
+
 import agent from 'agent';
-import { Func } from 'echarts-for-react';
+import domtoimage from 'dom-to-image';
+import { message } from 'antd';
+import screenfull from 'screenfull';
 
 export const formItemLayout = {
   labelCol: {

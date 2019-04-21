@@ -1,9 +1,9 @@
-import { get, merge } from 'lodash';
-
-import ChartSizeMe from '../chart-sizeme';
 /**
  * 2D 线形图：折线、柱状、曲线
  */
+import { get, merge } from 'lodash';
+
+import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
 import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
@@ -21,6 +21,7 @@ interface IData {
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
   isMock?: boolean
+  defaultOption: object
 }
 
 const baseAxis = {
@@ -31,8 +32,8 @@ const baseAxis = {
 const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
 const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 
-const ChartLine = ({ option = {}, isMock, chartType, names, datas, chartId }: IProps) => {
-  let xAxisType = get(option, ['xAxis', 'type'], 'category');
+const ChartLine = ({ option = {}, defaultOption, isMock, chartType, names, datas, chartId }: IProps) => {
+  const xAxisType = get(option, ['xAxis', 'type'], 'category');
   const yAxisType = get(option, ['yAxis', 'type'], 'value');
   const source = {
     tooltip: {
@@ -48,7 +49,7 @@ const ChartLine = ({ option = {}, isMock, chartType, names, datas, chartId }: IP
     } : { type: yAxisType },
     series: datas.map(({ data, ...dataOthers }: any) => ({ type: getAreaType(chartType), data, ...getOthers(chartType), ...dataOthers })),
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} isMock={isMock} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {

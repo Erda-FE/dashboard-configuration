@@ -1,10 +1,10 @@
+/**
+ * 全国地图
+ */
 import { map, merge } from 'lodash';
 
 import ChartSizeMe from '../chart-sizeme';
 import ChinaMap from './utils/china.json';
-/**
- * 全国地图
- */
 import React from 'react';
 import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
@@ -14,6 +14,7 @@ import { mockDataMap } from './utils';
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
   isMock?: boolean
+  defaultOption: object
 }
 
 const formatter = (params: any) => {
@@ -65,8 +66,8 @@ class ChartMap extends React.PureComponent<IProps> {
 
 
   render() {
-    const { option, isMock, chartId } = this.props;
-    return <ChartSizeMe option={merge(this.source, option)} isMock={isMock} chartId={chartId} />;
+    const { option, isMock, chartId, defaultOption } = this.props;
+    return <ChartSizeMe option={merge(this.source, defaultOption, option)} isMock={isMock} chartId={chartId} />;
   }
 }
 

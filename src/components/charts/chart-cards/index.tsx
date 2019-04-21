@@ -1,13 +1,16 @@
 /**
  * 基础块状显示图
  */
+import './index.scss';
+
+import { mockDataCards, mockProportion } from './utils';
+
+import ChartMask from '../chart-mask';
+import { Icon } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
-import { Icon } from 'antd';
-import { mockDataCards, mockProportion } from './utils';
+import { merge } from 'lodash';
 import { panelDataPrefix } from '../../utils';
-import ChartMask from '../chart-mask';
-import './index.scss';
 
 interface IData {
   data: any[],
@@ -15,7 +18,8 @@ interface IData {
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
+  defaultOption: object
 }
 
 const convertProportion = (proportionInput: []) => {
@@ -35,8 +39,8 @@ const getProportion = (proportion: string) => {
   }
 };
 
-const ChartCards = ({ option = {}, isMock, names = [], datas = [] }: IProps) => {
-  const { proportion } = option;
+const ChartCards = ({ option = {}, defaultOption, isMock, names = [], datas = [] }: IProps) => {
+  const { proportion } = merge(defaultOption, option);
   const layoutSource: any[] = names.map((name: string, i: number) => ({ name, data: datas[0].data[i] }));
   if (proportion.fieldsCount !== layoutSource.length) {
     return null;

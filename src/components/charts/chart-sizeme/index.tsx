@@ -1,17 +1,17 @@
-import React from 'react';
-import { isEqual } from 'lodash';
-import ReactEcharts, { Func, ReactEchartsPropsTypes } from 'echarts-for-react';
-import sizeMe from 'react-sizeme';
-import PropTypes from 'prop-types';
-import { connect } from 'dva';
-import { ISizeMe } from '../../../types';
-import ChartMask from '../chart-mask';
 import './index.scss';
+
+import ReactEcharts, { Func, ReactEchartsPropsTypes } from 'echarts-for-react';
+
+import { ISizeMe } from '../../../types';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'dva';
+import { isEqual } from 'lodash';
+import sizeMe from 'react-sizeme';
 
 type IProps = ReactEchartsPropsTypes & ISizeMe & ReturnType<typeof mapDispatchToProps> & {
   chartId: string
   descHeight: number // 图表应减少的高度
-  isMock?: boolean
 };
 
 // 重写相关生命周期，用于注册theme
@@ -58,7 +58,7 @@ class Chart extends React.Component<IProps> {
   }
 
   render() {
-    const { size, descHeight, isMock, ...others } = this.props;
+    const { size, descHeight, ...others } = this.props;
     const { theme, themeObj } = this.context;
     return (
       <div className="bi-chart-sizeme">

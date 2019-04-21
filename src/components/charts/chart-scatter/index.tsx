@@ -1,9 +1,9 @@
-import { isObject, merge } from 'lodash';
-
-import ChartSizeMe from '../chart-sizeme';
 /**
  * 散点图
  */
+import { isObject, merge } from 'lodash';
+
+import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
 import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
@@ -13,7 +13,8 @@ type IData = number[];
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
+  defaultOption: object
 }
 
 const symbolIcon = (color: string) => `<span style='
@@ -34,7 +35,7 @@ const gradientSwitch = (color: any) => {
   return color;
 };
 
-const ChartScatter = ({ option = {}, isMock, names, titles, datas, chartId }: IProps) => {
+const ChartScatter = ({ option = {}, defaultOption, isMock, names, titles, datas, chartId }: IProps) => {
   const source = {
     tooltip: {
       formatter: (params: any) => {
@@ -50,7 +51,7 @@ const ChartScatter = ({ option = {}, isMock, names, titles, datas, chartId }: IP
       data: datas.map((data: number[], i: number) => ({ name: names, value: data, title: titles[i] })),
     }],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas, titles }: any) => {

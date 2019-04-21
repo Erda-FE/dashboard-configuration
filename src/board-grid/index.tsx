@@ -5,28 +5,31 @@
  * 因为react-grid-layout会在相关变化时子组件注销重新加载，从而导致图表重绘，
  * 见GridItem相关实现即知,https://github.com/STRML/react-grid-layout/blob/master/lib/GridItem.jsx
  */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { connect } from 'dva';
-import { Icon, Tooltip, Input } from 'antd';
-import { isEqual, get } from 'lodash';
-import ReactGridLayout from 'react-grid-layout';
-import sizeMe from 'react-sizeme';
-import classnames from 'classnames';
-import PropTypes from 'prop-types';
-import { defaultChartsMap, defaultControlsMap, ChartDrawer, ChartOperation, LinkSettingModal, ControlOperation } from '../components';
-import { ISizeMe, IChartsMap } from '../types';
-import { theme, themeObj } from './utils/theme-dice';
-import { paramsManage, saveImage, setScreenFull, formItemLayout, registerUrlDataHandle } from '../components/utils';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import './index.scss';
+
+import { ChartDrawer, ChartOperation, ControlOperation, LinkSettingModal, defaultChartsMap, defaultControlsMap } from '../components';
+import { IChartsMap, IExpand, ISizeMe } from '../types';
+import { Icon, Input, Tooltip } from 'antd';
+import { formItemLayout, paramsManage, registerUrlDataHandle, saveImage, setScreenFull } from '../components/utils';
+import { get, isEqual } from 'lodash';
+import { theme, themeObj } from './utils/theme-dice';
+
+import PropTypes from 'prop-types';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import ReactGridLayout from 'react-grid-layout';
+import classnames from 'classnames';
+import { connect } from 'dva';
+import sizeMe from 'react-sizeme';
 
 interface IUrlData {
   type: string
   url: string
   data: any
 }
+
 interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   readOnly?: boolean // 只读
   extra?: any // 配置信息，包含图表布局、各图表配置信息
@@ -39,6 +42,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   urlDataHandle?: ({ type, url, data }: IUrlData) => any // 接口数据处理
+  expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -146,7 +150,10 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { size, onLayoutChange, layout, openDrawerAdd, drawerInfoMap, isEdit, openEdit, readOnly } = this.props;
+    const {
+      size, layout, isEdit, openEdit, readOnly,
+      expandOption, onLayoutChange, openDrawerAdd, drawerInfoMap,
+    } = this.props;
     const { width } = size;
     return (
       <div
@@ -198,7 +205,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             let ChartNode = get(this.chartsMap, [chartType, 'component']);
             if (ChartNode) { // 图表
               child = (
-                <ChartOperation chartId={i}>
+                <ChartOperation chartId={i} chartType={chartType} expandOption={expandOption}>
                   <ChartNode chartId={i} />
                 </ChartOperation>
               );
@@ -224,7 +231,10 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDashBoard: { layout, isEdit }, biDrawer: { drawerInfoMap } }: any) => ({
+const mapStateToProps = ({
+  biDashBoard: { layout, isEdit },
+  biDrawer: { drawerInfoMap },
+}: any) => ({
   layout,
   drawerInfoMap,
   isEdit,

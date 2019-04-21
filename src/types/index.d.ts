@@ -13,3 +13,8 @@ interface IChart {
 export interface IChartsMap {
   [type: string]: IChart
 }
+
+export interface IExpand {
+  chartType: string,
+  url: string
+}

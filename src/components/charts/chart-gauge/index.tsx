@@ -1,7 +1,7 @@
-import ChartSizeMe from '../chart-sizeme';
 /**
  * 仪表图
  */
+import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
 import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
@@ -15,10 +15,11 @@ interface IData {
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
+  defaultOption: object
 }
 
-const ChartGauge = ({ option = {}, isMock, name, datas, chartId }: IProps) => {
+const ChartGauge = ({ option = {}, defaultOption, isMock, name, datas, chartId }: IProps) => {
   const source = {
     tooltip: {
       formatter: '{a} <br/>{b} : {c}%',
@@ -34,7 +35,7 @@ const ChartGauge = ({ option = {}, isMock, name, datas, chartId }: IProps) => {
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, option)} isMock={isMock} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, name }: any) => {

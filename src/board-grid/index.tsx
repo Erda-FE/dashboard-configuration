@@ -42,7 +42,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   urlDataHandle?: ({ type, url, data }: IUrlData) => any // 接口数据处理
-  expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，可用于分图表类型、url，去自定义外围的全局样式
+  expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
 }
 
 const GRID_MARGIN = 10; // Cell间距

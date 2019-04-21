@@ -15,7 +15,7 @@ interface IData {
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
   defaultOption: object
 }
 
@@ -35,7 +35,7 @@ const ChartGauge = ({ option = {}, defaultOption, isMock, name, datas, chartId }
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} isMock={isMock} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, name }: any) => {

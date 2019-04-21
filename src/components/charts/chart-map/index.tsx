@@ -13,7 +13,7 @@ import { mockDataMap } from './utils';
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
   defaultOption: object
 }
 
@@ -67,7 +67,7 @@ class ChartMap extends React.PureComponent<IProps> {
 
   render() {
     const { option, isMock, chartId, defaultOption } = this.props;
-    return <ChartSizeMe option={merge(this.source, defaultOption, option)} isMock={isMock} chartId={chartId} />;
+    return <ChartSizeMe option={merge(this.source, defaultOption, option)} chartId={chartId} />;
   }
 }
 

@@ -18,7 +18,7 @@ interface IData {
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
   defaultOption: object
 }
 

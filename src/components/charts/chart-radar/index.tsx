@@ -17,7 +17,7 @@ interface IData {
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
   defaultOption: object
 }
 
@@ -44,7 +44,7 @@ const ChartRadar = ({ option = {}, defaultOption, isMock, datas, names, indicato
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} isMock={isMock} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
 };
 
 const getIndicator = (drawerInfo: any) => {

@@ -20,7 +20,7 @@ interface IData {
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
-  isMock?: boolean
+  isMock: boolean
   defaultOption: object
 }
 
@@ -49,7 +49,7 @@ const ChartLine = ({ option = {}, defaultOption, isMock, chartType, names, datas
     } : { type: yAxisType },
     series: datas.map(({ data, ...dataOthers }: any) => ({ type: getAreaType(chartType), data, ...getOthers(chartType), ...dataOthers })),
   };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} isMock={isMock} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
 };
 
 const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {

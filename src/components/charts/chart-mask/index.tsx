@@ -1,9 +1,9 @@
-
-import React from 'react';
 import './index.scss';
 
+import React from 'react';
+
 interface IProps {
-  isMock?: boolean
+  isMock: boolean
   message?: string
 }
 

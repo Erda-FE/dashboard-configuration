@@ -132,9 +132,23 @@
   expandOption?: ({ chartType, url }: IExpand) => object
 ```
 
+## 对外提供的其他参数
+#### 1、DataSettingsCommonCharts
+用于外部扩充图表组件时使用
+#### 2、DataSettingsCommonCharts
+用于外部扩充控件组件时使用
+#### 3、convertOptionToSetting
+将option的层级树平铺
+#### 4、convertSettingToOption
+将平铺的内容，重新组织成为option
+
+## 如何开发
+### 1、可自行定义extra存放位置
+可以存在数据库中，或者本地的js/json文件中
+### 2、extra如何处理默认的平铺结构
+可以配合convertOptionToSetting、convertSettingToOption去组织结构提升阅读性
+
 ## 其他文档
 [如何调试](./Debug.md)
-
-[如何开发](./Develop.md)
 
 [功能规划](https://yuque.antfin-inc.com/docs/share/4d74d1c0-367f-4dd2-94ff-30eb3fcad10a)

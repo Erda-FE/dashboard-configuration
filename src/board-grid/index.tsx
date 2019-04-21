@@ -212,7 +212,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             } else { // 控件
               ChartNode = get(this.controlsMap, [controlType, 'component']);
               child = (
-                <ControlOperation chartId={i} chartType={chartType} expandOption={expandOption}>
+                <ControlOperation chartId={i}>
                   <ChartNode chartId={i} />
                 </ControlOperation>
               );

@@ -7,6 +7,7 @@ import { getData, panelDataPrefix, saveImage, setScreenFull } from '../../utils'
 
 import ChartMask from '../../charts/chart-mask';
 import Control from './control';
+import { IExpand } from '../../../types';
 import OperationMenu from '../operation-menu';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
@@ -17,6 +18,8 @@ import screenfull from 'screenfull';
 interface IProps extends ReturnType<typeof mapStateToProps> {
   chartId: string
   children: ReactElement<any>
+  chartType: string
+  expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，可用于分图表类型、url，去自定义外围的全局样式
 }
 
 const MOCK = 'mock';
@@ -39,6 +42,8 @@ const getMessage = ({ isMock, isDataEmpty, featchStatus }: IMessage): string => 
   }
   return '';
 };
+
+const defaultEmpty = {};
 
 class ChartOperation extends React.PureComponent<IProps> {
   state = {
@@ -92,6 +97,14 @@ class ChartOperation extends React.PureComponent<IProps> {
     setScreenFull(ReactDOM.findDOMNode(this.chartRef), screenfull.isFullscreen); // eslint-disable-line
   }
 
+  getDefaultOption = () => {
+    const { url, chartType, expandOption } = this.props;
+    if (expandOption) {
+      return expandOption({ url, chartType });
+    }
+    return defaultEmpty;
+  }
+
   render() {
     const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
     const child = React.Children.only(children);
@@ -128,7 +141,13 @@ class ChartOperation extends React.PureComponent<IProps> {
           <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
         </div>
         <ChartMask isMock={isMock} message={message} />
-        {React.cloneElement(child, { ...child.props, ...renderData, isMock, ref: (ref: React.ReactInstance) => { this.chartRef = ref; } })}
+        {React.cloneElement(child, {
+          ...child.props,
+          ...renderData,
+          isMock,
+          ref: (ref: React.ReactInstance) => { this.chartRef = ref; },
+          defaultOption: this.getDefaultOption(),
+        })}
       </div>
     );
   }
@@ -148,8 +167,6 @@ const getKeyValue = (temp: any, chartId: string) => {
   return { paramName, clickId };
 };
 
-const defaultEmpty = {};
-
 const mapStateToProps = ({
   biDashBoard: { isEdit },
   linkSetting: { linkMap, linkDataMap },
@@ -163,10 +180,10 @@ const mapStateToProps = ({
   return {
     isEdit,
     isChartEdit: editChartId === chartId,
-    url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`]) as any,
+    url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`], '') as string,
     linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'chartValue'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
     hasLinked: !!find(linkMap[chartId], value => value), // 是否已经设置了联动
-    dataConvertor: dataConvertorFunction as any,
+    dataConvertor: dataConvertorFunction as Function,
   };
 };
 

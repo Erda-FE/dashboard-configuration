@@ -22,17 +22,20 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
   expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，可用于分图表类型、url，去自定义外围的全局样式
 }
 
+const FETCH = 'fetching';
 const MOCK = 'mock';
 const SUCCESSS = 'success';
 const FAIL = 'fail';
 interface IMessage {
-  isMock: boolean,
   isDataEmpty: boolean,
   featchStatus: string
 }
-const getMessage = ({ isMock, isDataEmpty, featchStatus }: IMessage): string => {
-  if (isMock) {
+const getMessage = ({ isDataEmpty, featchStatus }: IMessage): string => {
+  if (featchStatus === MOCK) {
     return '';
+  }
+  if (featchStatus === FETCH) {
+    return '加载中';
   }
   if (isDataEmpty) {
     return '暂无数据';
@@ -48,7 +51,7 @@ const defaultEmpty = {};
 class ChartOperation extends React.PureComponent<IProps> {
   state = {
     resData: {}, // 请求的数据
-    featchStatus: MOCK, // 请求方式
+    featchStatus: FETCH, // 请求方式
   };
 
   private query: any;
@@ -119,7 +122,7 @@ class ChartOperation extends React.PureComponent<IProps> {
     }
     const isMock = featchStatus === MOCK;
     const isDataEmpty = isEmpty(get(renderData, 'datas'));
-    const message = getMessage({ isMock, isDataEmpty, featchStatus });
+    const message = getMessage({ isDataEmpty, featchStatus });
     return (
       <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
         <div className="bi-chart-operation-header-left">

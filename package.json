@@ -1,6 +1,6 @@
 {
   "name": "@terminus/bi-ui-package",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "bi ui package",
   "main": "./index.js",
   "sideEffects": [
@@ -41,7 +41,7 @@
     "classnames": "^2.2.5",
     "dom-to-image": "^2.6.0",
     "dva": "^2.3.0",
-    "echarts": "^4.2.0-rc.2",
+    "echarts": "^4.2.1",
     "echarts-for-react": "^2.0.15-beta.0",
     "js-object-pretty-print": "^0.3.0",
     "lodash": "^4.17.11",

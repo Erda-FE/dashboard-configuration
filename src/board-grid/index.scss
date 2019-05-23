@@ -1,4 +1,5 @@
 $color-text: #666666;
+$white: #ffffff;
 :global {
   .bi-board {
     width: 100%;
@@ -6,6 +7,7 @@ $color-text: #666666;
   }
   .screened {
     overflow: auto;
+    background-color: $white;
   }
   .bi-header {
     padding-right: 10px;

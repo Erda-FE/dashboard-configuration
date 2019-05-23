@@ -165,7 +165,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     return (
       <div
         style={{ flex: 2 }}
-        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit })}
+        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit, screened })}
         ref={(ref: HTMLDivElement) => { this.boardRef = ref; }}
       >
         {!readOnly && (

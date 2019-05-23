@@ -22,6 +22,7 @@ import ReactDOM from 'react-dom';
 import ReactGridLayout from 'react-grid-layout';
 import classnames from 'classnames';
 import { connect } from 'dva';
+import screenfull from 'screenfull';
 import sizeMe from 'react-sizeme';
 
 interface IUrlData {
@@ -66,6 +67,10 @@ const getGridBackground = (width: number) => {
 };
 
 class BoardGrid extends React.PureComponent<IProps> {
+  state = {
+    screened: false, // 是否全屏
+  }
+
   static defaultProps = {
     readOnly: false,
     theme,
@@ -146,7 +151,8 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   onSetScreenFull = () => {
-    setScreenFull(this.boardRef, false);
+    setScreenFull(this.boardRef, screenfull.isFullscreen);
+    this.setState({ screened: !screenfull.isFullscreen });
   }
 
   render() {
@@ -155,6 +161,7 @@ class BoardGrid extends React.PureComponent<IProps> {
       expandOption, onLayoutChange, openDrawerAdd, drawerInfoMap,
     } = this.props;
     const { width } = size;
+    const { screened } = this.state;
     return (
       <div
         style={{ flex: 2 }}
@@ -165,8 +172,8 @@ class BoardGrid extends React.PureComponent<IProps> {
           <div className="bi-header">
             {!isEdit && (
               <span>
-                <Tooltip placement="bottom" title="图表全屏">
-                  <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
+                <Tooltip placement="bottom" title={screened ? '退出全屏' : '图表全屏'}>
+                  <Icon type={screened ? 'shrink' : 'arrows-alt'} onClick={this.onSetScreenFull} />
                 </Tooltip>
                 <Tooltip placement="bottom" title="导出图片">
                   <Icon type="camera" onClick={this.onSaveImg} />

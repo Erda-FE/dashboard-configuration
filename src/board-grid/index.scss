@@ -4,6 +4,9 @@ $color-text: #666666;
     width: 100%;
     height: 100%;
   }
+  .screened {
+    overflow: auto;
+  }
   .bi-header {
     padding-right: 10px;
     text-align: right;

@@ -67,10 +67,6 @@ const getGridBackground = (width: number) => {
 };
 
 class BoardGrid extends React.PureComponent<IProps> {
-  state = {
-    screened: false, // 是否全屏
-  }
-
   static defaultProps = {
     readOnly: false,
     theme,
@@ -152,7 +148,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   onSetScreenFull = () => {
     setScreenFull(this.boardRef, screenfull.isFullscreen);
-    this.setState({ screened: !screenfull.isFullscreen });
+    this.forceUpdate();
   }
 
   render() {
@@ -161,7 +157,7 @@ class BoardGrid extends React.PureComponent<IProps> {
       expandOption, onLayoutChange, openDrawerAdd, drawerInfoMap,
     } = this.props;
     const { width } = size;
-    const { screened } = this.state;
+    const screened = screenfull.isFullscreen; // 是否全屏
     return (
       <div
         style={{ flex: 2 }}

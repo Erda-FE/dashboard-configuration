@@ -12,12 +12,12 @@ export default {
   effects: {
     * initDashboard({ dashboardType, extra }, { put, select }) {
       const { layout } = yield select(state => state.biDashBoard);
-      if (!isEmpty(layout)) { // 情况layout,防止在同一个页面不停的reload时出错
-        yield yield put({ type: 'querySuccess', payload: { layout: [] } });
+      if (!isEmpty(layout)) { // 清空layout,防止在同一个页面不停的reload时出错
+        yield yield put({ type: 'updateState', payload: { layout: [] } });
       }
       yield yield put({ type: 'biDrawer/init', drawerInfoMap: get(extra, 'drawerInfoMap', {}) });
       yield yield put({ type: 'linkSetting/init', drawerInfoMap: get(extra, 'linkMap', {}) });
-      yield yield put({ type: 'querySuccess', payload: { layout: get(extra, 'layout', []), dashboardType } });
+      yield yield put({ type: 'updateState', payload: { layout: get(extra, 'layout', []), dashboardType } });
     },
     * generateChart({ chartId }, { select, put }) {
       const { biDashBoard: { layout }, biDrawer: { drawerInfoMap } } = yield select(state => state);
@@ -27,10 +27,10 @@ export default {
       } else if (controlType) {
         layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 2, h: 1 });
       }
-      yield put({ type: 'querySuccess', payload: { layout: [...layout] } });
+      yield put({ type: 'updateState', payload: { layout: [...layout] } });
     },
     * saveEdit(_, { put, select }) {
-      yield put({ type: 'querySuccess', payload: { isEdit: false } });
+      yield put({ type: 'updateState', payload: { isEdit: false } });
       const {
         biDashBoard: { layout },
         biDrawer: { drawerInfoMap },
@@ -50,7 +50,7 @@ export default {
     },
   },
   reducers: {
-    querySuccess(state, { payload }) {
+    updateState(state, { payload }) {
       return { ...state, ...payload };
     },
     onLayoutChange(state, { layout }) {

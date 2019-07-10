@@ -25,11 +25,11 @@ export default {
     * editChart({ chartId }, { put, select }) {
       const { biDrawer: { editChartId } } = yield select(state => state);
       if (chartId === editChartId) return;
-      yield put({ type: 'querySuccess', payload: { visible: true, editChartId: chartId } });
+      yield put({ type: 'updateState', payload: { visible: true, editChartId: chartId } });
     },
     * onDrawerChange({ payload }, { select, put }) {
       const { editChartId, drawerInfoMap } = yield select(state => state.biDrawer);
-      yield put({ type: 'querySuccess',
+      yield put({ type: 'updateState',
         payload: {
           drawerInfoMap: {
             ...drawerInfoMap,
@@ -44,12 +44,12 @@ export default {
       if (!isExist) { // 创建时取消就移除
         yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
       }
-      yield put({ type: 'querySuccess', payload: { visible: false, editChartId: '' } });
+      yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
     },
     * deleteDrawer(_, { put, select }) { // 编辑时移除
       const { editChartId } = yield select(state => state.biDrawer);
       yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
-      yield put({ type: 'querySuccess', payload: { visible: false, editChartId: '' } });
+      yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
     },
     * chooseChart({ chartType }, { put, select }) { // 编辑时移除
       const { drawerInfoMap, editChartId } = yield select(state => state.biDrawer);
@@ -66,11 +66,11 @@ export default {
       } else {
         tempPayload = { drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType } } };
       }
-      yield put({ type: 'querySuccess', payload: tempPayload });
+      yield put({ type: 'updateState', payload: tempPayload });
     },
   },
   reducers: {
-    querySuccess(state, { payload }) {
+    updateState(state, { payload }) {
       return { ...state, ...payload };
     },
     init(state, { drawerInfoMap }) {

@@ -1,7 +1,8 @@
 import React from 'react';
 import { Collapse, Form, Switch, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelSettingPrefix, plainArrayValidator } from '../../../utils';
+import { plainArrayValidator } from '~/utils/comp';
+import { panelSettingPrefix } from '~/utils/constants';
 
 import EditorForm from '../../../editor-form';
 

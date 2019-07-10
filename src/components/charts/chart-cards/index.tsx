@@ -10,7 +10,7 @@ import { Icon } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
 import { merge } from 'lodash';
-import { panelDataPrefix } from '../../utils';
+import { panelDataPrefix } from '~/utils/constants';
 
 interface IData {
   data: any[],

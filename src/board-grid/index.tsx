@@ -12,7 +12,7 @@ import './index.scss';
 import { ChartDrawer, ChartOperation, ControlOperation, LinkSettingModal, defaultChartsMap, defaultControlsMap } from '../components';
 import { IChartsMap, IExpand, ISizeMe } from '../types';
 import { Icon, Input, Tooltip } from 'antd';
-import { formItemLayout, paramsManage, registerUrlDataHandle, saveImage, setScreenFull } from '../components/utils';
+import { formItemLayout, paramsManage, registerUrlDataHandle, saveImage, setScreenFull } from '~/utils/comp';
 import { get, isEqual } from 'lodash';
 import { theme, themeObj } from '~/theme/dice';
 

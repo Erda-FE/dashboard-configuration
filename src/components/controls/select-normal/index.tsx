@@ -3,7 +3,8 @@ import { get, isEqual, map, isEmpty } from 'lodash';
 import { connect } from 'dva';
 import { Select, message } from 'antd';
 import { OptionProps } from 'antd/lib/select';
-import { panelControlPrefix, getData, strToObject } from '../../utils';
+import { getData, strToObject } from '~/utils/comp';
+import { panelControlPrefix } from '~/utils/constants';
 import { checkFixedData } from './utils';
 
 const { Option } = Select;

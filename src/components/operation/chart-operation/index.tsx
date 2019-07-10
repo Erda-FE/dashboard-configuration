@@ -3,7 +3,8 @@ import './index.scss';
 import { Icon, Tooltip } from 'antd';
 import React, { ReactElement } from 'react';
 import { find, get, isEmpty, isEqual } from 'lodash';
-import { getData, panelDataPrefix, saveImage, setScreenFull } from '../../utils';
+import { getData, saveImage, setScreenFull } from '~/utils/comp';
+import { panelDataPrefix } from '~/utils/constants';
 
 import ChartMask from '../../charts/chart-mask';
 import Control from './control';

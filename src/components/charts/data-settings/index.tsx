@@ -5,7 +5,7 @@ import React from 'react';
 import { connect } from 'dva';
 import { Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelDataPrefix } from '../../utils';
+import { panelDataPrefix } from '~/utils/constants';
 import { funcValidator } from '../utils';
 import PropTypes from 'prop-types';
 import EditorFrom from '../../editor-form';

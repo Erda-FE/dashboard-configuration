@@ -1,7 +1,8 @@
 import React from 'react';
 import { Collapse, Form, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout, panelSettingPrefix } from '../../../utils';
+import { formItemLayout } from '~/utils/comp';
+import { panelSettingPrefix } from '~/utils/constants';
 import EdotorFrom from '../../../editor-form';
 
 const { Panel } = Collapse;

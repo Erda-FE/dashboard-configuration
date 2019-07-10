@@ -1,4 +1,4 @@
-import { strToObject } from '../../../utils';
+import { strToObject } from '~/utils/comp';
 
 export function checkFixedData(str: string): boolean {
   // 空的满足校验规则

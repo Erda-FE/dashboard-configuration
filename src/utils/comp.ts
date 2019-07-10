@@ -1,5 +1,4 @@
 import { forEach, replace } from 'lodash';
-
 import agent from 'agent';
 import domtoimage from 'dom-to-image';
 import { message } from 'antd';
@@ -14,11 +13,6 @@ export const formItemLayout = {
   },
 };
 
-export const panelDataPrefix = 'paneldata#';
-export const panelControlPrefix = 'panelcontrol#';
-export const panelSettingPrefix = 'panelsetting#';
-
-export const positiveIntRegExp = /^[1-9]\d*$/;
 
 class ParamsManage {
   private params: IParams | undefined;

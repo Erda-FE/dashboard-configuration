@@ -23,7 +23,8 @@
     "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
     "paths": {
       "example/*": ["./example/*"],
-      "src/*": ["./src/*"],
+      "~": ["./src"],
+      "~/*": ["./src/*"],
       "board-grid": ["./src/board-grid"],
       "agent": ["./example/agent.js"],
       "dva/*": ["./node_modules/dva-react-router-3/*"],
@@ -31,7 +32,7 @@
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     "typeRoots": [],                       /* List of folders to include type definitions from. */
     "allowSyntheticDefaultImports": true,  /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */
-    "esModuleInterop": true,                   /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. 
+    "esModuleInterop": true,                   /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports.
     /* Experimental Options */
     "experimentalDecorators": true,        /* Enables experimental support for ES7 decorators. */
     "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */

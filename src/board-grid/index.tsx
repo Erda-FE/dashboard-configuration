@@ -14,7 +14,7 @@ import { IChartsMap, IExpand, ISizeMe } from '../types';
 import { Icon, Input, Tooltip } from 'antd';
 import { formItemLayout, paramsManage, registerUrlDataHandle, saveImage, setScreenFull } from '../components/utils';
 import { get, isEqual } from 'lodash';
-import { theme, themeObj } from './utils/theme-dice';
+import { theme, themeObj } from '~/theme/dice';
 
 import PropTypes from 'prop-types';
 import React from 'react';

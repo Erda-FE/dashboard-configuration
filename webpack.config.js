@@ -83,13 +83,12 @@ module.exports = () => {
     },
     resolve: {
       alias: {
-        src: path.resolve(__dirname, 'src'),
+        '~': path.resolve(__dirname, 'src'),
         // 业务域 不含路由
         'board-grid': path.resolve(__dirname, 'src/board-grid'),
         // 业务域 含有路由
         // 其他
         agent: path.resolve(__dirname, 'example/agent.js'),
-        utils: path.resolve(__dirname, 'example/utils'),
         app: path.resolve(__dirname, 'example'),
         ws: path.resolve(__dirname, 'example/ws.js'),
         interface: path.resolve(__dirname, 'interface'),

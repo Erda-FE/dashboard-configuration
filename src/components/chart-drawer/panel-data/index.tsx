@@ -1,13 +1,10 @@
 import React from 'react';
 import { get, map } from 'lodash';
 import { connect } from 'dva';
-import { Collapse } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { pretty } from 'js-object-pretty-print';
 import PropTypes from 'prop-types';
 import './index.scss';
-
-const { Panel } = Collapse;
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -17,10 +14,10 @@ class PanelData extends React.Component<IProps> {
   };
 
   render() {
-    const { chartType, chooseChart, form, ...others } = this.props;
+    const { chartType, chooseChart, form } = this.props;
     const { name, mockData, dataSettings } = get(this.context.chartsMap, [chartType], {});
     return (
-      <Panel {...others} header="数据" key="data">
+      <React.Fragment>
         {chartType && (
           <a
             className="bi-demo-text"
@@ -30,7 +27,7 @@ class PanelData extends React.Component<IProps> {
           </a>
         )}
         {map(dataSettings, (Setting, i) => <Setting form={form} key={i} />)}
-      </Panel>
+      </React.Fragment>
     );
   }
 }

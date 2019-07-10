@@ -1,27 +1,26 @@
 import React from 'react';
-import { Collapse, Form, Input, Switch, Select } from 'antd';
+import { Form, Input, Switch, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelSettingPrefix } from '~/utils/constants';
-import { formPositionLayout } from '../utils';
-import { funcValidator } from '../../../charts/utils';
-import EditorFrom from '../../../editor-form';
+import { formPositionLayout } from './utils';
+import { funcValidator } from '../../charts/utils';
+import EditorForm from '../../editor-form';
 
-const { Panel } = Collapse;
 const { Option } = Select;
-const panelSettingXAxisPrefix = `${panelSettingPrefix}xAxis#`;
+const panelSettingYAxisPrefix = `${panelSettingPrefix}yAxis#`;
 
 type IProps = FormComponentProps;
 
-const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
-  <Panel {...others} header="xAxis" key="xAxis">
+const PanelSettings = ({ form: { getFieldDecorator } }: IProps) => (
+  <React.Fragment>
     <Form.Item label="show" {...formPositionLayout}>
-      {getFieldDecorator(`${panelSettingXAxisPrefix}show`, {
+      {getFieldDecorator(`${panelSettingYAxisPrefix}show`, {
         initialValue: true,
         valuePropName: 'checked',
       })(<Switch />)}
     </Form.Item>
     <Form.Item label="type" {...formPositionLayout}>
-      {getFieldDecorator(`${panelSettingXAxisPrefix}type`, {
+      {getFieldDecorator(`${panelSettingYAxisPrefix}type`, {
         initialValue: 'value',
       })(
         <Select>
@@ -32,16 +31,15 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
       )}
     </Form.Item>
     <Form.Item label="name" {...formPositionLayout}>
-      {getFieldDecorator(`${panelSettingXAxisPrefix}name`, {
+      {getFieldDecorator(`${panelSettingYAxisPrefix}name`, {
       })(<Input />)}
     </Form.Item>
     <Form.Item label="axisLabel.fomater" {...formPositionLayout}>
-      {getFieldDecorator(`${panelSettingXAxisPrefix}axisLabel#formatter`, {
+      {getFieldDecorator(`${panelSettingYAxisPrefix}axisLabel#formatter`, {
         rules: [{
           validator: funcValidator,
         }],
-      })(<EditorFrom
-        autosize
+      })(<EditorForm
         placeholder="输入fomater函数. e.g.
         function(value){
             if(value > 1024) return value/1024 + 'MB';
@@ -49,7 +47,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
         }"
       />)}
     </Form.Item>
-  </Panel >
+  </React.Fragment>
 );
 
 export default PanelSettings;

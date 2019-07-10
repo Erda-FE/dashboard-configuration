@@ -4,7 +4,7 @@ const webpackConfig = require('./webpack.config');
 const frontUrl = '127.0.0.1';
 
 const devServer = {
-  port: 8080,
+  port: 8010,
   host: frontUrl,
   compress: true,
   contentBase: path.join(__dirname, 'public'),

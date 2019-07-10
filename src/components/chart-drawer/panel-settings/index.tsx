@@ -1,52 +1,43 @@
 import React from 'react';
-import { Collapse, Icon, Tooltip } from 'antd';
+import { Icon, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
-import PanelToolTip from './panel-tooltip';
+import SettingTooltip from './setting-tooltip';
 import CodeModal from './code-modal';
-import PanelLegend from './panel-legend';
-import PanelTitle from './panel-title';
-import PanelYAxis from './panel-yAxis';
-import PanelXAxis from './panel-xAxis';
+import SettingLegend from './setting-legend';
+import SettingTitle from './setting-title';
+import SettingYAxis from './setting-yAxis';
+import SettingXAxis from './setting-xAxis';
 import './index.scss';
-
-const { Panel } = Collapse;
 
 type IProps = FormComponentProps & ReturnType<typeof mapDispatchToProps>;
 
-const PanelSettings = ({ form, openCodeModal, ...others }: IProps) => (
+const SettingPanel = ({ form, openCodeModal }: IProps) => (
   <React.Fragment>
-    <Panel
-      {...others}
-      key="settings"
-      header={
-        <div className="bi-in-a-icon">
-          <span>配置</span>
-          <Tooltip placement="bottom" title="Echarts配置帮助">
-            <a target="_blank" rel="noopener noreferrer" href="https://echarts.baidu.com/option.html">
-              <Icon type="question-circle" />
-            </a>
-          </Tooltip>
-          <Tooltip placement="bottom" title="转为代码进行编辑">
-            <Icon
-              type="code"
-              onClick={(e: React.MouseEvent) => {
-                e.stopPropagation();
-                openCodeModal();
-              }}
-            />
-          </Tooltip>
-        </div>
-    }
-    >
-      <Collapse>
-        <PanelTitle form={form} />
-        <PanelToolTip form={form} />
-        <PanelLegend form={form} />
-        <PanelYAxis form={form} />
-        <PanelXAxis form={form} />
-      </Collapse>
-    </Panel>
+    <Tooltip placement="bottom" title="Echarts配置帮助">
+      <a target="_blank" rel="noopener noreferrer" href="https://echarts.baidu.com/option.html">
+        <Icon type="question-circle" />
+      </a>
+    </Tooltip>
+    <Tooltip placement="bottom" title="转为代码进行编辑">
+      <Icon
+        type="code"
+        onClick={(e: React.MouseEvent) => {
+          e.stopPropagation();
+          openCodeModal();
+        }}
+      />
+    </Tooltip>
+    <div className="bi-ui-section-title">标题</div>
+    <SettingTitle form={form} />
+    <div className="bi-ui-section-title">提示</div>
+    <SettingTooltip form={form} />
+    <div className="bi-ui-section-title">图例</div>
+    <SettingLegend form={form} />
+    <div className="bi-ui-section-title">纵轴</div>
+    <SettingYAxis form={form} />
+    <div className="bi-ui-section-title">横轴</div>
+    <SettingXAxis form={form} />
     <CodeModal />
   </React.Fragment>
 );
@@ -57,4 +48,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(undefined, mapDispatchToProps)(PanelSettings);
+export default connect(undefined, mapDispatchToProps)(SettingPanel);

@@ -16,6 +16,10 @@
   .bi-drawer-content {
     flex: 1;
     overflow-y: auto;
+
+    .ant-form-item {
+      margin-bottom: 12px;
+    }
   }
   .bi-drawer-footer {
     display: flex;

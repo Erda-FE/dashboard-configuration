@@ -1,13 +1,15 @@
 import { forEach, get, find, isEmpty } from 'lodash';
 import React from 'react';
 import { connect } from 'dva';
-import { Drawer, Button, Collapse, Form, Input, message } from 'antd';
+import { Drawer, Button, Collapse, Form, Input, message, Tabs, Icon, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PanelCharts from './panel-charts';
 import PanelControls from './panel-controls';
 import PanelSettings from './panel-settings';
 import PanelData from './panel-data';
 import './index.scss';
+
+const { TabPane } = Tabs;
 
 const formItemLayout = {
   labelCol: {
@@ -41,8 +43,8 @@ class ChartDrawer extends React.PureComponent<IProps> {
     return (
       <Drawer
         placement="right"
-        visible={visible}
-        width={500}
+        visible
+        width="70%"
         onClose={closeDrawer}
         mask={false}
         closable={false}
@@ -58,19 +60,32 @@ class ChartDrawer extends React.PureComponent<IProps> {
                 }],
               })(<Input placeholder="请输入名称" />)}
             </Form.Item>
-            <Collapse defaultActiveKey={['charts']}>
-              <PanelCharts />
-              <PanelControls form={form} />
-              <PanelSettings form={form} />
-              <PanelData form={form} />
-            </Collapse>
             <Form.Item label="备注" {...formItemLayout}>
               {getFieldDecorator('remarks', {
                 rules: [{
                   message: '可以备注一些关键信息',
                 }],
-              })(<TextArea placeholder="可以备注一些关键信息" style={{ marginTop: 12 }} />)}
+              })(<TextArea placeholder="可以备注一些关键信息" />)}
             </Form.Item>
+            <Form.Item key="child" label="组件" {...formItemLayout}>
+              {getFieldDecorator('child', {
+                rules: [{
+                  required: true,
+                  message: '请选择组件',
+                }],
+              })(<PanelCharts />)}
+            </Form.Item>
+            <Tabs defaultActiveKey="setting">
+              <TabPane tab="配置" key="setting">
+                <PanelSettings form={form} />
+              </TabPane>
+              <TabPane tab="数据" key="data">
+                <PanelData form={form} />
+              </TabPane>
+              <TabPane tab="控件" key="control">
+                <PanelControls form={form} />
+              </TabPane>
+            </Tabs>
           </Form>
         </div>
         <div className="bi-drawer-footer">

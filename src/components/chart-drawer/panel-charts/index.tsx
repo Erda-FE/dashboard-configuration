@@ -6,8 +6,6 @@ import { Collapse, Tooltip } from 'antd';
 import PropTypes from 'prop-types';
 import './index.scss';
 
-const { Panel } = Collapse;
-
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class PanelCharts extends React.PureComponent<IProps> {
@@ -17,8 +15,10 @@ class PanelCharts extends React.PureComponent<IProps> {
 
   render() {
     const { chartType, onChoose, ...others } = this.props;
+    console.log('others:', others);
     return (
-      <Panel {...others} header="图表" key="charts">
+      <div>
+        组件
         {map(this.context.chartsMap, ({ icon, name }, type) => (
           <div
             key={type}
@@ -30,7 +30,7 @@ class PanelCharts extends React.PureComponent<IProps> {
             </Tooltip>
           </div>
         ))}
-      </Panel>
+      </div>
     );
   }
 }

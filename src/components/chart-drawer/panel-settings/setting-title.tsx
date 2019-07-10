@@ -1,18 +1,17 @@
 import React from 'react';
-import { Collapse, Form, Input, Switch, Row, Col } from 'antd';
+import { Form, Input, Switch, Row, Col } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { formItemLayout } from '~/utils/comp';
 import { panelSettingPrefix } from '~/utils/constants';
-import { formPositionLayout } from '../utils';
+import { formPositionLayout } from './utils';
 
-const { Panel } = Collapse;
 const { TextArea } = Input;
 const panelSettingTitlePrefix = `${panelSettingPrefix}title#`;
 
 type IProps = FormComponentProps;
 
-const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
-  <Panel {...others} header="title" key="title">
+const SettingTitle = ({ form: { getFieldDecorator } }: IProps) => (
+  <React.Fragment>
     <Form.Item label="show" {...formItemLayout}>
       {getFieldDecorator(`${panelSettingTitlePrefix}show`, {
         initialValue: false,
@@ -51,7 +50,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
         </Form.Item>
       </Col>
     </Row>
-  </Panel >
+  </React.Fragment>
 );
 
-export default PanelSettings;
+export default SettingTitle;

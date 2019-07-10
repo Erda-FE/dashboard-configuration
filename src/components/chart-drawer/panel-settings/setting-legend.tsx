@@ -1,12 +1,11 @@
 import React from 'react';
-import { Collapse, Form, Switch, Input } from 'antd';
+import { Form, Switch, Input } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { plainArrayValidator } from '~/utils/comp';
 import { panelSettingPrefix } from '~/utils/constants';
 
-import EditorForm from '../../../editor-form';
+import EditorForm from '../../editor-form';
 
-const { Panel } = Collapse;
 type IProps = FormComponentProps;
 const panelSettingLegendPrefix = `${panelSettingPrefix}legend#`;
 const legendFormItemLayout =
@@ -19,8 +18,8 @@ const legendFormItemLayout =
     },
   };
 
-const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
-  <Panel {...others} header="legend" key="legend">
+const SettingLegend = ({ form: { getFieldDecorator } }: IProps) => (
+  <React.Fragment>
     <Form.Item label="show" {...legendFormItemLayout}>
       {getFieldDecorator(`${panelSettingLegendPrefix}show`, {
         initialValue: false,
@@ -52,7 +51,7 @@ const PanelSettings = ({ form: { getFieldDecorator }, ...others }: IProps) => (
         }],
       })(<EditorForm height={50} placeholder='请输入字符串数组 如： ["demo1", "demo2"]' />)}
     </Form.Item>
-  </Panel >
+  </React.Fragment >
 );
 
-export default PanelSettings;
+export default SettingLegend;

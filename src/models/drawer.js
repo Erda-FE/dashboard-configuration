@@ -1,70 +1,107 @@
-import { find, cloneDeep, forEach, startsWith } from 'lodash';
-import { panelControlPrefix, panelDataPrefix, panelSettingPrefix } from '~/utils/constants';
+import { cloneDeep, deepClone, forEach, startsWith } from 'lodash';
 import { generateUUID } from '~/utils';
+import { panelControlPrefix, panelSettingPrefix } from '~/utils/constants';
 
 const defaultState = {
   visible: false,
-  editChartId: '',
-  drawerInfoMap: {}, // 所有图表配置信息
+  editViewId: '',
+  addMode: false,
+  viewMap: {}, // 所有图表配置信息
   codeVisible: false, // 代码编辑
+  viewCopy: {}, // 修改时用于恢复的复制对象
 };
 
+const newViewTpl = {
+  viewType: 'chart:line',
+  staticData: {
+    xData: [],
+    yData: [],
+    metricData: {},
+  },
+  config: {
+    options: {}
+  }
+}
+
 export default {
-  namespace: 'biDrawer',
+  namespace: 'biEditor',
   state: cloneDeep(defaultState),
   effects: {
-    * submitDrawer(_, { put, select }) {
-      const { biDrawer: { editChartId }, biDashBoard: { layout } } = yield select(state => state);
-      const isExist = find(layout, ({ i }) => i === editChartId);
-      if (!isExist) { // 添加
-        yield put({ type: 'biDashBoard/generateChart', chartId: editChartId });
-        return;
-      }
-      yield put({ type: 'closeDrawer' });
-    },
-    * editChart({ chartId }, { put, select }) {
-      const { biDrawer: { editChartId } } = yield select(state => state);
-      if (chartId === editChartId) return;
-      yield put({ type: 'updateState', payload: { visible: true, editChartId: chartId } });
-    },
-    * onDrawerChange({ payload }, { select, put }) {
-      const { editChartId, drawerInfoMap } = yield select(state => state.biDrawer);
-      yield put({ type: 'updateState',
+    * addEditor(_, { put, select }) {
+      const viewId = `view-${generateUUID()}`;
+      const { viewMap } = yield select(state => state.biEditor);
+
+      yield yield put({
+        type: 'updateState',
         payload: {
-          drawerInfoMap: {
-            ...drawerInfoMap,
-            [editChartId]: { ...drawerInfoMap[editChartId], ...payload },
+          visible: true,
+          editViewId: viewId,
+          addMode: true,
+          viewMap: {
+            ...viewMap,
+            [viewId]: newViewTpl,
+          },
+        },
+      });
+      yield put({ type: 'biDashBoard/generateChart', viewId });
+    },
+    // 编辑时保存仅置空viewCopy即可，新增时保存无需处理
+    * saveEditor(_, { put, select }) {
+      // const { biEditor: { editViewId, viewMap, viewCopy }, biDashBoard: { layout } } = yield select(state => state);
+      // const isExist = find(layout, ({ i }) => i === editViewId);
+      // if (!isExist) { // 创建时取消就移除
+      //   yield put({ type: 'biDashBoard/deleteView', viewId: editViewId });
+      //   yield put({ type: 'updateState', payload: { visible: false, editViewId: '' } });
+      // } else { // 编辑时取消恢复原有数据
+      //   viewMap[editViewId] = viewCopy;
+      // }
+      yield put({ type: 'updateState', payload: { visible: false, addMode: false, editViewId: '', viewCopy: {} } });
+    },
+    // 表单变化时自动保存
+    * onEditorChange({ payload }, { select, put }) {
+      const { editViewId, viewMap } = yield select(state => state.biEditor);
+      yield put({
+        type: 'updateState',
+        payload: {
+          viewMap: {
+            ...viewMap,
+            [editViewId]: { ...viewMap[editViewId], ...payload },
           },
         },
       });
     },
-    * closeDrawer(_, { put, select }) {
-      const { biDrawer: { editChartId }, biDashBoard: { layout } } = yield select(state => state);
-      const isExist = find(layout, ({ i }) => i === editChartId);
-      if (!isExist) { // 创建时取消就移除
-        yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
-      }
-      yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
+    // 编辑时关闭，恢复数据并置空viewCopy
+    * closeEditor(_, { put, select }) {
+      const { biEditor: { editViewId, viewMap, viewCopy } } = yield select(state => state);
+      // const isExist = find(layout, ({ i }) => i === editViewId);
+      // if (!isExist) { // 创建时取消就移除
+      //   yield put({ type: 'biDashBoard/deleteView', viewId: editViewId });
+      //   yield put({ type: 'updateState', payload: { visible: false, editViewId: '' } });
+      // } else { // 编辑时取消恢复原有数据
+      // }
+      viewMap[editViewId] = viewCopy;
+      yield put({ type: 'updateState', payload: { visible: false, editViewId: '', viewMap: { ...viewMap }, viewCopy: {} } });
     },
-    * deleteDrawer(_, { put, select }) { // 编辑时移除
-      const { editChartId } = yield select(state => state.biDrawer);
-      yield put({ type: 'biDashBoard/deleteChart', chartId: editChartId });
-      yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
+    // 添加时关闭直接移除新建的
+    * deleteEditor(_, { put, select }) {
+      const { editViewId } = yield select(state => state.biEditor);
+      yield put({ type: 'biDashBoard/deleteView', viewId: editViewId });
+      yield put({ type: 'updateState', payload: { visible: false, editViewId: '' } });
     },
-    * chooseChart({ chartType }, { put, select }) { // 编辑时移除
-      const { drawerInfoMap, editChartId } = yield select(state => state.biDrawer);
-      const drawerInfo = drawerInfoMap[editChartId];
+    * chooseViewType({ viewType }, { put, select }) { // 编辑时移除
+      const { viewMap, editViewId } = yield select(state => state.biEditor);
+      const drawerInfo = viewMap[editViewId];
       let tempPayload = {};
-      if (chartType === drawerInfo.chartType) {
-        forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
-          if (startsWith(key, panelDataPrefix)) {
-            delete drawerInfo[key];
-          }
-        });
-        yield yield put({ type: 'biDashBoard/deleteLayout', chartId: editChartId });
-        tempPayload = { drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
+      if (viewType === drawerInfo.viewType) {
+        // forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
+        //   if (startsWith(key, panelDataPrefix)) {
+        //     delete drawerInfo[key];
+        //   }
+        // });
+        yield yield put({ type: 'biDashBoard/deleteLayout', viewId: editViewId });
+        tempPayload = { viewMap: { ...viewMap, [editViewId]: { ...drawerInfo, viewType: '' } } };
       } else {
-        tempPayload = { drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, chartType } } };
+        tempPayload = { viewMap: { ...viewMap, [editViewId]: { ...drawerInfo, viewType } } };
       }
       yield put({ type: 'updateState', payload: tempPayload });
     },
@@ -73,31 +110,43 @@ export default {
     updateState(state, { payload }) {
       return { ...state, ...payload };
     },
-    init(state, { drawerInfoMap }) {
-      return { ...state, drawerInfoMap };
+    editView(state, { payload }) {
+      const editViewId = payload;
+      const viewCopy = deepClone(state.viewMap[editViewId]);
+      return { ...state, visible: true, editViewId: payload, viewCopy };
     },
-    openDrawerAdd(state) {
-      const chartId = `chart-${generateUUID()}`;
-      const { drawerInfoMap } = state;
-      return { ...state, visible: true, editChartId: chartId, drawerInfoMap: { ...drawerInfoMap, [chartId]: {} } };
+    updateViewInfo(state, { payload }) { // 修改标题时editViewId还是空的，所以自己传要更新的viewId
+      const { viewMap } = state;
+      const { viewId, ...rest } = payload;
+      if (!viewId) {
+        return state;
+      }
+      viewMap[viewId] = {
+        ...viewMap[viewId],
+        ...rest,
+      };
+      return { ...state, viewMap: { ...viewMap } };
+    },
+    init(state, { viewMap }) {
+      return { ...state, viewMap };
     },
     chooseControl(state, { controlType }) {
-      const { drawerInfoMap, editChartId } = state;
-      const drawerInfo = drawerInfoMap[editChartId];
+      const { viewMap, editViewId } = state;
+      const drawerInfo = viewMap[editViewId];
       if (controlType === drawerInfo.controlType) {
         forEach(drawerInfo, (value, key) => { // 移除填写的控件配置
           if (startsWith(key, panelControlPrefix)) {
             delete drawerInfo[key];
           }
         });
-        return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, controlType: '' } } };
+        return { ...state, viewMap: { ...viewMap, [editViewId]: { ...drawerInfo, controlType: '' } } };
       }
-      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, controlType } } };
+      return { ...state, viewMap: { ...viewMap, [editViewId]: { ...drawerInfo, controlType } } };
     },
-    deleteDrawerInfo(state, { chartId }) {
-      const { drawerInfoMap } = state;
-      delete drawerInfoMap[chartId];
-      return { ...state, drawerInfoMap: { ...drawerInfoMap } };
+    deleteEditorInfo(state, { viewId }) {
+      const { viewMap } = state;
+      delete viewMap[viewId];
+      return { ...state, viewMap: { ...viewMap } };
     },
     openCodeModal(state) {
       return { ...state, codeVisible: true };
@@ -106,14 +155,14 @@ export default {
       return { ...state, codeVisible: false };
     },
     submitCode(state, { settingInfo }) {
-      const { drawerInfoMap, editChartId } = state;
-      const drawerInfo = drawerInfoMap[editChartId];
+      const { viewMap, editViewId } = state;
+      const drawerInfo = viewMap[editViewId];
       forEach(drawerInfo, (value, key) => { // 移除过去设置的的Echarts配置信息
         if (startsWith(key, panelSettingPrefix)) {
           delete drawerInfo[key];
         }
       });
-      return { ...state, drawerInfoMap: { ...drawerInfoMap, [editChartId]: { ...drawerInfo, ...settingInfo } } };
+      return { ...state, viewMap: { ...viewMap, [editViewId]: { ...drawerInfo, ...settingInfo } } };
     },
     reset() {
       return { ...cloneDeep(defaultState) };

@@ -3,29 +3,28 @@ import { maxBy, remove, get, cloneDeep, isEmpty } from 'lodash';
 const defaultState = {
   isEdit: false,
   layout: [],
-  dashboardType: '', // 布局类型
 };
 
 export default {
   namespace: 'biDashBoard',
   state: cloneDeep(defaultState), // 使用cloneDeep，因为layout在整个运作过程中涉及到引用，而immutable太重
   effects: {
-    * initDashboard({ dashboardType, extra }, { put, select }) {
-      const { layout } = yield select(state => state.biDashBoard);
-      if (!isEmpty(layout)) { // 清空layout,防止在同一个页面不停的reload时出错
-        yield yield put({ type: 'updateState', payload: { layout: [] } });
-      }
-      yield yield put({ type: 'biDrawer/init', drawerInfoMap: get(extra, 'drawerInfoMap', {}) });
-      yield yield put({ type: 'linkSetting/init', drawerInfoMap: get(extra, 'linkMap', {}) });
-      yield yield put({ type: 'updateState', payload: { layout: get(extra, 'layout', []), dashboardType } });
-    },
-    * generateChart({ chartId }, { select, put }) {
-      const { biDashBoard: { layout }, biDrawer: { drawerInfoMap } } = yield select(state => state);
-      const { chartType, controlType } = drawerInfoMap[chartId];
-      if (chartType) {
-        layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
+    // * initDashboard({ layout }, { put, select }) {
+    //   // const { layout } = yield select(state => state.biDashBoard);
+    //   // if (!isEmpty(layout)) { // 清空layout,防止在同一个页面不停的reload时出错
+    //   //   yield yield put({ type: 'updateState', payload: { layout: [] } });
+    //   // }
+    //   // yield yield put({ type: 'biEditor/init', viewMap: get(extra, 'viewMap', {}) });
+    //   // yield yield put({ type: 'linkSetting/init', viewMap: get(extra, 'linkMap', {}) });
+    //   yield yield put({ type: 'updateState', payload: { layout } });
+    // },
+    * generateChart({ viewId }, { select, put }) {
+      const { biDashBoard: { layout }, biEditor: { viewMap } } = yield select(state => state);
+      const { viewType, controlType } = viewMap[viewId];
+      if (viewType) {
+        layout.push({ i: viewId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
       } else if (controlType) {
-        layout.push({ i: chartId, x: 0, y: getNewChartYPostion(layout), w: 2, h: 1 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPostion(layout), w: 2, h: 1 });
       }
       yield put({ type: 'updateState', payload: { layout: [...layout] } });
     },
@@ -33,35 +32,33 @@ export default {
       yield put({ type: 'updateState', payload: { isEdit: false } });
       const {
         biDashBoard: { layout },
-        biDrawer: { drawerInfoMap },
+        biEditor: { viewMap },
         linkSetting: { linkMap },
       } = yield select(state => state);
-      return { layout, drawerInfoMap, linkMap }; // 只输出外部需要的
+      return { layout, viewMap, linkMap }; // 只输出外部需要的
     },
-    * deleteChart({ chartId }, { put }) {
-      yield put({ type: 'deleteLayout', chartId });
-      yield put({ type: 'biDrawer/deleteDrawerInfo', chartId });
-      yield put({ type: 'linkSetting/deleteLinkMap', linkId: chartId });
+    * deleteView({ viewId }, { put }) {
+      console.log('hhhhh:');
+      yield put({ type: 'deleteLayout', viewId });
+      yield put({ type: 'biEditor/deleteEditorInfo', viewId });
+      // yield put({ type: 'linkSetting/deleteLinkMap', linkId: viewId });
     },
-    * resetBoard(_, { put }) {
-      yield put({ type: 'reset' });
-      yield put({ type: 'biDrawer/reset' });
-      yield put({ type: 'linkSetting/reset' });
-    },
+    // * resetBoard(_, { put }) {
+    //   yield put({ type: 'reset' });
+    //   yield put({ type: 'biEditor/reset' });
+    //   yield put({ type: 'linkSetting/reset' });
+    // },
   },
   reducers: {
     updateState(state, { payload }) {
       return { ...state, ...payload };
     },
-    onLayoutChange(state, { layout }) {
-      return { ...state, layout };
-    },
     openEdit(state) {
       return { ...state, isEdit: true };
     },
-    deleteLayout(state, { chartId }) {
+    deleteLayout(state, { viewId }) {
       const { layout } = state;
-      remove(layout, ({ i }) => chartId === i);
+      remove(layout, ({ i }) => viewId === i);
       return { ...state, layout: [...layout] };
     },
     reset() {

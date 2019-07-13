@@ -1,0 +1,41 @@
+:global {
+  .bi-config-editor {
+    .ant-drawer-body {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: 12px;
+    }
+    .ant-collapse-content > .ant-collapse-content-box {
+      padding: 8px;
+    }
+    .ant-col-0 {
+      display: none !important;
+    }
+  }
+  .bi-config-editor-content {
+    flex: 1;
+    overflow-y: auto;
+    .ant-form-item {
+      margin-bottom: 12px;
+    }
+  }
+  .bi-config-editor-footer {
+    display: flex;
+    flex-direction: row;
+    height: 44px;
+    padding-top: 12px;
+  }
+  .bi-config-editor-footer-left {
+    width: 200px;
+    line-height: 32px;
+    cursor: pointer;
+    &:hover {
+      color: $color-primary;
+    }
+  }
+  .bi-config-editor-footer-right {
+    flex: 1;
+    text-align: right;
+  }
+}

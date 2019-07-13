@@ -11,19 +11,19 @@ const defaultControlsMap: IChartsMap = {
   selectNormal: {
     name: '常规下拉框',
     icon: '常规下拉框',
-    component: SelectNormal,
+    Component: SelectNormal,
     dataSettings: [DataSettingsCommon, DataSettingsSelectNormal],
   },
   selectDatetime: {
     name: '时间下拉框',
     icon: '时间下拉框',
-    component: SelectDateTime,
+    Component: SelectDateTime,
     dataSettings: [DataSettingsCommon],
   },
   selectDateRange: {
     name: '时间范围下拉框',
     icon: '时间范围下拉框',
-    component: SelectDateRange,
+    Component: SelectDateRange,
     dataSettings: [DataSettingsCommon],
   },
 };

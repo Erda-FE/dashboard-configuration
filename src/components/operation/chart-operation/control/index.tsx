@@ -2,13 +2,17 @@
  * 图表操作-控件读取
  */
 import React from 'react';
-import { get } from 'lodash';
-import { connect } from 'dva';
+import { map, isString, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
+import { getConfig } from '~/config';
+import './index.scss'
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
-  onChange: (...args: any) => void | Promise<any>
+interface IProps {
+  viewId: string
+  view: {
+    Controls: any[]
+  }
+  loadData(): void
 }
 
 class Control extends React.PureComponent<IProps> {
@@ -16,15 +20,34 @@ class Control extends React.PureComponent<IProps> {
     controlsMap: PropTypes.object,
   };
 
+  state = {
+    query: {},
+  }
+
+  onControlChange = (query: any) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        ...query,
+      },
+    });
+  }
+
   render() {
-    const { controlType, ...others } = this.props;
-    const { component: Comp } = get(this.context.controlsMap, [controlType], {});
-    return Comp ? <Comp {...others} /> : null;
+    const { view, viewId, loadData } = this.props;
+    const ControlList = map(view.Controls, (ctr: any) => {
+      return isString(ctr) ? getConfig(['ControlMap', ctr]) : ctr;
+    });
+    if (isEmpty(ControlList)) {
+      return null;
+    }
+    return (
+      <div className="bi-view-control">
+        {ControlList.map((Ctr, i) => <Ctr key={i} viewId={viewId} query={this.state.query} onChange={this.onControlChange} loadData={loadData} />)}
+      </div>
+    );
   }
 }
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
-  controlType: get(drawerInfoMap, [chartId, 'controlType'], ''),
-});
 
-export default connect(mapStateToProps)(Control);
+export default Control;

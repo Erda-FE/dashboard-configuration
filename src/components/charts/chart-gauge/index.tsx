@@ -14,12 +14,12 @@ interface IData {
 }
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
+  viewId: string
   isMock: boolean
   defaultOption: object
 }
 
-const ChartGauge = ({ option = {}, defaultOption, isMock, name, datas, chartId }: IProps) => {
+const ChartGauge = ({ option = {}, defaultOption, isMock, name, datas, viewId }: IProps) => {
   const source = {
     tooltip: {
       formatter: '{a} <br/>{b} : {c}%',
@@ -35,13 +35,13 @@ const ChartGauge = ({ option = {}, defaultOption, isMock, name, datas, chartId }
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, name }: any) => {
-  const drawerInfo = drawerInfoMap[chartId] || {};
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, datas, name }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
-    chartType: drawerInfo.chartType as string,
+    viewType: drawerInfo.viewType as string,
     name: isMock ? mockDataGauge.name : (name || '') as string,
     datas: isMock ? mockDataGauge.datas : (datas || []) as IData[],
     option: convertSettingToOption(drawerInfo),

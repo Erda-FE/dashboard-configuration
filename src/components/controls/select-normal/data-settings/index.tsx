@@ -25,7 +25,7 @@ class DataSettings extends React.PureComponent<IProps> {
 
   render() {
     const { UrlComponent, urlItemLayout } = this.context;
-    const { editChartId, form: { getFieldDecorator } } = this.props;
+    const { editViewId, form: { getFieldDecorator } } = this.props;
     return (
       <React.Fragment>
         <Form.Item label="控件接口" {...urlItemLayout}>
@@ -33,7 +33,7 @@ class DataSettings extends React.PureComponent<IProps> {
             rules: [{
               message: '请输入控件接口',
             }],
-          })(<UrlComponent placeholder="请输入控件接口，用于动态获取控件数据" chartid={editChartId} />)}
+          })(<UrlComponent placeholder="请输入控件接口，用于动态获取控件数据" viewId={editViewId} />)}
         </Form.Item>
         <Form.Item label="固定数据" {...formItemLayout}>
           {getFieldDecorator(`${panelControlPrefix}fixedData`, {
@@ -62,9 +62,9 @@ class DataSettings extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  biDrawer: { editChartId },
+  biEditor: { editViewId },
 }: any) => ({
-  editChartId,
+  editViewId,
 });
 
 export default connect(mapStateToProps)(DataSettings);

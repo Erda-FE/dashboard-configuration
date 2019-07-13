@@ -12,7 +12,7 @@ import echarts from 'echarts';
 import { mockDataMap } from './utils';
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
+  viewId: string
   isMock: boolean
   defaultOption: object
 }
@@ -66,15 +66,15 @@ class ChartMap extends React.PureComponent<IProps> {
 
 
   render() {
-    const { option, isMock, chartId, defaultOption } = this.props;
-    return <ChartSizeMe option={merge(this.source, defaultOption, option)} chartId={chartId} />;
+    const { option, isMock, viewId, defaultOption } = this.props;
+    return <ChartSizeMe option={merge(this.source, defaultOption, option)} viewId={viewId} />;
   }
 }
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas }: any) => {
-  const drawerInfo = drawerInfoMap[chartId] || {};
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, datas }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
-    chartType: drawerInfo.chartType as string,
+    viewType: drawerInfo.viewType as string,
     datas: isMock ? mockDataMap.datas : (datas || []),
     option: convertSettingToOption(drawerInfo),
   };

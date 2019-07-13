@@ -1,194 +1,211 @@
-import './index.scss';
-
-import { Icon, Tooltip } from 'antd';
-import React, { ReactElement } from 'react';
-import { find, get, isEmpty, isEqual } from 'lodash';
-import { getData, saveImage, setScreenFull } from '~/utils/comp';
-import { panelDataPrefix } from '~/utils/constants';
-
-import ChartMask from '../../charts/chart-mask';
-import Control from './control';
-import { IExpand } from '../../../types';
-import OperationMenu from '../operation-menu';
-import ReactDOM from 'react-dom';
+import { Icon, Input, Popconfirm, Tooltip } from 'antd';
 import classnames from 'classnames';
 import { connect } from 'dva';
-import { convertFormatter } from '../../charts/utils';
+import { isEmpty, isString } from 'lodash';
+import React, { ReactElement } from 'react';
+import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
+import { getConfig } from '~/config';
+import { saveImage, setScreenFull } from '~/utils/comp';
+import ViewControl from './control';
+import ViewMask from '../../charts/chart-mask';
+import './index.scss';
+
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
+  viewId: string
+  view: any
   children: ReactElement<any>
-  chartType: string
-  expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，可用于分图表类型、url，去自定义外围的全局样式
+  setViewInfo(data: object): void;
+  editView(viewId: string): void;
+  deleteView(viewId: string): void;
 }
 
-const FETCH = 'fetching';
-const MOCK = 'mock';
-const SUCCESSS = 'success';
-const FAIL = 'fail';
+interface IState {
+  resData: any
+  fetchStatus: Status
+}
+
+const enum Status {
+  FETCH = 'fetch',
+  MOCK = 'mock',
+  SUCCESS = 'success',
+  FAIL = 'fail',
+}
 interface IMessage {
   isDataEmpty: boolean,
-  featchStatus: string
+  fetchStatus: string
 }
-const getMessage = ({ isDataEmpty, featchStatus }: IMessage): string => {
-  if (featchStatus === MOCK) {
-    return '';
+const getMessage = ({ isDataEmpty, fetchStatus }: IMessage): string => {
+  if (fetchStatus === Status.MOCK) {
+    return '模拟数据展示';
   }
-  if (featchStatus === FETCH) {
+  if (fetchStatus === Status.FETCH) {
     return '加载中';
   }
   if (isDataEmpty) {
     return '暂无数据';
   }
-  if (featchStatus === FAIL) {
+  if (fetchStatus === Status.FAIL) {
     return '数据获取失败';
   }
   return '';
 };
 
-const defaultEmpty = {};
+class ChartOperation extends React.PureComponent<IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    const { view } = props;
+    const { staticData, loadData } = view;
+    this.hasLoadFn = typeof loadData === 'function';
+    const initData = this.hasLoadFn ? {} : staticData;
+    this.state = {
+      resData: initData,
+      fetchStatus: Status.FETCH,
+    };
+  }
 
-class ChartOperation extends React.PureComponent<IProps> {
-  state = {
-    resData: {}, // 请求的数据
-    featchStatus: FETCH, // 请求方式
-  };
-
-  private query: any;
+  private hasLoadFn: boolean;
 
   private chartRef: React.ReactInstance;
 
   componentDidMount() {
-    this.reloadData(this.props.url);
-  }
-
-  componentWillReceiveProps({ url, isChartEdit, linkQuery }: IProps) {
-    if (isChartEdit !== this.props.isChartEdit) {
-      this.reloadData(url);
-    } else if (!isEqual(linkQuery, this.props.linkQuery)) {
-      this.query = { ...this.query, ...linkQuery };
-      this.reloadData(url);
+    if (this.hasLoadFn) {
+      this.loadData();
     }
   }
 
-  onControlChange = (query: any) => {
-    this.query = { ...query, ...this.props.linkQuery };
-    this.reloadData(this.props.url);
+  componentWillReceiveProps({ isEditView, view }: IProps) {
+    this.hasLoadFn = typeof view.loadData === 'function';
+    if (this.hasLoadFn) {
+      if (isEditView !== this.props.isEditView) {
+        this.loadData();
+      }
+    }
   }
 
-  reloadData = (url: string) => {
-    if (!url) {
-      this.setState({ resData: {}, featchStatus: MOCK });
-      return;
-    }
-    getData(url, this.query).then((resData: any) => {
-      this.setState({ resData, featchStatus: SUCCESSS });
-    }).catch(() => {
-      this.setState({ resData: {}, featchStatus: FAIL });
+  loadData = (...arg: any) => {
+    const { view } = this.props;
+    const { loadData, dataConvertor } = view;
+    this.setState({
+      fetchStatus: Status.FETCH,
     });
-  }
-
-  reloadChart = () => {
-    this.reloadData(this.props.url);
+    loadData(...arg)
+      .then((res: any) => {
+        let resData = {};
+        if (dataConvertor) {
+          let convertor = dataConvertor;
+          if (isString(dataConvertor)) {
+            convertor = getConfig(['dataConvertor', dataConvertor]);
+            if (!convertor) {
+              console.error(`dataConvertor \`${dataConvertor}\` not registered yet`);
+              return;
+            }
+          }
+          try {
+            resData = convertor(res);
+          } catch (error) {
+            console.error('catch error in dataConvertor', error); // eslint-disable-line
+          }
+        }
+        this.setState({
+          fetchStatus: Status.SUCCESS,
+          resData,
+        });
+      })
+      .catch(() => {
+        this.setState({ resData: {}, fetchStatus: Status.FAIL });
+      });
   }
 
   onSaveImg = () => {
-    saveImage(ReactDOM.findDOMNode(this.chartRef), this.props.chartId);  // eslint-disable-line
+    saveImage(ReactDOM.findDOMNode(this.chartRef), this.props.viewId);  // eslint-disable-line
   }
 
   onSetScreenFull = () => {
     setScreenFull(ReactDOM.findDOMNode(this.chartRef), screenfull.isFullscreen); // eslint-disable-line
   }
 
-  getDefaultOption = () => {
-    const { url, chartType, expandOption } = this.props;
-    if (expandOption) {
-      return expandOption({ url, chartType });
-    }
-    return defaultEmpty;
-  }
-
   render() {
-    const { children, isEdit, isChartEdit, url, chartId, hasLinked, dataConvertor } = this.props;
-    const child = React.Children.only(children);
-    const { resData, featchStatus } = this.state;
-    let renderData = resData;
-    if (typeof dataConvertor === 'function') {
-      try {
-        renderData = dataConvertor(resData);
-      } catch (error) {
-        console.error('catch error in dataConvertor', error); // eslint-disable-line
-      }
-    }
-    const isMock = featchStatus === MOCK;
-    const isDataEmpty = isEmpty(get(renderData, 'datas'));
-    const message = getMessage({ isDataEmpty, featchStatus });
+    const { view, children, isEditLayout, isEditView, viewId, editView, deleteView, setViewInfo } = this.props;
+    const childNode = React.Children.only(children);
+    const { resData, fetchStatus } = this.state;
+    const isDataEmpty = isEmpty(resData);
+    const message = getMessage({ isDataEmpty, fetchStatus });
     return (
-      <div className={classnames({ 'bi-chart-operation': true, active: isChartEdit })}>
-        <div className="bi-chart-operation-header-left">
-          {hasLinked && <Tooltip placement="bottom" title="已设置联动"><Icon type="link" /></Tooltip>}
+      <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
+        <div className="bi-view-header">
+          <div className="bi-view-header-left">
+            {
+              isEditLayout
+                ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
+                : <div className="bi-view-title">{view.name}</div>
+            }
+            {/* {hasLinked && <Tooltip placement="bottom" title="已设置联动"><Icon type="link" /></Tooltip>} */}
+            {isEditLayout && <span className="bi-draggable-handle"><Icon type="drag" /></span>}
+          </div>
+          <div className="bi-view-header-right">
+            <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
+            {this.hasLoadFn && <Icon type="reload" onClick={this.loadData} />}
+          </div>
         </div>
-        <div className="bi-chart-operation-header-right">
-          {url && <Icon type="reload" onClick={this.reloadChart} />}
-          {isEdit && (
-            <span>
-              <Tooltip placement="bottom" title="图表全屏">
-                <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
-              </Tooltip>
-              <Tooltip placement="bottom" title="导出图片">
-                <Icon type="camera" onClick={this.onSaveImg} />
-              </Tooltip>
-              <OperationMenu chartId={chartId} />
-            </span>)
-          }
-          <Control chartId={chartId} onChange={this.onControlChange} style={{ marginLeft: 12 }} />
-        </div>
-        <ChartMask isMock={isMock} message={message} />
-        {React.cloneElement(child, {
-          ...child.props,
-          ...renderData,
-          isMock,
+        <ViewMask message={message} />
+        {isEditLayout && <div className="bi-view-edit-op">
+          <Tooltip placement="bottom" title="编辑">
+            <Icon type="edit" onClick={() => editView(viewId)} />
+          </Tooltip>
+          <Tooltip placement="bottom" title="删除">
+            <Popconfirm
+              okText="确认"
+              cancelText="取消"
+              placement="top"
+              title="确认删除?"
+              onConfirm={() => deleteView(viewId)}
+            >
+              <Icon type="delete" />
+            </Popconfirm>
+          </Tooltip>
+          <Tooltip placement="bottom" title="导出图片">
+            <Icon type="camera" onClick={this.onSaveImg} />
+          </Tooltip>
+          <Tooltip placement="bottom" title="图表全屏">
+            <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
+          </Tooltip>
+        </div>}
+        {React.cloneElement(childNode, {
+          ...childNode.props,
+          data: resData,
+          config: view.config,
           ref: (ref: React.ReactInstance) => { this.chartRef = ref; },
-          defaultOption: this.getDefaultOption(),
         })}
       </div>
     );
   }
 }
-// 从2级对象中获取对应的参数名称、和触发图表id
-const getKeyValue = (temp: any, chartId: string) => {
-  let paramName = '';
-  let clickId = '';
-  find(temp, (value: object, key: string) => {
-    const tempName = get(value, chartId, '');
-    if (tempName) {
-      clickId = key;
-      paramName = tempName;
-    }
-    return tempName;
-  });
-  return { paramName, clickId };
-};
 
 const mapStateToProps = ({
-  biDashBoard: { isEdit },
-  linkSetting: { linkMap, linkDataMap },
-  biDrawer: { editChartId, drawerInfoMap } }: any, { chartId }: any) => {
-  const { paramName, clickId } = getKeyValue(linkMap, chartId);
-  let dataConvertorFunction;
-  const dataConvertor = get(drawerInfoMap, [chartId, `${panelDataPrefix}dataConvertor`]);
-  if (dataConvertor) {
-    dataConvertorFunction = convertFormatter(dataConvertor);
-  }
+  biDashBoard: { isEdit: isEditLayout },
+  // linkSetting: { linkMap, linkDataMap },
+  biEditor: { editViewId } }: any, { viewId }: any) => {
+  // const { paramName, clickId } = getKeyValue(linkMap, viewId);
   return {
-    isEdit,
-    isChartEdit: editChartId === chartId,
-    url: get(drawerInfoMap, [chartId, `${panelDataPrefix}url`], '') as string,
-    linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'chartValue'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
-    hasLinked: !!find(linkMap[chartId], value => value), // 是否已经设置了联动
-    dataConvertor: dataConvertorFunction as Function,
+    isEditLayout,
+    isEditView: editViewId === viewId,
+    // linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'chartValue'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
+    // hasLinked: !!find(linkMap[viewId], value => value), // 是否已经设置了联动
   };
 };
 
-export default connect(mapStateToProps)(ChartOperation);
+const mapDispatchToProps = (dispatch: any) => ({
+  setViewInfo(payload: any) {
+    return dispatch({ type: 'biEditor/updateViewInfo', payload });
+  },
+  editView(viewId: string) {
+    return dispatch({ type: 'biEditor/editView', payload: viewId });
+  },
+  deleteView(viewId: string) {
+    return dispatch({ type: 'biDashBoard/deleteView', viewId });
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChartOperation);

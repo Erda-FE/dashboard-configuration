@@ -9,14 +9,14 @@ $label-purple: #8570f7;
     width: 100%;
     height: 100%;
     padding: 5px;
-    > div:last-child {
+    > div:last-view {
       margin-bottom: -10px;
     }
   }
   .bi-cards-row {
     display: flex;
     flex: 1;
-    > div:not(:last-child) {
+    > div:not(:last-view) {
       margin-right: 10px;
     }
   }

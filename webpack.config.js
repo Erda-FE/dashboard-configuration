@@ -31,6 +31,25 @@ module.exports = () => {
     entry: {
       app: ['./example/index.js'],
     },
+    externals: [
+      {
+        lodash: {
+          commonjs: 'lodash',
+          amd: 'lodash',
+          root: '_', // indicates global variable
+        },
+        react: {
+          commonjs: 'react',
+          amd: 'react',
+          root: 'react',
+        },
+        'react-dom': {
+          commonjs: 'react-dom',
+          amd: 'react-dom',
+          root: 'react-dom',
+        },
+      },
+    ],
     stats: {
       assets: false,
       children: false,

@@ -1,17 +1,18 @@
-import './index.scss';
-
-import ReactEcharts, { Func, ReactEchartsPropsTypes } from 'echarts-for-react';
-
-import { ISizeMe } from '../../../types';
+import ReactEcharts, { Func } from 'echarts-for-react';
+import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { connect } from 'dva';
-import { isEqual } from 'lodash';
-import sizeMe from 'react-sizeme';
+import './index.scss';
 
-type IProps = ReactEchartsPropsTypes & ISizeMe & ReturnType<typeof mapDispatchToProps> & {
-  chartId: string
-  descHeight: number // 图表应减少的高度
+
+type IProps = {
+  viewId: string
+  data: object
+  config: {
+    option: object
+  }
+  style?: object
+  getOption(data: object, customOption: object): object
 };
 
 // 重写相关生命周期，用于注册theme
@@ -32,7 +33,6 @@ ReactEcharts.prototype.componentDidUpdate = function (...arg) {
 
 class Chart extends React.Component<IProps> {
   static defaultProps = {
-    descHeight: 32,
     notMerge: true, // 因v4.2.0-rc在切换图形类型或者更新数据更新存在bug,所以必须设置为true
   };
 
@@ -41,43 +41,45 @@ class Chart extends React.Component<IProps> {
     themeObj: PropTypes.object,
   };
 
-  private onEvents: { [event: string]: Func };
+  // private onEvents: { [event: string]: Func };
 
-  componentWillMount() {
-    this.onEvents = {
-      click: this.click,
-    };
-  }
+  // componentWillMount() {
+  //   this.onEvents = {
+  //     click: this.click,
+  //   };
+  // }
 
   shouldComponentUpdate(nextProps: IProps) {
     return !isEqual(nextProps, this.props);
   }
 
-  click = ({ name }: any) => {
-    this.props.updateLinkDataMap(this.props.chartId, { chartValue: name });
-  }
+  // click = ({ name }: any) => {
+  //   this.props.updateLinkDataMap(this.props.viewId, { chartValue: name });
+  // }
 
   render() {
-    const { size, descHeight, ...others } = this.props;
+    const { data, config, getOption, style, ...others } = this.props;
     const { theme, themeObj } = this.context;
+    console.count('render chart');
     return (
-      <div className="bi-chart-sizeme">
+      <div className="bi-chart">
         <ReactEcharts
           {...others}
+          option={getOption(data, config.option)}
           theme={theme}
           themeObj={themeObj}
-          style={{ ...others.style, height: size.height - descHeight }}
-          onEvents={this.onEvents}
+          style={{ ...style, height: '100%' }}
+        // onEvents={this.onEvents}
         />
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch: any) => ({
-  updateLinkDataMap(linkId: string, values: object) {
-    dispatch({ type: 'linkSetting/updateLinkDataMap', linkId, values });
-  },
-});
+// const mapDispatchToProps = (dispatch: any) => ({
+//   updateLinkDataMap(linkId: string, values: object) {
+//     dispatch({ type: 'linkSetting/updateLinkDataMap', linkId, values });
+//   },
+// });
 
-export default sizeMe({ monitorHeight: true })(connect(undefined, mapDispatchToProps)(Chart));
+export default Chart;

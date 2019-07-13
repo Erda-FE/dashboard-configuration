@@ -12,7 +12,7 @@ import { mockDataScatter } from './utils';
 type IData = number[];
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
+  viewId: string
   isMock: boolean
   defaultOption: object
 }
@@ -35,7 +35,7 @@ const gradientSwitch = (color: any) => {
   return color;
 };
 
-const ChartScatter = ({ option = {}, defaultOption, isMock, names, titles, datas, chartId }: IProps) => {
+const ChartScatter = ({ option = {}, defaultOption, isMock, names, titles, datas, viewId }: IProps) => {
   const source = {
     tooltip: {
       formatter: (params: any) => {
@@ -51,13 +51,13 @@ const ChartScatter = ({ option = {}, defaultOption, isMock, names, titles, datas
       data: datas.map((data: number[], i: number) => ({ name: names, value: data, title: titles[i] })),
     }],
   };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas, titles }: any) => {
-  const drawerInfo = drawerInfoMap[chartId] || {};
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, names, datas, titles }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
-    chartType: drawerInfo.chartType as string,
+    viewType: drawerInfo.viewType as string,
     names: isMock ? mockDataScatter.names : (names || []) as string[],
     titles: isMock ? mockDataScatter.titles : (titles || []) as IData[],
     datas: isMock ? mockDataScatter.datas : (datas || []) as IData[],

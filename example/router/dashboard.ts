@@ -1,6 +1,6 @@
 export default [
   {
-    path: '/grid',
+    path: '*',
     getComponent: () => import('board-grid'),
   },
 ];

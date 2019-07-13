@@ -7,13 +7,14 @@
  */
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
+import data from './data';
 import './index.scss';
 
 import { ChartDrawer, ChartOperation, ControlOperation, LinkSettingModal, defaultChartsMap, defaultControlsMap } from '../components';
 import { IChartsMap, IExpand, ISizeMe } from '../types';
 import { Icon, Input, Tooltip } from 'antd';
 import { formItemLayout, paramsManage, registerUrlDataHandle, saveImage, setScreenFull } from '~/utils/comp';
-import { get, isEqual } from 'lodash';
+import { get, isEqual, isPlainObject, isFunction } from 'lodash';
 import { theme, themeObj } from '~/theme/dice';
 
 import PropTypes from 'prop-types';
@@ -24,6 +25,8 @@ import classnames from 'classnames';
 import { connect } from 'dva';
 import screenfull from 'screenfull';
 import sizeMe from 'react-sizeme';
+import { registCharts } from '~/config';
+import { getConfig } from '../config/index';
 
 interface IUrlData {
   type: string
@@ -43,7 +46,7 @@ interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   urlDataHandle?: ({ type, url, data }: IUrlData) => any // 接口数据处理
-  expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
+  expandOption?: ({ viewType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -104,41 +107,55 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   componentWillMount() {
-    this.props.initDashboard(this.props.extra);
-    this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
-    this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
-    paramsManage.set(this.props.urlParamsMap);
-    registerUrlDataHandle(this.props.urlDataHandle);
+    // const { layout } = this.props;
+    const [pureLayout, viewMap] = this.splitLayoutAndView(data);
+    this.props.updateLayout(pureLayout);
+    this.props.updateChildMap(viewMap);
+    this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
+    // this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
+    // paramsManage.set(this.props.urlParamsMap);
+    // registerUrlDataHandle(this.props.urlDataHandle);
   }
 
-  componentWillReceiveProps({ extra, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
-    if (!isEqual(extra, this.props.extra)) {
-      this.props.initDashboard(extra);
+  componentWillReceiveProps({ dashboardLayout, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
+    if (!isEqual(dashboardLayout, this.props.dashboardLayout)) {
+      this.props.updateLayout(dashboardLayout);
     }
     if (!isEqual(chartsMap, this.props.chartsMap)) {
       this.chartsMap = { ...defaultChartsMap, ...chartsMap };
     }
-    if (!isEqual(controlsMap, this.props.controlsMap)) {
-      this.controlsMap = { ...defaultControlsMap, ...controlsMap };
-    }
-    if (!isEqual(urlParamsMap, this.props.urlParamsMap)) {
-      paramsManage.set(urlParamsMap);
-    }
-    if (urlDataHandle !== this.props.urlDataHandle) {
-      registerUrlDataHandle(this.props.urlDataHandle);
-    }
+    // if (!isEqual(controlsMap, this.props.controlsMap)) {
+    //   this.controlsMap = { ...defaultControlsMap, ...controlsMap };
+    // }
+    // if (!isEqual(urlParamsMap, this.props.urlParamsMap)) {
+    //   paramsManage.set(urlParamsMap);
+    // }
+    // if (urlDataHandle !== this.props.urlDataHandle) {
+    //   registerUrlDataHandle(this.props.urlDataHandle);
+    // }
   }
 
   componentWillUnmount() {
     this.props.resetBoard();
+    this.props.resetDrawer();
+  }
+
+  splitLayoutAndView = (layout) => {
+    const viewMap = {};
+    const pureLayout = layout.map((item) => {
+      const { view, ...rest } = item;
+      viewMap[item.i] = view;
+      return rest;
+    });
+    return [pureLayout, viewMap];
   }
 
   onDragStart = () => this.props.isEdit;
 
   onSave = () => {
     const { saveEdit, onSave } = this.props;
-    saveEdit().then((extra: any) => {
-      if (onSave) onSave(extra);
+    saveEdit().then((full: any) => {
+      if (onSave) onSave(full);
     });
   }
 
@@ -153,82 +170,111 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   render() {
     const {
-      size, layout, isEdit, openEdit, readOnly,
-      expandOption, onLayoutChange, openDrawerAdd, drawerInfoMap,
+      dashboardLayout, viewMap, size, isEdit, openEdit, readOnly,
+      expandOption, updateLayout, addEditor,
     } = this.props;
     const { width } = size;
-    const screened = screenfull.isFullscreen; // 是否全屏
+    const { isFullscreen } = screenfull; // 是否全屏
+    if (!dashboardLayout.length) {
+      return null;
+    }
+    const EditorContainer = getConfig('EditorContainer');
     return (
       <div
         style={{ flex: 2 }}
-        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit, screened })}
+        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit, isFullscreen })}
         ref={(ref: HTMLDivElement) => { this.boardRef = ref; }}
       >
         {!readOnly && (
           <div className="bi-header">
-            {!isEdit && (
-              <span>
-                <Tooltip placement="bottom" title={screened ? '退出全屏' : '图表全屏'}>
-                  <Icon type={screened ? 'shrink' : 'arrows-alt'} onClick={this.onSetScreenFull} />
-                </Tooltip>
-                <Tooltip placement="bottom" title="导出图片">
-                  <Icon type="camera" onClick={this.onSaveImg} />
-                </Tooltip>
-              </span>)
+            {
+              isEdit
+                ? (
+                  <React.Fragment>
+                    <Tooltip placement="bottom" title="新增">
+                      <Icon type="plus" onClick={addEditor} />
+                    </Tooltip>
+                    <Tooltip placement="bottom" title="保存">
+                      <Icon type="save" onClick={this.onSave} />
+                    </Tooltip>
+                  </React.Fragment>
+                )
+                : (
+                  <React.Fragment>
+                    <Tooltip placement="bottom" title={isFullscreen ? '退出全屏' : '图表全屏'}>
+                      <Icon type={isFullscreen ? 'shrink' : 'arrows-alt'} onClick={this.onSetScreenFull} />
+                    </Tooltip>
+                    <Tooltip placement="bottom" title="导出图片">
+                      <Icon type="camera" onClick={this.onSaveImg} />
+                    </Tooltip>
+                    <Tooltip placement="bottom" title="编辑">
+                      <Icon type="edit" onClick={openEdit} />
+                    </Tooltip>
+                  </React.Fragment>
+                )
             }
-            {isEdit && <Icon type="plus" onClick={openDrawerAdd} />}
-            {isEdit ? (
-              <Tooltip placement="bottom" title="保存">
-                <Icon type="save" onClick={this.onSave} />
-              </Tooltip>
-            ) : (
-              <Tooltip placement="bottom" title="编辑">
-                <Icon type="edit" onClick={openEdit} />
-              </Tooltip>
-            )}
           </div>
         )}
         <ReactGridLayout
           ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
           autoSize
-          layout={layout}
+          layout={dashboardLayout}
           cols={cols}
           rowHeight={30}
           width={width}
-          onLayoutChange={onLayoutChange}
+          onLayoutChange={updateLayout}
           isDraggable
           isResizable
           style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
           onDragStart={this.onDragStart}
+          draggableHandle=".bi-draggable-handle"
         >
-          {layout.map(({ i, ...others }: any) => {
-            // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-            const { chartType, controlType } = drawerInfoMap[i];
-            let child = null;
-            let ChartNode = get(this.chartsMap, [chartType, 'component']);
-            if (ChartNode) { // 图表
-              child = (
-                <ChartOperation chartId={i} chartType={chartType} expandOption={expandOption}>
-                  <ChartNode chartId={i} />
-                </ChartOperation>
-              );
-            } else { // 控件
-              ChartNode = get(this.controlsMap, [controlType, 'component']);
-              child = (
-                <ControlOperation chartId={i}>
-                  <ChartNode chartId={i} />
-                </ControlOperation>
-              );
+          {dashboardLayout.map(({ i, ...others }: any) => {
+            let ChildComp = null;
+            let view = viewMap[i];
+            view = typeof view === 'function'
+              ? view({ isEdit, isFullscreen })
+              : view;
+            if (!view) {
+              return null;
+            }
+            if (isPlainObject(view)) {
+              const { viewType = '' } = view;
+              if (viewType.startsWith('chart')) {
+                // const [, viewType = 'line'] = viewType.split(':');
+                // const { controlType } = viewMap[i];
+                const ChartNode = get(this.chartsMap, [viewType, 'Component']);
+                ChildComp = (
+                  <React.Fragment>
+                    <ChartOperation viewId={i} view={view} expandOption={expandOption}>
+                      <ChartNode />
+                    </ChartOperation>
+                  </React.Fragment>
+                );
+              }
+              // else {
+              //   ChartNode = get(this.controlsMap, [controlType, 'Component']);
+              //   ChildComp = (
+              //     <ControlOperation viewId={i}>
+              //       <ChartNode viewId={i} />
+              //     </ControlOperation>
+              //   );
+              // }
+            } else {
+              console.warn('layout view should be object or function');
             }
             return (
+              // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
               <div key={i} data-grid={{ ...others }}>
-                {child}
+                {ChildComp}
               </div>
             );
           })}
         </ReactGridLayout>
-        <ChartDrawer />
-        <LinkSettingModal />
+        <ChartDrawer>
+          S
+        </ChartDrawer>
+        {/* <LinkSettingModal /> */}
       </div>
     );
   }
@@ -236,22 +282,22 @@ class BoardGrid extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({
   biDashBoard: { layout, isEdit },
-  biDrawer: { drawerInfoMap },
+  biEditor: { viewMap },
 }: any) => ({
-  layout,
-  drawerInfoMap,
+  dashboardLayout: layout,
+  viewMap,
   isEdit,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  initDashboard(extra: any) {
-    dispatch({ type: 'biDashBoard/initDashboard', dashboardType: 'grid', extra });
+  updateLayout(layout: any) {
+    dispatch({ type: 'biDashBoard/updateState', payload: { layout } });
   },
-  onLayoutChange(layout: []) {
-    dispatch({ type: 'biDashBoard/onLayoutChange', layout });
+  updateChildMap(viewMap: any) {
+    dispatch({ type: 'biEditor/updateState', payload: { viewMap } });
   },
-  openDrawerAdd() {
-    dispatch({ type: 'biDrawer/openDrawerAdd' });
+  addEditor() {
+    dispatch({ type: 'biEditor/addEditor' });
   },
   openEdit() {
     dispatch({ type: 'biDashBoard/openEdit' });
@@ -260,7 +306,10 @@ const mapDispatchToProps = (dispatch: any) => ({
     return dispatch({ type: 'biDashBoard/saveEdit' });
   },
   resetBoard() {
-    return dispatch({ type: 'biDashBoard/resetBoard' });
+    return dispatch({ type: 'biDashBoard/reset' });
+  },
+  resetDrawer() {
+    return dispatch({ type: 'biEditor/reset' });
   },
 });
 

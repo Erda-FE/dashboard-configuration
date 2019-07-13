@@ -33,14 +33,14 @@ class LinkSettingModal extends React.PureComponent<IProps> {
   }
 
   renderList = (list: any, label: React.ReactElement<any>) => {
-    const { drawerInfoMap, form: { getFieldDecorator } } = this.props;
+    const { viewMap, form: { getFieldDecorator } } = this.props;
     return (
       <div>
         <div>{label}</div>
         {list.map(({ i }: any) => {
           const key = i as string;
           return (
-            <Form.Item key={key} label={get(drawerInfoMap, [key, 'name'], key)} {...formItemLayout}>
+            <Form.Item key={key} label={get(viewMap, [key, 'name'], key)} {...formItemLayout}>
               {getFieldDecorator(key, {
                 rules: [{
                   message: '请输入联动参数的名称，一般为英文',
@@ -54,15 +54,15 @@ class LinkSettingModal extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { linkId, closeLinkSetting, drawerInfoMap, layout, hasLinkedIds } = this.props;
+    const { linkId, closeLinkSetting, viewMap, layout, hasLinkedIds } = this.props;
     const otherCharts = filter(layout, ({ i }) => i !== linkId && !hasLinkedIds.includes(i));
     const settingMap = groupBy(otherCharts, ({ i }) => {
-      if (drawerInfoMap[i].chartType) return 'chart';
+      if (viewMap[i].viewType) return 'chart';
       return 'control';
     });
-    const currentName = get(drawerInfoMap, [linkId, 'name'], linkId);
-    const isChartType = !!get(drawerInfoMap, [linkId, 'chartType'], linkId);
-    const controlList = isChartType ? [] : get(settingMap, 'control', []);
+    const currentName = get(viewMap, [linkId, 'name'], linkId);
+    const isviewType = !!get(viewMap, [linkId, 'viewType'], linkId);
+    const controlList = isviewType ? [] : get(settingMap, 'control', []);
     const chartList = get(settingMap, 'chart', []);
     const visible = !!linkId;
     return (
@@ -89,15 +89,15 @@ class LinkSettingModal extends React.PureComponent<IProps> {
 const mapStateToProps = ({
   linkSetting: { linkId, linkMap },
   biDashBoard: { layout },
-  biDrawer: { drawerInfoMap },
+  biEditor: { viewMap },
 }: any) => ({
   linkId,
   layout,
-  drawerInfoMap,
+  viewMap,
   linkInfo: get(linkMap, [linkId], {}),
   // 已经被非当前图表/控件  联动的 图表/控件id
-  hasLinkedIds: reduce(linkMap, (result: string[], linkInfo: object, chartId: string) => {
-    if (chartId === linkId) {
+  hasLinkedIds: reduce(linkMap, (result: string[], linkInfo: object, viewId: string) => {
+    if (viewId === linkId) {
       return result;
     }
     const ids: string[] = [];

@@ -16,12 +16,12 @@ interface IData {
 }
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
+  viewId: string
   isMock: boolean
   defaultOption: object
 }
 
-const ChartRadar = ({ option = {}, defaultOption, isMock, datas, names, indicator, chartId }: IProps) => {
+const ChartRadar = ({ option = {}, defaultOption, isMock, datas, names, indicator, viewId }: IProps) => {
   const source = {
     legend: {
       data: names,
@@ -44,7 +44,7 @@ const ChartRadar = ({ option = {}, defaultOption, isMock, datas, names, indicato
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
 const getIndicator = (drawerInfo: any) => {
@@ -59,11 +59,11 @@ const getIndicator = (drawerInfo: any) => {
   return indicator;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, datas, names }: any) => {
-  const drawerInfo = drawerInfoMap[chartId] || {};
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, datas, names }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   const indicator = isMock ? mockIndicator : getIndicator(drawerInfo);
   return {
-    chartType: drawerInfo.chartType as string,
+    viewType: drawerInfo.viewType as string,
     names: isMock ? mockDataRadar.names : (names || []) as string[],
     indicator,
     datas: isMock ? mockDataRadar.datas : (datas || []) as IData[],

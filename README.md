@@ -12,10 +12,10 @@
 
   // 2、引入组件，栅格布局
   import { BoardGrid } from '@terminus/bi-ui-package'
-  
-  <BoardGrid 
+
+  <BoardGrid
     readOnly={false}
-    extra={extra} 
+    extra={extra}
     onSave={this.onSave}
 
     theme={theme}
@@ -37,7 +37,7 @@
   // 2) ts变更
   test: /\.(tsx?|jsx?)$/,
   exclude: /node_modules\/(?!@terminus\/).*/,
-    
+
   // 3）主题色
   // a.定义颜色值
   {
@@ -64,7 +64,7 @@
 
   // 仪表盘的基本信息
   // 非必传, 默认如下
-  extra: { 
+  extra: {
     layout: [], // 布局信息
     drawerInfoMap: {}, // 所有图表配置信息
     linkMap: {}, // 所有联动信息
@@ -91,7 +91,7 @@
     line: {
       name: '折线图',
       icon: <Icon type="line-chart" />, // icon
-      component: ChartLine,  // 图表组件
+      Component: ChartLine,  // 图表组件
       mockData: mockDataLine, // mock数据
       dataSettings: [DataSettingsCommonCharts], // 数据配置
     },
@@ -105,13 +105,13 @@
     selectNormal: {
       name: '常规下拉框',
       icon: '常规下拉框',
-      component: SelectNormal,
+      Component: SelectNormal,
       dataSettings: [DataSettingsCommonControls],
     },
   };
 
   // 第三方系统的url配置器
-  // 非必传，可以覆盖内置的Input填写方式，会传入当前编辑的chartid(必须小写，否则Input时会有warning提示)
+  // 非必传，可以覆盖内置的Input填写方式，会传入当前编辑的viewId(必须小写，否则Input时会有warning提示)
   UrlComponent: Input
 
   // url参数映射
@@ -129,7 +129,7 @@
 
   // 扩展图表样式，可自定义全局样式
   // 非必传，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
-  expandOption?: ({ chartType, url }: IExpand) => object
+  expandOption?: ({ viewType, url }: IExpand) => object
 ```
 
 ## 对外提供的其他参数

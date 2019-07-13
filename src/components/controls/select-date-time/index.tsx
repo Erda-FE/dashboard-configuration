@@ -32,14 +32,14 @@ class SelectDateTime extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
-  width: `${get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120)}px`,
-  searchName: get(drawerInfoMap, [chartId, `${panelControlPrefix}searchName`], ''),
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId }: any) => ({
+  width: `${get(viewMap, [viewId, `${panelControlPrefix}width`], 120)}px`,
+  searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   onChoose(controlType: string) {
-    dispatch({ type: 'biDrawer/chooseControl', controlType });
+    dispatch({ type: 'biEditor/chooseControl', controlType });
   },
 });
 

@@ -1,0 +1,16 @@
+$color-text: #666666;
+:global {
+  .bi-in-a-icon {
+    i {
+      margin-left: 8px;
+      color: $color-text;
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+  .bi-ui-section-title {
+    font-weight: 500;
+    font-size: 18px;
+  }
+}

@@ -17,7 +17,7 @@ interface IData {
 }
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
+  viewId: string
   isMock: boolean
   defaultOption: object
 }
@@ -74,12 +74,12 @@ const ChartCards = ({ option = {}, defaultOption, isMock, names = [], datas = []
     </React.Fragment>);
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas, option }: any) => {
-  const drawerInfo = drawerInfoMap[chartId] || {};
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, names, datas, option }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   const proportion = isMock ? mockProportion : getProportion(drawerInfo[`${panelDataPrefix}proportion`]);
   const cardsProportion = convertProportion(proportion);
   return {
-    chartType: drawerInfo.chartType as string,
+    viewType: drawerInfo.viewType as string,
     names: isMock ? mockDataCards.names : (names || []) as string[],
     datas: isMock ? mockDataCards.datas : (datas || []) as IData[],
     option: { ...option, proportion: cardsProportion },

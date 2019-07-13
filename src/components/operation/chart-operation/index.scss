@@ -1,32 +1,66 @@
 :global {
-  .bi-chart-operation {
+  .bi-view-wrapper {
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     height: 100%;
+    padding: 12px 20px;
+    background-color: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
     &.active {
       border: 1px solid $color-primary;
       border-radius: 6px;
     }
   }
-  .bi-chart-operation-header-left {
-    position: absolute;
-    top: 12px;
-    left: 12px;
-    z-index: 999;
-    text-align: left;
-    i {
-      color: $color-primary;
-      cursor: pointer;
+  .bi-view-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 32px;
+    margin-bottom: 4px;
+    input {
+      width: 170px;
     }
   }
-  .bi-chart-operation-header-right {
-    position: absolute;
-    top: 12px;
-    right: 15px;
-    z-index: 999;
-    text-align: right;
+  .bi-view-header-left {
+    display: inline-flex;
+    flex: 1;
+    align-items: center;
+  }
+  .bi-view-header-right {
+    display: inline-flex;
+    align-items: center;
     i {
-      margin-left: 12px;
+      margin-left: 6px;
+      font-size: 18px;
+      cursor: pointer;
+      &:hover {
+        color: $color-primary;
+      }
+    }
+  }
+  .bi-draggable-handle {
+    flex: 1;
+    margin: 0 10px;
+    line-height: 32px;
+    text-align: center;
+    background: #f5f5f5;
+    border-radius: 4px;
+    cursor: move;
+  }
+  .bi-view-edit-op {
+    position: absolute;
+    top: 50%;
+    right: 6px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(-50%);
+    i {
+      margin-bottom: 10px;
+      font-size: 18px;
       cursor: pointer;
       &:hover {
         color: $color-primary;

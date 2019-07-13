@@ -14,7 +14,7 @@ interface IData {
 }
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  chartId: string
+  viewId: string
   isMock: boolean
   defaultOption: object
 }
@@ -30,7 +30,7 @@ const getDefaultSelected = (names: string[]) => {
   return selected;
 };
 
-const ChartPie = ({ option = {}, defaultOption, isMock, name, names, datas, chartId }: IProps) => {
+const ChartPie = ({ option = {}, defaultOption, isMock, name, names, datas, viewId }: IProps) => {
   const source = {
     tooltip: {
       trigger: 'item',
@@ -62,13 +62,13 @@ const ChartPie = ({ option = {}, defaultOption, isMock, name, names, datas, char
       },
     ],
   };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} chartId={chartId} />;
+  return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId, isMock, names, datas }: any) => {
-  const drawerInfo = drawerInfoMap[chartId] || {};
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, names, datas }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
-    chartType: drawerInfo.chartType as string,
+    viewType: drawerInfo.viewType as string,
     name: isMock ? mockDataPie.name : (name || '') as string,
     names: isMock ? mockDataPie.names : (names || []) as string[],
     datas: isMock ? mockDataPie.datas : (datas || []) as IData[],

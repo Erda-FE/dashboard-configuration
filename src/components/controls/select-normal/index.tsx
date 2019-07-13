@@ -77,18 +77,18 @@ class SelectNormal extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biDrawer: { drawerInfoMap } }: any, { chartId }: any) => ({
-  width: get(drawerInfoMap, [chartId, `${panelControlPrefix}width`], 120),
-  searchName: get(drawerInfoMap, [chartId, `${panelControlPrefix}searchName`], ''),
-  multiple: get(drawerInfoMap, [chartId, `${panelControlPrefix}multiple`], false),
-  canSearch: get(drawerInfoMap, [chartId, `${panelControlPrefix}canSearch`], false),
-  url: get(drawerInfoMap, [chartId, `${panelControlPrefix}url`], ''),
-  fixedData: get(drawerInfoMap, [chartId, `${panelControlPrefix}fixedData`], '[]'),
+const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId }: any) => ({
+  width: get(viewMap, [viewId, `${panelControlPrefix}width`], 120),
+  searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
+  multiple: get(viewMap, [viewId, `${panelControlPrefix}multiple`], false),
+  canSearch: get(viewMap, [viewId, `${panelControlPrefix}canSearch`], false),
+  url: get(viewMap, [viewId, `${panelControlPrefix}url`], ''),
+  fixedData: get(viewMap, [viewId, `${panelControlPrefix}fixedData`], '[]'),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   onChoose(controlType: string) {
-    dispatch({ type: 'biDrawer/chooseControl', controlType });
+    dispatch({ type: 'biEditor/chooseControl', controlType });
   },
 });
 

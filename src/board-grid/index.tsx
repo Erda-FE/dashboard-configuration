@@ -22,7 +22,7 @@ import { theme, themeObj } from '~/theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '~/utils/comp';
 import { ChartDrawer, ChartOperation, defaultChartsMap } from '../components';
 import { IChartsMap, IExpand, ISizeMe } from '../types';
-import data from './data';
+// import MockLayout from './data';
 import './index.scss';
 
 
@@ -34,7 +34,7 @@ interface IUrlData {
 
 interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   readOnly?: boolean // 只读
-  extra?: any // 配置信息，包含图表布局、各图表配置信息
+  layout?: any // 配置信息，包含图表布局、各图表配置信息
   onSave?: (extra: any) => void, // 保存
   theme?: string, // 主题名
   themeObj?: {}, // 主题内容
@@ -105,8 +105,8 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   componentWillMount() {
-    // const { layout } = this.props;
-    const [pureLayout, viewMap] = this.splitLayoutAndView(data);
+    const { layout } = this.props;
+    const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
     this.props.updateLayout(pureLayout);
     this.props.updateChildMap(viewMap);
     this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });

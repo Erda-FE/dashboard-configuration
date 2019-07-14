@@ -1,4 +1,4 @@
-import { cloneDeep, deepClone, forEach, startsWith } from 'lodash';
+import { cloneDeep, forEach, startsWith } from 'lodash';
 import { generateUUID } from '~/utils';
 import { panelControlPrefix, panelSettingPrefix } from '~/utils/constants';
 
@@ -112,7 +112,7 @@ export default {
     },
     editView(state, { payload }) {
       const editViewId = payload;
-      const viewCopy = deepClone(state.viewMap[editViewId]);
+      const viewCopy = cloneDeep(state.viewMap[editViewId]);
       return { ...state, visible: true, editViewId: payload, viewCopy };
     },
     updateViewInfo(state, { payload }) { // 修改标题时editViewId还是空的，所以自己传要更新的viewId

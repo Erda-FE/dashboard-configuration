@@ -92,7 +92,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     });
     loadData(...arg)
       .then((res: any) => {
-        let resData = {};
+        let resData = res;
         if (dataConvertor) {
           let convertor = dataConvertor;
           if (isString(dataConvertor)) {

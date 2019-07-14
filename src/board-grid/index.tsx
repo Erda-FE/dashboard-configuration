@@ -258,7 +258,7 @@ class BoardGrid extends React.PureComponent<IProps> {
               //   );
               // }
             } else {
-              console.warn('layout view should be object or function');
+              console.error('layout view should be object or function');
             }
             return (
               // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱

@@ -8,10 +8,8 @@ export function checkFixedData(str: string): boolean {
   try {
     if (str.indexOf('[') > -1) {
       const fixedData = strToObject(str);
-      console.log('fixedData:', fixedData);
       for (const item of fixedData) {
         const { name, value } = item;
-        console.log('item:', item);
         if (!name || !value) {
           return false;
         }

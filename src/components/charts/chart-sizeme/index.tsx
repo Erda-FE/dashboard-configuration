@@ -57,9 +57,8 @@ class Chart extends React.Component<IProps> {
   // }
 
   render() {
-    const { data, config, getOption, style, ...others } = this.props;
+    const { data, config = {}, getOption, style, ...others } = this.props;
     const { theme, themeObj } = this.context;
-    console.count('render chart');
     return (
       <ReactEcharts
         {...others}

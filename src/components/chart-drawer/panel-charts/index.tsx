@@ -15,7 +15,6 @@ class PanelCharts extends React.PureComponent<IProps> {
 
   render() {
     const { chartType, onChoose, ...others } = this.props;
-    console.log('others:', others);
     return (
       <div>
         组件

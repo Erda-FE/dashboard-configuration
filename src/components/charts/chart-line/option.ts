@@ -70,6 +70,5 @@ export function getOption(data: IData, customOption: string | object) {
     set(option, ['yAxis', i, 'data'], d);
   });
   merge(option, { series: metricData, legend: { data: legendData } });
-  console.log('option:', option);
   return option;
 }

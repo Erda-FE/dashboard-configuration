@@ -38,7 +38,6 @@ export default {
       return { layout, viewMap, linkMap }; // 只输出外部需要的
     },
     * deleteView({ viewId }, { put }) {
-      console.log('hhhhh:');
       yield put({ type: 'deleteLayout', viewId });
       yield put({ type: 'biEditor/deleteEditorInfo', viewId });
       // yield put({ type: 'linkSetting/deleteLinkMap', linkId: viewId });

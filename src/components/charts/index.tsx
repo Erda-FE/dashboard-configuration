@@ -1,5 +1,6 @@
 import React from 'react';
 import { Icon } from 'antd';
+import { get, map, set } from 'lodash';
 import { IChartsMap } from '../../types';
 // 图表
 import ChartLine from './chart-line';
@@ -34,18 +35,32 @@ import { mapIcon } from './chart-map/utils/files';
 
 
 const chartsMap: IChartsMap = {
+  'chart:mix': {
+    name: '混合图',
+    icon: <Icon type="line-chart" />,
+    Component: ChartLine,
+    Configurator: LineConfigurator,
+  },
   'chart:line': {
     name: '折线图',
     icon: <Icon type="line-chart" />,
-    Component: ChartLine,
-    mockData: mockDataLine,
+    Component(props) {
+      const metricData = get(props, 'data.metricData');
+      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
+      set(props, 'data.metricData', newMetricData);
+      return <ChartLine {...props} metricData={newMetricData} />;
+    },
     Configurator: LineConfigurator,
-    dataSettings: [DataSettingsCommon],
   },
   'chart:bar': {
     name: '柱状图',
     icon: <Icon type="bar-chart" />,
-    Component: ChartLine,
+    Component(props) {
+      const metricData = get(props, 'data.metricData');
+      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'bar' })));
+      set(props, 'data.metricData', newMetricData);
+      return <ChartLine {...props} metricData={newMetricData} />;
+    },
     mockData: mockDataLine,
     Configurator: LineConfigurator,
     dataSettings: [DataSettingsCommon],

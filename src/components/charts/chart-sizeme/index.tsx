@@ -2,7 +2,6 @@ import ReactEcharts, { Func } from 'echarts-for-react';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import './index.scss';
 
 
 type IProps = {
@@ -62,16 +61,14 @@ class Chart extends React.Component<IProps> {
     const { theme, themeObj } = this.context;
     console.count('render chart');
     return (
-      <div className="bi-chart">
-        <ReactEcharts
-          {...others}
-          option={getOption(data, config.option)}
-          theme={theme}
-          themeObj={themeObj}
-          style={{ ...style, height: '100%' }}
-        // onEvents={this.onEvents}
-        />
-      </div>
+      <ReactEcharts
+        {...others}
+        option={getOption(data, config.option)}
+        theme={theme}
+        themeObj={themeObj}
+        style={{ ...style, height: '100%' }}
+      // onEvents={this.onEvents}
+      />
     );
   }
 }

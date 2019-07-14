@@ -172,12 +172,14 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
             <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
           </Tooltip>
         </div>}
-        {React.cloneElement(childNode, {
-          ...childNode.props,
-          data: resData,
-          config: view.config,
-          ref: (ref: React.ReactInstance) => { this.chartRef = ref; },
-        })}
+
+        <div className="bi-chart" ref={ref => { this.chartRef = ref }}>
+          {React.cloneElement(childNode, {
+            ...childNode.props,
+            data: resData,
+            config: view.config,
+          })}
+        </div>
       </div>
     );
   }

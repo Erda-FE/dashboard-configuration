@@ -4,7 +4,8 @@ import dva from 'dva';
 import { Input } from 'antd';
 import createHistory from 'history/createBrowserHistory';
 import models from '~/models';
-import { registDataConvertor, registControl } from '~/config';
+import { registDataConvertor, registControl, registChartOption, registTheme } from '~/config';
+import { ajaxConvertor } from '../src/board-grid/ajax-data';
 import AppRouter from './router';
 
 const history = createHistory();
@@ -17,6 +18,7 @@ registDataConvertor('line', (data) => {
   console.log('line convertor:', data);
   return data;
 });
+registDataConvertor('ajax', ajaxConvertor);
 
 registControl('input', ({ onChange, loadData }) => {
   const handleChange = (e) => {
@@ -34,6 +36,19 @@ registControl('input2', ({ query, onChange }) => {
     onChange({ ctr2: value });
   };
   return <Input value={`所有控件数据：${Object.values(query).join(',')}`} onChange={handleChange} style={{ width: '300px' }} />;
+});
+
+const fullTheme = registTheme('test', {
+  color: 'red',
+});
+console.log('fullTheme:', fullTheme);
+
+
+registChartOption('line', {
+  grid: {
+    left: 80,
+    right: 80,
+  },
 });
 
 models.forEach((model) => {

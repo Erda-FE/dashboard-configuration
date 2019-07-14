@@ -1,3 +1,5 @@
+import ajaxLayout from './ajax-data';
+
 const merticData = [
   {
     name: 'tset1',
@@ -284,7 +286,8 @@ export default [
     //   staticData: {}, // 静态数据
     //   loadData: () => Promise, // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
     //   dataConvertor: string | function // 数据转换，为string时表示使用已注册的方法
-    //   config: object // 所有配置，其中option字段是图表配置，会作为最高优先级合并
+    //   config: object // 所有页面上的配置项
+    //   config.option: string | object // 图表配置，会作为最高优先级合并
     //   Controls: [string, Component] // 控件列表，展示在header下面，为string时表示使用已注册的组件
     //   Configurator: React.Element, // 配置器，放在配置区域显示
     // },
@@ -306,17 +309,7 @@ export default [
       // },
       Controls: ['input', 'input2'],
       config: {
-        option: {
-          // title: {
-          //   show: true,
-          //   text: '性能区间',
-          // },
-          // legend: {
-          //   show: true,
-          //   bottom: '0',
-          //   data: '',
-          // },
-        },
+        option: 'line',
         // 'yAxis_show': true,
         // 'yAxis_type': 'value',
         // 'yAxis_axisLabel#formatter': 'function(value){\n    var units=["B","KB","MB","GB","TB","PB","EB","ZB","YB","BB","NB","DB"], unit="B";\n    var nag = "";\n    if(value<0) {\n        nag = "-";\n        value = -value;\n    }\n    for(var i=0;value>=1024;i++) {\n        value = value/1024;\n        unit = units[i+1];\n    }\n    return nag + value.toFixed(2)+" "+unit;\n}',
@@ -328,4 +321,5 @@ export default [
       // render: () => <ChartRender {...this.props} hasData={hasData} getOption={this.getOption} />,
     },
   },
+  ...ajaxLayout,
 ];

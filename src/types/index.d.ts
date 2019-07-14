@@ -1,3 +1,6 @@
+export interface ISizeMe {
+  size: { width: number, height: number }
+}
 
 interface IChart {
   name: string

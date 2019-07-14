@@ -5,28 +5,26 @@
  * 因为react-grid-layout会在相关变化时子组件注销重新加载，从而导致图表重绘，
  * 见GridItem相关实现即知,https://github.com/STRML/react-grid-layout/blob/master/lib/GridItem.jsx
  */
-import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
-import data from './data';
-import './index.scss';
-
-import { ChartDrawer, ChartOperation, ControlOperation, LinkSettingModal, defaultChartsMap, defaultControlsMap } from '../components';
-import { IChartsMap, IExpand, ISizeMe } from '../types';
 import { Icon, Input, Tooltip } from 'antd';
-import { formItemLayout, paramsManage, registerUrlDataHandle, saveImage, setScreenFull } from '~/utils/comp';
-import { get, isEqual, isPlainObject, isFunction } from 'lodash';
-import { theme, themeObj } from '~/theme/dice';
-
+import classnames from 'classnames';
+import { connect } from 'dva';
+import { get, isEqual, isPlainObject } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import ReactGridLayout from 'react-grid-layout';
-import classnames from 'classnames';
-import { connect } from 'dva';
-import screenfull from 'screenfull';
+import 'react-grid-layout/css/styles.css';
+import 'react-resizable/css/styles.css';
 import sizeMe from 'react-sizeme';
+import screenfull from 'screenfull';
 import { registCharts } from '~/config';
-import { getConfig } from '../config/index';
+import { theme, themeObj } from '~/theme/dice';
+import { formItemLayout, saveImage, setScreenFull } from '~/utils/comp';
+import { ChartDrawer, ChartOperation, defaultChartsMap } from '../components';
+import { IChartsMap, IExpand, ISizeMe } from '../types';
+import data from './data';
+import './index.scss';
+
 
 interface IUrlData {
   type: string
@@ -178,7 +176,6 @@ class BoardGrid extends React.PureComponent<IProps> {
     if (!dashboardLayout.length) {
       return null;
     }
-    const EditorContainer = getConfig('EditorContainer');
     return (
       <div
         style={{ flex: 2 }}
@@ -271,9 +268,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             );
           })}
         </ReactGridLayout>
-        <ChartDrawer>
-          S
-        </ChartDrawer>
+        <ChartDrawer />
         {/* <LinkSettingModal /> */}
       </div>
     );

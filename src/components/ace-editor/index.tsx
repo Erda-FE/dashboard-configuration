@@ -4,25 +4,25 @@ import './index.scss';
 
 interface IProps{
   value?: string;
-  onEvents?: {[event: string]:Function};
+  onEvents?: {[event: string]: Function};
   autoChange?: boolean;
   options?: object;
-  width?:string | number;
-  height?:string | number;
+  width?: string | number;
+  height?: string | number;
   style?: object;
   selectionRange?: object;
-  placeholder?:string;
-  showDiff?:boolean;
+  placeholder?: string;
+  showDiff?: boolean;
 }
-interface DiffInfo{
+interface IDiffInfo{
   added?: boolean;
   removed?: boolean;
-  value?:string;
-  count:number;
+  value?: string;
+  count: number;
 }
 interface IState{
-  isDiff:boolean;
-  diffInfo: DiffInfo[];
+  isDiff: boolean;
+  diffInfo: IDiffInfo[];
 }
 export default class AceEditor extends Component<IProps, IState> {
   static defaultProps = {
@@ -31,18 +31,18 @@ export default class AceEditor extends Component<IProps, IState> {
     autoChange: true,
     value: '',
     showDiff: false,
-  }
+  };
 
   state = {
     isDiff: false,
     diffInfo: [],
-  }
+  };
 
   private refEditor: any;
 
   private editor: any;
 
-  private oldValue:string;
+  private oldValue: string;
 
   componentWillUnmount() {
     this.editor.destroy();
@@ -53,7 +53,7 @@ export default class AceEditor extends Component<IProps, IState> {
     this.configEditor();
   }
 
-  componentWillReceiveProps(nextProps:IProps) {
+  componentWillReceiveProps(nextProps: IProps) {
     if (!this.editor) {
       return;
     }
@@ -102,7 +102,7 @@ export default class AceEditor extends Component<IProps, IState> {
     this.bindEvents(onEvents);
   }
 
-  onChange = (event?:any) => {
+  onChange = (event?: any) => {
     const { autoChange } = this.props;
 
     if (autoChange) {
@@ -129,7 +129,7 @@ export default class AceEditor extends Component<IProps, IState> {
     }
   }
 
-  manulChange = (event?:any) => {
+  manulChange = (event?: any) => {
     const { onEvents = {} } = this.props;
     const { change } = onEvents;
     change(this.editor.getValue(), event);
@@ -146,7 +146,7 @@ export default class AceEditor extends Component<IProps, IState> {
   }
 
   renderDiff = () => {
-    const { diffInfo }:IState = this.state;
+    const { diffInfo }: IState = this.state;
     const renderNode = [];
     for (let i = 0; i < diffInfo.length; i++) {
       if (diffInfo[i].added && diffInfo[i + 1] && diffInfo[i + 1].removed) {
@@ -154,7 +154,7 @@ export default class AceEditor extends Component<IProps, IState> {
         diffInfo[i] = diffInfo[i + 1];
         diffInfo[i + 1] = swap;
       }
-      const childNode:any = [];
+      const childNode: any = [];
       const lineValue = diffInfo[i].value || '';
       lineValue.split('\n').forEach((v, k) => {
         if (k < diffInfo[i].count) {
@@ -172,7 +172,7 @@ export default class AceEditor extends Component<IProps, IState> {
     return <pre><code>{renderNode}</code></pre>;
   }
 
-  bindEvents = (onEvents:any) => {
+  bindEvents = (onEvents: any) => {
     let events = onEvents;
     if (onEvents.change) {
       events = { ...onEvents, change: this.onChange };
@@ -181,12 +181,12 @@ export default class AceEditor extends Component<IProps, IState> {
 
     forEach(events, (func, eventName) => {
       if (typeof eventName === 'string' && typeof func === 'function') {
-        this.editor.on(eventName, (param:any) => {
+        this.editor.on(eventName, (param: any) => {
           func(param, this.editor);
         });
       }
     });
-  };
+  }
 
   render() {
     const { style = {}, width, height, autoChange, showDiff } = this.props;

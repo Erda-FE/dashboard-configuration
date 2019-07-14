@@ -5,7 +5,7 @@ import React from 'react';
 import { map, isString, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import { getConfig } from '~/config';
-import './index.scss'
+import './index.scss';
 
 interface IProps {
   viewId: string
@@ -22,7 +22,7 @@ class Control extends React.PureComponent<IProps> {
 
   state = {
     query: {},
-  }
+  };
 
   onControlChange = (query: any) => {
     this.setState({

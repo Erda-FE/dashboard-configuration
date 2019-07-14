@@ -37,7 +37,7 @@ const selectionRange = {
 class CodeModal extends React.PureComponent<IProps> {
   private editorValue: string;
 
-  onChange = (value:string) => {
+  onChange = (value: string) => {
     this.editorValue = value;
   }
 

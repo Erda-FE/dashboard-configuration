@@ -3,8 +3,8 @@ import { Drawer } from 'antd';
 
 interface IProps {
   visible: boolean
-  onClose(): void
   children: React.ReactChildren
+  onClose(): void
 }
 
 export const EditorContainer = ({ visible, onClose, children, ...rest }: IProps) => {

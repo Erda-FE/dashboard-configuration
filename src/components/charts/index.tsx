@@ -4,12 +4,12 @@ import { get, map, set } from 'lodash';
 import { IChartsMap } from '../../types';
 // 图表
 import ChartLine from './chart-line';
-import ChartPie from './chart-pie';
-import ChartCards from './chart-cards';
-import ChartRadar from './chart-radar';
-import ChartGauge from './chart-gauge';
-import ChartMap from './chart-map';
-import ChartScatter from './chart-scatter';
+// import ChartPie from './chart-pie';
+// import ChartCards from './chart-cards';
+// import ChartRadar from './chart-radar';
+// import ChartGauge from './chart-gauge';
+// import ChartMap from './chart-map';
+// import ChartScatter from './chart-scatter';
 // 图表配置器
 import LineConfigurator from './chart-line/Configurator';
 // import ChartPie from './chart-pie';
@@ -20,18 +20,18 @@ import LineConfigurator from './chart-line/Configurator';
 // import ChartScatter from './chart-scatter';
 // mock数据
 import { mockDataLine } from './chart-line/utils';
-import { mockDataPie } from './chart-pie/utils';
-import { mockDataCards } from './chart-cards/utils';
-import { mockDataRadar } from './chart-radar/utils';
-import { mockDataGauge } from './chart-gauge/utils';
-import { mockDataMap } from './chart-map/utils';
-import { mockDataScatter } from './chart-scatter/utils';
+// import { mockDataPie } from './chart-pie/utils';
+// import { mockDataCards } from './chart-cards/utils';
+// import { mockDataRadar } from './chart-radar/utils';
+// import { mockDataGauge } from './chart-gauge/utils';
+// import { mockDataMap } from './chart-map/utils';
+// import { mockDataScatter } from './chart-scatter/utils';
 // 数据配置项
 import DataSettingsCommon from './data-settings';
-import DataSettingsCards from './chart-cards/data-settings';
-import DataSettingsRadar from './chart-radar/data-settings';
-// Icon
-import { mapIcon } from './chart-map/utils/files';
+// import DataSettingsCards from './chart-cards/data-settings';
+// import DataSettingsRadar from './chart-radar/data-settings';
+// // Icon
+// import { mapIcon } from './chart-map/utils/files';
 
 
 const chartsMap: IChartsMap = {
@@ -61,9 +61,7 @@ const chartsMap: IChartsMap = {
       set(props, 'data.metricData', newMetricData);
       return <ChartLine {...props} metricData={newMetricData} />;
     },
-    mockData: mockDataLine,
     Configurator: LineConfigurator,
-    dataSettings: [DataSettingsCommon],
   },
   // 'chart:area': {
   //   name: '面积图',

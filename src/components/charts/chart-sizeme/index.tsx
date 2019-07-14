@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 
-type IProps = {
+interface IProps {
   viewId: string
   data: object
   config: {
@@ -12,7 +12,7 @@ type IProps = {
   }
   style?: object
   getOption(data: object, customOption: object): object
-};
+}
 
 // 重写相关生命周期，用于注册theme
 const oldComponentDidMount = ReactEcharts.prototype.componentDidMount as Func;

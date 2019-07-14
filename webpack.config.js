@@ -38,6 +38,16 @@ module.exports = () => {
           amd: 'lodash',
           root: '_', // indicates global variable
         },
+        echarts: {
+          commonjs: 'echarts',
+          amd: 'echarts',
+          root: 'echarts',
+        },
+        antd: {
+          commonjs: 'antd',
+          amd: 'antd',
+          root: 'antd',
+        },
         react: {
           commonjs: 'react',
           amd: 'react',

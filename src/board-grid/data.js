@@ -310,16 +310,9 @@ export default [
       Controls: ['input', 'input2'],
       config: {
         option: 'line',
-        // 'yAxis_show': true,
-        // 'yAxis_type': 'value',
-        // 'yAxis_axisLabel#formatter': 'function(value){\n    var units=["B","KB","MB","GB","TB","PB","EB","ZB","YB","BB","NB","DB"], unit="B";\n    var nag = "";\n    if(value<0) {\n        nag = "-";\n        value = -value;\n    }\n    for(var i=0;value>=1024;i++) {\n        value = value/1024;\n        unit = units[i+1];\n    }\n    return nag + value.toFixed(2)+" "+unit;\n}',
-        // 'xAxis_show': true,
-        // 'xAxis_type': 'category',
-        // 'paneldata#url': '/api/spot/metrics/charts/zookeeper/histogram?end=now&filter_cluster_name=terminus-dev&filter_component_name=platform&format=flat_chart&group=server&limit=20&max=approximate_data_size&points=60&sort=count&start=before_1h',
-        // 'paneldata#dataConvertor': 'function(values) {\n    if(!values.datas) return values;\n    let {names, datas} = values;\n    datas = datas.map(v => {\n        v.data = v.data.map(function(v) {return v.toFixed(2);});\n        return { ...v };\n    });\n    return {names, datas};\n}',
       },
       // render: () => <ChartRender {...this.props} hasData={hasData} getOption={this.getOption} />,
     },
   },
-  ...ajaxLayout,
+  // ...ajaxLayout,
 ];

@@ -5,9 +5,9 @@ interface IProps{
   onChange?: (value: any) => void;
   value?: string;
   height?: string | number;
-  width? :string | number;
-  style? : object;
-  placeholder?:string;
+  width?: string | number;
+  style?: object;
+  placeholder?: string;
 }
 const editorOption = {
   enableBasicAutocompletion: true,
@@ -29,7 +29,7 @@ const selectionRange = {
 };
 
 export default class EditorFrom extends Component<IProps> {
-  handleChange = (value:string) => {
+  handleChange = (value: string) => {
     const { onChange } = this.props;
     if (onChange) {
       onChange(value);

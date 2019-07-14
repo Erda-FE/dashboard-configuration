@@ -53,6 +53,10 @@ const getMessage = ({ isDataEmpty, fetchStatus }: IMessage): string => {
 };
 
 class ChartOperation extends React.PureComponent<IProps, IState> {
+
+  private hasLoadFn: boolean;
+
+  private chartRef: React.ReactInstance;
   constructor(props: IProps) {
     super(props);
     const { view } = props;
@@ -64,10 +68,6 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
       fetchStatus: Status.FETCH,
     };
   }
-
-  private hasLoadFn: boolean;
-
-  private chartRef: React.ReactInstance;
 
   componentDidMount() {
     if (this.hasLoadFn) {
@@ -173,7 +173,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           </Tooltip>
         </div>}
 
-        <div className="bi-chart" ref={ref => { this.chartRef = ref }}>
+        <div className="bi-chart" ref={ref => { this.chartRef = ref; }}>
           {React.cloneElement(childNode, {
             ...childNode.props,
             data: resData,

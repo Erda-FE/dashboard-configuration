@@ -1,7 +1,7 @@
 {
-  "name": "@terminus/bi-ui-package",
-  "version": "0.2.4",
-  "description": "bi ui package",
+  "name": "@terminus/dashboard-configurator",
+  "version": "0.1.0",
+  "description": "Dashboard configurator with Echart",
   "main": "./index.js",
   "sideEffects": [
     "*.scss",
@@ -30,9 +30,11 @@
     "url": "git@git.terminus.io:bigdata/bi-ui-package.git"
   },
   "keywords": [
-    "bi",
-    "npm",
-    "package"
+    "dashboard",
+    "configurator",
+    "antd",
+    "dva",
+    "Echart"
   ],
   "author": "terminus",
   "license": "ISC",

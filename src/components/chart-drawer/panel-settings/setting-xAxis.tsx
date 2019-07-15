@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Switch, Select } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelSettingPrefix } from '~/utils/constants';
+import { panelSettingPrefix } from '../../../utils/constants';
 import { formPositionLayout } from './utils';
 import { funcValidator } from '../../charts/utils';
 import EditorFrom from '../../editor-form';

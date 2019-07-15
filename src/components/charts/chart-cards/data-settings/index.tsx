@@ -1,8 +1,8 @@
 import React from 'react';
-import { RenderFormItem } from '~/components/common';
+import { RenderFormItem } from '../../../../components/common';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelDataPrefix } from '~/utils/constants';
-import { formItemLayout } from '~/utils/comp';
+import { panelDataPrefix } from '../../../../utils/constants';
+import { formItemLayout } from '../../../../utils/comp';
 import EditorForm from '../../../editor-form';
 
 const errorMessage = '请输入正确二维数组， 如：[[1,1,1,1],[1,1]]';

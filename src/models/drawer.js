@@ -1,6 +1,6 @@
 import { cloneDeep, forEach, startsWith } from 'lodash';
-import { generateUUID } from '~/utils';
-import { panelControlPrefix, panelSettingPrefix } from '~/utils/constants';
+import { generateUUID } from '../utils';
+import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 
 const defaultState = {
   visible: false,
@@ -19,9 +19,9 @@ const newViewTpl = {
     metricData: {},
   },
   config: {
-    options: {}
-  }
-}
+    options: {},
+  },
+};
 
 export default {
   namespace: 'biEditor',

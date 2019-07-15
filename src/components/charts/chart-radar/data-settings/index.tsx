@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Input, Icon, Row, Col, InputNumber } from 'antd';
 import { isEqual, max, toNumber } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
-import { panelDataPrefix } from '~/utils/constants';
+import { panelDataPrefix } from '../../../../utils/constants';
 
 import './index.scss';
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { get } from 'lodash';
 import { connect } from 'dva';
 import { DatePicker } from 'antd';
-import { panelControlPrefix } from '~/utils/constants';
+import { panelControlPrefix } from '../../../utils/constants';
 
 const { RangePicker } = DatePicker;
 

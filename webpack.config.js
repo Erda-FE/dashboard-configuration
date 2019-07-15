@@ -31,35 +31,35 @@ module.exports = () => {
     entry: {
       app: ['./example/index.js'],
     },
-    externals: [
-      {
-        lodash: {
-          commonjs: 'lodash',
-          amd: 'lodash',
-          root: '_', // indicates global variable
-        },
-        echarts: {
-          commonjs: 'echarts',
-          amd: 'echarts',
-          root: 'echarts',
-        },
-        antd: {
-          commonjs: 'antd',
-          amd: 'antd',
-          root: 'antd',
-        },
-        react: {
-          commonjs: 'react',
-          amd: 'react',
-          root: 'react',
-        },
-        'react-dom': {
-          commonjs: 'react-dom',
-          amd: 'react-dom',
-          root: 'react-dom',
-        },
-      },
-    ],
+    // externals: [
+    //   {
+    //     lodash: {
+    //       commonjs: 'lodash',
+    //       amd: 'lodash',
+    //       root: '_', // indicates global variable
+    //     },
+    //     echarts: {
+    //       commonjs: 'echarts',
+    //       amd: 'echarts',
+    //       root: 'echarts',
+    //     },
+    //     antd: {
+    //       commonjs: 'antd',
+    //       amd: 'antd',
+    //       root: 'antd',
+    //     },
+    //     react: {
+    //       commonjs: 'react',
+    //       amd: 'react',
+    //       root: 'react',
+    //     },
+    //     'react-dom': {
+    //       commonjs: 'react-dom',
+    //       amd: 'react-dom',
+    //       root: 'react-dom',
+    //     },
+    //   },
+    // ],
     stats: {
       assets: false,
       children: false,
@@ -112,10 +112,6 @@ module.exports = () => {
     },
     resolve: {
       alias: {
-        '~': path.resolve(__dirname, 'src'),
-        // 业务域 不含路由
-        'board-grid': path.resolve(__dirname, 'src/board-grid'),
-        // 业务域 含有路由
         // 其他
         agent: path.resolve(__dirname, 'example/agent.js'),
         app: path.resolve(__dirname, 'example'),

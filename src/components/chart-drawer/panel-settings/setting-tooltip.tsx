@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout } from '~/utils/comp';
-import { panelSettingPrefix } from '~/utils/constants';
+import { formItemLayout } from '../../../utils/comp';
+import { panelSettingPrefix } from '../../../utils/constants';
 import EdiotorFrom from '../../editor-form';
 
 type IProps = FormComponentProps;

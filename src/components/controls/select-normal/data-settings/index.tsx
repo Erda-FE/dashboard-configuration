@@ -4,8 +4,8 @@ import { Form, Input, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import EditorFrom from '../../../editor-form';
 import PropTypes from 'prop-types';
-import { formItemLayout } from '~/utils/comp';
-import { panelControlPrefix } from '~/utils/constants';
+import { formItemLayout } from '../../../../utils/comp';
+import { panelControlPrefix } from '../../../../utils/constants';
 import { checkFixedData } from '../utils';
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;

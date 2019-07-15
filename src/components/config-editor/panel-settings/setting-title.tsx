@@ -1,8 +1,8 @@
 import React from 'react';
 import { Form, Input, Switch, Row, Col } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { formItemLayout } from '~/utils/comp';
-import { panelSettingPrefix } from '~/utils/constants';
+import { formItemLayout } from '../../../utils/comp';
+import { panelSettingPrefix } from '../../../utils/constants';
 import { formPositionLayout } from './utils';
 
 const { TextArea } = Input;

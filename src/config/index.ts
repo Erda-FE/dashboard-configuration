@@ -1,7 +1,7 @@
 import { set, get } from 'lodash';
 import defaultChartsMap from '../components/charts';
 import { EditorContainer } from './editor-container';
-import { theme, themeObj as defaultTheme } from '~/theme/dice';
+import { theme, themeObj as defaultTheme } from '../theme/dice';
 
 const globalConfig = {
   chartsMap: defaultChartsMap,
@@ -18,9 +18,7 @@ const regist = (path: string | string[] | number | number[], data: any) => {
   set(globalConfig, path, data);
 };
 
-export const getConfig = (path: string | string[] | number | number[]) => {
-  return get(globalConfig, path);
-};
+export const getConfig = (path: string | string[] | number | number[]) => get(globalConfig, path);
 
 /**
  * 注册单个图表

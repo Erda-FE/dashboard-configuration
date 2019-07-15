@@ -1,5 +1,5 @@
 import { merge, set, cloneDeep, isString } from 'lodash';
-import { getConfig } from '~/config';
+import { getConfig } from '../../../config';
 
 type TData = number[] | string[];
 type IMetric = {

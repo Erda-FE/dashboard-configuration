@@ -3,7 +3,7 @@ import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
 import { find, forEach, get, isEmpty } from 'lodash';
 import React from 'react';
-import { getConfig } from '~/config';
+import { getConfig } from '../../config';
 import './index.scss';
 import PanelControls from './panel-controls';
 import PanelData from './panel-data';

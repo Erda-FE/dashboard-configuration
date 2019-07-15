@@ -3,7 +3,7 @@ import { get, map } from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'dva';
 import { Tooltip } from 'antd';
-import { getConfig } from '~/config';
+import { getConfig } from '../../../config';
 import './index.scss';
 
 interface IProps {

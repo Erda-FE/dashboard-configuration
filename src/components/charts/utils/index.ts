@@ -1,7 +1,7 @@
 import { endsWith, forEach, reduce, set, startsWith } from 'lodash';
 // import xss from 'xss';
-import { strToObject } from '~/utils/comp';
-import { panelSettingPrefix } from '~/utils/constants';
+import { strToObject } from '../../../utils/comp';
+import { panelSettingPrefix } from '../../../utils/constants';
 
 import { Func } from 'echarts-for-react';
 

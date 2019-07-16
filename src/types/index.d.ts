@@ -20,17 +20,20 @@ export interface IExpand {
   url: string
 }
 
+type TData = number[] | string[];
+
 export interface IMetricData {
   name: string;
   type: string;
-  data: string[] | number[];
+  data: TData;
 }
 
 export interface IStaticData {
   title: string;
-  xData: string[][];
-  yData?: string[][];
+  xData: TData | TData[];
+  yData?: TData | TData[];
   metricData: IMetricData[];
+  legendData: TData[];
 }
 
 export type IDataConvertar = (data: object) => object;

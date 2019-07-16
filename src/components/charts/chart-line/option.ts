@@ -1,21 +1,9 @@
 import { merge, set, cloneDeep, isString } from 'lodash';
 import { getConfig } from '../../../config';
-import { IViewConfig, IOptionFn } from '../../../types';
-
-type TData = number[] | string[];
-type IMetric = {
-  type: string;
-  name: string;
-  data: TData[];
-};
-export interface IData {
-  xData: TData[];
-  yData: TData[];
-  metricData: IMetric[];
-}
+import { IViewConfig, IOptionFn, IStaticData, TData } from '../../../types';
 
 
-export function getOption(data: IData, config: IViewConfig) {
+export function getOption(data: IStaticData, config: IViewConfig) {
   const defaultOption = {
     tooltip: {
       trigger: 'axis',
@@ -73,16 +61,13 @@ export function getOption(data: IData, config: IViewConfig) {
 
   // eslint-disable-next-line prefer-const
   let { xData = [], yData = [], metricData = [], legendData = [] } = data || {};
-  if (!Array.isArray(xData[0])) {
-    xData = [xData];
-  }
-  if (!Array.isArray(yData[0])) {
-    yData = [yData];
-  }
-  xData.forEach((d: TData, i: number) => {
+  // 先统一转为2层数组，内层数组为每条轴的data
+  const x2Data = Array.isArray(xData[0]) ? xData : [xData];
+  (x2Data as TData[]).forEach((d: TData, i: number) => {
     set(option, ['xAxis', i, 'data'], d);
   });
-  yData.forEach((d: TData, i: number) => {
+  const y2Data = Array.isArray(yData[0]) ? yData : [yData];
+  (y2Data as TData[]).forEach((d: TData, i: number) => {
     set(option, ['yAxis', i, 'data'], d);
   });
   merge(option, { series: metricData, legend: { data: legendData } });

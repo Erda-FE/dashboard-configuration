@@ -26,6 +26,7 @@ export interface IMetricData {
   name: string;
   type: string;
   data: TData;
+  [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
 }
 
 export interface IStaticData {
@@ -34,10 +35,11 @@ export interface IStaticData {
   yData?: TData | TData[];
   metricData: IMetricData[];
   legendData: TData[];
+  [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
 }
 
 export type IDataConvertar = (data: object) => object;
-export type IOptionFn = (data: object) => object;
+export type IOptionFn = (data: object, optionExtra?: object) => object;
 
 export interface IView {
   name: string;
@@ -55,6 +57,7 @@ export interface IView {
 export interface IViewConfig {
   option?: string | object;// 图表配置，会作为最高优先级合并
   optionFn?: string | IOptionFn;// 图表配置方法，以标准数据为参数，为字符串表示从注册中取
+  optionExtra: object; // 额外对象，用于组件直接传递参数给dataConvertor
 }
 
 export interface ILayoutItem {

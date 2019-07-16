@@ -37,7 +37,7 @@ export function getOption(data: IStaticData, config: IViewConfig) {
         console.warn(`optionFn \`${customOptionFn}\` not registered yet`);
       }
     }
-    customOption = customOptionFn(data);
+    customOption = customOptionFn(data, config.optionExtra);
   } else if (config.option) {
     customOption = config.option;
     if (isString(customOption)) {
@@ -67,8 +67,9 @@ export function getOption(data: IStaticData, config: IViewConfig) {
     set(option, ['xAxis', i, 'data'], d);
   });
   const y2Data = Array.isArray(yData[0]) ? yData : [yData];
-  (y2Data as TData[]).forEach((d: TData, i: number) => {
-    set(option, ['yAxis', i, 'data'], d);
+  // y轴只有type为category时才需要设置data
+  option.yAxis.forEach((yAx: any, i) => {
+    yAx.type === 'category' && (yAx.data = y2Data[i]);
   });
   merge(option, { series: metricData, legend: { data: legendData } });
   return option;

@@ -1,9 +1,9 @@
 {
   "name": "@terminus/dashboard-configurator",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Dashboard configurator with Echart",
   "main": "./index.js",
-  "types": "./index.d.ts",
+  "types": "./src/types/index.d.ts",
   "sideEffects": [
     "*.scss",
     "*.css",
@@ -136,7 +136,6 @@
   "files": [
     "src",
     "index.js",
-    "index.d.ts",
     "README.md"
   ]
 }

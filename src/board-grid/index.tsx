@@ -15,13 +15,13 @@ import ReactDOM from 'react-dom';
 import ReactGridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import sizeMe from 'react-sizeme';
+import { SizeMe } from 'react-sizeme';
 import screenfull from 'screenfull';
 import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartDrawer, ChartOperation, defaultChartsMap } from '../components';
-import { IChartsMap, IExpand, ISizeMe, ILayout } from '../types';
+import { IChartsMap, IExpand, ILayout } from '../types';
 import './index.scss';
 
 
@@ -31,7 +31,7 @@ interface IUrlData {
   data: any
 }
 
-interface IProps extends ISizeMe, ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   readOnly?: boolean // 只读
   layout?: any // 配置信息，包含图表布局、各图表配置信息
   onSave?: (extra: any) => void, // 保存
@@ -167,10 +167,9 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   render() {
     const {
-      dashboardLayout, viewMap, size, isEdit, openEdit, readOnly,
+      dashboardLayout, viewMap, isEdit, openEdit, readOnly,
       expandOption, updateLayout, addEditor,
     } = this.props;
-    const { width } = size;
     const { isFullscreen } = screenfull; // 是否全屏
     if (!dashboardLayout.length) {
       return null;
@@ -211,62 +210,66 @@ class BoardGrid extends React.PureComponent<IProps> {
             }
           </div>
         )}
-        <ReactGridLayout
-          ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
-          autoSize
-          layout={dashboardLayout}
-          cols={cols}
-          rowHeight={30}
-          width={width}
-          onLayoutChange={updateLayout}
-          isDraggable
-          isResizable
-          style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
-          onDragStart={this.onDragStart}
-          draggableHandle=".bi-draggable-handle"
-        >
-          {dashboardLayout.map(({ i, ...others }: any) => {
-            let ChildComp = null;
-            let view = viewMap[i];
-            view = typeof view === 'function'
-              ? view({ isEdit, isFullscreen })
-              : view;
-            if (!view) {
-              return null;
-            }
-            if (isPlainObject(view)) {
-              const { viewType = '' } = view;
-              if (viewType.startsWith('chart')) {
-                // const [, viewType = 'line'] = viewType.split(':');
-                // const { controlType } = viewMap[i];
-                const ChartNode = get(this.chartsMap, [viewType, 'Component']);
-                ChildComp = (
-                  <React.Fragment>
-                    <ChartOperation viewId={i} view={view} expandOption={expandOption}>
-                      <ChartNode />
-                    </ChartOperation>
-                  </React.Fragment>
+        <SizeMe monitorHeight>
+          {({ size }) => (
+            <ReactGridLayout
+              ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
+              autoSize
+              layout={dashboardLayout}
+              cols={cols}
+              rowHeight={30}
+              width={size.width}
+              onLayoutChange={updateLayout}
+              isDraggable
+              isResizable
+              style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
+              onDragStart={this.onDragStart}
+              draggableHandle=".bi-draggable-handle"
+            >
+              {dashboardLayout.map(({ i, ...others }: any) => {
+                let ChildComp = null;
+                let view = viewMap[i];
+                view = typeof view === 'function'
+                  ? view({ isEdit, isFullscreen })
+                  : view;
+                if (!view) {
+                  return null;
+                }
+                if (isPlainObject(view)) {
+                  const { viewType = '' } = view;
+                  if (viewType.startsWith('chart')) {
+                    // const [, viewType = 'line'] = viewType.split(':');
+                    // const { controlType } = viewMap[i];
+                    const ChartNode = get(this.chartsMap, [viewType, 'Component']);
+                    ChildComp = (
+                      <React.Fragment>
+                        <ChartOperation viewId={i} view={view} expandOption={expandOption}>
+                          <ChartNode />
+                        </ChartOperation>
+                      </React.Fragment>
+                    );
+                  }
+                  // else {
+                  //   ChartNode = get(this.controlsMap, [controlType, 'Component']);
+                  //   ChildComp = (
+                  //     <ControlOperation viewId={i}>
+                  //       <ChartNode viewId={i} />
+                  //     </ControlOperation>
+                  //   );
+                  // }
+                } else {
+                  console.error('layout view should be object or function');
+                }
+                return (
+                  // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
+                  <div key={i} data-grid={{ ...others }}>
+                    {ChildComp}
+                  </div>
                 );
-              }
-              // else {
-              //   ChartNode = get(this.controlsMap, [controlType, 'Component']);
-              //   ChildComp = (
-              //     <ControlOperation viewId={i}>
-              //       <ChartNode viewId={i} />
-              //     </ControlOperation>
-              //   );
-              // }
-            } else {
-              console.error('layout view should be object or function');
-            }
-            return (
-              // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-              <div key={i} data-grid={{ ...others }}>
-                {ChildComp}
-              </div>
-            );
-          })}
-        </ReactGridLayout>
+              })}
+            </ReactGridLayout>
+          )}
+        </SizeMe>
         <ChartDrawer />
         {/* <LinkSettingModal /> */}
       </div>
@@ -307,4 +310,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default sizeMe({ monitorHeight: true })(connect(mapStateToProps, mapDispatchToProps)(BoardGrid));
+export default connect(mapStateToProps, mapDispatchToProps)(BoardGrid);

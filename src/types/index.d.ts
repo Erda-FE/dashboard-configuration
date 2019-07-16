@@ -1,7 +1,3 @@
-export interface ISizeMe {
-  size: { width: number, height: number }
-}
-
 interface IChart {
   name: string
   icon: React.ReactNode | React.FunctionComponent // props由type组成

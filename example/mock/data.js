@@ -279,19 +279,6 @@ export default [
     i: 'view-1',
     moved: false,
     static: false,
-    // view: {
-    //   name: 'test',
-    //   viewType: 'chart:line', // chart:timeline | chart:bar | chart:radar ...
-    //   // 展示类型，图表或其他，界面配置时内置为chart:xxx类型, 注册了其他组件后可选择
-    //   hideHeader: boolean, // 是否隐藏Header
-    //   staticData: {}, // 静态数据
-    //   loadData: () => Promise, // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
-    //   dataConvertor: string | function // 数据转换，为string时表示使用已注册的方法
-    //   config: object // 所有页面上的配置项
-    //   config.option: string | object // 图表配置，会作为最高优先级合并
-    //   Controls: [string, Component] // 控件列表，展示在header下面，为string时表示使用已注册的组件
-    //   Configurator: React.Element, // 配置器，放在配置区域显示
-    // },
     view: {
       name: 'test',
       viewType: 'chart:line',
@@ -313,8 +300,7 @@ export default [
       config: {
         option: 'line',
       },
-      // render: () => <ChartRender {...this.props} hasData={hasData} getOption={this.getOption} />,
     },
   },
-  // ...ajaxLayout,
+  ...ajaxLayout,
 ];

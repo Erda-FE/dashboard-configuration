@@ -5,7 +5,7 @@ import { Input } from 'antd';
 import createHistory from 'history/createBrowserHistory';
 import models from '../src/models';
 import { registDataConvertor, registControl, registChartOption, registTheme } from '../src/config';
-import { ajaxConvertor } from '../src/board-grid/ajax-data';
+import { ajaxConvertor } from './mock/ajax-data';
 import AppRouter from './router';
 
 const history = createHistory();

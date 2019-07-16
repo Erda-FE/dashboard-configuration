@@ -21,7 +21,6 @@ import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartDrawer, ChartOperation, defaultChartsMap } from '../components';
-// import MockLayout from './data';
 import { IChartsMap, IExpand, ISizeMe, ILayout } from '../types';
 import './index.scss';
 

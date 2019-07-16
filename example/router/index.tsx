@@ -1,8 +1,8 @@
 import React from 'react';
 import { Router, Switch, Route } from 'dva/router';
-import dynamic from 'dva/dynamic';
 import { History } from 'interface/common';
-import DashBoardRoutes from './dashboard';
+import BoardGrid from '../../src/board-grid';
+import layout from '../mock/data';
 
 interface IProps {
   app: any
@@ -10,44 +10,14 @@ interface IProps {
 }
 
 class AppRouter extends React.PureComponent<IProps> {
-  childRoutes: any[] = [];
-
-  componentWillMount() {
-    this.initChildRoutes();
-  }
-
-  initChildRoutes = () => {
-    const routeHandlers: any[] = [
-      ...DashBoardRoutes,
-    ];
-    const { app } = this.props;
-    routeHandlers.forEach(({ getComponent, ...other }) => this.childRoutes.push({
-      ...other,
-      Comp: dynamic({
-        app,
-        component: getComponent,
-      } as any),
-    }));
-  }
-
   render() {
     const { history } = this.props;
     return (
       <Router history={history} >
         <Switch>
           <Route
-            path="/"
-            render={() => (
-              <Switch>
-                {this.childRoutes.map(({ path, Comp }: any) => (
-                  <Route
-                    key={path}
-                    path={path}
-                    render={childProps => <Comp {...childProps} />}
-                  />
-                ))}
-              </Switch>
-            )}
+            path="*"
+            render={childProps => <BoardGrid {...childProps} layout={layout} />}
           />
         </Switch>
       </Router>

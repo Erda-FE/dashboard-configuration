@@ -6,6 +6,7 @@ import DataSettingsCommonControls from './src/components/controls/data-settings'
 import biModels from './src/models';
 
 export * from './src/config';
+export * from './src/types';
 
 export {
   BoardGrid,

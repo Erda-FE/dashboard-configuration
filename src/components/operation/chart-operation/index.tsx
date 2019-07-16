@@ -53,10 +53,10 @@ const getMessage = ({ isDataEmpty, fetchStatus }: IMessage): string => {
 };
 
 class ChartOperation extends React.PureComponent<IProps, IState> {
-
   private hasLoadFn: boolean;
 
   private chartRef: React.ReactInstance;
+
   constructor(props: IProps) {
     super(props);
     const { view } = props;
@@ -132,23 +132,29 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const { resData, fetchStatus } = this.state;
     const isDataEmpty = isEmpty(resData);
     const message = getMessage({ isDataEmpty, fetchStatus });
+
     return (
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
-        <div className="bi-view-header">
-          <div className="bi-view-header-left">
-            {
-              isEditLayout
-                ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
-                : <div className="bi-view-title">{view.name}</div>
-            }
-            {/* {hasLinked && <Tooltip placement="bottom" title="已设置联动"><Icon type="link" /></Tooltip>} */}
-            {isEditLayout && <span className="bi-draggable-handle"><Icon type="drag" /></span>}
-          </div>
-          <div className="bi-view-header-right">
-            <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
-            {this.hasLoadFn && <Icon type="reload" onClick={this.loadData} />}
-          </div>
-        </div>
+        {
+          view.hideHeader ? null :
+            (
+              <div className="bi-view-header">
+                <div className="bi-view-header-left">
+                  {
+                    isEditLayout
+                      ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
+                      : <div className="bi-view-title">{view.name}</div>
+                  }
+                  {/* {hasLinked && <Tooltip placement="bottom" title="已设置联动"><Icon type="link" /></Tooltip>} */}
+                  {isEditLayout && <span className="bi-draggable-handle"><Icon type="drag" /></span>}
+                </div>
+                <div className="bi-view-header-right">
+                  <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
+                  {this.hasLoadFn && <Icon type="reload" onClick={this.loadData} />}
+                </div>
+              </div>
+            )
+        }
         <ViewMask message={message} />
         {isEditLayout && <div className="bi-view-edit-op">
           <Tooltip placement="bottom" title="编辑">
@@ -171,9 +177,9 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           <Tooltip placement="bottom" title="图表全屏">
             <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
           </Tooltip>
-        </div>}
+                         </div>}
 
-        <div className="bi-chart" ref={ref => { this.chartRef = ref; }}>
+        <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
           {React.cloneElement(childNode, {
             ...childNode.props,
             data: resData,
@@ -188,15 +194,15 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 const mapStateToProps = ({
   biDashBoard: { isEdit: isEditLayout },
   // linkSetting: { linkMap, linkDataMap },
-  biEditor: { editViewId } }: any, { viewId }: any) => {
+  biEditor: { editViewId } }: any, { viewId }: any) => 
   // const { paramName, clickId } = getKeyValue(linkMap, viewId);
-  return {
+   ({
     isEditLayout,
     isEditView: editViewId === viewId,
     // linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'chartValue'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
     // hasLinked: !!find(linkMap[viewId], value => value), // 是否已经设置了联动
-  };
-};
+  })
+;
 
 const mapDispatchToProps = (dispatch: any) => ({
   setViewInfo(payload: any) {

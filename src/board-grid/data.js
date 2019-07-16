@@ -198,10 +198,10 @@ const merticData = [
       '0.03',
     ],
 
-  }
-]
+  },
+];
 
-let staticData = {
+const staticData = {
   title: 'zookeeper',
   xData: [
     [
@@ -265,10 +265,10 @@ let staticData = {
       '14:36',
       '14:37',
       '14:38',
-    ]
+    ],
   ],
   metricData: merticData,
-}
+};
 
 export default [
   {
@@ -283,6 +283,7 @@ export default [
     //   name: 'test',
     //   viewType: 'chart:line', // chart:timeline | chart:bar | chart:radar ...
     //   // 展示类型，图表或其他，界面配置时内置为chart:xxx类型, 注册了其他组件后可选择
+    //   hideHeader: boolean, // 是否隐藏Header
     //   staticData: {}, // 静态数据
     //   loadData: () => Promise, // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
     //   dataConvertor: string | function // 数据转换，为string时表示使用已注册的方法
@@ -294,9 +295,10 @@ export default [
     view: {
       name: 'test',
       viewType: 'chart:line',
+      hideHeader: true,
       staticData,
       loadData() {
-        return new Promise(resolve => {
+        return new Promise((resolve) => {
           setTimeout(() => {
             resolve(staticData);
           }, 1000);

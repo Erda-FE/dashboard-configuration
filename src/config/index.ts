@@ -6,6 +6,7 @@ import { theme, themeObj as defaultTheme } from '../theme/dice';
 const globalConfig = {
   chartsMap: defaultChartsMap,
   chartOption: {},
+  chartOptionFn: {},
   EditorContainer,
   dataConvertor: {},
   ControlMap: {},
@@ -47,13 +48,24 @@ export const registCharts = (chartMap = {}) => {
 /**
  * 注册图表配置
  * @param name 名称
- * @param {function} 图表配置对象
+ * @param {object} 图表配置对象
  * @returns 已注册所有图表配置
  * @see https://echarts.baidu.com/option.html
  */
 export const registChartOption = (name: string, data: any) => {
   regist(`chartOption.${name}`, data);
   return getConfig('chartOption');
+};
+
+/**
+ * 注册图表配置方法
+ * @param name 名称
+ * @param {function} 图表配置方法，参数为data
+ * @returns 已注册所有图表配置方法
+ */
+export const registChartOptionFn = (name: string, fn: Function) => {
+  regist(`chartOptionFn.${name}`, fn);
+  return getConfig('chartOptionFn');
 };
 
 /**

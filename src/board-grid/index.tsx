@@ -21,8 +21,8 @@ import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartDrawer, ChartOperation, defaultChartsMap } from '../components';
-import { IChartsMap, IExpand, ISizeMe } from '../types';
 // import MockLayout from './data';
+import { IChartsMap, IExpand, ISizeMe, ILayout } from '../types';
 import './index.scss';
 
 
@@ -138,7 +138,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     this.props.resetDrawer();
   }
 
-  splitLayoutAndView = (layout) => {
+  splitLayoutAndView = (layout: ILayout) => {
     const viewMap = {};
     const pureLayout = layout.map((item) => {
       const { view, ...rest } = item;

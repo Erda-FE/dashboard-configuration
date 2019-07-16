@@ -1,5 +1,6 @@
 import { merge, set, cloneDeep, isString } from 'lodash';
 import { getConfig } from '../../../config';
+import { IViewConfig, IOptionFn } from '../../../types';
 
 type TData = number[] | string[];
 type IMetric = {
@@ -14,7 +15,7 @@ export interface IData {
 }
 
 
-export function getOption(data: IData, customOption: string | object) {
+export function getOption(data: IData, config: IViewConfig) {
   const defaultOption = {
     tooltip: {
       trigger: 'axis',
@@ -38,21 +39,36 @@ export function getOption(data: IData, customOption: string | object) {
   };
 
   let option = defaultOption;
-  if (customOption) {
-    // 对用户的配置做些格式处理
-    let copy = customOption;
+  let customOption;
+  let customOptionFn = config.optionFn;
+  if (customOptionFn) {
+    if (isString(customOptionFn)) {
+      customOptionFn = getConfig(['chartOptionFn', customOptionFn]) as IOptionFn;
+      if (!customOptionFn) {
+        customOptionFn = (d: any) => d;
+        console.warn(`optionFn \`${customOptionFn}\` not registered yet`);
+      }
+    }
+    customOption = customOptionFn(data);
+  } else if (config.option) {
+    customOption = config.option;
     if (isString(customOption)) {
-      copy = getConfig(['chartOption', customOption]);
-      if (!copy) {
+      customOption = getConfig(['chartOption', customOption]);
+      if (!customOption) {
+        customOption = {};
         console.warn(`customOption \`${customOption}\` not registered yet`);
       }
     }
-    copy = cloneDeep(copy) as any;
-    let { xAxis, yAxis } = copy;
+    customOption = cloneDeep(customOption) as any;
+  }
+
+  if (customOption) {
+    // 对用户的配置做些格式处理
+    let { xAxis, yAxis } = customOption;
     // 横纵轴都用数组形式
     xAxis = Array.isArray(xAxis) ? xAxis : [xAxis];
     yAxis = Array.isArray(yAxis) ? yAxis : [yAxis];
-    option = merge(defaultOption, { ...copy, xAxis, yAxis });
+    option = merge(defaultOption, { ...customOption, xAxis, yAxis });
   }
 
   // eslint-disable-next-line prefer-const

@@ -62,7 +62,7 @@ class Chart extends React.Component<IProps> {
     return (
       <ReactEcharts
         {...others}
-        option={getOption(data, config.option)}
+        option={getOption(data, config)}
         theme={theme}
         themeObj={themeObj}
         style={{ ...style, height: '100%' }}

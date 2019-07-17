@@ -71,6 +71,9 @@ export function getOption(data: IStaticData, config: IViewConfig) {
   option.yAxis.forEach((yAx: any, i) => {
     yAx.type === 'category' && (yAx.data = y2Data[i]);
   });
-  merge(option, { series: metricData, legend: { data: legendData } });
+  if (legendData.length) {
+    set(option, ['legend', 'data'], legendData);
+  }
+  merge(option, { series: metricData });
   return option;
 }

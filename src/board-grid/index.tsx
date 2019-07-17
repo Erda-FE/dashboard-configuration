@@ -222,7 +222,7 @@ class BoardGrid extends React.PureComponent<IProps> {
               onLayoutChange={updateLayout}
               isDraggable
               isResizable
-              style={isEdit ? { backgroundImage: getGridBackground(width) } : {}}
+              style={isEdit ? { backgroundImage: getGridBackground(size.width) } : {}}
               onDragStart={this.onDragStart}
               draggableHandle=".bi-draggable-handle"
             >

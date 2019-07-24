@@ -4,7 +4,7 @@ import { get, map, set } from 'lodash';
 import { IChartsMap } from '../../types';
 // 图表
 import ChartLine from './chart-line';
-// import ChartPie from './chart-pie';
+import ChartPie from './chart-pie';
 // import ChartCards from './chart-cards';
 // import ChartRadar from './chart-radar';
 // import ChartGauge from './chart-gauge';
@@ -12,7 +12,7 @@ import ChartLine from './chart-line';
 // import ChartScatter from './chart-scatter';
 // 图表配置器
 import LineConfigurator from './chart-line/Configurator';
-// import ChartPie from './chart-pie';
+import PieConfigurator from './chart-pie/Configurator';
 // import ChartCards from './chart-cards';
 // import ChartRadar from './chart-radar';
 // import ChartGauge from './chart-gauge';
@@ -71,14 +71,12 @@ const chartsMap: IChartsMap = {
   //   Configurator: LineConfigurator,
   //   dataSettings: [DataSettingsCommon],
   // },
-  // 'chart:pie': {
-  //   name: '饼图',
-  //   icon: <Icon type="pie-chart" />,
-  //   Component: ChartPie,
-  //   mockData: mockDataPie,
-  //   Configurator: LineConfigurator,
-  //   dataSettings: [DataSettingsCommon],
-  // },
+  'chart:pie': {
+    name: '饼图',
+    icon: <Icon type="pie-chart" />,
+    Component: ChartPie,
+    Configurator: PieConfigurator,
+  },
   // 'chart:card': {
   //   name: '卡片图',
   //   icon: <Icon type="fund" />,

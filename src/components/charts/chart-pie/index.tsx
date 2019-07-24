@@ -2,78 +2,20 @@
  * 2D 饼图
  */
 import ChartSizeMe from '../chart-sizeme';
-import React from 'react';
-import { connect } from 'dva';
-import { convertSettingToOption } from '../utils';
-import { merge } from 'lodash';
-import { mockDataPie } from './utils';
+import * as React from 'react';
+import { getOption } from './option';
 
-interface IData {
-  name: string,
-  value: number,
-}
-
-interface IProps extends ReturnType<typeof mapStateToProps> {
+interface IProps {
+  data: any
   viewId: string
-  isMock: boolean
-  defaultOption: object
+  config: {
+    option: object
+  }
 }
 
-// 获取默认的前面选中的6个
-const getDefaultSelected = (names: string[]) => {
-  const selected = {};
-  const length = names.length;
-  for (let i = 0; i < length; i++) {
-    const name = names[i];
-    selected[name] = i < 6;
-  }
-  return selected;
-};
+// TODO: 几个图都一样，可以合并一下
+const ChartPie = React.forwardRef((props: IProps, ref: React.Ref<any>) => (
+  <ChartSizeMe {...props} getOption={getOption} ref={ref} />
+));
 
-const ChartPie = ({ option = {}, defaultOption, isMock, name, names, datas, viewId }: IProps) => {
-  const source = {
-    tooltip: {
-      trigger: 'item',
-      formatter: '{a} <br/>{b} : {c} ({d}%)',
-    },
-    legend: {
-      type: 'scroll',
-      orient: 'vertical',
-      right: 10,
-      top: 20,
-      bottom: 20,
-      data: names,
-      selected: getDefaultSelected(names),
-    },
-    series: [
-      {
-        name,
-        type: 'pie',
-        radius: '55%',
-        center: ['40%', '50%'],
-        data: datas,
-        itemStyle: {
-          emphasis: {
-            shadowBlur: 10,
-            shadowOffsetX: 0,
-            shadowColor: 'rgba(0, 0, 0, 0.5)',
-          },
-        },
-      },
-    ],
-  };
-  return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
-};
-
-const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, names, datas }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
-  return {
-    viewType: drawerInfo.viewType as string,
-    name: isMock ? mockDataPie.name : (name || '') as string,
-    names: isMock ? mockDataPie.names : (names || []) as string[],
-    datas: isMock ? mockDataPie.datas : (datas || []) as IData[],
-    option: convertSettingToOption(drawerInfo),
-  };
-};
-
-export default connect(mapStateToProps)(ChartPie);
+export default ChartPie;

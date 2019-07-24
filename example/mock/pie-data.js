@@ -38,6 +38,11 @@ export default [
       // Controls: ['input'],
       config: {
         option: {
+          legend: {
+            orient: 'horizontal',
+            x: 'center',
+            y: 'bottom',
+          },
           series: [{
             radius: ['50%', '70%'],
             label: {

@@ -1,5 +1,5 @@
 
-const merticData = [
+const metricData = [
   {
     name: 'tset1',
     type: 'line',
@@ -266,7 +266,7 @@ const staticData = {
       '14:38',
     ],
   ],
-  metricData: merticData,
+  metricData,
 };
 
 export default [

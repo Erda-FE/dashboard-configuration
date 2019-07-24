@@ -12,9 +12,8 @@ export function getOption(data: IStaticData, config: IViewConfig) {
     legend: {
       type: 'scroll',
       orient: 'vertical',
-      right: 10,
-      top: 20,
-      bottom: 20,
+      x: 'right',
+      y: 'center',
     },
     series: [
       {

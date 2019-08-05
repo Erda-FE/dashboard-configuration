@@ -11,15 +11,15 @@ import ChartPie from './chart-pie';
 // import ChartMap from './chart-map';
 // import ChartScatter from './chart-scatter';
 // 图表配置器
-import LineConfigurator from './chart-line/Configurator';
-import PieConfigurator from './chart-pie/Configurator';
+import LineConfigurator from './chart-line/configurator';
+import PieConfigurator from './chart-pie/configurator';
 // import ChartCards from './chart-cards';
 // import ChartRadar from './chart-radar';
 // import ChartGauge from './chart-gauge';
 // import ChartMap from './chart-map';
 // import ChartScatter from './chart-scatter';
 // mock数据
-import { mockDataLine } from './chart-line/utils';
+// import { mockDataLine } from './chart-line/utils';
 // import { mockDataPie } from './chart-pie/utils';
 // import { mockDataCards } from './chart-cards/utils';
 // import { mockDataRadar } from './chart-radar/utils';
@@ -27,7 +27,7 @@ import { mockDataLine } from './chart-line/utils';
 // import { mockDataMap } from './chart-map/utils';
 // import { mockDataScatter } from './chart-scatter/utils';
 // 数据配置项
-import DataSettingsCommon from './data-settings';
+// import DataSettingsCommon from './data-settings';
 // import DataSettingsCards from './chart-cards/data-settings';
 // import DataSettingsRadar from './chart-radar/data-settings';
 // // Icon

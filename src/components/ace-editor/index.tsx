@@ -106,7 +106,7 @@ export default class AceEditor extends Component<IProps, IState> {
     const { autoChange } = this.props;
 
     if (autoChange) {
-      this.manulChange(event);
+      this.manualChange(event);
     }
   }
 
@@ -129,7 +129,7 @@ export default class AceEditor extends Component<IProps, IState> {
     }
   }
 
-  manulChange = (event?: any) => {
+  manualChange = (event?: any) => {
     const { onEvents = {} } = this.props;
     const { change } = onEvents;
     change(this.editor.getValue(), event);
@@ -198,7 +198,7 @@ export default class AceEditor extends Component<IProps, IState> {
         <div className="bi-editor-diff" style={diffStyle}>{this.renderDiff()}</div>
         <div ref={(ref) => { this.refEditor = ref; }} style={editorStyle} />
         <div className="bi-editor-operate">
-          { !autoChange && <a onClick={this.manulChange}>保存</a>}
+          { !autoChange && <a onClick={this.manualChange}>保存</a>}
           { showDiff && <a onClick={this.handleDiff}>{ !isDiff ? '对比' : '取消对比'}</a>}
         </div>
       </div>

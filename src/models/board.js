@@ -1,4 +1,4 @@
-import { maxBy, remove, get, cloneDeep, isEmpty } from 'lodash';
+import { maxBy, remove, cloneDeep } from 'lodash';
 
 const defaultState = {
   isEdit: false,
@@ -22,9 +22,9 @@ export default {
       const { biDashBoard: { layout }, biEditor: { viewMap } } = yield select(state => state);
       const { viewType, controlType } = viewMap[viewId];
       if (viewType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPostion(layout), w: 4, h: 6 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 6 });
       } else if (controlType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPostion(layout), w: 2, h: 1 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 2, h: 1 });
       }
       yield put({ type: 'updateState', payload: { layout: [...layout] } });
     },
@@ -66,7 +66,7 @@ export default {
   },
 };
 
-const getNewChartYPostion = (layout) => {
+const getNewChartYPosition = (layout) => {
   const { y: maxY, h: maxH } = maxBy(layout, ({ y, h }) => y + h) || { y: 0, h: 0 };
   return maxY + maxH;
 };

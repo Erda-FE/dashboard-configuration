@@ -40,7 +40,7 @@ const PanelSettings = ({ form: { getFieldDecorator } }: IProps) => (
           validator: funcValidator,
         }],
       })(<EditorForm
-        placeholder="输入fomater函数. e.g.
+        placeholder="输入format函数. e.g.
         function(value){
             if(value > 1024) return value/1024 + 'MB';
             else return value + 'KB';

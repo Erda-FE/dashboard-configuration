@@ -28,7 +28,7 @@ registControl('input', ({ onChange, loadData }) => {
       loadData();
     }
   };
-  return <Input defaultValue="试试改内容为：load" onChange={handleChange} style={{ width: '200px' }} />;
+  return <Input placeholder="试试改内容为：load" onChange={handleChange} style={{ width: '200px' }} />;
 });
 registControl('input2', ({ query, onChange }) => {
   const handleChange = (e) => {

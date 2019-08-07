@@ -199,23 +199,21 @@ const mapStateToProps = (
   {
     biDashBoard: { isEdit: isEditLayout },
     // linkSetting: { linkMap, linkDataMap },
-    biEditor: { editViewId },
+    chartEditor: { editChartId },
   }: any
   , { viewId }: any
 ) =>
   // const { paramName, clickId } = getKeyValue(linkMap, viewId);
   ({
     isEditLayout,
-    isEditView: editViewId === viewId,
-    // linkQuery: paramName ? { [paramName]: get(linkDataMap, [clickId, 'chartValue'], '') } : defaultEmpty, // @todo, 当前不能很好控制linkQuery导致的render问题
-    // hasLinked: !!find(linkMap[viewId], value => value), // 是否已经设置了联动
+    isEditView: editChartId === viewId,
   });
 const mapDispatchToProps = (dispatch: any) => ({
   setViewInfo(payload: any) {
-    return dispatch({ type: 'biEditor/updateViewInfo', payload });
+    return dispatch({ type: 'chartEditor/updateViewInfo', payload });
   },
   editView(viewId: string) {
-    return dispatch({ type: 'biEditor/editView', payload: viewId });
+    return dispatch({ type: 'chartEditor/editView', payload: viewId });
   },
   deleteView(viewId: string) {
     return dispatch({ type: 'biDashBoard/deleteView', viewId });

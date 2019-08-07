@@ -74,12 +74,12 @@ const ChartCards = ({ option = {}, defaultOption, isMock, names = [], datas = []
     </React.Fragment>);
 };
 
-const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, names, datas, option }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, names, datas, option }: any) => {
+  const drawerInfo = chartMap[viewId] || {};
   const proportion = isMock ? mockProportion : getProportion(drawerInfo[`${panelDataPrefix}proportion`]);
   const cardsProportion = convertProportion(proportion);
   return {
-    viewType: drawerInfo.viewType as string,
+    chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataCards.names : (names || []) as string[],
     datas: isMock ? mockDataCards.datas : (datas || []) as IData[],
     option: { ...option, proportion: cardsProportion },

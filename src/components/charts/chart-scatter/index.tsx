@@ -54,10 +54,10 @@ const ChartScatter = ({ option = {}, defaultOption, isMock, names, titles, datas
   return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
-const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, names, datas, titles }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, names, datas, titles }: any) => {
+  const drawerInfo = chartMap[viewId] || {};
   return {
-    viewType: drawerInfo.viewType as string,
+    chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataScatter.names : (names || []) as string[],
     titles: isMock ? mockDataScatter.titles : (titles || []) as IData[],
     datas: isMock ? mockDataScatter.datas : (datas || []) as IData[],

@@ -83,18 +83,18 @@ class CodeModal extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  biEditor: { codeVisible, viewMap, editViewId },
+  chartEditor: { codeVisible, chartMap, editChartId },
 }: any) => ({
   codeVisible,
-  option: convertSettingToOption(get(viewMap, [editViewId], {})),
+  option: convertSettingToOption(get(chartMap, [editChartId], {})),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
   closeCodeModal() {
-    dispatch({ type: 'biEditor/closeCodeModal' });
+    dispatch({ type: 'chartEditor/closeCodeModal' });
   },
   submitCode(settingInfo: object) {
-    dispatch({ type: 'biEditor/submitCode', settingInfo });
+    dispatch({ type: 'chartEditor/submitCode', settingInfo });
   },
 });
 

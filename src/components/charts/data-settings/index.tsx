@@ -21,7 +21,7 @@ class DataSettings extends React.PureComponent<IProps> {
 
   render() {
     const { UrlComponent, urlItemLayout } = this.context;
-    const { editViewId, form: { getFieldDecorator } } = this.props;
+    const { editChartId, form: { getFieldDecorator } } = this.props;
     return (
       <div>
         <Form.Item label="接口" {...urlItemLayout}>
@@ -29,7 +29,7 @@ class DataSettings extends React.PureComponent<IProps> {
             rules: [{
               message: '请输入接口',
             }],
-          })(<UrlComponent placeholder="请输入接口，用于获取数据" viewId={editViewId} />)}
+          })(<UrlComponent placeholder="请输入接口，用于获取数据" viewId={editChartId} />)}
         </Form.Item>
         <Form.Item label="转换函数" {...urlItemLayout}>
           {getFieldDecorator(`${panelDataPrefix}dataConvertor`, {
@@ -63,9 +63,9 @@ class DataSettings extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  biEditor: { editViewId },
+  chartEditor: { editChartId },
 }: any) => ({
-  editViewId,
+  editChartId,
 });
 
 export default connect(mapStateToProps)(DataSettings);

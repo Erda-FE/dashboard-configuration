@@ -1,9 +1,7 @@
 import board from './board';
-import drawer from './drawer';
-import linkSetting from './link-setting';
+import chartEditor from './chart-editor';
 
 export default [
   board,
-  drawer,
-  linkSetting,
+  chartEditor,
 ];

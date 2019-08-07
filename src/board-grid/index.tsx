@@ -20,7 +20,7 @@ import screenfull from 'screenfull';
 import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
-import { ChartDrawer, ChartOperation, defaultChartsMap } from '../components';
+import { ChartEditor, ChartOperation, defaultChartsMap } from '../components';
 import { IChartsMap, IExpand, ILayout } from '../types';
 import './index.scss';
 
@@ -43,7 +43,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   urlDataHandle?: ({ type, url, data }: IUrlData) => any // 接口数据处理
-  expandOption?: ({ viewType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
+  expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -105,9 +105,9 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   componentWillMount() {
     const { layout } = this.props;
-    const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
+    const [pureLayout, chartMap] = this.splitLayoutAndView(layout);
     this.props.updateLayout(pureLayout);
-    this.props.updateChildMap(viewMap);
+    this.props.updateChildMap(chartMap);
     this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
     // this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
     // paramsManage.set(this.props.urlParamsMap);
@@ -138,13 +138,13 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   splitLayoutAndView = (layout: ILayout) => {
-    const viewMap = {};
+    const chartMap = {};
     const pureLayout = layout.map((item) => {
       const { view, ...rest } = item;
-      viewMap[item.i] = view;
+      chartMap[item.i] = view;
       return rest;
     });
-    return [pureLayout, viewMap];
+    return [pureLayout, chartMap];
   }
 
   onDragStart = () => this.props.isEdit;
@@ -167,7 +167,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   render() {
     const {
-      dashboardLayout, viewMap, isEdit, openEdit, readOnly,
+      dashboardLayout, chartMap, isEdit, openEdit, readOnly,
       expandOption, updateLayout, addEditor,
     } = this.props;
     const { isFullscreen } = screenfull; // 是否全屏
@@ -228,7 +228,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             >
               {dashboardLayout.map(({ i, ...others }: any) => {
                 let ChildComp = null;
-                let view = viewMap[i];
+                let view = chartMap[i];
                 view = typeof view === 'function'
                   ? view({ isEdit, isFullscreen })
                   : view;
@@ -236,11 +236,11 @@ class BoardGrid extends React.PureComponent<IProps> {
                   return null;
                 }
                 if (isPlainObject(view)) {
-                  const { viewType = '' } = view;
-                  if (viewType.startsWith('chart')) {
-                    // const [, viewType = 'line'] = viewType.split(':');
-                    // const { controlType } = viewMap[i];
-                    const ChartNode = get(this.chartsMap, [viewType, 'Component']);
+                  const { chartType = '' } = view;
+                  if (chartType.startsWith('chart')) {
+                    // const [, chartType = 'line'] = chartType.split(':');
+                    // const { controlType } = chartMap[i];
+                    const ChartNode = get(this.chartsMap, [chartType, 'Component']);
                     ChildComp = (
                       <React.Fragment>
                         <ChartOperation viewId={i} view={view} expandOption={expandOption}>
@@ -270,8 +270,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             </ReactGridLayout>
           )}
         </SizeMe>
-        <ChartDrawer />
-        {/* <LinkSettingModal /> */}
+        <ChartEditor />
       </div>
     );
   }
@@ -279,10 +278,10 @@ class BoardGrid extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({
   biDashBoard: { layout, isEdit },
-  biEditor: { viewMap },
+  chartEditor: { chartMap },
 }: any) => ({
   dashboardLayout: layout,
-  viewMap,
+  chartMap,
   isEdit,
 });
 
@@ -290,11 +289,11 @@ const mapDispatchToProps = (dispatch: any) => ({
   updateLayout(layout: any) {
     dispatch({ type: 'biDashBoard/updateState', payload: { layout } });
   },
-  updateChildMap(viewMap: any) {
-    dispatch({ type: 'biEditor/updateState', payload: { viewMap } });
+  updateChildMap(chartMap: any) {
+    dispatch({ type: 'chartEditor/updateState', payload: { chartMap } });
   },
   addEditor() {
-    dispatch({ type: 'biEditor/addEditor' });
+    dispatch({ type: 'chartEditor/addEditor' });
   },
   openEdit() {
     dispatch({ type: 'biDashBoard/openEdit' });
@@ -306,7 +305,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     return dispatch({ type: 'biDashBoard/reset' });
   },
   resetDrawer() {
-    return dispatch({ type: 'biEditor/reset' });
+    return dispatch({ type: 'chartEditor/reset' });
   },
 });
 

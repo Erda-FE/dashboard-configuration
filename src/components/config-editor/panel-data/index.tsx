@@ -14,14 +14,14 @@ class PanelData extends React.Component<IProps> {
   };
 
   render() {
-    const { viewType, chooseViewType, form } = this.props;
-    const { name, mockData, dataSettings } = get(this.context.chartsMap, [viewType], {});
+    const { chartType, chooseChartType, form } = this.props;
+    const { name, mockData, dataSettings } = get(this.context.chartsMap, [chartType], {});
     return (
       <React.Fragment>
-        {viewType && (
+        {chartType && (
           <a
             className="bi-demo-text"
-            download={`mock-${viewType}.json`}
+            download={`mock-${chartType}.json`}
             href={`data:text/json;charset=utf-8,${pretty(mockData, 4, 'JSON', true)}`}
           >{`${name}数据示例下载`}
           </a>
@@ -32,13 +32,13 @@ class PanelData extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ biEditor: { viewMap, editViewId } }: any) => ({
-  viewType: get(viewMap, [editViewId, 'viewType'], ''),
+const mapStateToProps = ({ chartEditor: { chartMap, editChartId } }: any) => ({
+  chartType: get(chartMap, [editChartId, 'chartType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  chooseViewType() {
-    dispatch({ type: 'biEditor/chooseViewType' });
+  chooseChartType() {
+    dispatch({ type: 'chartEditor/chooseChartType' });
   },
 });
 

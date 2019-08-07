@@ -25,7 +25,7 @@ export default [
     static: false,
     view: {
       name: '访问来源',
-      viewType: 'chart:pie',
+      chartType: 'chart:pie',
       staticData: data,
       loadData() {
         return new Promise((resolve) => {

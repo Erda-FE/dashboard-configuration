@@ -71,10 +71,10 @@ class ChartMap extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, datas }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, datas }: any) => {
+  const drawerInfo = chartMap[viewId] || {};
   return {
-    viewType: drawerInfo.viewType as string,
+    chartType: drawerInfo.chartType as string,
     datas: isMock ? mockDataMap.datas : (datas || []),
     option: convertSettingToOption(drawerInfo),
   };

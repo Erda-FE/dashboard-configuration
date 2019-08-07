@@ -44,7 +44,7 @@ const SettingPanel = ({ form, openCodeModal }: IProps) => (
 
 const mapDispatchToProps = (dispatch: any) => ({
   openCodeModal() {
-    dispatch({ type: 'biEditor/openCodeModal' });
+    dispatch({ type: 'chartEditor/openCodeModal' });
   },
 });
 

@@ -7,18 +7,18 @@ import { getConfig } from '../../../config';
 import './index.scss';
 
 interface IProps {
-  viewType: string
+  chartType: string
   onChoose(type: string): void
 }
 
-const PanelViews = ({ viewType, onChoose }: IProps) => {
+const PanelViews = ({ chartType, onChoose }: IProps) => {
   const chartsMap = getConfig('chartsMap');
   return (
     <div>
       {map(chartsMap, ({ icon, name }, type) => (
         <div
           key={type}
-          className={classnames({ 'bi-config-editor-views': true, active: type === viewType })}
+          className={classnames({ 'bi-config-editor-views': true, active: type === chartType })}
           onClick={() => onChoose(type)}
         >
           <Tooltip placement="bottom" title={name}>
@@ -30,13 +30,13 @@ const PanelViews = ({ viewType, onChoose }: IProps) => {
   );
 };
 
-const mapStateToProps = ({ biEditor: { viewMap, editViewId } }: any) => ({
-  viewType: get(viewMap, [editViewId, 'viewType'], ''),
+const mapStateToProps = ({ chartEditor: { chartMap, editChartId } }: any) => ({
+  chartType: get(chartMap, [editChartId, 'chartType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({
-  onChoose(viewType: string) {
-    dispatch({ type: 'biEditor/chooseViewType', viewType });
+  onChoose(chartType: string) {
+    dispatch({ type: 'chartEditor/chooseChartType', chartType });
   },
 });
 

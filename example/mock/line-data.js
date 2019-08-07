@@ -280,7 +280,7 @@ export default [
     static: false,
     view: {
       name: 'test',
-      viewType: 'chart:line',
+      chartType: 'chart:line',
       hideHeader: true,
       staticData,
       loadData() {

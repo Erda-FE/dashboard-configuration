@@ -129,7 +129,7 @@
 
   // 扩展图表样式，可自定义全局样式
   // 非必传，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
-  expandOption?: ({ viewType, url }: IExpand) => object
+  expandOption?: ({ chartType, url }: IExpand) => object
 ```
 
 ## 对外提供的其他参数

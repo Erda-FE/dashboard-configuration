@@ -36,7 +36,7 @@ export default [
     static: false,
     view: {
       name: '性能区间',
-      viewType: 'chart:mix',
+      chartType: 'chart:mix',
       // staticData,
       loadData() {
         return new Promise((resolve) => {

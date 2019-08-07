@@ -59,11 +59,11 @@ const getIndicator = (drawerInfo: any) => {
   return indicator;
 };
 
-const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, datas, names }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, datas, names }: any) => {
+  const drawerInfo = chartMap[viewId] || {};
   const indicator = isMock ? mockIndicator : getIndicator(drawerInfo);
   return {
-    viewType: drawerInfo.viewType as string,
+    chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataRadar.names : (names || []) as string[],
     indicator,
     datas: isMock ? mockDataRadar.datas : (datas || []) as IData[],

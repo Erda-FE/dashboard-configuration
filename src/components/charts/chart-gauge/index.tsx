@@ -38,10 +38,10 @@ const ChartGauge = ({ option = {}, defaultOption, isMock, name, datas, viewId }:
   return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
-const mapStateToProps = ({ biEditor: { viewMap } }: any, { viewId, isMock, datas, name }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, datas, name }: any) => {
+  const drawerInfo = chartMap[viewId] || {};
   return {
-    viewType: drawerInfo.viewType as string,
+    chartType: drawerInfo.chartType as string,
     name: isMock ? mockDataGauge.name : (name || '') as string,
     datas: isMock ? mockDataGauge.datas : (datas || []) as IData[],
     option: convertSettingToOption(drawerInfo),

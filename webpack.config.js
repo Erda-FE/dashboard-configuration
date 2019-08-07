@@ -117,6 +117,7 @@ module.exports = () => {
         app: path.resolve(__dirname, 'example'),
         ws: path.resolve(__dirname, 'example/ws.js'),
         interface: path.resolve(__dirname, 'interface'),
+        common: path.resolve(__dirname, 'src/components/common'),
       },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [path.resolve(__dirname, 'example'), path.resolve(__dirname, 'src'), 'node_modules'],

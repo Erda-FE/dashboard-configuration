@@ -12,7 +12,7 @@ export interface IChartsMap {
 }
 
 export interface IExpand {
-  viewType: string,
+  chartType: string,
   url: string
 }
 
@@ -40,7 +40,7 @@ export type IOptionFn = (data: object, optionExtra?: object) => object;
 export interface IView {
   name: string;
   // 展示类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择
-  viewType: string; // chart:timeline | chart:bar | chart:radar ...
+  chartType: string; // chart:timeline | chart:bar | chart:radar ...
   hideHeader?: boolean; // 是否隐藏Header
   staticData?: IStaticData; // 静态数据
   loadData?(query?: object): Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用

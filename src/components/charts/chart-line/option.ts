@@ -48,6 +48,9 @@ export function getOption(data: IStaticData, config: IViewConfig) {
       }
     }
     customOption = cloneDeep(customOption) as any;
+    if (data.extraOption) {
+      customOption = merge(customOption, data.extraOption);
+    }
   }
 
   if (customOption) {

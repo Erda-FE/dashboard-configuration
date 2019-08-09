@@ -26,7 +26,7 @@ const noop = () => null;
 
 const PureChartEditor = (props: IProps) => {
   const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId } = props;
-  const baseConfigRef = React.useRef(null);
+  const baseConfigFormRef = React.useRef(null as any);
 
   const saveChart = () => { // 可以提交图表或控件
     const { saveEditor } = props;
@@ -39,17 +39,29 @@ const PureChartEditor = (props: IProps) => {
     // TODO add validation for each tab
     // validateFields((err: any) => {
     // if (err) return;
-    saveEditor();
-    // });
+    console.log(baseConfigFormRef.current);
+
+    baseConfigFormRef.current.validateFieldsAndScroll((errors, values) => {
+      if (errors) return;
+      console.log('pp', values);
+      saveEditor();
+    });
   };
 
   if (!currentChart) {
     return null;
   }
 
+
   const EditorContainer = getConfig('EditorContainer');
   const info = getConfig('chartsMap')[currentChart.chartType];
   const { Configurator = noop } = info;
+  const { config: { option: chartOptions } } = currentChart;
+  // console.log('currentChart', chartOptions);
+
+  const ConfiguratorWithRef = React.forwardRef((_props, ref) => (
+    <Configurator forwardedRef={ref} currentChart={currentChart} formData={chartOptions} />
+  ));
 
   return (
     <EditorContainer
@@ -62,7 +74,7 @@ const PureChartEditor = (props: IProps) => {
           <PanelCharts />
           <Tabs defaultActiveKey="setting">
             <TabPane tab="配置" key="setting">
-              <Configurator ref={baseConfigRef} />
+              <ConfiguratorWithRef ref={baseConfigFormRef} />
             </TabPane>
             <TabPane tab="数据" key="data">
               {/* <PanelData /> */}

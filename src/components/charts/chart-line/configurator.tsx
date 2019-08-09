@@ -2,14 +2,14 @@
  * 2D 线形图：折线、柱状、曲线
  */
 import { get, merge } from 'lodash';
-
+import { Form } from 'antd';
 import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
-import { Table } from 'antd';
+import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { connect } from 'dva';
-import { convertSettingToOption } from '../utils';
+// import { convertSettingToOption } from '../utils';
 import { mockDataLine } from './utils';
-import { RenderForm } from 'common';
+import { RenderPureForm } from 'common';
 
 type IType = 'line' | 'bar' | 'area';
 
@@ -21,9 +21,13 @@ interface IData {
 }
 
 interface IProps extends ReturnType<typeof mapStateToProps> {
-  viewId: string
-  isMock: boolean
-  defaultOption: object
+  viewId: string;
+  isMock: boolean;
+  defaultOption: object;
+  currentChart: IChart;
+  form: WrappedFormUtils;
+  forwardedRef: any;
+  formData: any;
 }
 
 const baseAxis = {
@@ -44,33 +48,65 @@ const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: 
 //     render: () => <a href="javascript:;">Delete</a>,
 //   },
 // ];
-const LineConfigurer = ({ option = {}, defaultOption, isMock, chartType, names, datas, viewId }: IProps) => {
+const LineConfigurator = ({ form, formData, forwardedRef, defaultOption, isMock, chartType, names, datas, viewId, currentChart }: IProps) => {
+  console.log(44, formData);
+  const { config: { option } } = currentChart;
+
+  React.useEffect(() => {
+    forwardedRef.current = form;
+  }, [form]);
+
+  React.useEffect(() => {
+    form.setFieldsValue({ ...formData });
+  }, [formData]);
+
   const xAxisType = get(option, ['xAxis', 'type'], 'category');
   // 横轴，纵轴
-
   const fields = [
     {
-      label: 'app Key',
-      name: 'key',
+      label: 'legend',
+      name: 'legend',
+      subList: [
+        [
+          {
+            label: 'align',
+            name: 'legend.align',
+            itemProps: {
+              span: 10,
+            },
+          },
+          {
+            label: 'bottom',
+            name: 'legend.bottom',
+            itemProps: {
+              span: 10,
+            },
+          },
+        ],
+      ],
     },
-    {
-      label: 'app Secret',
-      name: 'secret',
-      required: false,
-    },
+    // {
+    //   label: 'app Secret',
+    //   name: 'secret',
+    //   required: false,
+    // },
   ];
+
+  // const syncConfig = () => {
+  //   form.validateFields((err, values) => {
+  //     if (!err) {
+  //       console.log(values);
+  //     }
+  //   });
+  // };
 
   return (
     <div>
-      <RenderForm
-        layout="inline"
+      <RenderPureForm
+        // layout="inline"
         list={fields}
+        form={form}
       />
-      {/* <Table
-        columns={columns}
-        expandedRowRender={record => <p style={{ margin: 0 }}>{record.description}</p>}
-        dataSource={data}
-      /> */}
     </div>
   );
 };
@@ -81,8 +117,8 @@ const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, n
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],
     datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
-    option: convertSettingToOption(drawerInfo),
+    // option: convertSettingToOption(drawerInfo),
   };
 };
 
-export default connect(mapStateToProps)(LineConfigurer);
+export default connect(mapStateToProps)(Form.create()(LineConfigurator));

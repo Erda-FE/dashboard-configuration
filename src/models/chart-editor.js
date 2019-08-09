@@ -11,7 +11,7 @@ const defaultState = {
   viewCopy: {}, // 修改时用于恢复的复制对象
 };
 
-const newViewTpl = {
+const newChartTpl = {
   chartType: 'chart:line',
   staticData: {
     xData: [],
@@ -39,22 +39,14 @@ export default {
           addMode: true,
           chartMap: {
             ...chartMap,
-            [viewId]: newViewTpl,
+            [viewId]: newChartTpl,
           },
         },
       });
       yield put({ type: 'biDashBoard/generateChart', viewId });
     },
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理
-    * saveEditor(_, { put, select }) {
-      // const { chartEditor: { editChartId, chartMap, viewCopy }, biDashBoard: { layout } } = yield select(state => state);
-      // const isExist = find(layout, ({ i }) => i === editChartId);
-      // if (!isExist) { // 创建时取消就移除
-      //   yield put({ type: 'biDashBoard/deleteView', viewId: editChartId });
-      //   yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
-      // } else { // 编辑时取消恢复原有数据
-      //   chartMap[editChartId] = viewCopy;
-      // }
+    * saveEditor(action, { put, select }) {
       yield put({ type: 'updateState', payload: { visible: false, addMode: false, editChartId: '', viewCopy: {} } });
     },
     // 表单变化时自动保存
@@ -101,7 +93,7 @@ export default {
         yield yield put({ type: 'biDashBoard/deleteLayout', viewId: editChartId });
         tempPayload = { chartMap: { ...chartMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
       } else {
-        tempPayload = { chartMap: { ...chartMap, [editChartId]: { ...drawerInfo, chartType: chartType } } };
+        tempPayload = { chartMap: { ...chartMap, [editChartId]: { ...drawerInfo, chartType } } };
       }
       yield put({ type: 'updateState', payload: tempPayload });
     },

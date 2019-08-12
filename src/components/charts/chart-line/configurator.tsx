@@ -10,6 +10,7 @@ import { connect } from 'dva';
 // import { convertSettingToOption } from '../utils';
 import { mockDataLine } from './utils';
 import { RenderPureForm } from 'common';
+import { getDefaultOption } from './default-config';
 
 type IType = 'line' | 'bar' | 'area';
 
@@ -26,7 +27,7 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
   defaultOption: object;
   currentChart: IChart;
   form: WrappedFormUtils;
-  forwardedRef: any;
+  forwardedRef: { current: any };
   formData: any;
 }
 
@@ -48,19 +49,32 @@ const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: 
 //     render: () => <a href="javascript:;">Delete</a>,
 //   },
 // ];
-const LineConfigurator = ({ form, formData, forwardedRef, defaultOption, isMock, chartType, names, datas, viewId, currentChart }: IProps) => {
-  console.log(44, formData);
+const LineConfigurator = (props: IProps) => {
+  const { form, formData, forwardedRef, names, datas, viewId, currentChart } = props;
+  console.log('props', props);
+
   const { config: { option } } = currentChart;
 
   React.useEffect(() => {
+    // eslint-disable-next-line no-param-reassign
     forwardedRef.current = form;
+    console.log('effect form');
   }, [form]);
 
   React.useEffect(() => {
-    form.setFieldsValue({ ...formData });
+    console.log('effect formdata');
+
+    const defaultOption = getDefaultOption();
+
+    const originData = { ...defaultOption, ...formData };
+    setTimeout(() => {
+      console.log('timeout', forwardedRef.current);
+
+      form.setFieldsValue(originData);
+    }, 100);
   }, [formData]);
 
-  const xAxisType = get(option, ['xAxis', 'type'], 'category');
+  // const xAxisType = get(option, ['xAxis', 'type'], 'category');
   // 横轴，纵轴
   const fields = [
     {
@@ -85,25 +99,14 @@ const LineConfigurator = ({ form, formData, forwardedRef, defaultOption, isMock,
         ],
       ],
     },
-    // {
-    //   label: 'app Secret',
-    //   name: 'secret',
-    //   required: false,
-    // },
   ];
 
-  // const syncConfig = () => {
-  //   form.validateFields((err, values) => {
-  //     if (!err) {
-  //       console.log(values);
-  //     }
-  //   });
-  // };
+  console.log('child render');
+
 
   return (
     <div>
       <RenderPureForm
-        // layout="inline"
         list={fields}
         form={form}
       />

@@ -1,4 +1,4 @@
-import { cloneDeep, forEach, startsWith } from 'lodash';
+import { cloneDeep, forEach, startsWith, set } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 
@@ -45,9 +45,13 @@ export default {
       });
       yield put({ type: 'biDashBoard/generateChart', viewId });
     },
-    // 编辑时保存仅置空viewCopy即可，新增时保存无需处理
-    * saveEditor(action, { put, select }) {
-      yield put({ type: 'updateState', payload: { visible: false, addMode: false, editChartId: '', viewCopy: {} } });
+    // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
+    * saveEditor({ payload }, { put, select }) {
+      const { editChartId, chartMap } = yield select(state => state.chartEditor);
+      const editChart = cloneDeep(chartMap[editChartId]);
+      const { option = {} } = payload;
+      set(editChart, 'config.option', option);
+      yield put({ type: 'updateState', payload: { chartMap: { ...chartMap, [editChartId]: editChart }, visible: false, addMode: false, editChartId: '', viewCopy: {} } });
     },
     // 表单变化时自动保存
     * onEditorChange({ payload }, { select, put }) {

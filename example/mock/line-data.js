@@ -297,7 +297,13 @@ export default [
       // },
       Controls: ['input', 'input2'],
       config: {
-        option: 'line',
+        option: {
+          legend: {
+            orient: 'horizontal',
+            bottom: 11,
+            // align: 'left',
+          },
+        },
       },
     },
   },

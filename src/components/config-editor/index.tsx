@@ -37,14 +37,11 @@ const PureChartEditor = (props: IProps) => {
       return;
     }
     // TODO add validation for each tab
-    // validateFields((err: any) => {
-    // if (err) return;
-    console.log(baseConfigFormRef.current);
 
-    baseConfigFormRef.current.validateFieldsAndScroll((errors, values) => {
+    baseConfigFormRef.current.validateFieldsAndScroll((errors: any, optionValues: any) => {
       if (errors) return;
-      console.log('pp', values);
-      saveEditor();
+      console.log('pp', optionValues);
+      saveEditor({ option: optionValues });
     });
   };
 
@@ -63,6 +60,9 @@ const PureChartEditor = (props: IProps) => {
     <Configurator forwardedRef={ref} currentChart={currentChart} formData={chartOptions} />
   ));
 
+  console.log('parent render');
+
+
   return (
     <EditorContainer
       visible={visible}
@@ -74,7 +74,7 @@ const PureChartEditor = (props: IProps) => {
           <PanelCharts />
           <Tabs defaultActiveKey="setting">
             <TabPane tab="配置" key="setting">
-              <ConfiguratorWithRef ref={baseConfigFormRef} />
+              <ConfiguratorWithRef key={123} ref={baseConfigFormRef} />
             </TabPane>
             <TabPane tab="数据" key="data">
               {/* <PanelData /> */}
@@ -126,8 +126,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   closeEditor() {
     dispatch({ type: 'chartEditor/closeEditor' });
   },
-  saveEditor() {
-    dispatch({ type: 'chartEditor/saveEditor' });
+  saveEditor(payload: object) {
+    dispatch({ type: 'chartEditor/saveEditor', payload });
   },
   onEditorChange(payload: object) {
     dispatch({ type: 'chartEditor/updateState', payload: { tempView: payload } });

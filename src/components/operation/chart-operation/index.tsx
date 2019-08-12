@@ -145,7 +145,6 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                     ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
                     : <div className="bi-view-title">{view.name}</div>
                 }
-                {/* {hasLinked && <Tooltip placement="bottom" title="已设置联动"><Icon type="link" /></Tooltip>} */}
                 {isEditLayout && <span className="bi-draggable-handle"><Icon type="drag" /></span>}
               </div>
               <div className="bi-view-header-right">

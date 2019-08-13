@@ -1,4 +1,4 @@
-import { set, map } from 'lodash';
+import { map } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from 'common/utils';
@@ -6,7 +6,7 @@ import { cutStr, getFormatter } from 'common/utils';
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
 export function getOption(data: IStaticData, config: IChartConfig) {
-  const { metricData = [], xData = [], title = '' } = data || {};
+  const { metricData = [], xData = [] } = data || {};
   const { option: inputOption = {} } = config;
   const {
     seriesName,
@@ -160,7 +160,5 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     },
     series,
   };
-
-  set(defaultOption, ['title', 'text'], title);
   return defaultOption;
 }

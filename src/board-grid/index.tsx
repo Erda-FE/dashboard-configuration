@@ -21,7 +21,6 @@ import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartEditor, ChartOperation, defaultChartsMap } from '../components';
-import { IChartsMap, IExpand, ILayout } from '../types';
 import './index.scss';
 
 
@@ -243,14 +242,6 @@ class BoardGrid extends React.PureComponent<IProps> {
                       </React.Fragment>
                     );
                   }
-                  // else {
-                  //   ChartNode = get(this.controlsMap, [controlType, 'Component']);
-                  //   ChildComp = (
-                  //     <ControlOperation viewId={i}>
-                  //       <ChartNode viewId={i} />
-                  //     </ControlOperation>
-                  //   );
-                  // }
                 } else {
                   console.error('layout view should be object or function');
                 }

@@ -132,9 +132,11 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const { resData, fetchStatus } = this.state;
     const isDataEmpty = isEmpty(resData);
     const message = getMessage({ isDataEmpty, fetchStatus });
+    const { title } = view;
 
     return (
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
+        <h2 className="chart-title">{title}</h2>
         {
           !view.hideHeader &&
           (

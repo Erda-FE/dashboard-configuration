@@ -133,7 +133,7 @@ const metricData = [
     ],
   }, {
     name: 'tset3',
-    type: 'bar',
+    type: 'line',
     data: [
       '0.03',
       '0.03',
@@ -201,7 +201,6 @@ const metricData = [
 ];
 
 const staticData = {
-  title: 'zookeeper',
   xData: [
     '13:39',
     '13:40',
@@ -270,7 +269,7 @@ const staticData = {
 export default [
   {
     w: 9,
-    h: 9,
+    h: 12,
     x: 0,
     y: 0,
     i: 'view-1',
@@ -280,7 +279,7 @@ export default [
       name: 'test',
       chartType: 'chart:line',
       hideHeader: true,
-      // staticData,
+      title: 'zookeeper',
       loadData() {
         return new Promise((resolve) => {
           setTimeout(() => {
@@ -289,16 +288,12 @@ export default [
         });
       },
       dataConvertor: 'line',
-      // dataConvertor(data) {
-      //   console.log('convert:', data);
-      //   return data;
-      // },
       Controls: ['input', 'input2'],
       config: {
         option: {
           legend: {
             orient: 'horizontal',
-            bottom: 11,
+            bottom: 20,
             // align: 'left',
           },
         },

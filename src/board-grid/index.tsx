@@ -103,23 +103,29 @@ class BoardGrid extends React.PureComponent<IProps> {
     };
   }
 
-  componentWillMount() {
-    const { layout } = this.props;
-    const [pureLayout, chartMap] = this.splitLayoutAndView(layout);
-    this.props.updateLayout(pureLayout);
-    this.props.updateChildMap(chartMap);
-    this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
-    // this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
-    // paramsManage.set(this.props.urlParamsMap);
-    // registerUrlDataHandle(this.props.urlDataHandle);
-  }
+  // componentWillMount() {
+  // const { layout } = this.props;
+  // const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
+  // this.props.updateLayout(pureLayout);
+  // this.props.updateChildMap(viewMap);
+  // this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
+  // this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
+  // paramsManage.set(this.props.urlParamsMap);
+  // registerUrlDataHandle(this.props.urlDataHandle);
+  // }
 
-  componentWillReceiveProps({ dashboardLayout, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
+  componentWillReceiveProps({ layout, dashboardLayout, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
     if (!isEqual(dashboardLayout, this.props.dashboardLayout)) {
       this.props.updateLayout(dashboardLayout);
     }
     if (!isEqual(chartsMap, this.props.chartsMap)) {
       this.chartsMap = { ...defaultChartsMap, ...chartsMap };
+    }
+    if (!isEqual(layout, this.props.layout)) {
+      const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
+      this.props.updateLayout(pureLayout);
+      this.props.updateChildMap(viewMap);
+      this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
     }
     // if (!isEqual(controlsMap, this.props.controlsMap)) {
     //   this.controlsMap = { ...defaultControlsMap, ...controlsMap };

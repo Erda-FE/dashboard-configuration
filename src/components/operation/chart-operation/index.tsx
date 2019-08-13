@@ -1,7 +1,7 @@
 import { Icon, Input, Popconfirm, Tooltip } from 'antd';
 import classnames from 'classnames';
 import { connect } from 'dva';
-import { isEmpty, isString } from 'lodash';
+import { isEmpty, isString, isEqual } from 'lodash';
 import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
@@ -65,7 +65,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const initData = this.hasLoadFn ? {} : staticData;
     this.state = {
       resData: initData,
-      fetchStatus: Status.FETCH,
+      fetchStatus: Status.SUCCESS,
     };
   }
 
@@ -78,7 +78,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   componentWillReceiveProps({ isEditView, view }: IProps) {
     this.hasLoadFn = typeof view.loadData === 'function';
     if (this.hasLoadFn) {
-      if (isEditView !== this.props.isEditView) {
+      if (!isEqual(this.props.view, view) || isEditView !== this.props.isEditView) {
         this.loadData();
       }
     }
@@ -197,7 +197,6 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 const mapStateToProps = (
   {
     biDashBoard: { isEdit: isEditLayout },
-    // linkSetting: { linkMap, linkDataMap },
     chartEditor: { editChartId },
   }: any
   , { viewId }: any

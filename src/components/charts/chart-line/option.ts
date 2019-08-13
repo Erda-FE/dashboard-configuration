@@ -26,6 +26,10 @@ export function getOption(data: IStaticData, config: IViewConfig) {
     },
   };
 
+  if (!data) {
+    return defaultOption;
+  }
+
   let option = defaultOption;
   let customOption;
   let customOptionFn = config.optionFn;
@@ -48,6 +52,9 @@ export function getOption(data: IStaticData, config: IViewConfig) {
       }
     }
     customOption = cloneDeep(customOption) as any;
+    if (data.extraOption) {
+      customOption = merge(customOption, data.extraOption);
+    }
   }
 
   if (customOption) {

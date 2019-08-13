@@ -31,6 +31,7 @@ interface IStaticData {
   yData?: TData | TData[];
   metricData: IMetricData[];
   legendData: TData[];
+  extraOption: object; // 可能需要根据返回数据调整option
   [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
 }
 

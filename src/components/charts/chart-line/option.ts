@@ -1,86 +1,166 @@
-import { merge, set, cloneDeep, isString } from 'lodash';
-import { getConfig } from '../../../config';
-import { IViewConfig, IOptionFn, IStaticData, TData } from '../../../types';
+import { set, map } from 'lodash';
+import moment from 'moment';
+import { areaColors } from '../../../theme/dice';
+import { cutStr, getFormatter } from 'common/utils';
 
+const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
-export function getOption(data: IStaticData, config: IViewConfig) {
+export function getOption(data: IStaticData, config: IChartConfig) {
+  const { metricData = [], xData = [], title = '' } = data || {};
+  const { option: inputOption = {} } = config;
+  const {
+    seriesName,
+    isBarChangeColor,
+    tooltipFormatter,
+    isLabel,
+    unitType: customUnitType,
+    unit: customUnit,
+    noAreaColor,
+    decimal = 2,
+    yAxisNames = [],
+    legendFormatter,
+    timeSpan,
+  } = inputOption;
+
+  const yAxis: any[] = [];
+  const series: any[] = [];
+  const legendData: {name: string}[] = [];
+  const moreThanOneDay = timeSpan ? timeSpan.seconds > (24 * 3600) : false;
+
+  map(metricData, (value, i) => {
+    const { axisIndex, name, tag } = value;
+    if (tag || name) {
+      legendData.push({ name: tag || name });
+    }
+    const yAxisIndex = 0; // axisIndex || 0;
+    const areaColor = areaColors[i];
+    series.push({
+      type: value.chartType || 'line',
+      name: value.tag || seriesName || value.name || value.key,
+      yAxisIndex,
+      data: !isBarChangeColor ? value.data : map(value.data, (item: any, j) => {
+        const sect = Math.ceil(value.data.length / changeColors.length);
+        return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
+      }),
+      label: {
+        normal: {
+          show: isLabel,
+          position: 'top',
+          formatter: (label: any) => label.data.label,
+        },
+      },
+      // markLine: i === 0 ? markLine : {}, //TODO
+      connectNulls: true,
+      symbol: 'emptyCircle',
+      barMaxWidth: 50,
+      areaStyle: {
+        normal: {
+          color: noAreaColor ? 'transparent' : areaColor,
+        },
+      },
+    });
+    // const curMax = value.data ? calMax([value.data]) : [];
+    // maxArr[yAxisIndex] = maxArr[yAxisIndex] && maxArr[yAxisIndex] > curMax ? maxArr[yAxisIndex] : curMax;
+    const curUnitType = (value.unitType || customUnitType || ''); // y轴单位
+    const curUnit = (value.unit || customUnit || ''); // y轴单位
+    yAxis[yAxisIndex] = {
+      name: name || yAxisNames[yAxisIndex] || '',
+      nameTextStyle: {
+        padding: [0, 0, 0, 5],
+      },
+      position: yAxisIndex === 0 ? 'left' : 'right',
+      offset: 10,
+      min: 0,
+      splitLine: {
+        show: true,
+      },
+      axisTick: {
+        show: false,
+      },
+      axisLine: {
+        show: false,
+      },
+      unitType: curUnitType,
+      unit: curUnit,
+      axisLabel: {
+        margin: 0,
+        formatter: (val: string) => getFormatter(curUnitType, curUnit).format(val, decimal),
+      },
+    };
+  });
+
+  const lgFormatter = (name: string) => {
+    const defaultName = legendFormatter ? legendFormatter(name) : name;
+    return cutStr(defaultName, 20);
+  };
+
+  const getTTUnitType = (i: number) => {
+    const curYAxis = yAxis[i] || yAxis[yAxis.length - 1];
+    return [curYAxis.unitType, curYAxis.unit];
+  };
+
+  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
+
+  const defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
+  const haveTwoYAxis = yAxis.length > 1;
+
   const defaultOption = {
     tooltip: {
       trigger: 'axis',
+      transitionDuration: 0,
+      confine: true,
+      axisPointer: {
+        type: 'none',
+      },
+      formatter: tooltipFormatter || defaultTTFormatter,
     },
-    xAxis: [{
-      type: 'category',
-      data: [],
-    }],
-    yAxis: [{
-      type: 'value',
-    }],
-    series: [{
-      data: [],
-      type: 'line',
-    }],
+    legend: {
+      bottom: 10,
+      padding: [15, 5, 0, 5],
+      orient: 'horizontal',
+      align: 'left',
+      data: legendData,
+      formatter: lgFormatter,
+      type: 'scroll',
+      tooltip: {
+        show: true,
+        formatter: (t: any) => cutStr(t.name, 100),
+      },
+    },
+    xAxis: [
+      {
+        type: 'category',
+        data: xData, /* X轴数据 */
+        axisTick: {
+          show: false, /* 坐标刻度 */
+        },
+        axisLine: {
+          show: false,
+        },
+        axisLabel: {
+          formatter: xData
+            ? (value: string) => value
+            : (value: string) => moment(Number(value)).format(moreThanOneDay ? 'M/D HH:mm' : 'HH:mm'),
+        },
+        splitLine: {
+          show: false,
+        },
+      },
+    ],
+    yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
     grid: {
-      left: 40,
-      right: 40,
+      top: haveTwoYAxis ? 30 : 25,
+      left: 15,
+      right: haveTwoYAxis ? 30 : 5,
       bottom: 40,
+      containLabel: true,
     },
+    textStyle: {
+      fontFamily: 'arial',
+    },
+    series,
   };
 
-  if (!data) {
-    return defaultOption;
-  }
-
-  let option = defaultOption;
-  let customOption;
-  let customOptionFn = config.optionFn;
-  if (customOptionFn) {
-    if (isString(customOptionFn)) {
-      customOptionFn = getConfig(['chartOptionFn', customOptionFn]) as IOptionFn;
-      if (!customOptionFn) {
-        customOptionFn = (d: any) => d;
-        console.warn(`optionFn \`${customOptionFn}\` not registered yet`);
-      }
-    }
-    customOption = customOptionFn(data, config.optionExtra);
-  } else if (config.option) {
-    customOption = config.option;
-    if (isString(customOption)) {
-      customOption = getConfig(['chartOption', customOption]);
-      if (!customOption) {
-        customOption = {};
-        console.warn(`customOption \`${customOption}\` not registered yet`);
-      }
-    }
-    customOption = cloneDeep(customOption) as any;
-    if (data.extraOption) {
-      customOption = merge(customOption, data.extraOption);
-    }
-  }
-
-  if (customOption) {
-    // 对用户的配置做些格式处理
-    let { xAxis, yAxis } = customOption;
-    // 横纵轴都用数组形式
-    xAxis = Array.isArray(xAxis) ? xAxis : [xAxis];
-    yAxis = Array.isArray(yAxis) ? yAxis : [yAxis];
-    option = merge(defaultOption, { ...customOption, xAxis, yAxis });
-  }
-
-  // eslint-disable-next-line prefer-const
-  let { xData = [], yData = [], metricData = [], legendData = [] } = data || {};
-  // 先统一转为2层数组，内层数组为每条轴的data
-  const x2Data = Array.isArray(xData[0]) ? xData : [xData];
-  (x2Data as TData[]).forEach((d: TData, i: number) => {
-    set(option, ['xAxis', i, 'data'], d);
-  });
-  const y2Data = Array.isArray(yData[0]) ? yData : [yData];
-  // y轴只有type为category时才需要设置data
-  option.yAxis.forEach((yAx: any, i) => {
-    yAx.type === 'category' && (yAx.data = y2Data[i]);
-  });
-  if (legendData.length) {
-    set(option, ['legend', 'data'], legendData);
-  }
-  merge(option, { series: metricData });
-  return option;
+  set(defaultOption, ['title', 'text'], title);
+  return defaultOption;
 }

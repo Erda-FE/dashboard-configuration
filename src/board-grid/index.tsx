@@ -103,16 +103,13 @@ class BoardGrid extends React.PureComponent<IProps> {
     };
   }
 
-  // componentWillMount() {
-  // const { layout } = this.props;
-  // const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
-  // this.props.updateLayout(pureLayout);
-  // this.props.updateChildMap(viewMap);
-  // this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
-  // this.controlsMap = { ...defaultControlsMap, ...this.props.controlsMap };
-  // paramsManage.set(this.props.urlParamsMap);
-  // registerUrlDataHandle(this.props.urlDataHandle);
-  // }
+  componentWillMount() {
+    const { layout } = this.props;
+    const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
+    this.props.updateLayout(pureLayout);
+    this.props.updateChildMap(viewMap);
+    this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
+  }
 
   componentWillReceiveProps({ layout, dashboardLayout, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
     if (!isEqual(dashboardLayout, this.props.dashboardLayout)) {
@@ -127,15 +124,6 @@ class BoardGrid extends React.PureComponent<IProps> {
       this.props.updateChildMap(viewMap);
       this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
     }
-    // if (!isEqual(controlsMap, this.props.controlsMap)) {
-    //   this.controlsMap = { ...defaultControlsMap, ...controlsMap };
-    // }
-    // if (!isEqual(urlParamsMap, this.props.urlParamsMap)) {
-    //   paramsManage.set(urlParamsMap);
-    // }
-    // if (urlDataHandle !== this.props.urlDataHandle) {
-    //   registerUrlDataHandle(this.props.urlDataHandle);
-    // }
   }
 
   componentWillUnmount() {

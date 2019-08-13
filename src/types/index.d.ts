@@ -50,11 +50,22 @@ interface IChart {
   Controls?: string[] | React.Component[]; // 控件列表，展示在header下面，为string时表示使用已注册的组件
   Configurator?: React.ReactElement<any>; // 配置器，放在配置区域显示
 }
+interface IOption {
+  seriesName?: string;
+  isBarChangeColor?: boolean;
+  tooltipFormatter?: Function;
+  isLabel?: boolean;
+  noAreaColor?: boolean;
+  unitType?: string;
+  unit?: string;
+  decimal?: number;
+  yAxisNames?: string[];
+  legendFormatter?: Function;
+  timeSpan?: any;
+}
 
 interface IChartConfig {
-  option?: string | object;// 图表配置，会作为最高优先级合并
-  optionFn?: string | IOptionFn;// 图表配置方法，以标准数据为参数，为字符串表示从注册中取
-  optionExtra: object; // 额外对象，用于组件直接传递参数给dataConvertor
+  option?: IOption;// 图表配置，会作为最高优先级合并
 }
 
 interface ILayoutItem {

@@ -1,5 +1,6 @@
 import { wrapWithTooltip } from './get-tsx';
 
+export { getFormatter } from './formatter';
 interface ICutOptions {
   suffix?: string;
   showTip?: boolean;

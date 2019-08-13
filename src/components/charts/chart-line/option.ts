@@ -26,6 +26,10 @@ export function getOption(data: IStaticData, config: IViewConfig) {
     },
   };
 
+  if (!data) {
+    return defaultOption;
+  }
+
   let option = defaultOption;
   let customOption;
   let customOptionFn = config.optionFn;

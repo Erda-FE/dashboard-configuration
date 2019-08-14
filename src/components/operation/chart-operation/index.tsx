@@ -1,7 +1,7 @@
 import { Icon, Input, Popconfirm, Tooltip } from 'antd';
 import classnames from 'classnames';
 import { connect } from 'dva';
-import { isEmpty, isString, isEqual } from 'lodash';
+import { isEmpty, isString, isEqual, get } from 'lodash';
 import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
@@ -23,7 +23,8 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
 
 interface IState {
   resData: any
-  fetchStatus: Status
+  fetchStatus: Status;
+  prevStaticData: any;
 }
 
 const enum Status {
@@ -66,7 +67,19 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     this.state = {
       resData: initData,
       fetchStatus: Status.SUCCESS,
+      prevStaticData: {},
     };
+  }
+
+  static getDerivedStateFromProps(nextProps: IProps, prevState: any) {
+    const staticData = get(nextProps, 'view.staticData');
+    if (!isEqual(prevState.prevStaticData, staticData)) {
+      return {
+        resData: staticData,
+        prevStaticData: staticData,
+      };
+    }
+    return null;
   }
 
   componentDidMount() {
@@ -75,7 +88,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     }
   }
 
-  componentWillReceiveProps({ isEditView, view }: IProps) {
+  componentDidUpdate({ isEditView, view }: IProps) {
     this.hasLoadFn = typeof view.loadData === 'function';
     if (this.hasLoadFn) {
       if (!isEqual(this.props.view.chartQuery, view.chartQuery) || isEditView !== this.props.isEditView) {
@@ -151,7 +164,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
               </div>
               <div className="bi-view-header-right">
                 <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
-                {this.hasLoadFn && <Icon type="reload" onClick={this.loadData} />}
+                {this.hasLoadFn && !view.hideReload && <Icon type="reload" onClick={this.loadData} />}
               </div>
             </div>
           )

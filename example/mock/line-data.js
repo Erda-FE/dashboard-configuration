@@ -278,7 +278,7 @@ export default [
     view: {
       name: 'test',
       chartType: 'chart:line',
-      hideHeader: true,
+      hideReload: true,
       title: 'zookeeper',
       loadData() {
         return new Promise((resolve) => {

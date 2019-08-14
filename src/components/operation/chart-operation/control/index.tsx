@@ -11,6 +11,7 @@ interface IProps {
   viewId: string
   view: {
     controls: any[]
+    controlProps: any;
   }
   loadData(): void
 }
@@ -35,13 +36,14 @@ class Control extends React.PureComponent<IProps> {
 
   render() {
     const { view, viewId, loadData } = this.props;
-    const ControlList = map(view.controls, (ctr: string | React.ReactElement<any>) => (isString(ctr) ? getConfig(['ControlMap', ctr]) : ctr));
-    if (isEmpty(ControlList)) {
+    const controlList = map(view.controls, (ctr: string | React.ReactElement<any>) => (isString(ctr) ? getConfig(['ControlMap', ctr]) : ctr));
+    const { controlProps } = view;
+    if (isEmpty(controlList)) {
       return null;
     }
     return (
       <div className="bi-view-control">
-        {ControlList.map((Ctr, i) => <Ctr key={i} viewId={viewId} query={this.state.query} onChange={this.onControlChange} loadData={loadData} />)}
+        {controlList.map((CtrComp: any, i) => <CtrComp key={i} viewId={viewId} query={this.state.query} onChange={this.onControlChange} loadData={loadData} {...controlProps[i]} />)}
       </div>
     );
   }

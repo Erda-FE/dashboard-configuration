@@ -50,7 +50,7 @@ export default [
       //   console.log('convert:', data);
       //   return data;
       // },
-      Controls: ['input'],
+      controls: ['input'],
       config: {
         option: {
           // title: {

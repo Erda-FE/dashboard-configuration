@@ -288,7 +288,7 @@ export default [
         });
       },
       dataConvertor: 'line',
-      Controls: ['input', 'input2'],
+      controls: ['input', 'input2'],
       config: {
         option: {
           legend: {

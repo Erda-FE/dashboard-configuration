@@ -211,7 +211,7 @@ class BoardGrid extends React.PureComponent<IProps> {
               layout={dashboardLayout}
               cols={cols}
               rowHeight={30}
-              width={size.width}
+              width={size.width || 800}
               onLayoutChange={updateLayout}
               isDraggable
               isResizable

@@ -1,12 +1,12 @@
 import { map } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
-import { cutStr, getFormatter } from 'common/utils';
+import { cutStr, getFormatter } from '../../common/utils';
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
 export function getOption(data: IStaticData, config: IChartConfig) {
-  const { metricData = [], xData = [] } = data || {};
+  const { metricData = [], xData, time } = data;
   const { option: inputOption = {} } = config;
   const {
     seriesName,
@@ -101,7 +101,19 @@ export function getOption(data: IStaticData, config: IChartConfig) {
 
   const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
 
-  const defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
+  const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
+
+  let defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
+  if (time) {
+    defaultTTFormatter = (param) => {
+      const endTime = time[param[0].dataIndex + 1];
+      if (!endTime) {
+        return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;
+      }
+      return `${formatTime(param[0].name)} 到 ${formatTime(endTime)}<br/>${genTTArray(param).join('')}`;
+    };
+  }
+
   const haveTwoYAxis = yAxis.length > 1;
 
   const defaultOption = {
@@ -130,7 +142,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     xAxis: [
       {
         type: 'category',
-        data: xData, /* X轴数据 */
+        data: xData || time || [], /* X轴数据 */
         axisTick: {
           show: false, /* 坐标刻度 */
         },

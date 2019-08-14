@@ -78,19 +78,19 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   componentWillReceiveProps({ isEditView, view }: IProps) {
     this.hasLoadFn = typeof view.loadData === 'function';
     if (this.hasLoadFn) {
-      if (!isEqual(this.props.view, view) || isEditView !== this.props.isEditView) {
-        this.loadData();
+      if (!isEqual(this.props.view.chartQuery, view.chartQuery) || isEditView !== this.props.isEditView) {
+        this.loadData(view.chartQuery);
       }
     }
   }
 
-  loadData = (...arg: any) => {
+  loadData = (arg?: any) => {
     const { view } = this.props;
     const { loadData, dataConvertor } = view;
     this.setState({
       fetchStatus: Status.FETCH,
     });
-    loadData(...arg)
+    loadData(arg)
       .then((res: any) => {
         let resData = res;
         if (dataConvertor) {

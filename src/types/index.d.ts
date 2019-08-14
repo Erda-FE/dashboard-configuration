@@ -47,7 +47,7 @@ interface IChart {
   loadData?(query?: object): Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
   dataConvertor?: string | IDataConvertor; // 数据转换，为string时表示使用已注册的方法
   config: IChartConfig// 所有页面上的配置项
-  Controls?: string[] | React.Component[]; // 控件列表，展示在header下面，为string时表示使用已注册的组件
+  controls?: string[] | React.Component[]; // 控件列表，展示在header下面，为string时表示使用已注册的组件
   Configurator?: React.ReactElement<any>; // 配置器，放在配置区域显示
 }
 interface IOption {

@@ -10,7 +10,7 @@ import './index.scss';
 interface IProps {
   viewId: string
   view: {
-    Controls: any[]
+    controls: any[]
   }
   loadData(): void
 }
@@ -35,7 +35,7 @@ class Control extends React.PureComponent<IProps> {
 
   render() {
     const { view, viewId, loadData } = this.props;
-    const ControlList = map(view.Controls, (ctr: string | React.ReactElement<any>) => (isString(ctr) ? getConfig(['ControlMap', ctr]) : ctr));
+    const ControlList = map(view.controls, (ctr: string | React.ReactElement<any>) => (isString(ctr) ? getConfig(['ControlMap', ctr]) : ctr));
     if (isEmpty(ControlList)) {
       return null;
     }

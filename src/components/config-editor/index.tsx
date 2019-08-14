@@ -74,7 +74,7 @@ const PureChartEditor = (props: IProps) => {
           <PanelCharts />
           <Tabs defaultActiveKey="setting">
             <TabPane tab="配置" key="setting">
-              <ConfiguratorWithRef key={123} ref={baseConfigFormRef} />
+              <ConfiguratorWithRef ref={baseConfigFormRef} />
             </TabPane>
             <TabPane tab="数据" key="data">
               {/* <PanelData /> */}

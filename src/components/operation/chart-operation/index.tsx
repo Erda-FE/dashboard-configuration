@@ -73,7 +73,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 
   static getDerivedStateFromProps(nextProps: IProps, prevState: any) {
     const staticData = get(nextProps, 'view.staticData');
-    if (!isEqual(prevState.prevStaticData, staticData)) {
+    if (!isEqual(prevState.prevStaticData, staticData) && staticData) {
       return {
         resData: staticData,
         prevStaticData: staticData,

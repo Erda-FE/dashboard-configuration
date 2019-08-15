@@ -38,9 +38,9 @@ export const registChart = (type: string, data: any) => {
  * @param chartMap对象，以key为名称注册
  * @returns 已注册所有图表
  */
-export const registCharts = (chartMap = {}) => {
-  Object.keys(chartMap).forEach((k) => {
-    regist(`customCharts.${k}`, chartMap[k]);
+export const registCharts = (viewMap = {}) => {
+  Object.keys(viewMap).forEach((k) => {
+    regist(`customCharts.${k}`, viewMap[k]);
   });
   return getConfig('customCharts');
 };

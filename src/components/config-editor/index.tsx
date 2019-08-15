@@ -108,12 +108,12 @@ const PureChartEditor = (props: IProps) => {
 };
 
 const mapStateToProps = ({
-  chartEditor: { visible, addMode, chartMap, editChartId },
+  chartEditor: { visible, addMode, viewMap, editChartId },
 }: any) => ({
   visible,
   editChartId,
   addMode,
-  currentChart: get(chartMap, [editChartId]),
+  currentChart: get(viewMap, [editChartId]),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

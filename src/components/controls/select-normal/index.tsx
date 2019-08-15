@@ -77,13 +77,13 @@ class SelectNormal extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId }: any) => ({
-  width: get(chartMap, [viewId, `${panelControlPrefix}width`], 120),
-  searchName: get(chartMap, [viewId, `${panelControlPrefix}searchName`], ''),
-  multiple: get(chartMap, [viewId, `${panelControlPrefix}multiple`], false),
-  canSearch: get(chartMap, [viewId, `${panelControlPrefix}canSearch`], false),
-  url: get(chartMap, [viewId, `${panelControlPrefix}url`], ''),
-  fixedData: get(chartMap, [viewId, `${panelControlPrefix}fixedData`], '[]'),
+const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId }: any) => ({
+  width: get(viewMap, [viewId, `${panelControlPrefix}width`], 120),
+  searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
+  multiple: get(viewMap, [viewId, `${panelControlPrefix}multiple`], false),
+  canSearch: get(viewMap, [viewId, `${panelControlPrefix}canSearch`], false),
+  url: get(viewMap, [viewId, `${panelControlPrefix}url`], ''),
+  fixedData: get(viewMap, [viewId, `${panelControlPrefix}fixedData`], '[]'),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

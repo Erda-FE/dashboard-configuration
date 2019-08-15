@@ -96,8 +96,8 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, names, datas }: any) => {
-  const drawerInfo = chartMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, names, datas }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],

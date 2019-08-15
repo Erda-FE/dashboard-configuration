@@ -14,13 +14,13 @@ export default {
     //   // if (!isEmpty(layout)) { // 清空layout,防止在同一个页面不停的reload时出错
     //   //   yield yield put({ type: 'updateState', payload: { layout: [] } });
     //   // }
-    //   // yield yield put({ type: 'chartEditor/init', chartMap: get(extra, 'chartMap', {}) });
-    //   // yield yield put({ type: 'linkSetting/init', chartMap: get(extra, 'linkMap', {}) });
+    //   // yield yield put({ type: 'chartEditor/init', viewMap: get(extra, 'viewMap', {}) });
+    //   // yield yield put({ type: 'linkSetting/init', viewMap: get(extra, 'linkMap', {}) });
     //   yield yield put({ type: 'updateState', payload: { layout } });
     // },
     * generateChart({ viewId }, { select, put }) {
-      const { dashBoard: { layout }, chartEditor: { chartMap } } = yield select(state => state);
-      const { chartType, controlType } = chartMap[viewId];
+      const { dashBoard: { layout }, chartEditor: { viewMap } } = yield select(state => state);
+      const { chartType, controlType } = viewMap[viewId];
       if (chartType) {
         layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 6 });
       } else if (controlType) {
@@ -32,10 +32,10 @@ export default {
       yield put({ type: 'updateState', payload: { isEdit: false } });
       const {
         dashBoard: { layout },
-        chartEditor: { chartMap },
+        chartEditor: { viewMap },
         linkSetting: { linkMap },
       } = yield select(state => state);
-      return { layout, chartMap, linkMap }; // 只输出外部需要的
+      return { layout, viewMap, linkMap }; // 只输出外部需要的
     },
     * deleteView({ viewId }, { put }) {
       yield put({ type: 'deleteLayout', viewId });

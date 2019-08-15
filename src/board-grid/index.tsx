@@ -66,13 +66,13 @@ const getGridBackground = (width: number) => {
 };
 
 const splitLayoutAndView = (layout: ILayout) => {
-  const chartMap = {};
+  const viewMap = {};
   const pureLayout = layout.map((item) => {
     const { view, ...rest } = item;
-    chartMap[item.i] = view;
+    viewMap[item.i] = view;
     return rest;
   });
-  return [pureLayout, chartMap];
+  return [pureLayout, viewMap];
 };
 
 class BoardGrid extends React.PureComponent<IProps> {
@@ -160,7 +160,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   render() {
     const {
-      dashboardLayout, chartMap, isEdit, openEdit, readOnly,
+      dashboardLayout, viewMap, isEdit, openEdit, readOnly,
       expandOption, updateLayout, addEditor,
     } = this.props;
     const { isFullscreen } = screenfull; // 是否全屏
@@ -221,7 +221,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             >
               {dashboardLayout.map(({ i, ...others }: any) => {
                 let ChildComp = null;
-                let view = chartMap[i];
+                let view = viewMap[i];
                 view = typeof view === 'function'
                   ? view({ isEdit, isFullscreen })
                   : view;
@@ -261,10 +261,10 @@ class BoardGrid extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({
   dashBoard: { layout, isEdit },
-  chartEditor: { chartMap },
+  chartEditor: { viewMap },
 }: any) => ({
   dashboardLayout: layout,
-  chartMap,
+  viewMap,
   isEdit,
 });
 
@@ -272,8 +272,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   updateLayout(layout: any) {
     dispatch({ type: 'dashBoard/updateState', payload: { layout } });
   },
-  updateChildMap(chartMap: any) {
-    dispatch({ type: 'chartEditor/updateState', payload: { chartMap } });
+  updateChildMap(viewMap: any) {
+    dispatch({ type: 'chartEditor/updateState', payload: { viewMap } });
   },
   addEditor() {
     dispatch({ type: 'chartEditor/addEditor' });

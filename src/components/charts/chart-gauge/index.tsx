@@ -38,8 +38,8 @@ const ChartGauge = ({ option = {}, defaultOption, isMock, name, datas, viewId }:
   return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
-const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, datas, name }: any) => {
-  const drawerInfo = chartMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, datas, name }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
     chartType: drawerInfo.chartType as string,
     name: isMock ? mockDataGauge.name : (name || '') as string,

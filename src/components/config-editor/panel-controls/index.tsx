@@ -36,8 +36,8 @@ class PanelControls extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ chartEditor: { chartMap, editChartId } }: any) => ({
-  controlType: get(chartMap, [editChartId, 'controlType'], ''),
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId } }: any) => ({
+  controlType: get(viewMap, [editChartId, 'controlType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

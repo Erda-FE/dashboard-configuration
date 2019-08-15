@@ -32,8 +32,8 @@ class PanelData extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ chartEditor: { chartMap, editChartId } }: any) => ({
-  chartType: get(chartMap, [editChartId, 'chartType'], ''),
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId } }: any) => ({
+  chartType: get(viewMap, [editChartId, 'chartType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

@@ -72,10 +72,4 @@ class Chart extends React.Component<IProps> {
   }
 }
 
-// const mapDispatchToProps = (dispatch: any) => ({
-//   updateLinkDataMap(linkId: string, values: object) {
-//     dispatch({ type: 'linkSetting/updateLinkDataMap', linkId, values });
-//   },
-// });
-
 export default Chart;

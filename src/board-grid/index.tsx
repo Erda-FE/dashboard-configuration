@@ -102,7 +102,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     const { layout } = this.props;
     const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
     this.props.updateLayout(pureLayout);
@@ -110,15 +110,15 @@ class BoardGrid extends React.PureComponent<IProps> {
     this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
   }
 
-  componentWillReceiveProps({ layout, dashboardLayout, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
+  componentDidUpdate({ layout, dashboardLayout, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
     if (!isEqual(dashboardLayout, this.props.dashboardLayout)) {
-      this.props.updateLayout(dashboardLayout);
+      this.props.updateLayout(this.props.dashboardLayout);
     }
     if (!isEqual(chartsMap, this.props.chartsMap)) {
-      this.chartsMap = { ...defaultChartsMap, ...chartsMap };
+      this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
     }
     if (!isEqual(layout, this.props.layout)) {
-      const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
+      const [pureLayout, viewMap] = this.splitLayoutAndView(this.props.layout);
       this.props.updateLayout(pureLayout);
       this.props.updateChildMap(viewMap);
       this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
@@ -231,8 +231,6 @@ class BoardGrid extends React.PureComponent<IProps> {
                 if (isPlainObject(view)) {
                   const { chartType = '' } = view;
                   if (chartType.startsWith('chart')) {
-                    // const [, chartType = 'line'] = chartType.split(':');
-                    // const { controlType } = chartMap[i];
                     const ChartNode = get(this.chartsMap, [chartType, 'Component']);
                     ChildComp = (
                       <React.Fragment>

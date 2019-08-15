@@ -20,7 +20,7 @@
 
     theme={theme}
     themeObj={themeObj}
-    chartsMap={chartsMap}
+    customCharts={customCharts}
     controlsMap={controlsMap}
     UrlComponent={UrlComponent}
   />
@@ -87,7 +87,7 @@
   // 非必传，可以覆盖已经存在的图表, 也可以新增新的图表, DataSettingsCommonCharts可以不用
   import { DataSettingsCommonCharts } from '@terminus/bi-ui-package'
 
-  chartsMap: {
+  customCharts: {
     line: {
       name: '折线图',
       icon: <Icon type="line-chart" />, // icon

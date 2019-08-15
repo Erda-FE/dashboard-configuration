@@ -83,10 +83,10 @@ class CodeModal extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  chartEditor: { codeVisible, chartMap, editChartId },
+  chartEditor: { codeVisible, viewMap, editChartId },
 }: any) => ({
   codeVisible,
-  option: convertSettingToOption(get(chartMap, [editChartId], {})),
+  option: convertSettingToOption(get(viewMap, [editChartId], {})),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

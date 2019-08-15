@@ -221,7 +221,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 
 const mapStateToProps = (
   {
-    biDashBoard: { isEdit: isEditLayout },
+    dashBoard: { isEditMode: isEditLayout },
     chartEditor: { editChartId },
   }: any
   , { viewId }: any
@@ -239,7 +239,7 @@ const mapDispatchToProps = (dispatch: any) => ({
     return dispatch({ type: 'chartEditor/editView', payload: viewId });
   },
   deleteView(viewId: string) {
-    return dispatch({ type: 'biDashBoard/deleteView', viewId });
+    return dispatch({ type: 'dashBoard/deleteView', viewId });
   },
 });
 

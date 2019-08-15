@@ -108,7 +108,7 @@ class ChartDrawer extends React.PureComponent<IProps> {
 
 const mapStateToProps = ({
   biDrawer: { visible, drawerInfoMap, editChartId },
-  biDashBoard: { layout },
+  dashBoard: { layout },
 }: any) => ({
   visible,
   editChartId,

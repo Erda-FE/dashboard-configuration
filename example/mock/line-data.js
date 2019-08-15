@@ -292,9 +292,8 @@ export default [
       config: {
         option: {
           legend: {
-            orient: 'horizontal',
-            bottom: 20,
-            // align: 'left',
+            bottom: 0,
+            align: 'left',
           },
         },
       },

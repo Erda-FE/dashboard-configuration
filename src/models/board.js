@@ -1,26 +1,26 @@
 import { maxBy, remove, cloneDeep } from 'lodash';
 
 const defaultState = {
-  isEdit: false,
+  isEditMode: false,
   layout: [],
 };
 
 export default {
-  namespace: 'biDashBoard',
+  namespace: 'dashBoard',
   state: cloneDeep(defaultState), // 使用cloneDeep，因为layout在整个运作过程中涉及到引用，而immutable太重
   effects: {
     // * initDashboard({ layout }, { put, select }) {
-    //   // const { layout } = yield select(state => state.biDashBoard);
+    //   // const { layout } = yield select(state => state.dashBoard);
     //   // if (!isEmpty(layout)) { // 清空layout,防止在同一个页面不停的reload时出错
     //   //   yield yield put({ type: 'updateState', payload: { layout: [] } });
     //   // }
-    //   // yield yield put({ type: 'chartEditor/init', chartMap: get(extra, 'chartMap', {}) });
-    //   // yield yield put({ type: 'linkSetting/init', chartMap: get(extra, 'linkMap', {}) });
+    //   // yield yield put({ type: 'chartEditor/init', viewMap: get(extra, 'viewMap', {}) });
+    //   // yield yield put({ type: 'linkSetting/init', viewMap: get(extra, 'linkMap', {}) });
     //   yield yield put({ type: 'updateState', payload: { layout } });
     // },
     * generateChart({ viewId }, { select, put }) {
-      const { biDashBoard: { layout }, chartEditor: { chartMap } } = yield select(state => state);
-      const { chartType, controlType } = chartMap[viewId];
+      const { dashBoard: { layout }, chartEditor: { viewMap } } = yield select(state => state);
+      const { chartType, controlType } = viewMap[viewId];
       if (chartType) {
         layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 6 });
       } else if (controlType) {
@@ -29,13 +29,13 @@ export default {
       yield put({ type: 'updateState', payload: { layout: [...layout] } });
     },
     * saveEdit(_, { put, select }) {
-      yield put({ type: 'updateState', payload: { isEdit: false } });
+      yield put({ type: 'updateState', payload: { isEditMode: false } });
       const {
-        biDashBoard: { layout },
-        chartEditor: { chartMap },
+        dashBoard: { layout },
+        chartEditor: { viewMap },
         linkSetting: { linkMap },
       } = yield select(state => state);
-      return { layout, chartMap, linkMap }; // 只输出外部需要的
+      return { layout, viewMap, linkMap }; // 只输出外部需要的
     },
     * deleteView({ viewId }, { put }) {
       yield put({ type: 'deleteLayout', viewId });
@@ -53,7 +53,7 @@ export default {
       return { ...state, ...payload };
     },
     openEdit(state) {
-      return { ...state, isEdit: true };
+      return { ...state, isEditMode: true };
     },
     deleteLayout(state, { viewId }) {
       const { layout } = state;

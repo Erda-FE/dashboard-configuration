@@ -54,8 +54,8 @@ const ChartScatter = ({ option = {}, defaultOption, isMock, names, titles, datas
   return <ChartSizeMe option={merge(source, defaultOption, option)} viewId={viewId} />;
 };
 
-const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, names, datas, titles }: any) => {
-  const drawerInfo = chartMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, names, datas, titles }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataScatter.names : (names || []) as string[],

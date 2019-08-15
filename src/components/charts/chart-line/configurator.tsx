@@ -1,15 +1,15 @@
 /**
  * 2D 线形图：折线、柱状、曲线
  */
-import { get, merge } from 'lodash';
+import { isEqual } from 'lodash';
 import { Form } from 'antd';
-import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { connect } from 'dva';
 // import { convertSettingToOption } from '../utils';
 import { mockDataLine } from './utils';
 import { RenderPureForm } from 'common';
+import { collectFields } from 'common/utils';
 import { getDefaultOption } from './default-config';
 
 type IType = 'line' | 'bar' | 'area';
@@ -21,7 +21,8 @@ interface IData {
   areaStyle?: object // 基本面积图时，传入空的{}即可
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-use-before-declare
+interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   viewId: string;
   isMock: boolean;
   defaultOption: object;
@@ -31,47 +32,32 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
   formData: any;
 }
 
-const baseAxis = {
-  type: 'category',
-  boundaryGap: true,
-};
+// const baseAxis = {
+//   type: 'category',
+//   boundaryGap: true,
+// };
 
-const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
-const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
-// const columns = [
-//   { title: 'Name', dataIndex: 'name', key: 'name' },
-//   { title: 'Age', dataIndex: 'age', key: 'age' },
-//   { title: 'Address', dataIndex: 'address', key: 'address' },
-//   {
-//     title: 'Action',
-//     dataIndex: '',
-//     key: 'x',
-//     render: () => <a href="javascript:;">Delete</a>,
-//   },
-// ];
+// const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
+// const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 const LineConfigurator = (props: IProps) => {
-  const { form, formData, forwardedRef, names, datas, viewId, currentChart } = props;
-  console.log('props', props);
-
-  const { config: { option } } = currentChart;
+  const { form, formData, forwardedRef, names, datas, viewId, currentChart, setTouched, isTouched } = props;
 
   React.useEffect(() => {
     // eslint-disable-next-line no-param-reassign
     forwardedRef.current = form;
-    console.log('effect form');
+    if (!isTouched && form.isFieldsTouched()) {
+      setTouched(true);
+    }
   }, [form]);
 
   React.useEffect(() => {
-    console.log('effect formdata');
-
     const defaultOption = getDefaultOption();
-
     const originData = { ...defaultOption, ...formData };
     setTimeout(() => {
-      console.log('timeout', forwardedRef.current);
-
-      form.setFieldsValue(originData);
-    }, 100);
+      const fieldsValues = collectFields(formData);
+      form.setFieldsValue(fieldsValues);
+      // form.setFieldsValue(originData);
+    }, 0);
   }, [formData]);
 
   // const xAxisType = get(option, ['xAxis', 'type'], 'category');
@@ -85,6 +71,7 @@ const LineConfigurator = (props: IProps) => {
           {
             label: 'align',
             name: 'legend.align',
+            required: false,
             itemProps: {
               span: 10,
             },
@@ -92,6 +79,8 @@ const LineConfigurator = (props: IProps) => {
           {
             label: 'bottom',
             name: 'legend.bottom',
+            type: 'inputNumber',
+            required: false,
             itemProps: {
               span: 10,
             },
@@ -100,9 +89,6 @@ const LineConfigurator = (props: IProps) => {
       ],
     },
   ];
-
-  console.log('child render');
-
 
   return (
     <div>
@@ -114,14 +100,25 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, names, datas }: any) => {
-  const drawerInfo = chartMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   return {
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],
     datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
     // option: convertSettingToOption(drawerInfo),
+    isTouched,
   };
 };
 
-export default connect(mapStateToProps)(Form.create()(LineConfigurator));
+const mapDispatchToProps = (dispatch: any) => ({
+  setTouched(isTouched: any) {
+    dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
+  },
+});
+
+const Configurator = connect(mapStateToProps, mapDispatchToProps)(Form.create()(LineConfigurator));
+
+export default React.forwardRef((props, ref) => (
+  <Configurator forwardedRef={ref} {...props} />
+));

@@ -59,8 +59,8 @@ const getIndicator = (drawerInfo: any) => {
   return indicator;
 };
 
-const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, datas, names }: any) => {
-  const drawerInfo = chartMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, datas, names }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   const indicator = isMock ? mockIndicator : getIndicator(drawerInfo);
   return {
     chartType: drawerInfo.chartType as string,

@@ -10,12 +10,12 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 
 class PanelData extends React.Component<IProps> {
   static contextTypes = {
-    chartsMap: PropTypes.object,
+    chartConfigMap: PropTypes.object,
   };
 
   render() {
     const { chartType, chooseChartType, form } = this.props;
-    const { name, mockData, dataSettings } = get(this.context.chartsMap, [chartType], {});
+    const { name, mockData, dataSettings } = get(this.context.chartConfigMap, [chartType], {});
     return (
       <React.Fragment>
         {chartType && (
@@ -32,8 +32,8 @@ class PanelData extends React.Component<IProps> {
   }
 }
 
-const mapStateToProps = ({ chartEditor: { chartMap, editChartId } }: any) => ({
-  chartType: get(chartMap, [editChartId, 'chartType'], ''),
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId } }: any) => ({
+  chartType: get(viewMap, [editChartId, 'chartType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

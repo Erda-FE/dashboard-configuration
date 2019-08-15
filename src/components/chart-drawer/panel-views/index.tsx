@@ -12,10 +12,10 @@ interface IProps {
 }
 
 const PanelViews = ({ chartType, onChoose }: IProps) => {
-  const chartsMap = getConfig('chartsMap');
+  const chartConfigMap = getConfig('chartConfigMap');
   return (
     <div>
-      {map(chartsMap, ({ icon, name }, type) => (
+      {map(chartConfigMap, ({ icon, name }, type) => (
         <div
           key={type}
           className={classnames({ 'bi-config-editor-views': true, active: type === chartType })}
@@ -30,8 +30,8 @@ const PanelViews = ({ chartType, onChoose }: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { chartMap, editChartId } }: any) => ({
-  chartType: get(chartMap, [editChartId, 'chartType'], ''),
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId } }: any) => ({
+  chartType: get(viewMap, [editChartId, 'chartType'], ''),
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

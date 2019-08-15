@@ -74,8 +74,8 @@ const ChartCards = ({ option = {}, defaultOption, isMock, names = [], datas = []
     </React.Fragment>);
 };
 
-const mapStateToProps = ({ chartEditor: { chartMap } }: any, { viewId, isMock, names, datas, option }: any) => {
-  const drawerInfo = chartMap[viewId] || {};
+const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, names, datas, option }: any) => {
+  const drawerInfo = viewMap[viewId] || {};
   const proportion = isMock ? mockProportion : getProportion(drawerInfo[`${panelDataPrefix}proportion`]);
   const cardsProportion = convertProportion(proportion);
   return {

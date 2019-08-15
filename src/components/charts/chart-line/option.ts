@@ -176,3 +176,33 @@ export function getOption(data: IStaticData, config: IChartConfig) {
   const options = merge(defaultOption, inputOption);
   return options;
 }
+
+export const getDefaultOption = () => {
+  return {
+    tooltip: {
+      trigger: 'axis',
+      transitionDuration: 0,
+      confine: true,
+      axisPointer: {
+        type: 'none',
+      },
+      // formatter: tooltipFormatter || defaultTTFormatter,
+    },
+    legend: {
+      bottom: 10,
+      padding: [15, 5, 0, 5],
+      orient: 'horizontal',
+      align: 'left',
+      // data: legendData,
+      // formatter: lgFormatter,
+      type: 'scroll',
+      tooltip: {
+        show: true,
+        formatter: (t: any) => cutStr(t.name, 100),
+      },
+    },
+    textStyle: {
+      fontFamily: 'arial',
+    },
+  };
+};

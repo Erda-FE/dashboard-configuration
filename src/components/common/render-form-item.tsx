@@ -1,26 +1,27 @@
 import * as React from 'react';
 import { isFunction } from 'lodash';
-import { Form, Input, Select, InputNumber, Switch, Radio, Checkbox } from 'antd';
+import { Form, Input, Select, InputNumber, Switch, Radio, Checkbox, Icon, Tooltip } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 const FormItem = Form.Item;
 const { Option } = Select;
 const { TextArea } = Input;
 
-const defalutFormItemLayout = {
+const defaultFormItemLayout = {
   labelCol: {
     sm: { span: 24 },
-    md: { span: 6 },
-    lg: { span: 6 },
+    md: { span: 24 },
+    lg: { span: 24 },
   },
   wrapperCol: {
     sm: { span: 24 },
-    md: { span: 18 },
-    lg: { span: 14 },
+    md: { span: 24 },
+    lg: { span: 24 },
   },
 };
+
 const fullWrapperCol = { span: 24 };
-const defalutTailFormItemLayout = {
+const defaultTailFormItemLayout = {
   wrapperCol: {
     sm: {
       span: 24,
@@ -40,6 +41,7 @@ export interface IFormItem {
   form?: WrappedFormUtils;
   label?: string;
   name?: string;
+  tooltip?: string;
   type?: string;
   initialValue?: any;
   size?: 'default' | 'small' | 'large';
@@ -65,9 +67,10 @@ export const RenderFormItem = ({
   label,
   name,
   type,
+  tooltip,
   initialValue = null,
   size = 'default',
-  required = true,
+  required = false,
   pattern = null,
   message = '请正确填写格式',
   itemProps = {},
@@ -100,7 +103,7 @@ export const RenderFormItem = ({
           {
             typeof options === 'function'
               ? options()
-              : options.map(single => <Option key={single.value} value={`${single.value}`}>{single.name}</Option>)
+              : options.map(single => <Option key={`${single.value}`} value={single.value}>{single.name}</Option>)
           }
         </Select>
       );
@@ -108,7 +111,7 @@ export const RenderFormItem = ({
       break;
     case 'inputNumber':
       ItemComp = (
-        <InputNumber {...itemProps} size={size} />
+        <InputNumber {...itemProps} size={size} className="full-width" />
       );
       break;
     case 'textArea':
@@ -165,8 +168,9 @@ export const RenderFormItem = ({
   const layout = label === undefined
     ? fullWrapperCol
     : isTailLayout
-      ? tailFormItemLayout || defalutTailFormItemLayout
-      : formLayout === 'horizontal' ? formItemLayout || defalutFormItemLayout : null;
+      ? tailFormItemLayout || defaultTailFormItemLayout
+      : formLayout === 'horizontal' ? formItemLayout || defaultFormItemLayout : null;
+
 
   // generate rules
   if (required && !rules.some(r => r.required === true)) {
@@ -196,8 +200,12 @@ export const RenderFormItem = ({
         itemConfig.initialValue = initialValue.toString();
     }
   }
+  const labelComp = (
+    <span className="item-label">
+      <span className="label-text">{label}</span>{tooltip ? <Tooltip className="label-tooltip" title={tooltip}><Icon type="question-circle" /></Tooltip> : undefined}
+    </span>);
   return (
-    <FormItem label={label} {...layout} className={itemProps.type === 'hidden' ? 'hide' : ''} {...extraProps}>
+    <FormItem label={labelComp} {...layout} className={itemProps.type === 'hidden' ? 'hide' : ''} {...extraProps}>
       {
         name ? (form && form.getFieldDecorator(name, itemConfig)(ItemComp)) : ItemComp
       }

@@ -12,6 +12,7 @@ import ViewMask from '../../charts/chart-mask';
 import './index.scss';
 
 
+// tslint:disable-next-line: no-use-before-declare
 interface IProps extends ReturnType<typeof mapStateToProps> {
   viewId: string
   view: any
@@ -88,10 +89,10 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     }
   }
 
-  componentDidUpdate({ isEditView, view }: IProps) {
+  componentDidUpdate({ isEditView: prevIsEditView, view }: IProps) {
     this.hasLoadFn = typeof view.loadData === 'function';
     if (this.hasLoadFn) {
-      if (!isEqual(this.props.view.chartQuery, view.chartQuery) || isEditView !== this.props.isEditView) {
+      if (!isEqual(this.props.view.chartQuery, view.chartQuery) || (prevIsEditView !== this.props.isEditView && prevIsEditView)) {
         this.loadData(view.chartQuery);
       }
     }
@@ -216,7 +217,6 @@ const mapStateToProps = (
   }: any
   , { viewId }: any
 ) =>
-  // const { paramName, clickId } = getKeyValue(linkMap, viewId);
   ({
     isEditLayout,
     isEditView: editChartId === viewId,

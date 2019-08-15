@@ -3,6 +3,7 @@ import { Form, Row, Col } from 'antd';
 import classNames from 'classnames';
 import { RenderFormItem } from './render-form-item';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
+import './render-form.scss';
 
 interface IProps {
   list: any[];
@@ -22,7 +23,7 @@ class RenderPureForm extends React.Component<IProps> {
     const items = list.map((info, i) => {
       if (info.subList) {
         // subList是一个二维数组，第一维是行数， 第二维是每行的具体内容
-        const { subList = [], getComp, itemProps = {} } = info;
+        const { subList = [], getComp, itemProps = {}, label } = info;
         const compType = itemProps.type;
         const subRows = subList.map((rowFields: any) => {
           if (!Array.isArray(rowFields) || rowFields.length === 0) {
@@ -30,9 +31,9 @@ class RenderPureForm extends React.Component<IProps> {
           }
           return (
             // eslint-disable-next-line react/no-array-index-key
-            <Row key={`sub-row${i}`}>
+            <Row key={`sub-row${i}`} gutter={{ xs: 8, sm: 16, md: 24 }}>
               {
-                i === 0 && <div className="sub-title">{info.label}</div>
+                <div className="sub-title">{label}</div>
               }
               {rowFields.map((subField, j) => {
                 const { itemProps: subItemProps = {} } = subField;
@@ -76,7 +77,7 @@ class RenderPureForm extends React.Component<IProps> {
     });
     const formClass = classNames(className, 'render-form');
     return onlyItems ? items : (
-      <Form className={formClass} layout={layout}>
+      <Form className={formClass} labelAlign="left" layout={layout}>
         {items}
       </Form>
     );

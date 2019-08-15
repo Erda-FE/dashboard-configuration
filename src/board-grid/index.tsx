@@ -36,7 +36,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   onSave?: (extra: any) => void, // 保存
   theme?: string, // 主题名
   themeObj?: {}, // 主题内容
-  chartsMap?: IChartsMap // 图表
+  customCharts?: IChartsMap // 用户自定义图表（xx图）
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
@@ -65,6 +65,16 @@ const getGridBackground = (width: number) => {
   return `${front}${colsStr}${back}`;
 };
 
+const splitLayoutAndView = (layout: ILayout) => {
+  const chartMap = {};
+  const pureLayout = layout.map((item) => {
+    const { view, ...rest } = item;
+    chartMap[item.i] = view;
+    return rest;
+  });
+  return [pureLayout, chartMap];
+};
+
 class BoardGrid extends React.PureComponent<IProps> {
   static defaultProps = {
     readOnly: false,
@@ -77,7 +87,7 @@ class BoardGrid extends React.PureComponent<IProps> {
   static childContextTypes = {
     theme: PropTypes.string,
     themeObj: PropTypes.object,
-    chartsMap: PropTypes.object,
+    customCharts: PropTypes.object,
     controlsMap: PropTypes.object,
     UrlComponent: PropTypes.func,
     urlItemLayout: PropTypes.object,
@@ -87,7 +97,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   private boardRef: HTMLDivElement;
 
-  private chartsMap: IChartsMap;
+  private customCharts: IChartsMap;
 
   private controlsMap: IChartsMap;
 
@@ -95,7 +105,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     return {
       theme: this.props.theme,
       themeObj: this.props.themeObj,
-      chartsMap: this.chartsMap,
+      customCharts: this.customCharts,
       controlsMap: this.controlsMap,
       UrlComponent: this.props.UrlComponent,
       urlItemLayout: this.props.urlItemLayout,
@@ -104,40 +114,30 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   componentDidMount() {
     const { layout } = this.props;
-    const [pureLayout, viewMap] = this.splitLayoutAndView(layout);
+    const [pureLayout, viewMap] = splitLayoutAndView(layout);
     this.props.updateLayout(pureLayout);
     this.props.updateChildMap(viewMap);
-    this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
+    this.customCharts = registCharts({ ...defaultChartsMap, ...this.props.customCharts });
   }
 
-  componentDidUpdate({ layout, dashboardLayout, chartsMap, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
+  componentDidUpdate({ layout, dashboardLayout, customCharts, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
     if (!isEqual(dashboardLayout, this.props.dashboardLayout)) {
       this.props.updateLayout(this.props.dashboardLayout);
     }
-    if (!isEqual(chartsMap, this.props.chartsMap)) {
-      this.chartsMap = { ...defaultChartsMap, ...this.props.chartsMap };
+    if (!isEqual(customCharts, this.props.customCharts)) {
+      this.customCharts = { ...defaultChartsMap, ...this.props.customCharts };
     }
     if (!isEqual(layout, this.props.layout)) {
-      const [pureLayout, viewMap] = this.splitLayoutAndView(this.props.layout);
+      const [pureLayout, viewMap] = splitLayoutAndView(this.props.layout);
       this.props.updateLayout(pureLayout);
       this.props.updateChildMap(viewMap);
-      this.chartsMap = registCharts({ ...defaultChartsMap, ...this.props.chartsMap });
+      this.customCharts = registCharts({ ...defaultChartsMap, ...this.props.customCharts });
     }
   }
 
   componentWillUnmount() {
     this.props.resetBoard();
     this.props.resetDrawer();
-  }
-
-  splitLayoutAndView = (layout: ILayout) => {
-    const chartMap = {};
-    const pureLayout = layout.map((item) => {
-      const { view, ...rest } = item;
-      chartMap[item.i] = view;
-      return rest;
-    });
-    return [pureLayout, chartMap];
   }
 
   onDragStart = () => this.props.isEdit;
@@ -150,7 +150,7 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 
   onSaveImg = () => {
-    saveImage(ReactDOM.findDOMNode(this.boardGridRef), '仪表盘'); // eslint-disable-line
+    saveImage(ReactDOM.findDOMNode(this.boardGridRef), 'dashboard'); // eslint-disable-line
   }
 
   onSetScreenFull = () => {
@@ -231,7 +231,7 @@ class BoardGrid extends React.PureComponent<IProps> {
                 if (isPlainObject(view)) {
                   const { chartType = '' } = view;
                   if (chartType.startsWith('chart')) {
-                    const ChartNode = get(this.chartsMap, [chartType, 'Component']);
+                    const ChartNode = get(this.customCharts, [chartType, 'Component']);
                     ChildComp = (
                       <React.Fragment>
                         <ChartOperation viewId={i} view={view} expandOption={expandOption}>
@@ -260,7 +260,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  biDashBoard: { layout, isEdit },
+  dashBoard: { layout, isEdit },
   chartEditor: { chartMap },
 }: any) => ({
   dashboardLayout: layout,
@@ -270,7 +270,7 @@ const mapStateToProps = ({
 
 const mapDispatchToProps = (dispatch: any) => ({
   updateLayout(layout: any) {
-    dispatch({ type: 'biDashBoard/updateState', payload: { layout } });
+    dispatch({ type: 'dashBoard/updateState', payload: { layout } });
   },
   updateChildMap(chartMap: any) {
     dispatch({ type: 'chartEditor/updateState', payload: { chartMap } });
@@ -279,13 +279,13 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch({ type: 'chartEditor/addEditor' });
   },
   openEdit() {
-    dispatch({ type: 'biDashBoard/openEdit' });
+    dispatch({ type: 'dashBoard/openEdit' });
   },
   saveEdit() {
-    return dispatch({ type: 'biDashBoard/saveEdit' });
+    return dispatch({ type: 'dashBoard/saveEdit' });
   },
   resetBoard() {
-    return dispatch({ type: 'biDashBoard/reset' });
+    return dispatch({ type: 'dashBoard/reset' });
   },
   resetDrawer() {
     return dispatch({ type: 'chartEditor/reset' });

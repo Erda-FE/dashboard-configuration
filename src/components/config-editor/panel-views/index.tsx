@@ -12,10 +12,10 @@ interface IProps {
 }
 
 const PanelViews = ({ chartType, onChoose }: IProps) => {
-  const chartsMap = getConfig('chartsMap');
+  const customCharts = getConfig('customCharts');
   return (
     <div>
-      {map(chartsMap, ({ icon, name }, type) => (
+      {map(customCharts, ({ icon, name }, type) => (
         <div
           key={type}
           className={classnames({ 'bi-config-editor-views': true, active: type === chartType })}

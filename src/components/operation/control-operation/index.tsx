@@ -16,7 +16,7 @@ const ControlOperation = ({ children, viewId, isEdit, onChange }: IProps) => (
   </div>
 );
 
-const mapStateToProps = ({ biDashBoard: { isEdit } }: any) => ({
+const mapStateToProps = ({ dashBoard: { isEdit } }: any) => ({
   isEdit,
 });
 

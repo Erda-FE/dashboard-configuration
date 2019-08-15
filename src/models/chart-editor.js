@@ -43,7 +43,7 @@ export default {
           },
         },
       });
-      yield put({ type: 'biDashBoard/generateChart', viewId });
+      yield put({ type: 'dashBoard/generateChart', viewId });
     },
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
     * saveEditor({ payload }, { put, select }) {
@@ -71,7 +71,7 @@ export default {
       const { chartEditor: { editChartId, chartMap, viewCopy } } = yield select(state => state);
       // const isExist = find(layout, ({ i }) => i === editChartId);
       // if (!isExist) { // 创建时取消就移除
-      //   yield put({ type: 'biDashBoard/deleteView', viewId: editChartId });
+      //   yield put({ type: 'dashBoard/deleteView', viewId: editChartId });
       //   yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
       // } else { // 编辑时取消恢复原有数据
       // }
@@ -81,7 +81,7 @@ export default {
     // 添加时关闭直接移除新建的
     * deleteEditor(_, { put, select }) {
       const { editChartId } = yield select(state => state.chartEditor);
-      yield put({ type: 'biDashBoard/deleteView', viewId: editChartId });
+      yield put({ type: 'dashBoard/deleteView', viewId: editChartId });
       yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
     },
     * chooseChartType({ chartType }, { put, select }) { // 编辑时移除
@@ -94,7 +94,7 @@ export default {
         //     delete drawerInfo[key];
         //   }
         // });
-        yield yield put({ type: 'biDashBoard/deleteLayout', viewId: editChartId });
+        yield yield put({ type: 'dashBoard/deleteLayout', viewId: editChartId });
         tempPayload = { chartMap: { ...chartMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
       } else {
         tempPayload = { chartMap: { ...chartMap, [editChartId]: { ...drawerInfo, chartType } } };

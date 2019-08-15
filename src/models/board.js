@@ -6,11 +6,11 @@ const defaultState = {
 };
 
 export default {
-  namespace: 'biDashBoard',
+  namespace: 'dashBoard',
   state: cloneDeep(defaultState), // 使用cloneDeep，因为layout在整个运作过程中涉及到引用，而immutable太重
   effects: {
     // * initDashboard({ layout }, { put, select }) {
-    //   // const { layout } = yield select(state => state.biDashBoard);
+    //   // const { layout } = yield select(state => state.dashBoard);
     //   // if (!isEmpty(layout)) { // 清空layout,防止在同一个页面不停的reload时出错
     //   //   yield yield put({ type: 'updateState', payload: { layout: [] } });
     //   // }
@@ -19,7 +19,7 @@ export default {
     //   yield yield put({ type: 'updateState', payload: { layout } });
     // },
     * generateChart({ viewId }, { select, put }) {
-      const { biDashBoard: { layout }, chartEditor: { chartMap } } = yield select(state => state);
+      const { dashBoard: { layout }, chartEditor: { chartMap } } = yield select(state => state);
       const { chartType, controlType } = chartMap[viewId];
       if (chartType) {
         layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 6 });
@@ -31,7 +31,7 @@ export default {
     * saveEdit(_, { put, select }) {
       yield put({ type: 'updateState', payload: { isEdit: false } });
       const {
-        biDashBoard: { layout },
+        dashBoard: { layout },
         chartEditor: { chartMap },
         linkSetting: { linkMap },
       } = yield select(state => state);

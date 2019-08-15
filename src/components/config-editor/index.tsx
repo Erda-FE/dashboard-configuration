@@ -51,7 +51,7 @@ const PureChartEditor = (props: IProps) => {
 
 
   const EditorContainer = getConfig('EditorContainer');
-  const info = getConfig('chartsMap')[currentChart.chartType];
+  const info = getConfig('customCharts')[currentChart.chartType];
   const { Configurator = noop } = info;
   const { config: { option: chartOptions } } = currentChart;
   // console.log('currentChart', chartOptions);

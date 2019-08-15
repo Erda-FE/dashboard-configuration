@@ -65,7 +65,8 @@ interface IOption {
 }
 
 interface IChartConfig {
-  option?: IOption;// 图表配置，会作为最高优先级合并
+  option?: IOption;// 图表配置（完全匹配echarts配置），会作为最高优先级合并
+  optionProps?: any; // 对应dice中的custom参数，用于在getOption中产生option
 }
 
 interface ILayoutItem {

@@ -1,4 +1,4 @@
-import { map } from 'lodash';
+import { map, merge } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../common/utils';
@@ -7,7 +7,7 @@ const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)
 
 export function getOption(data: IStaticData, config: IChartConfig) {
   const { metricData = [], xData, time } = data;
-  const { option: inputOption = {} } = config;
+  const { option: inputOption = {}, optionProps = {} } = config;
   const {
     seriesName,
     isBarChangeColor,
@@ -20,7 +20,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     yAxisNames = [],
     legendFormatter,
     timeSpan,
-  } = inputOption;
+  } = optionProps;
 
   const yAxis: any[] = [];
   const series: any[] = [];
@@ -172,5 +172,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     },
     series,
   };
-  return defaultOption;
+
+  const options = merge(defaultOption, inputOption);
+  return options;
 }

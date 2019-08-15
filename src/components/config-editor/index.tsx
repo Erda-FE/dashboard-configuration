@@ -40,7 +40,7 @@ const PureChartEditor = (props: IProps) => {
 
     baseConfigFormRef.current.validateFieldsAndScroll((errors: any, optionValues: any) => {
       if (errors) return;
-      console.log('pp', optionValues);
+      console.log('saved values', optionValues);
       saveEditor({ option: optionValues });
     });
   };
@@ -59,9 +59,6 @@ const PureChartEditor = (props: IProps) => {
   const ConfiguratorWithRef = React.forwardRef((_props, ref) => (
     <Configurator forwardedRef={ref} currentChart={currentChart} formData={chartOptions} />
   ));
-
-  console.log('parent render');
-
 
   return (
     <EditorContainer

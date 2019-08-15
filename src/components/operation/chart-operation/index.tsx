@@ -7,7 +7,7 @@ import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
 import { getConfig } from '../../../config';
 import { saveImage, setScreenFull } from '../../../utils/comp';
-import { EmptyHolder } from '../../common';
+import { EmptyHolder, IF } from '../../common';
 import ViewControl from './control';
 import ViewMask from '../../charts/chart-mask';
 import './index.scss';
@@ -35,18 +35,14 @@ const enum Status {
   FAIL = 'fail',
 }
 interface IMessage {
-  isDataEmpty: boolean,
   fetchStatus: string
 }
-const getMessage = ({ isDataEmpty, fetchStatus }: IMessage): string => {
+const getMessage = ({ fetchStatus }: IMessage): string => {
   if (fetchStatus === Status.MOCK) {
     return '模拟数据展示';
   }
   if (fetchStatus === Status.FETCH) {
     return '加载中';
-  }
-  if (isDataEmpty) {
-    return '暂无数据';
   }
   if (fetchStatus === Status.FAIL) {
     return '数据获取失败';
@@ -144,8 +140,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const { view, children, isEditLayout, isEditView, viewId, editView, deleteView, setViewInfo } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
-    const isDataEmpty = isEmpty(resData);
-    const message = getMessage({ isDataEmpty, fetchStatus });
+    const message = getMessage({ fetchStatus });
     const { title } = view;
 
     return (
@@ -199,19 +194,19 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         }
 
         {
-          isEmpty(resData.metricData)
-            ?
-              <EmptyHolder />
-            :
-              <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
-                {
-                  React.cloneElement(childNode, {
-                    ...childNode.props,
-                    data: resData,
-                    config: view.config,
-                  })
-                }
-              </div>
+          <IF check={isEmpty(resData.metricData)}>
+            <EmptyHolder />
+            <IF.ELSE />
+            <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
+              {
+                React.cloneElement(childNode, {
+                  ...childNode.props,
+                  data: resData,
+                  config: view.config,
+                })
+              }
+            </div>
+          </IF>
         }
 
       </div>

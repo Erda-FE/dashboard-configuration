@@ -97,7 +97,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   private boardRef: HTMLDivElement;
 
-  private customCharts: IChartsMap;
+  private chartConfigMap: IChartsMap;
 
   private controlsMap: IChartsMap;
 
@@ -105,7 +105,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     return {
       theme: this.props.theme,
       themeObj: this.props.themeObj,
-      customCharts: this.customCharts,
+      customCharts: this.chartConfigMap,
       controlsMap: this.controlsMap,
       UrlComponent: this.props.UrlComponent,
       urlItemLayout: this.props.urlItemLayout,
@@ -117,7 +117,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     const [pureLayout, viewMap] = splitLayoutAndView(layout);
     this.props.updateLayout(pureLayout);
     this.props.updateChildMap(viewMap);
-    this.customCharts = registCharts({ ...defaultChartsMap, ...this.props.customCharts });
+    this.chartConfigMap = registCharts({ ...defaultChartsMap, ...this.props.customCharts });
   }
 
   componentDidUpdate({ layout, dashboardLayout, customCharts, controlsMap, urlParamsMap, urlDataHandle }: IProps) {
@@ -125,13 +125,13 @@ class BoardGrid extends React.PureComponent<IProps> {
       this.props.updateLayout(this.props.dashboardLayout);
     }
     if (!isEqual(customCharts, this.props.customCharts)) {
-      this.customCharts = { ...defaultChartsMap, ...this.props.customCharts };
+      this.chartConfigMap = { ...defaultChartsMap, ...this.props.customCharts };
     }
     if (!isEqual(layout, this.props.layout)) {
       const [pureLayout, viewMap] = splitLayoutAndView(this.props.layout);
       this.props.updateLayout(pureLayout);
       this.props.updateChildMap(viewMap);
-      this.customCharts = registCharts({ ...defaultChartsMap, ...this.props.customCharts });
+      this.chartConfigMap = registCharts({ ...defaultChartsMap, ...this.props.customCharts });
     }
   }
 
@@ -140,7 +140,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     this.props.resetDrawer();
   }
 
-  onDragStart = () => this.props.isEdit;
+  onDragStart = () => this.props.isEditMode;
 
   onSave = () => {
     const { saveEdit, onSave } = this.props;
@@ -160,7 +160,7 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   render() {
     const {
-      dashboardLayout, viewMap, isEdit, openEdit, readOnly,
+      dashboardLayout, viewMap, isEditMode, openEdit, readOnly,
       expandOption, updateLayout, addEditor,
     } = this.props;
     const { isFullscreen } = screenfull; // 是否全屏
@@ -170,13 +170,14 @@ class BoardGrid extends React.PureComponent<IProps> {
     return (
       <div
         style={{ flex: 2 }}
-        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEdit, isFullscreen })}
+        className={classnames({ 'bi-board': true, 'bi-off-edit': !isEditMode, isFullscreen })}
         ref={(ref: HTMLDivElement) => { this.boardRef = ref; }}
       >
+        {/* 在非readonly下顶部右上角的编辑菜单 */}
         {!readOnly && (
-          <div className="bi-header">
+          <div className="dashboard-header">
             {
-              isEdit
+              isEditMode
                 ? (
                   <React.Fragment>
                     <Tooltip placement="bottom" title="新增">
@@ -215,7 +216,7 @@ class BoardGrid extends React.PureComponent<IProps> {
               onLayoutChange={updateLayout}
               isDraggable
               isResizable
-              style={isEdit ? { backgroundImage: getGridBackground(size.width) } : {}}
+              style={isEditMode ? { backgroundImage: getGridBackground(size.width) } : {}}
               onDragStart={this.onDragStart}
               draggableHandle=".bi-draggable-handle"
             >
@@ -223,7 +224,7 @@ class BoardGrid extends React.PureComponent<IProps> {
                 let ChildComp = null;
                 let view = viewMap[i];
                 view = typeof view === 'function'
-                  ? view({ isEdit, isFullscreen })
+                  ? view({ isEditMode, isFullscreen })
                   : view;
                 if (!view) {
                   return null;
@@ -231,7 +232,7 @@ class BoardGrid extends React.PureComponent<IProps> {
                 if (isPlainObject(view)) {
                   const { chartType = '' } = view;
                   if (chartType.startsWith('chart')) {
-                    const ChartNode = get(this.customCharts, [chartType, 'Component']);
+                    const ChartNode = get(this.chartConfigMap, [chartType, 'Component']);
                     ChildComp = (
                       <React.Fragment>
                         <ChartOperation viewId={i} view={view} expandOption={expandOption}>
@@ -260,12 +261,12 @@ class BoardGrid extends React.PureComponent<IProps> {
 }
 
 const mapStateToProps = ({
-  dashBoard: { layout, isEdit },
+  dashBoard: { layout, isEditMode },
   chartEditor: { viewMap },
 }: any) => ({
   dashboardLayout: layout,
   viewMap,
-  isEdit,
+  isEditMode,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

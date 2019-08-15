@@ -40,21 +40,9 @@ class Chart extends React.Component<IProps> {
     themeObj: PropTypes.object,
   };
 
-  // private onEvents: { [event: string]: Func };
-
-  // componentWillMount() {
-  //   this.onEvents = {
-  //     click: this.click,
-  //   };
-  // }
-
   shouldComponentUpdate(nextProps: IProps) {
     return !isEqual(nextProps, this.props);
   }
-
-  // click = ({ name }: any) => {
-  //   this.props.updateLinkDataMap(this.props.viewId, { chartValue: name });
-  // }
 
   render() {
     const { data, config = {}, getOption, style, ...others } = this.props;
@@ -66,7 +54,6 @@ class Chart extends React.Component<IProps> {
         theme={theme}
         themeObj={themeObj}
         style={{ ...style, height: '100%' }}
-      // onEvents={this.onEvents}
       />
     );
   }

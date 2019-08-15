@@ -211,7 +211,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 
 const mapStateToProps = (
   {
-    dashBoard: { isEdit: isEditLayout },
+    dashBoard: { isEditMode: isEditLayout },
     chartEditor: { editChartId },
   }: any
   , { viewId }: any

@@ -1,7 +1,7 @@
 import { maxBy, remove, cloneDeep } from 'lodash';
 
 const defaultState = {
-  isEdit: false,
+  isEditMode: false,
   layout: [],
 };
 
@@ -29,7 +29,7 @@ export default {
       yield put({ type: 'updateState', payload: { layout: [...layout] } });
     },
     * saveEdit(_, { put, select }) {
-      yield put({ type: 'updateState', payload: { isEdit: false } });
+      yield put({ type: 'updateState', payload: { isEditMode: false } });
       const {
         dashBoard: { layout },
         chartEditor: { viewMap },
@@ -53,7 +53,7 @@ export default {
       return { ...state, ...payload };
     },
     openEdit(state) {
-      return { ...state, isEdit: true };
+      return { ...state, isEditMode: true };
     },
     deleteLayout(state, { viewId }) {
       const { layout } = state;

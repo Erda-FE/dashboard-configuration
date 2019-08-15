@@ -9,15 +9,15 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   children: ReactElement<any>
 }
 
-const ControlOperation = ({ children, viewId, isEdit, onChange }: IProps) => (
+const ControlOperation = ({ children, viewId, isEditMode, onChange }: IProps) => (
   <div className="bi-control-operation">
     {React.cloneElement(children, { ...children.props, onChange })}
-    {isEdit && <OperationMenu viewId={viewId} />}
+    {isEditMode && <OperationMenu viewId={viewId} />}
   </div>
 );
 
-const mapStateToProps = ({ dashBoard: { isEdit } }: any) => ({
-  isEdit,
+const mapStateToProps = ({ dashBoard: { isEditMode } }: any) => ({
+  isEditMode,
 });
 
 const mapDispatchToProps = (dispatch: any, { viewId }: any) => ({

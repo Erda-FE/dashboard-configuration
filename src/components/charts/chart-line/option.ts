@@ -161,7 +161,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
     grid: {
-      top: haveTwoYAxis ? 30 : 25,
+      top: 40,
       left: 15,
       right: haveTwoYAxis ? 30 : 5,
       bottom: 40,

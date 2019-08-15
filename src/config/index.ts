@@ -4,7 +4,7 @@ import { EditorContainer } from './editor-container';
 import { theme, themeObj as defaultTheme } from '../theme/dice';
 
 const globalConfig = {
-  customCharts: defaultChartsMap,
+  chartConfigMap: defaultChartsMap,
   chartOption: {},
   chartOptionFn: {},
   EditorContainer,
@@ -29,8 +29,8 @@ export const getConfig = (path: string | string[] | number | number[]) => get(gl
  * @returns 已注册所有图表
  */
 export const registChart = (type: string, data: any) => {
-  regist(`customCharts.${type}`, data);
-  return getConfig('customCharts');
+  regist(`chartConfigMap.${type}`, data);
+  return getConfig('chartConfigMap');
 };
 
 /**
@@ -40,9 +40,9 @@ export const registChart = (type: string, data: any) => {
  */
 export const registCharts = (viewMap = {}) => {
   Object.keys(viewMap).forEach((k) => {
-    regist(`customCharts.${k}`, viewMap[k]);
+    regist(`chartConfigMap.${k}`, viewMap[k]);
   });
-  return getConfig('customCharts');
+  return getConfig('chartConfigMap');
 };
 
 /**

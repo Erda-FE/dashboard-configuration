@@ -10,7 +10,7 @@ type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatch
 
 class PanelCharts extends React.PureComponent<IProps> {
   static contextTypes = {
-    customCharts: PropTypes.object,
+    chartConfigMap: PropTypes.object,
   };
 
   render() {
@@ -18,7 +18,7 @@ class PanelCharts extends React.PureComponent<IProps> {
     return (
       <div>
         组件
-        {map(this.context.customCharts, ({ icon, name }, type) => (
+        {map(this.context.chartConfigMap, ({ icon, name }, type) => (
           <div
             key={type}
             className={classnames({ 'bi-drawer-charts': true, active: type === chartType })}

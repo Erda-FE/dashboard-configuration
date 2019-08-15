@@ -1,7 +1,7 @@
 /**
  * 2D 线形图：折线、柱状、曲线
  */
-import { get, merge } from 'lodash';
+import { isEqual } from 'lodash';
 import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
@@ -21,7 +21,8 @@ interface IData {
   areaStyle?: object // 基本面积图时，传入空的{}即可
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
+// tslint:disable-next-line: no-use-before-declare
+interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   viewId: string;
   isMock: boolean;
   defaultOption: object;
@@ -39,18 +40,18 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
 // const getAreaType = (type: string) => (type === 'area' ? 'line' : (type || 'line'));
 // const getOthers = (type: string) => (type === 'area' ? { areaStyle: {}, smooth: true } : {});
 const LineConfigurator = (props: IProps) => {
-  const { form, formData, forwardedRef, names, datas, viewId, currentChart } = props;
-
-  const { config: { option } } = currentChart;
+  const { form, formData, forwardedRef, names, datas, viewId, currentChart, setTouched, isTouched } = props;
 
   React.useEffect(() => {
     // eslint-disable-next-line no-param-reassign
     forwardedRef.current = form;
+    if (!isTouched && form.isFieldsTouched()) {
+      setTouched(true);
+    }
   }, [form]);
 
   React.useEffect(() => {
     const defaultOption = getDefaultOption();
-
     const originData = { ...defaultOption, ...formData };
     setTimeout(() => {
       const fieldsValues = collectFields(formData);
@@ -70,6 +71,7 @@ const LineConfigurator = (props: IProps) => {
           {
             label: 'align',
             name: 'legend.align',
+            required: false,
             itemProps: {
               span: 10,
             },
@@ -77,6 +79,8 @@ const LineConfigurator = (props: IProps) => {
           {
             label: 'bottom',
             name: 'legend.bottom',
+            type: 'inputNumber',
+            required: false,
             itemProps: {
               span: 10,
             },
@@ -96,14 +100,25 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, names, datas }: any) => {
+const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) => {
   const drawerInfo = viewMap[viewId] || {};
   return {
     chartType: drawerInfo.chartType as string,
     names: isMock ? mockDataLine.names : (names || []) as string[],
     datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
     // option: convertSettingToOption(drawerInfo),
+    isTouched,
   };
 };
 
-export default connect(mapStateToProps)(Form.create()(LineConfigurator));
+const mapDispatchToProps = (dispatch: any) => ({
+  setTouched(isTouched: any) {
+    dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
+  },
+});
+
+const Configurator = connect(mapStateToProps, mapDispatchToProps)(Form.create()(LineConfigurator));
+
+export default React.forwardRef((props, ref) => (
+  <Configurator forwardedRef={ref} {...props} />
+));

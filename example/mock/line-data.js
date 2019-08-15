@@ -293,6 +293,7 @@ export default [
         option: {
           legend: {
             bottom: 0,
+            align: 'left',
           },
         },
       },

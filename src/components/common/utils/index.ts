@@ -24,6 +24,9 @@ export function cutStr(fullStr: string, limit = 0, options?: ICutOptions) {
  * @param ObjData
  */
 export const collectFields = (ObjData: any) => {
+  if (!ObjData) {
+    return {};
+  }
   const filledFields: string[] = [];
   const findData = (obj: any, parentArray: string[]) => {
     Object.keys(obj).forEach((key) => {

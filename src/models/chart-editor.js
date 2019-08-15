@@ -9,6 +9,7 @@ const defaultState = {
   viewMap: {}, // 所有图表配置信息
   codeVisible: false, // 代码编辑
   viewCopy: {}, // 修改时用于恢复的复制对象
+  isTouched: false,
 };
 
 const newChartTpl = {
@@ -52,6 +53,7 @@ export default {
       const { option = {} } = payload;
       set(editChart, 'config.option', option);
       yield put({ type: 'updateState', payload: { viewMap: { ...viewMap, [editChartId]: editChart }, visible: false, addMode: false, editChartId: '', viewCopy: {} } });
+      yield put({ type: 'setTouched', payload: false });
     },
     // 表单变化时自动保存
     * onEditorChange({ payload }, { select, put }) {
@@ -77,12 +79,14 @@ export default {
       // }
       viewMap[editChartId] = viewCopy;
       yield put({ type: 'updateState', payload: { visible: false, editChartId: '', viewMap: { ...viewMap }, viewCopy: {} } });
+      yield put({ type: 'setTouched', payload: false });
     },
     // 添加时关闭直接移除新建的
     * deleteEditor(_, { put, select }) {
       const { editChartId } = yield select(state => state.chartEditor);
       yield put({ type: 'dashBoard/deleteView', viewId: editChartId });
       yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
+      yield put({ type: 'setTouched', payload: false });
     },
     * chooseChartType({ chartType }, { put, select }) { // 编辑时移除
       const { viewMap, editChartId } = yield select(state => state.chartEditor);
@@ -162,6 +166,9 @@ export default {
     },
     reset() {
       return { ...cloneDeep(defaultState) };
+    },
+    setTouched(state, { payload }) {
+      return { ...state, isTouched: payload };
     },
   },
 };

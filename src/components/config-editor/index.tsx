@@ -1,7 +1,7 @@
 import { Button, Form, message, Tabs, Popconfirm } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
-import { find, forEach, get, isEmpty } from 'lodash';
+import { isEqual, forEach, get, isEmpty } from 'lodash';
 import React from 'react';
 import { getConfig } from '../../config';
 import './index.scss';
@@ -25,7 +25,7 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 const noop = () => null;
 
 const PureChartEditor = (props: IProps) => {
-  const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId } = props;
+  const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, isTouched } = props;
   const baseConfigFormRef = React.useRef(null as any);
 
   const saveChart = () => { // 可以提交图表或控件
@@ -51,14 +51,9 @@ const PureChartEditor = (props: IProps) => {
 
 
   const EditorContainer = getConfig('EditorContainer');
-  const info = getConfig('customCharts')[currentChart.chartType];
+  const info = getConfig('chartConfigMap')[currentChart.chartType];
   const { Configurator = noop } = info;
   const { config: { option: chartOptions } } = currentChart;
-  // console.log('currentChart', chartOptions);
-
-  const ConfiguratorWithRef = React.forwardRef((_props, ref) => (
-    <Configurator forwardedRef={ref} currentChart={currentChart} formData={chartOptions} />
-  ));
 
   return (
     <EditorContainer
@@ -71,7 +66,7 @@ const PureChartEditor = (props: IProps) => {
           <PanelCharts />
           <Tabs defaultActiveKey="setting">
             <TabPane tab="配置" key="setting">
-              <ConfiguratorWithRef ref={baseConfigFormRef} />
+              <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
             </TabPane>
             <TabPane tab="数据" key="data">
               {/* <PanelData /> */}
@@ -87,17 +82,23 @@ const PureChartEditor = (props: IProps) => {
           {`图表ID: ${editChartId}`}
         </div>
         <div className="bi-config-editor-footer-right">
-          <Popconfirm
-            okText="确认"
-            cancelText="取消"
-            placement="top"
-            title="确认丢弃数据?"
-            onConfirm={addMode ? deleteEditor : closeEditor}
-          >
-            <Button style={{ marginRight: 8 }}>
-              取消
-            </Button>
-          </Popconfirm>
+          {
+            isTouched ?
+              (
+                <Popconfirm
+                  okText="确认"
+                  cancelText="取消"
+                  placement="top"
+                  title="确认丢弃数据?"
+                  onConfirm={addMode ? deleteEditor : closeEditor}
+                >
+                  <Button style={{ marginRight: 8 }}>
+                    取消
+                  </Button>
+                </Popconfirm>
+              ) :
+              (<Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
+          }
           <Button onClick={saveChart} type="primary">
             {addMode ? '新增' : '保存'}
           </Button>
@@ -108,12 +109,13 @@ const PureChartEditor = (props: IProps) => {
 };
 
 const mapStateToProps = ({
-  chartEditor: { visible, addMode, viewMap, editChartId },
+  chartEditor: { visible, addMode, viewMap, editChartId, isTouched },
 }: any) => ({
   visible,
   editChartId,
   addMode,
   currentChart: get(viewMap, [editChartId]),
+  isTouched,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

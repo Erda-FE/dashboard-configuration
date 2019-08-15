@@ -7,6 +7,7 @@ import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
 import { getConfig } from '../../../config';
 import { saveImage, setScreenFull } from '../../../utils/comp';
+import { EmptyHolder } from '../../common';
 import ViewControl from './control';
 import ViewMask from '../../charts/chart-mask';
 import './index.scss';
@@ -197,13 +198,22 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           )
         }
 
-        <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
-          {React.cloneElement(childNode, {
-            ...childNode.props,
-            data: resData,
-            config: view.config,
-          })}
-        </div>
+        {
+          isEmpty(resData.metricData)
+            ?
+              <EmptyHolder />
+            :
+              <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
+                {
+                  React.cloneElement(childNode, {
+                    ...childNode.props,
+                    data: resData,
+                    config: view.config,
+                  })
+                }
+              </div>
+        }
+
       </div>
     );
   }

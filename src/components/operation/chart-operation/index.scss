@@ -21,9 +21,6 @@ $color-border: #e8e8e8;
     align-items: center;
     height: 32px;
     margin-bottom: 4px;
-    input {
-      width: 170px;
-    }
   }
   .bi-view-header-left {
     display: inline-flex;
@@ -33,7 +30,7 @@ $color-border: #e8e8e8;
   .bi-view-header-right {
     display: inline-flex;
     align-items: center;
-    i {
+    .reload-icon {
       margin-left: 6px;
       font-size: 18px;
       cursor: pointer;

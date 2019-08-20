@@ -161,7 +161,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
               </div>
               <div className="bi-view-header-right">
                 <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
-                {this.hasLoadFn && !view.hideReload && <Icon type="reload" onClick={this.loadData} />}
+                {this.hasLoadFn && !view.hideReload && <Icon className="reload-icon" type="reload" onClick={this.loadData} />}
               </div>
             </div>
           )
@@ -221,11 +221,10 @@ const mapStateToProps = (
     chartEditor: { editChartId },
   }: any
   , { viewId }: any
-) =>
-  ({
-    isEditLayout,
-    isEditView: editChartId === viewId,
-  });
+) => ({
+  isEditLayout,
+  isEditView: editChartId === viewId,
+});
 const mapDispatchToProps = (dispatch: any) => ({
   setViewInfo(payload: any) {
     return dispatch({ type: 'chartEditor/updateViewInfo', payload });

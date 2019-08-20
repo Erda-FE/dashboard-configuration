@@ -118,6 +118,7 @@ module.exports = () => {
         ws: path.resolve(__dirname, 'example/ws.js'),
         interface: path.resolve(__dirname, 'interface'),
         common: path.resolve(__dirname, './src/components/common'),
+        theme: path.resolve(__dirname, './src/theme/dice.ts'),
       },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [path.resolve(__dirname, 'example'), path.resolve(__dirname, 'src'), 'node_modules'],

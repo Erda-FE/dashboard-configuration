@@ -64,7 +64,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     const curUnitType = (value.unitType || customUnitType || ''); // y轴单位
     const curUnit = (value.unit || customUnit || ''); // y轴单位
     yAxis[yAxisIndex] = {
-      name: name || yAxisNames[yAxisIndex] || '',
+      name: yAxisNames[yAxisIndex] || name || '',
       nameTextStyle: {
         padding: [0, 0, 0, 5],
       },
@@ -177,8 +177,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
   return options;
 }
 
-export const getDefaultOption = () => {
-  return {
+export const getDefaultOption = () => ({
     tooltip: {
       trigger: 'axis',
       transitionDuration: 0,
@@ -204,5 +203,4 @@ export const getDefaultOption = () => {
     textStyle: {
       fontFamily: 'arial',
     },
-  };
-};
+  });

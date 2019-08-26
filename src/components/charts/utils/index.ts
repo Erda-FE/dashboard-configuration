@@ -6,23 +6,23 @@ import { panelSettingPrefix } from '../../../utils/constants';
 import { Func } from 'echarts-for-react';
 
 // drawerInfo转化为option对象
-// export const convertSettingToOption = (drawerInfo: any): any => {
-//   const option = {};
-//   forEach(drawerInfo, (value, key) => {
-//     if (value === undefined || value === '') {
-//       return;
-//     }
-//     if (startsWith(key, panelSettingPrefix)) {
-//       const list = key.split('#');
-//       let tempValue = value;
-//       if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
-//         tempValue = convertFormatter(value);
-//       }
-//       set(option, list.splice(1, list.length - 1), tempValue);
-//     }
-//   });
-//   return option;
-// };
+export const convertSettingToOption = (drawerInfo: any): any => {
+  const option = {};
+  forEach(drawerInfo, (value, key) => {
+    if (value === undefined || value === '') {
+      return;
+    }
+    if (startsWith(key, panelSettingPrefix)) {
+      const list = key.split('#');
+      let tempValue = value;
+      if (endsWith(key, 'formatter') || endsWith(key, 'legend#data')) {
+        tempValue = convertFormatter(value);
+      }
+      set(option, list.splice(1, list.length - 1), tempValue);
+    }
+  });
+  return option;
+};
 
 // option转化为drawerInfo对象
 const whiteList = ['boolean', 'string'];

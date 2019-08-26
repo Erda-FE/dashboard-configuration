@@ -9,7 +9,7 @@ import { connect } from 'dva';
 // import { convertSettingToOption } from '../utils';
 import { mockDataLine } from './utils';
 import { RenderPureForm } from 'common';
-import { collectFields } from 'common/utils';
+import { collectFields } from '../../common/utils';
 import { getDefaultOption } from './option';
 
 type IType = 'line' | 'bar' | 'area';

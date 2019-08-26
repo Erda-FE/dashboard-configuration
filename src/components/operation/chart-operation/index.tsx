@@ -195,9 +195,9 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         }
 
         {
-          <IF check={isEmpty(resData.metricData)}>
+          isEmpty(resData.metricData) ?
             <EmptyHolder />
-            <IF.ELSE />
+            :
             <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
               {
                 React.cloneElement(childNode, {
@@ -207,7 +207,10 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                 })
               }
             </div>
-          </IF>
+          // <IF check={isEmpty(resData.metricData)}>
+
+            // <IF.ELSE />
+          // </IF>
         }
 
       </div>

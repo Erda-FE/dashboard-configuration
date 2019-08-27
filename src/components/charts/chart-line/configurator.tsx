@@ -8,7 +8,7 @@ import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { connect } from 'dva';
 // import { convertSettingToOption } from '../utils';
 import { mockDataLine } from './utils';
-import { RenderPureForm } from 'common';
+import { RenderPureForm } from '../../common';
 import { collectFields } from '../../common/utils';
 import { getDefaultOption } from './option';
 

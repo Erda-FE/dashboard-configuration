@@ -1,18 +1,18 @@
 :global {
-  .sub-title {
+  .bi-sub-title {
     margin-bottom: 10px;
     font-weight: 500;
   }
-  .item-label {
+  .bi-item-label {
     .label-tooltip {
       margin-right: 4px;
       margin-left: 4px;
     }
   }
-  .full-width {
+  .bi-full-width {
     width: 100%;
   }
-  .ant-form-item-label {
-    white-space: normal;
-  }
+  // .ant-form-item-label {
+  //   white-space: normal;
+  // }
 }

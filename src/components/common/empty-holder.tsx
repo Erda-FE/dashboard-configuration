@@ -4,7 +4,7 @@ import { Empty } from 'antd';
 import './empty-holder.scss';
 
 const EmptyHolder = () => (
-  <div className="empty-holder">
+  <div className="bi-empty-holder">
     <Empty description="暂无数据" />
   </div>
 );

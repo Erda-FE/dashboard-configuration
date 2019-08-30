@@ -146,7 +146,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 
     return (
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
-        <h2 className="chart-title">{title}</h2>
+        <h2 className="bi-chart-title">{title}</h2>
         {
           !view.hideHeader &&
           (

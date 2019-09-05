@@ -20,6 +20,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     yAxisNames = [],
     legendFormatter,
     timeSpan,
+    moreThanOneDayFormat,
   } = optionProps;
 
   const yAxis: any[] = [];
@@ -101,7 +102,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
 
   const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
 
-  const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
+  const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? moreThanOneDayFormat || 'M月D日 HH:mm' : 'HH:mm');
 
   let defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
   if (time) {
@@ -178,29 +179,29 @@ export function getOption(data: IStaticData, config: IChartConfig) {
 }
 
 export const getDefaultOption = () => ({
+  tooltip: {
+    trigger: 'axis',
+    transitionDuration: 0,
+    confine: true,
+    axisPointer: {
+      type: 'none',
+    },
+    // formatter: tooltipFormatter || defaultTTFormatter,
+  },
+  legend: {
+    bottom: 10,
+    padding: [15, 5, 0, 5],
+    orient: 'horizontal',
+    align: 'left',
+    // data: legendData,
+    // formatter: lgFormatter,
+    type: 'scroll',
     tooltip: {
-      trigger: 'axis',
-      transitionDuration: 0,
-      confine: true,
-      axisPointer: {
-        type: 'none',
-      },
-      // formatter: tooltipFormatter || defaultTTFormatter,
+      show: true,
+      formatter: (t: any) => cutStr(t.name, 100),
     },
-    legend: {
-      bottom: 10,
-      padding: [15, 5, 0, 5],
-      orient: 'horizontal',
-      align: 'left',
-      // data: legendData,
-      // formatter: lgFormatter,
-      type: 'scroll',
-      tooltip: {
-        show: true,
-        formatter: (t: any) => cutStr(t.name, 100),
-      },
-    },
-    textStyle: {
-      fontFamily: 'arial',
-    },
-  });
+  },
+  textStyle: {
+    fontFamily: 'arial',
+  },
+});

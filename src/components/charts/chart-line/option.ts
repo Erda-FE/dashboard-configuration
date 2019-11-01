@@ -102,7 +102,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
 
   const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
 
-  const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? moreThanOneDayFormat || 'M月D日 HH:mm' : 'HH:mm');
+  const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
 
   let defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
   if (time) {
@@ -153,7 +153,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
         axisLabel: {
           formatter: xData
             ? (value: string) => value
-            : (value: string) => moment(Number(value)).format(moreThanOneDay ? 'M/D HH:mm' : 'HH:mm'),
+            : (value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm'),
         },
         splitLine: {
           show: false,

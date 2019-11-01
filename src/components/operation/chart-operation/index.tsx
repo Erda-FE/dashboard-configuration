@@ -82,7 +82,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 
   componentDidMount() {
     if (this.hasLoadFn) {
-      this.loadData();
+      this.loadData(this.props.view.chartQuery);
     }
   }
 
@@ -90,7 +90,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     this.hasLoadFn = typeof view.loadData === 'function';
     if (this.hasLoadFn) {
       if (!isEqual(this.props.view.chartQuery, view.chartQuery) || (prevIsEditView !== this.props.isEditView && prevIsEditView)) {
-        this.loadData(view.chartQuery);
+        this.loadData(this.props.view.chartQuery);
       }
     }
   }

@@ -20,7 +20,7 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
 const formatter = (params: any) => {
   const { data } = params;
   if (!data) return null;
-  const value = data.value ? `${data.value}s` : '暂无数据';
+  const value = data.value ? `${data.value}s` : 'no data';
   return `${data.name} <br /> ${value} `;
 };
 

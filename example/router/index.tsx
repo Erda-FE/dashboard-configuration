@@ -1,7 +1,7 @@
 import React from 'react';
 import { Router, Switch, Route } from 'dva/router';
 import { History } from 'interface/common';
-import BoardGrid from '../../src/board-grid';
+import BoardGrid from '../../src/grid';
 import layout from '../mock/data';
 
 interface IProps {

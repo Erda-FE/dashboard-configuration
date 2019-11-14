@@ -5,7 +5,7 @@ import { Drawer, Button, Collapse, Form, Input, message, Tabs, Icon, Tooltip } f
 import { FormComponentProps } from 'antd/lib/form';
 import PanelCharts from './panel-charts';
 import PanelControls from './panel-controls';
-import PanelSettings from './panel-settings';
+import PanelSettings from './chart-configs';
 import PanelData from './panel-data';
 import './index.scss';
 
@@ -76,13 +76,13 @@ class ChartDrawer extends React.PureComponent<IProps> {
               })(<PanelCharts />)}
             </Form.Item>
             <Tabs defaultActiveKey="setting">
-              <TabPane tab="配置" key="setting">
+              <TabPane tab="图表配置" key="setting">
                 <PanelSettings form={form} />
               </TabPane>
-              <TabPane tab="数据" key="data">
+              <TabPane tab="数据系列" key="data">
                 <PanelData form={form} />
               </TabPane>
-              <TabPane tab="控件" key="control">
+              <TabPane tab="轴配置" key="control">
                 <PanelControls form={form} />
               </TabPane>
             </Tabs>

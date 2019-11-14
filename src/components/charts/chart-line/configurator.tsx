@@ -1,7 +1,7 @@
 /**
  * 2D 线形图：折线、柱状、曲线
  */
-import { merge } from 'lodash';
+import { merge, map } from 'lodash';
 import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
@@ -51,93 +51,147 @@ const LineConfigurator = (props: IProps) => {
     }, 0);
   }, [formData]);
 
-  const fields = [
+  const formValues = form.getFieldsValue();
+
+  const periodList = { static: '静态数据', api: '接口数据' };
+  const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
+
+  const baseFields = [
     {
-      label: 'tooltip',
-      subList: [
-        [
-          {
-            label: 'trigger',
-            tooltip: '触发类型',
-            name: 'tooltip.trigger',
-            initialValue: 'axis',
-            type: 'select',
-            options: ['item', 'axis', 'none'].map(d => ({ name: d, value: d })),
-            itemProps: {
-              span: 4,
-            },
-          },
-          {
-            label: 'transitionDuration',
-            tooltip: '提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。',
-            name: 'tooltip.transitionDuration',
-            initialValue: '0',
-            type: 'inputNumber',
-            itemProps: {
-              span: 4,
-            },
-          },
-          {
-            label: 'confine',
-            tooltip: '是否将 tooltip 框限制在图表的区域内。',
-            name: 'tooltip.confine',
-            initialValue: true,
-            type: 'select',
-            options: [{ name: 'true', value: true }, { name: 'false', value: false }],
-            itemProps: {
-              span: 4,
-            },
-          },
-        ],
-      ],
+      label: '标题',
+      name: 'title',
+      type: 'input',
     },
     {
-      label: 'legend',
-      subList: [
-        [
-          {
-            label: 'bottom',
-            name: 'legend.bottom',
-            tooltip: '图例组件离容器下侧的距离。',
-            type: 'inputNumber',
-            itemProps: {
-              span: 4,
-            },
-          },
-          {
-            label: 'orient',
-            name: 'legend.orient',
-            tooltip: '图例列表的布局朝向。',
-            type: 'select',
-            options: ['horizontal', 'vertical'].map(d => ({ name: d, value: d })),
-            itemProps: {
-              span: 4,
-            },
-          },
-          {
-            label: 'align',
-            name: 'legend.align',
-            type: 'select',
-            options: ['auto', 'left', 'right'].map(d => ({ name: d, value: d })),
-            tooltip: '图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 \'right\' 以及纵向布局（orient 为 \'vertical\'）的时候为右对齐，及为 \'right\'。',
-            itemProps: {
-              span: 4,
-            },
-          },
-          {
-            label: 'type',
-            name: 'legend.type',
-            type: 'select',
-            options: ['plain', 'scroll'].map(d => ({ name: d, value: d })),
-            tooltip: '图例的类型',
-            itemProps: {
-              span: 4,
-            },
-          },
-        ],
-      ],
+      label: '描述',
+      name: 'descprition',
+      type: 'input',
     },
+    {
+      label: '数据源',
+      name: 'dataSourceType',
+      type: 'radioGroup',
+      initialValue: 'static',
+      options: map(periodList, (name, value) => ({ value, name })),
+    },
+    // {
+    //   label: 'tooltip',
+    //   subList: [
+    //     [
+    //       {
+    //         label: 'trigger',
+    //         tooltip: '触发类型',
+    //         name: 'tooltip.trigger',
+    //         initialValue: 'axis',
+    //         type: 'select',
+    //         options: ['item', 'axis', 'none'].map(d => ({ name: d, value: d })),
+    //         itemProps: {
+    //           span: 4,
+    //         },
+    //       },
+    //       {
+    //         label: 'transitionDuration',
+    //         tooltip: '提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。',
+    //         name: 'tooltip.transitionDuration',
+    //         initialValue: '0',
+    //         type: 'inputNumber',
+    //         itemProps: {
+    //           span: 4,
+    //         },
+    //       },
+    //       {
+    //         label: 'confine',
+    //         tooltip: '是否将 tooltip 框限制在图表的区域内。',
+    //         name: 'tooltip.confine',
+    //         initialValue: true,
+    //         type: 'select',
+    //         options: [{ name: 'true', value: true }, { name: 'false', value: false }],
+    //         itemProps: {
+    //           span: 4,
+    //         },
+    //       },
+    //     ],
+    //   ],
+    // },
+    // {
+    //   label: 'legend',
+    //   subList: [
+    //     [
+    //       {
+    //         label: 'bottom',
+    //         name: 'legend.bottom',
+    //         tooltip: '图例组件离容器下侧的距离。',
+    //         type: 'inputNumber',
+    //         itemProps: {
+    //           span: 4,
+    //         },
+    //       },
+    //       {
+    //         label: 'orient',
+    //         name: 'legend.orient',
+    //         tooltip: '图例列表的布局朝向。',
+    //         type: 'select',
+    //         options: ['horizontal', 'vertical'].map(d => ({ name: d, value: d })),
+    //         itemProps: {
+    //           span: 4,
+    //         },
+    //       },
+    //       {
+    //         label: 'align',
+    //         name: 'legend.align',
+    //         type: 'select',
+    //         options: ['auto', 'left', 'right'].map(d => ({ name: d, value: d })),
+    //         tooltip: '图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 \'right\' 以及纵向布局（orient 为 \'vertical\'）的时候为右对齐，及为 \'right\'。',
+    //         itemProps: {
+    //           span: 4,
+    //         },
+    //       },
+    //       {
+    //         label: 'type',
+    //         name: 'legend.type',
+    //         type: 'select',
+    //         options: ['plain', 'scroll'].map(d => ({ name: d, value: d })),
+    //         tooltip: '图例的类型',
+    //         itemProps: {
+    //           span: 4,
+    //         },
+    //       },
+    //     ],
+    //   ],
+    // },
   ];
+
+  let fields = [];
+  if (form.getFieldsValue().dataSourceType === 'static') {
+    fields = [
+      ...baseFields,
+      {
+        name: 'dataSource',
+        label: '录入数据',
+        type: 'textArea',
+        itemProps: {
+          placeholder: '请填写 JSON 格式的数据',
+          autosize: { minRows: 3, maxRows: 7 },
+        },
+      },
+    ];
+  } else {
+    fields = [
+      ...baseFields,
+      {
+        name: 'dataAPI',
+        label: 'API',
+        type: 'input',
+      },
+      {
+        name: 'dataHandler',
+        label: '数据处理',
+        type: 'select',
+        // initialValue: 'da',
+        options: map(dataHandlerList, (name, value) => ({ value, name })),
+      },
+    ];
+  }
 
   return (
     <section className="configurator-section">

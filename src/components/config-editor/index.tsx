@@ -65,13 +65,13 @@ const PureChartEditor = (props: IProps) => {
         <div>
           <PanelCharts />
           <Tabs defaultActiveKey="setting">
-            <TabPane tab="配置" key="setting">
+            <TabPane tab="图表配置" key="setting">
               <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
             </TabPane>
-            <TabPane tab="数据" key="data">
+            <TabPane tab="数据系列" key="data">
               {/* <PanelData /> */}
             </TabPane>
-            <TabPane tab="控件" key="control">
+            <TabPane tab="轴配置" key="control">
               {/* <PanelControls  /> */}
             </TabPane>
           </Tabs>

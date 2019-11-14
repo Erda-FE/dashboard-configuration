@@ -45,5 +45,4 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch({ type: 'biDrawer/chooseControl', controlType });
   },
 });
-
 export default connect(mapStateToProps, mapDispatchToProps)(PanelControls);

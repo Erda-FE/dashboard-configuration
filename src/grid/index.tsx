@@ -254,6 +254,7 @@ class BoardGrid extends React.PureComponent<IProps> {
             </ReactGridLayout>
           )}
         </SizeMe>
+
         <ChartEditor />
       </div>
     );

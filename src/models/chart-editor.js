@@ -20,7 +20,7 @@ const newChartTpl = {
     metricData: {},
   },
   config: {
-    options: {},
+    option: {},
   },
 };
 
@@ -50,9 +50,7 @@ export default {
     * saveEditor({ payload }, { put, select }) {
       const { editChartId, viewMap } = yield select(state => state.chartEditor);
       const editChart = cloneDeep(viewMap[editChartId]);
-      const { option = {} } = payload;
-      set(editChart, 'config.option', option);
-      yield put({ type: 'updateState', payload: { viewMap: { ...viewMap, [editChartId]: editChart }, visible: false, addMode: false, editChartId: '', viewCopy: {} } });
+      yield put({ type: 'updateState', payload: { viewMap: { ...viewMap, [editChartId]: { ...editChart, ...payload } }, visible: false, addMode: false, editChartId: '', viewCopy: {} } });
       yield put({ type: 'setTouched', payload: false });
     },
     // 表单变化时自动保存

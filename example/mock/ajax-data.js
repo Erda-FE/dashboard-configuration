@@ -27,7 +27,7 @@ export const ajaxConvertor = (body) => {
 
 export default [
   {
-    w: 9,
+    w: 12,
     h: 9,
     x: 0,
     y: 0,

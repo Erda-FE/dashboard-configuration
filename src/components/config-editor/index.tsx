@@ -38,10 +38,8 @@ const PureChartEditor = (props: IProps) => {
     }
     // TODO add validation for each tab
 
-    baseConfigFormRef.current.validateFieldsAndScroll((errors: any, optionValues: any) => {
+    baseConfigFormRef.current.validateFieldsAndScroll((errors: any, valueMap: any) => {
       if (errors) return;
-      console.log('saved values', optionValues);
-      saveEditor({ option: optionValues });
     });
   };
 
@@ -56,33 +54,32 @@ const PureChartEditor = (props: IProps) => {
   const { config: { option: chartOptions } } = currentChart;
 
   return (
-    <EditorContainer
-      visible={visible}
-      onClose={addMode ? deleteEditor : closeEditor}
-      className="bi-config-editor"
-    >
-      <div className="bi-config-editor-content">
-        <div>
-          <PanelCharts />
-          <Tabs defaultActiveKey="setting">
-            <TabPane tab="图表配置" key="setting">
-              <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
-            </TabPane>
-            <TabPane tab="数据系列" key="data">
-              {/* <PanelData /> */}
-            </TabPane>
-            <TabPane tab="轴配置" key="control">
-              {/* <PanelControls  /> */}
-            </TabPane>
-          </Tabs>
+    <React.Fragment>
+      <div className="editor-holder" />
+      <EditorContainer
+        visible={visible}
+        onClose={addMode ? deleteEditor : closeEditor}
+        className="bi-config-editor"
+      >
+        <div className="bi-config-editor-content">
+          <div>
+            <PanelCharts />
+            <Tabs defaultActiveKey="setting">
+              <TabPane tab="图表配置" key="setting">
+                <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
+              </TabPane>
+              <TabPane tab="数据系列" key="data">
+                {/* <PanelData /> */}
+              </TabPane>
+              <TabPane tab="轴配置" key="control">
+                {/* <PanelControls  /> */}
+              </TabPane>
+            </Tabs>
+          </div>
         </div>
-      </div>
-      <div className="bi-config-editor-footer">
-        <div className="bi-config-editor-footer-left">
-          {`图表ID: ${editChartId}`}
-        </div>
-        <div className="bi-config-editor-footer-right">
-          {
+        <div className="bi-config-editor-footer">
+          <div className="bi-config-editor-footer-right">
+            {
             isTouched ?
               (
                 <Popconfirm
@@ -99,12 +96,16 @@ const PureChartEditor = (props: IProps) => {
               ) :
               (<Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
           }
-          <Button onClick={saveChart} type="primary">
-            {addMode ? '新增' : '保存'}
-          </Button>
+            <Button onClick={saveChart} type="primary">
+              {addMode ? '新增' : '保存'}
+            </Button>
+          </div>
+          <div className="bi-config-editor-footer-left">
+            {`图表ID: ${editChartId}`}
+          </div>
         </div>
-      </div>
-    </EditorContainer>
+      </EditorContainer>
+    </React.Fragment>
   );
 };
 

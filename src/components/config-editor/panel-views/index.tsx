@@ -14,7 +14,7 @@ interface IProps {
 const PanelViews = ({ chartType, onChoose }: IProps) => {
   const chartConfigMap = getConfig('chartConfigMap');
   return (
-    <div>
+    <div className="chart-type-container">
       {map(chartConfigMap, ({ icon, name }, type) => (
         <div
           key={type}

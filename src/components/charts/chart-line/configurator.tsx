@@ -51,8 +51,6 @@ const LineConfigurator = (props: IProps) => {
     }, 0);
   }, [formData]);
 
-  const formValues = form.getFieldsValue();
-
   const periodList = { static: '静态数据', api: '接口数据' };
   const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
 
@@ -64,15 +62,15 @@ const LineConfigurator = (props: IProps) => {
     },
     {
       label: '描述',
-      name: 'descprition',
-      type: 'input',
+      name: 'description',
+      type: 'textArea',
     },
     {
       label: '数据源',
       name: 'dataSourceType',
       type: 'radioGroup',
       initialValue: 'static',
-      options: map(periodList, (name, value) => ({ value, name })),
+      options: [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据', disabled: true }],
     },
     // {
     //   label: 'tooltip',

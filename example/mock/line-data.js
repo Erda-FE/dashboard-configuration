@@ -268,7 +268,7 @@ const staticData = {
 
 export default [
   {
-    w: 9,
+    w: 12,
     h: 12,
     x: 0,
     y: 0,
@@ -291,6 +291,9 @@ export default [
       controls: ['input', 'input2'],
       config: {
         option: {
+          tooltip: {
+            // transitionDuration: 5,
+          },
           legend: {
             bottom: 0,
             align: 'left',

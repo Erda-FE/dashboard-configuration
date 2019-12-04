@@ -142,11 +142,16 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = getMessage({ fetchStatus });
-    const { title } = view;
+    const { title, description } = view;
 
     return (
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
-        <h2 className="bi-chart-title">{title}</h2>
+        <div className="header bi-chart-header">
+          <h2 className="bi-chart-title">{title}</h2>
+          <Tooltip title={description}>
+            <Icon type="question-circle-o" />
+          </Tooltip>
+        </div>
         {
           !view.hideHeader &&
           (

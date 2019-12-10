@@ -148,9 +148,11 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
         <div className="header bi-chart-header">
           <h2 className="bi-chart-title">{title}</h2>
-          <Tooltip title={description}>
-            <Icon type="question-circle-o" />
-          </Tooltip>
+          <IF check={description}>
+            <Tooltip title={description}>
+              <Icon type="question-circle-o" />
+            </Tooltip>
+          </IF>
         </div>
         {
           !view.hideHeader &&

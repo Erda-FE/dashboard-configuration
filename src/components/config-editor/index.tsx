@@ -5,8 +5,9 @@ import { isEqual, forEach, get, isEmpty } from 'lodash';
 import React from 'react';
 import { getConfig } from '../../config';
 import './index.scss';
-import PanelControls from './panel-controls';
-import PanelData from './panel-data';
+// import PanelControls from './panel-controls';
+// import PanelData from './panel-data';
+import DataConfig from './data-config';
 import PanelCharts from './panel-views';
 
 const { TabPane } = Tabs;
@@ -38,8 +39,9 @@ const PureChartEditor = (props: IProps) => {
     }
     // TODO add validation for each tab
 
-    baseConfigFormRef.current.validateFieldsAndScroll((errors: any, valueMap: any) => {
+    baseConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
       if (errors) return;
+      saveEditor(options);
     });
   };
 
@@ -63,15 +65,18 @@ const PureChartEditor = (props: IProps) => {
       >
         <div className="bi-config-editor-content">
           <div>
-            <PanelCharts />
             <Tabs defaultActiveKey="setting">
               <TabPane tab="图表配置" key="setting">
+                <PanelCharts />
                 <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
               </TabPane>
-              <TabPane tab="数据系列" key="data">
+              <TabPane tab="数据配置" key="data">
+                <DataConfig />
+              </TabPane>
+              <TabPane tab="数据系列" key="plot">
                 {/* <PanelData /> */}
               </TabPane>
-              <TabPane tab="轴配置" key="control">
+              <TabPane tab="轴配置" key="axes">
                 {/* <PanelControls  /> */}
               </TabPane>
             </Tabs>

@@ -96,8 +96,8 @@ export default {
         //     delete drawerInfo[key];
         //   }
         // });
-        yield yield put({ type: 'dashBoard/deleteLayout', viewId: editChartId });
-        tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
+        // yield put({ type: 'dashBoard/deleteLayout', viewId: editChartId });
+        // tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
       } else {
         tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType } } };
       }

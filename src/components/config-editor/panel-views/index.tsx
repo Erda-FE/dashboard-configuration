@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, map } from 'lodash';
+import { get, map, pick } from 'lodash';
 import classnames from 'classnames';
 import { connect } from 'dva';
 import { Tooltip } from 'antd';
@@ -15,17 +15,25 @@ const PanelViews = ({ chartType, onChoose }: IProps) => {
   const chartConfigMap = getConfig('chartConfigMap');
   return (
     <div className="chart-type-container">
-      {map(chartConfigMap, ({ icon, name }, type) => (
-        <div
-          key={type}
-          className={classnames({ 'bi-config-editor-views': true, active: type === chartType })}
-          onClick={() => onChoose(type)}
-        >
-          <Tooltip placement="bottom" title={name}>
-            {icon}
-          </Tooltip>
-        </div>
-      ))}
+      {map(
+        pick(chartConfigMap, ['chart:line', 'chart:area', 'chart:bar']),
+        ({ icon, name }, type) => (
+          <div
+            key={type}
+            className={
+            classnames({
+              'bi-config-editor-views': true,
+              active: type === chartType,
+            })
+          }
+            onClick={() => onChoose(type)}
+          >
+            <Tooltip placement="bottom" title={name}>
+              {icon}
+            </Tooltip>
+          </div>
+        )
+      )}
     </div>
   );
 };

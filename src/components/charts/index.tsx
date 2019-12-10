@@ -10,12 +10,12 @@ import PieConfigurator from './chart-pie/configurator';
 
 
 const basicCharts: IChartsMap = {
-  'chart:mix': {
-    name: '混合图',
-    icon: <Icon type="line-chart" />,
-    Component: ChartLine,
-    Configurator: LineConfigurator,
-  },
+  // 'chart:mix': {
+  //   name: '混合图',
+  //   icon: <Icon type="line-chart" />,
+  //   Component: ChartLine,
+  //   Configurator: LineConfigurator,
+  // },
   'chart:line': {
     name: '折线图',
     icon: <Icon type="line-chart" />,
@@ -26,6 +26,14 @@ const basicCharts: IChartsMap = {
       return <ChartLine {...props} metricData={newMetricData} />;
     },
     Configurator: LineConfigurator,
+  },
+  'chart:area': {
+    name: '面积图',
+    icon: <Icon type="area-chart" />,
+    Component: ChartLine,
+    // mockData: mockDataLine,
+    Configurator: LineConfigurator,
+    // dataSettings: [DataSettingsCommon],
   },
   'chart:bar': {
     name: '柱状图',
@@ -38,14 +46,6 @@ const basicCharts: IChartsMap = {
     },
     Configurator: LineConfigurator,
   },
-  // 'chart:area': {
-  //   name: '面积图',
-  //   icon: <Icon type="area-chart" />,
-  //   Component: ChartLine,
-  //   mockData: mockDataLine,
-  //   Configurator: LineConfigurator,
-  //   dataSettings: [DataSettingsCommon],
-  // },
   'chart:pie': {
     name: '饼图',
     icon: <Icon type="pie-chart" />,

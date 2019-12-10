@@ -1,5 +1,6 @@
 $color-text: #666666;
 $white: #ffffff;
+$full-background-color: rgba(55, 55, 55, .6);
 :global {
   .bi-board {
     width: 100%;
@@ -10,7 +11,7 @@ $white: #ffffff;
     background-color: $white;
   }
   .dashboard-header {
-    padding-right: 10px;
+    padding: 10px;
     text-align: right;
     .anticon {
       margin-left: 12px;
@@ -28,15 +29,15 @@ $white: #ffffff;
 
   // 全屏样式，不能合并一起简写，否则不生效
   :not(:root):-webkit-full-screen::backdrop {
-    background: rgba(55, 55, 55, .6);
+    background: $full-background-color;
   }
   :not(:root):-moz-full-screen::backdrop {
-    background: rgba(55, 55, 55, .6);
+    background: $full-background-color;
   }
   :not(:root):-ms-full-screen::backdrop {
-    background: rgba(55, 55, 55, .6);
+    background: $full-background-color;
   }
   :not(:root):-o-full-screen::backdrop {
-    background: rgba(55, 55, 55, .6);
+    background: $full-background-color;
   }
 }

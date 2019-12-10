@@ -51,10 +51,7 @@ const LineConfigurator = (props: IProps) => {
     }, 0);
   }, [formData]);
 
-  const periodList = { static: '静态数据', api: '接口数据' };
-  const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
-
-  const baseFields = [
+  const fields = [
     {
       label: '标题',
       name: 'title',
@@ -64,13 +61,6 @@ const LineConfigurator = (props: IProps) => {
       label: '描述',
       name: 'description',
       type: 'textArea',
-    },
-    {
-      label: '数据源',
-      name: 'dataSourceType',
-      type: 'radioGroup',
-      initialValue: 'static',
-      options: [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据', disabled: true }],
     },
     // {
     //   label: 'tooltip',
@@ -158,38 +148,6 @@ const LineConfigurator = (props: IProps) => {
     //   ],
     // },
   ];
-
-  let fields = [];
-  if (form.getFieldsValue().dataSourceType === 'static') {
-    fields = [
-      ...baseFields,
-      {
-        name: 'dataSource',
-        label: '录入数据',
-        type: 'textArea',
-        itemProps: {
-          placeholder: '请填写 JSON 格式的数据',
-          autosize: { minRows: 3, maxRows: 7 },
-        },
-      },
-    ];
-  } else {
-    fields = [
-      ...baseFields,
-      {
-        name: 'dataAPI',
-        label: 'API',
-        type: 'input',
-      },
-      {
-        name: 'dataHandler',
-        label: '数据处理',
-        type: 'select',
-        // initialValue: 'da',
-        options: map(dataHandlerList, (name, value) => ({ value, name })),
-      },
-    ];
-  }
 
   return (
     <section className="configurator-section">

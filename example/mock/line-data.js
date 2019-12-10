@@ -279,7 +279,8 @@ export default [
       name: 'test',
       chartType: 'chart:line',
       hideReload: true,
-      title: 'zookeeper',
+      title: '图表标题是 zookeeper',
+      description: '这里配置图表的一些描述',
       loadData() {
         return new Promise((resolve) => {
           setTimeout(() => {

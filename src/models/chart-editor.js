@@ -32,7 +32,7 @@ export default {
       const viewId = `view-${generateUUID()}`;
       const { viewMap } = yield select(state => state.chartEditor);
 
-      yield yield put({
+      yield put({
         type: 'updateState',
         payload: {
           visible: true,

@@ -33,10 +33,8 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 }
 
 const LineConfigurator = (props: IProps) => {
-  const { form, formData, forwardedRef, names, datas, viewId, currentChart, setTouched, isTouched } = props;
-
+  const { form, formData, forwardedRef, currentChart, setTouched, isTouched } = props;
   React.useEffect(() => {
-    // eslint-disable-next-line no-param-reassign
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
       setTouched(true);
@@ -159,16 +157,15 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
-  return {
-    chartType: drawerInfo.chartType as string,
-    names: isMock ? mockDataLine.names : (names || []) as string[],
-    datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
+const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
+  // const drawerInfo = viewMap[viewId] || {};
+  ({
+    // chartType: drawerInfo.chartType as string,
+    // names: isMock ? mockDataLine.names : (names || []) as string[],
+    // datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
     // option: convertSettingToOption(drawerInfo),
     isTouched,
-  };
-};
+  });
 
 const mapDispatchToProps = (dispatch: any) => ({
   setTouched(isTouched: any) {

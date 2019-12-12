@@ -28,6 +28,8 @@ const noop = () => null;
 const PureChartEditor = (props: IProps) => {
   const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, isTouched } = props;
   const baseConfigFormRef = React.useRef(null as any);
+  const dataConfigFormRef = React.useRef(null as any);
+  console.log(currentChart);
 
   const saveChart = () => { // 可以提交图表或控件
     const { saveEditor } = props;
@@ -38,10 +40,24 @@ const PureChartEditor = (props: IProps) => {
       return;
     }
     // TODO add validation for each tab
+    let amalgamatedOptions = {};
+    const vali = () => {
+      dataConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
+        if (errors) return;
+        console.log(options.staticData);
+
+        if (options.staticData) {
+          amalgamatedOptions = { ...amalgamatedOptions, ...options, staticData: JSON.parse(options.staticData) };
+        }
+        console.log(amalgamatedOptions);
+        saveEditor(amalgamatedOptions);
+      });
+    };
 
     baseConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
       if (errors) return;
-      saveEditor(options);
+      amalgamatedOptions = { ...amalgamatedOptions, ...options };
+      vali();
     });
   };
 
@@ -71,7 +87,7 @@ const PureChartEditor = (props: IProps) => {
                 <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
               </TabPane>
               <TabPane tab="数据配置" key="data">
-                <DataConfig />
+                <DataConfig ref={dataConfigFormRef} />
               </TabPane>
               <TabPane tab="数据系列" key="plot">
                 {/* <PanelData /> */}

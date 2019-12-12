@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { map } from 'lodash';
+import { connect } from 'dva';
 import { RenderPureForm } from '../../common';
 import { collectFields } from '../../common/utils';
 
@@ -11,9 +12,19 @@ const options = [{ value: 'static', name: '静态数据' }, { value: 'api', name
 interface IProps {
   form: WrappedFormUtils;
   formData: any;
+  forwardedRef: { current: any };
+  isTouched: boolean;
+  setTouched(v: boolean): void;
 }
 
-const DataConfig = ({ form, formData }: IProps) => {
+const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IProps) => {
+  React.useEffect(() => {
+    forwardedRef.current = form;
+    if (!isTouched && form.isFieldsTouched()) {
+      setTouched(true);
+    }
+  }, [form]);
+
   React.useEffect(() => {
     setTimeout(() => {
       const fieldsValues = collectFields(formData);
@@ -36,7 +47,7 @@ const DataConfig = ({ form, formData }: IProps) => {
     fields = [
       ...baseFields,
       {
-        name: 'dataSource',
+        name: 'staticData',
         label: '录入数据',
         type: 'textArea',
         itemProps: {
@@ -57,7 +68,6 @@ const DataConfig = ({ form, formData }: IProps) => {
         name: 'dataHandler',
         label: '数据处理',
         type: 'select',
-        // initialValue: 'da',
         options: map(dataHandlerList, (name, value) => ({ value, name })),
       },
     ];
@@ -73,4 +83,20 @@ const DataConfig = ({ form, formData }: IProps) => {
   );
 };
 
-export default Form.create()(DataConfig);
+const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
+  // const drawerInfo = viewMap[viewId] || {};
+  ({
+    isTouched,
+  });
+
+const mapDispatchToProps = (dispatch: any) => ({
+  setTouched(isTouched: any) {
+    dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
+  },
+});
+
+const Config = connect(mapStateToProps, mapDispatchToProps)(Form.create()(DataConfig));
+
+export default React.forwardRef((props, ref) => (
+  <Config forwardedRef={ref} {...props} />
+));

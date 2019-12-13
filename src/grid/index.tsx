@@ -8,7 +8,7 @@
 import { Icon, Input, Tooltip } from 'antd';
 import classnames from 'classnames';
 import { connect } from 'dva';
-import { get, isEqual, isPlainObject } from 'lodash';
+import { get, isEqual, isPlainObject, isEmpty } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -21,6 +21,7 @@ import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartEditor, ChartOperation, defaultChartsMap } from '../components';
+import { EmptyHolder, IF } from '../components/common';
 import './index.scss';
 
 
@@ -77,6 +78,7 @@ const splitLayoutAndView = (layout: ILayout) => {
 
 class BoardGrid extends React.PureComponent<IProps> {
   static defaultProps = {
+    layout: [],
     readOnly: false,
     theme,
     themeObj,
@@ -164,9 +166,6 @@ class BoardGrid extends React.PureComponent<IProps> {
       expandOption, updateLayout, addEditor,
     } = this.props;
     const { isFullscreen } = screenfull; // 是否全屏
-    if (!dashboardLayout.length) {
-      return null;
-    }
     return (
       <div
         style={{ flex: 2 }}
@@ -204,57 +203,60 @@ class BoardGrid extends React.PureComponent<IProps> {
             }
           </div>
         )}
-        <SizeMe monitorHeight>
-          {({ size }) => (
-            <ReactGridLayout
-              ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
-              autoSize
-              layout={dashboardLayout}
-              cols={cols}
-              rowHeight={30}
-              width={size.width || 800}
-              onLayoutChange={updateLayout}
-              isDraggable
-              isResizable
-              style={isEditMode ? { backgroundImage: getGridBackground(size.width) } : {}}
-              onDragStart={this.onDragStart}
-              draggableHandle=".bi-draggable-handle"
-            >
-              {dashboardLayout.map(({ i, ...others }: any) => {
-                let ChildComp = null;
-                let view = viewMap[i];
-                view = typeof view === 'function'
-                  ? view({ isEditMode, isFullscreen })
-                  : view;
-                if (!view) {
-                  return null;
-                }
-                if (isPlainObject(view)) {
-                  const { chartType = '' } = view;
-                  if (chartType.startsWith('chart')) {
-                    const ChartNode = get(this.chartConfigMap, [chartType, 'Component']);
-                    ChildComp = (
-                      <React.Fragment>
-                        <ChartOperation viewId={i} view={view} expandOption={expandOption}>
-                          <ChartNode />
-                        </ChartOperation>
-                      </React.Fragment>
-                    );
+        <IF check={isEmpty(dashboardLayout)}>
+          <EmptyHolder />
+          <IF.ELSE />
+          <SizeMe monitorHeight>
+            {({ size }) => (
+              <ReactGridLayout
+                ref={(ref: React.ReactInstance) => { this.boardGridRef = ref; }}
+                autoSize
+                layout={dashboardLayout}
+                cols={cols}
+                rowHeight={30}
+                width={size.width || 800}
+                onLayoutChange={updateLayout}
+                isDraggable
+                isResizable
+                style={isEditMode ? { backgroundImage: getGridBackground(size.width) } : {}}
+                onDragStart={this.onDragStart}
+                draggableHandle=".bi-draggable-handle"
+              >
+                {dashboardLayout.map(({ i, ...others }: any) => {
+                  let ChildComp = null;
+                  let view = viewMap[i];
+                  view = typeof view === 'function'
+                    ? view({ isEditMode, isFullscreen })
+                    : view;
+                  if (!view) {
+                    return null;
                   }
-                } else {
-                  console.error('layout view should be object or function');
-                }
-                return (
-                  // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-                  <div key={i} data-grid={{ ...others }}>
-                    {ChildComp}
-                  </div>
-                );
-              })}
-            </ReactGridLayout>
-          )}
-        </SizeMe>
-
+                  if (isPlainObject(view)) {
+                    const { chartType = '' } = view;
+                    if (chartType.startsWith('chart')) {
+                      const ChartNode = get(this.chartConfigMap, [chartType, 'Component']);
+                      ChildComp = (
+                        <React.Fragment>
+                          <ChartOperation viewId={i} view={view} expandOption={expandOption}>
+                            <ChartNode />
+                          </ChartOperation>
+                        </React.Fragment>
+                      );
+                    }
+                  } else {
+                    console.error('layout view should be object or function');
+                  }
+                  return (
+                    // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
+                    <div key={i} data-grid={{ ...others }}>
+                      {ChildComp}
+                    </div>
+                  );
+                })}
+              </ReactGridLayout>
+            )}
+          </SizeMe>
+        </IF>
         <ChartEditor />
       </div>
     );

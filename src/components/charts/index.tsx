@@ -10,12 +10,6 @@ import PieConfigurator from './chart-pie/configurator';
 
 
 const basicCharts: IChartsMap = {
-  // 'chart:mix': {
-  //   name: '混合图',
-  //   icon: <Icon type="line-chart" />,
-  //   Component: ChartLine,
-  //   Configurator: LineConfigurator,
-  // },
   'chart:line': {
     name: '折线图',
     icon: <Icon type="line-chart" />,
@@ -23,6 +17,7 @@ const basicCharts: IChartsMap = {
       const metricData = get(props, 'data.metricData');
       const newMetricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
       set(props, 'data.metricData', newMetricData);
+      set(props, 'config.optionProps.noAreaColor', true);
       return <ChartLine {...props} metricData={newMetricData} />;
     },
     Configurator: LineConfigurator,
@@ -30,10 +25,14 @@ const basicCharts: IChartsMap = {
   'chart:area': {
     name: '面积图',
     icon: <Icon type="area-chart" />,
-    Component: ChartLine,
-    // mockData: mockDataLine,
+    Component(props) {
+      const metricData = get(props, 'data.metricData');
+      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
+      set(props, 'data.metricData', newMetricData);
+      set(props, 'config.optionProps.noAreaColor', false);
+      return <ChartLine {...props} metricData={newMetricData} />;
+    },
     Configurator: LineConfigurator,
-    // dataSettings: [DataSettingsCommon],
   },
   'chart:bar': {
     name: '柱状图',
@@ -42,6 +41,7 @@ const basicCharts: IChartsMap = {
       const metricData = get(props, 'data.metricData');
       const newMetricData = map(metricData, (metric => ({ ...metric, type: 'bar' })));
       set(props, 'data.metricData', newMetricData);
+      console.log(newMetricData);
       return <ChartLine {...props} metricData={newMetricData} />;
     },
     Configurator: LineConfigurator,

@@ -36,7 +36,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     const yAxisIndex = 0; // axisIndex || 0;
     const areaColor = areaColors[i];
     series.push({
-      type: value.chartType || 'line',
+      type: value.type || 'line',
       name: value.tag || seriesName || value.name || value.key,
       yAxisIndex,
       data: !isBarChangeColor ? value.data : map(value.data, (item: any, j) => {

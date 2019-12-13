@@ -7,7 +7,7 @@ import { RenderPureForm } from '../../common';
 import { collectFields } from '../../common/utils';
 
 const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
-const options = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据', disabled: true }];
+const options = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据' }];
 
 interface IProps {
   form: WrappedFormUtils;
@@ -60,13 +60,17 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
     fields = [
       ...baseFields,
       {
-        name: 'dataAPI',
-        label: 'API',
+        name: 'chartQuery',
+        label: '请求 API',
         type: 'input',
+        rules: [{
+          message: '请输入请求 API',
+          required: true,
+        }],
       },
       {
         name: 'dataHandler',
-        label: '数据处理',
+        label: '数据处理（引入时注入）',
         type: 'select',
         options: map(dataHandlerList, (name, value) => ({ value, name })),
       },

@@ -1,12 +1,12 @@
-import { Button, Form, message, Tabs, Popconfirm } from 'antd';
+import { Button, message, Tabs, Popconfirm } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
-import { isEqual, forEach, get, isEmpty } from 'lodash';
+import { get, isEmpty } from 'lodash';
 import React from 'react';
+import { getData } from '../../utils/comp';
 import { getConfig } from '../../config';
+import { IF } from '../common';
 import './index.scss';
-// import PanelControls from './panel-controls';
-// import PanelData from './panel-data';
 import DataConfig from './data-config';
 import PanelCharts from './panel-views';
 
@@ -29,7 +29,6 @@ const PureChartEditor = (props: IProps) => {
   const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, isTouched } = props;
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
-  console.log(currentChart);
 
   const saveChart = () => { // 可以提交图表或控件
     const { saveEditor } = props;
@@ -41,15 +40,20 @@ const PureChartEditor = (props: IProps) => {
     }
     // TODO add validation for each tab
     let amalgamatedOptions = {};
-    const vali = () => {
+    const valiDataConfig = () => {
       dataConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
         if (errors) return;
-        console.log(options.staticData);
-
         if (options.staticData) {
           amalgamatedOptions = { ...amalgamatedOptions, ...options, staticData: JSON.parse(options.staticData) };
         }
-        console.log(amalgamatedOptions);
+        if (options.chartQuery) {
+          amalgamatedOptions = {
+            ...amalgamatedOptions,
+            ...options,
+            loadData: getData,
+          };
+        }
+
         saveEditor(amalgamatedOptions);
       });
     };
@@ -57,7 +61,7 @@ const PureChartEditor = (props: IProps) => {
     baseConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
       if (errors) return;
       amalgamatedOptions = { ...amalgamatedOptions, ...options };
-      vali();
+      valiDataConfig();
     });
   };
 
@@ -89,12 +93,14 @@ const PureChartEditor = (props: IProps) => {
               <TabPane tab="数据配置" key="data">
                 <DataConfig ref={dataConfigFormRef} />
               </TabPane>
-              <TabPane tab="数据系列" key="plot">
-                {/* <PanelData /> */}
-              </TabPane>
-              <TabPane tab="轴配置" key="axes">
-                {/* <PanelControls  /> */}
-              </TabPane>
+              <IF check={!addMode}>
+                <TabPane tab="数据系列" key="plot">
+                  <p>sasasa</p>
+                </TabPane>
+                <TabPane tab="轴配置" key="axes">
+                  <p>sasasa</p>
+                </TabPane>
+              </IF>
             </Tabs>
           </div>
         </div>

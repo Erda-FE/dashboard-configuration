@@ -1,5 +1,5 @@
 import { forEach, replace } from 'lodash';
-import agent from 'agent';
+// import agent from 'agent';
 import domtoimage from 'dom-to-image';
 import { message } from 'antd';
 import screenfull from 'screenfull';
@@ -42,17 +42,18 @@ export function registerUrlDataHandle(handle: any) {
   urlDataHandle = handle;
 }
 export function getData(url: string, query?: any) {
-  if (!url) return {};
-  const newUrl = convertUrl(url);
-  return agent.get(newUrl)
-    .query(query)
-    .then((response: any) => {
-      const data = response.body;
-      if (urlDataHandle) {
-        return urlDataHandle({ type: 'get', url: newUrl, data });
-      }
-      return data;
-    });
+  return {};
+  // if (!url) return {};
+  // const newUrl = convertUrl(url);
+  // return agent.get(newUrl)
+  //   .query(query)
+  //   .then((response: any) => {
+  //     const data = response.body;
+  //     if (urlDataHandle) {
+  //       return urlDataHandle({ type: 'get', url: newUrl, data });
+  //     }
+  //     return data;
+  //   });
 }
 
 interface IParams { [name: string]: any }

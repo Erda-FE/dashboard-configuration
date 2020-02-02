@@ -1,13 +1,14 @@
 import { Button, message, Tabs, Popconfirm } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { connect } from 'dva';
-import { get, isEmpty } from 'lodash';
+import { get, isEmpty, set } from 'lodash';
 import React from 'react';
 import { getData } from '../../utils/comp';
 import { getConfig } from '../../config';
 import { IF } from '../common';
 import './index.scss';
 import DataConfig from './data-config';
+import AxesConfig from './axes-config';
 import PanelCharts from './panel-views';
 
 const { TabPane } = Tabs;
@@ -26,9 +27,11 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 const noop = () => null;
 
 const PureChartEditor = (props: IProps) => {
-  const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, isTouched } = props;
+  const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, viewCopy, isTouched } = props;
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
+  const axesConfigFormRef = React.useRef(null as any);
+  console.log(viewCopy);
 
   const saveChart = () => { // 可以提交图表或控件
     const { saveEditor } = props;
@@ -40,10 +43,12 @@ const PureChartEditor = (props: IProps) => {
     }
     // TODO add validation for each tab
     let amalgamatedOptions = {};
+
     const valiDataConfig = () => {
       dataConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
         if (errors) return;
         if (options.staticData) {
+          console.log(options.staticData);
           amalgamatedOptions = { ...amalgamatedOptions, ...options, staticData: JSON.parse(options.staticData) };
         }
         if (options.chartQuery) {
@@ -53,7 +58,37 @@ const PureChartEditor = (props: IProps) => {
             loadData: getData,
           };
         }
+        valiAxesConfig();
+      });
+    };
 
+    const valiAxesConfig = () => {
+      axesConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
+        if (errors) return;
+        const { lyName, lyMax, lyMin, lyInterval, lyUnit = '', ryName, ryMax, ryMin, ryInterval, ryUnit = '' } = options;
+        const yAxis = [
+          {
+            type: 'value',
+            name: lyName,
+            max: lyMax,
+            min: lyMin,
+            interval: lyInterval,
+            axisLabel: {
+              formatter: `{value} ${lyUnit}`,
+            },
+          },
+          {
+            type: 'value',
+            name: ryName,
+            max: ryMax,
+            min: ryMin,
+            interval: ryInterval,
+            axisLabel: {
+              formatter: `{value} ${ryUnit}`,
+            },
+          },
+        ];
+        set(amalgamatedOptions, 'config.option.yAxis', yAxis);
         saveEditor(amalgamatedOptions);
       });
     };
@@ -75,6 +110,27 @@ const PureChartEditor = (props: IProps) => {
   const { Configurator = noop } = info;
   const { config: { option: chartOptions } } = currentChart;
 
+  const tabPanes = [
+    <TabPane tab="图表配置" key="setting">
+      <PanelCharts />
+      <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
+    </TabPane>,
+    <TabPane tab="数据配置" key="data">
+      <DataConfig ref={dataConfigFormRef} />
+    </TabPane>,
+    <TabPane tab="轴配置" key="axes">
+      <AxesConfig ref={axesConfigFormRef} />
+    </TabPane>,
+  ];
+
+  if (!addMode) {
+    tabPanes.push(
+      <TabPane tab="数据系列" key="plot">
+        <p>sasasa</p>
+      </TabPane>
+    );
+  }
+
   return (
     <React.Fragment>
       <div className="editor-holder" />
@@ -84,25 +140,7 @@ const PureChartEditor = (props: IProps) => {
         className="bi-config-editor"
       >
         <div className="bi-config-editor-content">
-          <div>
-            <Tabs defaultActiveKey="setting">
-              <TabPane tab="图表配置" key="setting">
-                <PanelCharts />
-                <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
-              </TabPane>
-              <TabPane tab="数据配置" key="data">
-                <DataConfig ref={dataConfigFormRef} />
-              </TabPane>
-              <IF check={!addMode}>
-                <TabPane tab="数据系列" key="plot">
-                  <p>sasasa</p>
-                </TabPane>
-                <TabPane tab="轴配置" key="axes">
-                  <p>sasasa</p>
-                </TabPane>
-              </IF>
-            </Tabs>
-          </div>
+          <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
         </div>
         <div className="bi-config-editor-footer">
           <div className="bi-config-editor-footer-right">
@@ -137,13 +175,14 @@ const PureChartEditor = (props: IProps) => {
 };
 
 const mapStateToProps = ({
-  chartEditor: { visible, addMode, viewMap, editChartId, isTouched },
+  chartEditor: { visible, addMode, viewMap, editChartId, isTouched, viewCopy },
 }: any) => ({
   visible,
   editChartId,
   addMode,
   currentChart: get(viewMap, [editChartId]),
   isTouched,
+  viewCopy,
 });
 
 const mapDispatchToProps = (dispatch: any) => ({

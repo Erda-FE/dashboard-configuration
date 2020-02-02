@@ -40,6 +40,8 @@ type IOptionFn = (data: object, optionExtra?: object) => object;
 
 interface IChart {
   name: string;
+  title?: string;
+  description?: string;
   // 展示类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择
   chartType: string; // chart:timeline | chart:bar | chart:radar ...
   hideHeader?: boolean; // 是否隐藏Header

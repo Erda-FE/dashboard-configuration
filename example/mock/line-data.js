@@ -130,7 +130,7 @@ const staticData = {
     },
     {
       name: 'tset2',
-      type: 'line',
+      type: 'bar',
       data: [
         '0.78',
         '0.78',
@@ -265,7 +265,7 @@ const staticData = {
 
 export default [
   {
-    w: 12,
+    w: 6,
     h: 12,
     x: 0,
     y: 0,
@@ -296,6 +296,28 @@ export default [
             bottom: 0,
             align: 'left',
           },
+          yAxis: [
+            {
+              type: 'value',
+              name: '水量',
+              min: 0,
+              max: 1,
+              interval: 0.1,
+              axisLabel: {
+                formatter: '{value} ml',
+              },
+            },
+            {
+              type: 'value',
+              name: '温度',
+              min: 0,
+              max: 2,
+              interval: 0.2,
+              axisLabel: {
+                formatter: '{value} °C',
+              },
+            },
+          ],
         },
       },
     },

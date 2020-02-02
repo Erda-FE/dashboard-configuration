@@ -52,7 +52,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
         type: 'textArea',
         itemProps: {
           placeholder: '请填写 JSON 格式的数据',
-          autosize: { minRows: 3, maxRows: 7 },
+          autosize: { minRows: 5, maxRows: 10 },
         },
       },
     ];

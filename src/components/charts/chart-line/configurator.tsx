@@ -1,7 +1,7 @@
 /**
  * 2D 线形图：折线、柱状、曲线
  */
-import { merge, map } from 'lodash';
+import { merge, map, get } from 'lodash';
 import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
@@ -54,97 +54,99 @@ const LineConfigurator = (props: IProps) => {
       label: '标题',
       name: 'title',
       type: 'input',
+      initialValue: currentChart.title,
     },
     {
       label: '描述',
       name: 'description',
       type: 'textArea',
+      initialValue: currentChart.description,
     },
-    // {
-    //   label: 'tooltip',
-    //   subList: [
-    //     [
-    //       {
-    //         label: 'trigger',
-    //         tooltip: '触发类型',
-    //         name: 'tooltip.trigger',
-    //         initialValue: 'axis',
-    //         type: 'select',
-    //         options: ['item', 'axis', 'none'].map(d => ({ name: d, value: d })),
-    //         itemProps: {
-    //           span: 4,
-    //         },
-    //       },
-    //       {
-    //         label: 'transitionDuration',
-    //         tooltip: '提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。',
-    //         name: 'tooltip.transitionDuration',
-    //         initialValue: '0',
-    //         type: 'inputNumber',
-    //         itemProps: {
-    //           span: 4,
-    //         },
-    //       },
-    //       {
-    //         label: 'confine',
-    //         tooltip: '是否将 tooltip 框限制在图表的区域内。',
-    //         name: 'tooltip.confine',
-    //         initialValue: true,
-    //         type: 'select',
-    //         options: [{ name: 'true', value: true }, { name: 'false', value: false }],
-    //         itemProps: {
-    //           span: 4,
-    //         },
-    //       },
-    //     ],
-    //   ],
-    // },
-    // {
-    //   label: 'legend',
-    //   subList: [
-    //     [
-    //       {
-    //         label: 'bottom',
-    //         name: 'legend.bottom',
-    //         tooltip: '图例组件离容器下侧的距离。',
-    //         type: 'inputNumber',
-    //         itemProps: {
-    //           span: 4,
-    //         },
-    //       },
-    //       {
-    //         label: 'orient',
-    //         name: 'legend.orient',
-    //         tooltip: '图例列表的布局朝向。',
-    //         type: 'select',
-    //         options: ['horizontal', 'vertical'].map(d => ({ name: d, value: d })),
-    //         itemProps: {
-    //           span: 4,
-    //         },
-    //       },
-    //       {
-    //         label: 'align',
-    //         name: 'legend.align',
-    //         type: 'select',
-    //         options: ['auto', 'left', 'right'].map(d => ({ name: d, value: d })),
-    //         tooltip: '图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 \'right\' 以及纵向布局（orient 为 \'vertical\'）的时候为右对齐，及为 \'right\'。',
-    //         itemProps: {
-    //           span: 4,
-    //         },
-    //       },
-    //       {
-    //         label: 'type',
-    //         name: 'legend.type',
-    //         type: 'select',
-    //         options: ['plain', 'scroll'].map(d => ({ name: d, value: d })),
-    //         tooltip: '图例的类型',
-    //         itemProps: {
-    //           span: 4,
-    //         },
-    //       },
-    //     ],
-    //   ],
-    // },
+    {
+      label: '指示参数',
+      subList: [
+        [
+          {
+            label: 'trigger',
+            tooltip: '触发类型',
+            name: 'tooltip.trigger',
+            initialValue: currentChart.tooltip ? currentChart.tooltip.trigger : 'axis',
+            type: 'select',
+            options: ['item', 'axis', 'none'].map(d => ({ name: d, value: d })),
+            itemProps: {
+              span: 3,
+            },
+          },
+          {
+            label: 'transitionDuration',
+            tooltip: '提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。',
+            name: 'tooltip.transitionDuration',
+            initialValue: currentChart.tooltip ? currentChart.tooltip.transitionDuration : '0',
+            type: 'inputNumber',
+            itemProps: {
+              span: 5,
+            },
+          },
+          {
+            label: 'confine',
+            tooltip: '是否将 tooltip 框限制在图表的区域内。',
+            name: 'tooltip.confine',
+            initialValue: currentChart.tooltip ? currentChart.tooltip.confine : true,
+            type: 'select',
+            options: [{ name: 'true', value: true }, { name: 'false', value: false }],
+            itemProps: {
+              span: 4,
+            },
+          },
+        ],
+      ],
+    },
+    {
+      label: '图例参数',
+      subList: [
+        [
+          {
+            label: 'bottom',
+            name: 'legend.bottom',
+            tooltip: '图例组件离容器下侧的距离。',
+            type: 'inputNumber',
+            itemProps: {
+              span: 4,
+            },
+          },
+          {
+            label: 'orient',
+            name: 'legend.orient',
+            tooltip: '图例列表的布局朝向。',
+            type: 'select',
+            options: ['horizontal', 'vertical'].map(d => ({ name: d, value: d })),
+            itemProps: {
+              span: 4,
+            },
+          },
+          {
+            label: 'align',
+            name: 'legend.align',
+            type: 'select',
+            options: ['auto', 'left', 'right'].map(d => ({ name: d, value: d })),
+            tooltip: '图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 \'right\' 以及纵向布局（orient 为 \'vertical\'）的时候为右对齐，及为 \'right\'。',
+            itemProps: {
+              span: 4,
+            },
+          },
+          {
+            label: 'type',
+            name: 'legend.type',
+            type: 'select',
+            options: ['plain', 'scroll'].map(d => ({ name: d, value: d })),
+            tooltip: '图例的类型',
+            itemProps: {
+              span: 4,
+            },
+          },
+        ],
+      ],
+    },
   ];
 
   return (
@@ -157,13 +159,14 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
   // const drawerInfo = viewMap[viewId] || {};
   ({
     // chartType: drawerInfo.chartType as string,
     // names: isMock ? mockDataLine.names : (names || []) as string[],
     // datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
     // option: convertSettingToOption(drawerInfo),
+    currentChart: get(viewMap, [editChartId]),
     isTouched,
   });
 

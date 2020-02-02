@@ -1,0 +1,14 @@
+$color-border: #e8e8e8;
+:global {
+  .configurator-content {
+    display: flex;
+    .configurator-left,
+    .configurator-right {
+      flex: 1;
+      padding: 20px;
+    }
+    .configurator-left {
+      border-right: 1px solid $color-border;
+    }
+  }
+}

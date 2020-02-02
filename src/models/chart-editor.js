@@ -50,7 +50,16 @@ export default {
     * saveEditor({ payload }, { put, select }) {
       const { editChartId, viewMap } = yield select(state => state.chartEditor);
       const editChart = cloneDeep(viewMap[editChartId]);
-      yield put({ type: 'updateState', payload: { viewMap: { ...viewMap, [editChartId]: { ...editChart, ...payload } }, visible: false, addMode: false, editChartId: '', viewCopy: {} } });
+      yield put({
+        type: 'updateState',
+        payload: {
+          viewMap: { ...viewMap, [editChartId]: { ...editChart, ...payload } },
+          visible: false,
+          addMode: false,
+          editChartId: '',
+          viewCopy: {},
+        },
+      });
       yield put({ type: 'setTouched', payload: false });
     },
     // 表单变化时自动保存

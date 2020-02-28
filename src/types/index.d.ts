@@ -39,6 +39,7 @@ type IDataConvertor = (data: object) => object;
 type IOptionFn = (data: object, optionExtra?: object) => object;
 
 interface IChart {
+  tooltip?: any;
   name: string;
   title?: string;
   description?: string;

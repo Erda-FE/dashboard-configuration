@@ -275,6 +275,7 @@ export default [
     view: {
       name: 'test',
       chartType: 'chart:line',
+      hideHeader: true,
       hideReload: true,
       title: '图表标题是 zookeeper',
       description: '这里配置图表的一些描述',

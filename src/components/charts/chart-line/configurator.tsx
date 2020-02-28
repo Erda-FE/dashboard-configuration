@@ -49,6 +49,8 @@ const LineConfigurator = (props: IProps) => {
     }, 0);
   }, [formData]);
 
+  console.log(currentChart);
+
   const fields = [
     {
       label: '标题',

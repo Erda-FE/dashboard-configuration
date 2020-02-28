@@ -158,14 +158,13 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           !view.hideHeader &&
           (
             <div className="bi-view-header">
-              <div className="bi-view-header-left">
+              {/* <div className="bi-view-header-left">
                 {
                   isEditLayout
                     ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
                     : <div className="bi-view-title">{view.name}</div>
                 }
-                {isEditLayout && <span className="bi-draggable-handle"><Icon type="drag" /></span>}
-              </div>
+              </div> */}
               <div className="bi-view-header-right">
                 <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
                 {this.hasLoadFn && !view.hideReload && <Icon className="reload-icon" type="reload" onClick={this.loadData} />}
@@ -176,11 +175,18 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         <ViewMask message={message} />
         {
           isEditLayout && (
+            <Tooltip placement="right" title="移动">
+              <Icon className="bi-draggable-handle" type="drag" />
+            </Tooltip>
+          )
+        }
+        {
+          isEditLayout && (
             <div className="bi-view-edit-op">
-              <Tooltip placement="bottom" title="编辑">
+              <Tooltip placement="right" title="编辑">
                 <Icon type="edit" onClick={() => editView(viewId)} />
               </Tooltip>
-              <Tooltip placement="bottom" title="删除">
+              <Tooltip placement="right" title="删除">
                 <Popconfirm
                   okText="确认"
                   cancelText="取消"
@@ -191,10 +197,10 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                   <Icon type="delete" />
                 </Popconfirm>
               </Tooltip>
-              <Tooltip placement="bottom" title="导出图片">
+              <Tooltip placement="right" title="导出图片">
                 <Icon type="camera" onClick={this.onSaveImg} />
               </Tooltip>
-              <Tooltip placement="bottom" title="图表全屏">
+              <Tooltip placement="right" title="图表全屏">
                 <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
               </Tooltip>
             </div>

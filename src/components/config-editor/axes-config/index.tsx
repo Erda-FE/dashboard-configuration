@@ -119,7 +119,7 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
   // const drawerInfo = viewMap[viewId] || {};
   ({
     isTouched,

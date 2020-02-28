@@ -11,12 +11,12 @@ $full-background-color: rgba(55, 55, 55, .6);
     background-color: $white;
   }
   .dashboard-header {
-    padding: 10px;
+    padding: 16px 20px;
     text-align: right;
     .anticon {
-      margin-left: 12px;
+      margin-left: 16px;
       color: $color-text;
-      font-size: 16px;
+      font-size: 20px;
       cursor: pointer;
       &:hover {
         color: $color-primary;

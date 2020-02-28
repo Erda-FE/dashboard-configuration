@@ -5,22 +5,12 @@ import { get, isEmpty, set } from 'lodash';
 import React from 'react';
 import { getData } from '../../utils/comp';
 import { getConfig } from '../../config';
-import { IF } from '../common';
 import './index.scss';
 import DataConfig from './data-config';
 import AxesConfig from './axes-config';
 import PanelCharts from './panel-views';
 
 const { TabPane } = Tabs;
-
-const formItemLayout = {
-  labelCol: {
-    span: 0,
-  },
-  wrapperCol: {
-    span: 24,
-  },
-};
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
@@ -31,7 +21,6 @@ const PureChartEditor = (props: IProps) => {
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
   const axesConfigFormRef = React.useRef(null as any);
-  console.log(viewCopy);
 
   const saveChart = () => { // 可以提交图表或控件
     const { saveEditor } = props;
@@ -125,9 +114,7 @@ const PureChartEditor = (props: IProps) => {
 
   if (!addMode) {
     tabPanes.push(
-      <TabPane tab="数据系列" key="plot">
-        <p>sasasa</p>
-      </TabPane>
+      <TabPane tab="数据系列" key="plot" />
     );
   }
 

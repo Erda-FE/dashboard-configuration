@@ -5,10 +5,14 @@ $color-border: #e8e8e8;
     .configurator-left,
     .configurator-right {
       flex: 1;
-      padding: 20px;
+      // padding: 20px;
     }
     .configurator-left {
+      padding-right: 10px;
       border-right: 1px solid $color-border;
+    }
+    .configurator-right {
+      padding-left: 10px;
     }
   }
 }

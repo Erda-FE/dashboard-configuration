@@ -37,10 +37,12 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
     {
       label: '名称',
       name: 'lyName',
+      size: 'small',
     },
     {
       label: '最大值',
       name: 'lyMax',
+      size: 'small',
       type: 'inputNumber',
       itemProps: {
         precision: 0,
@@ -49,6 +51,7 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
     {
       label: '最小值',
       name: 'lyMin',
+      size: 'small',
       type: 'inputNumber',
       itemProps: {
         precision: 0,
@@ -57,11 +60,13 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
     {
       label: '间隔',
       name: 'lyInterval',
+      size: 'small',
       type: 'inputNumber',
     },
     {
       label: '单位',
       name: 'lyUnit',
+      size: 'small',
     },
   ];
 
@@ -69,10 +74,12 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
     {
       label: '名称',
       name: 'rName',
+      size: 'small',
     },
     {
       label: '最大值',
       name: 'ryMax',
+      size: 'small',
       type: 'inputNumber',
       itemProps: {
         precision: 0,
@@ -81,6 +88,7 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
     {
       label: '最小值',
       name: 'ryMin',
+      size: 'small',
       type: 'inputNumber',
       itemProps: {
         precision: 0,
@@ -89,11 +97,13 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
     {
       label: '间隔',
       name: 'ryInterval',
+      size: 'small',
       type: 'inputNumber',
     },
     {
       label: '单位',
       name: 'ryUnit',
+      size: 'small',
     },
   ];
 

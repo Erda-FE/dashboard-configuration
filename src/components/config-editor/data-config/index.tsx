@@ -40,6 +40,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
       type: 'radioGroup',
       initialValue: 'static',
       options,
+      size: 'small',
     },
   ];
 
@@ -54,6 +55,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
           placeholder: '请填写 JSON 格式的数据',
           autosize: { minRows: 5, maxRows: 10 },
         },
+        size: 'small',
       },
     ];
   } else {
@@ -67,12 +69,14 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
           message: '请输入请求 API',
           required: true,
         }],
+        size: 'small',
       },
       {
         name: 'dataHandler',
         label: '数据处理（引入时注入）',
         type: 'select',
         options: map(dataHandlerList, (name, value) => ({ value, name })),
+        size: 'small',
       },
     ];
   }

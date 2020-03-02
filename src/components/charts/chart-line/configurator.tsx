@@ -57,12 +57,14 @@ const LineConfigurator = (props: IProps) => {
       name: 'title',
       type: 'input',
       initialValue: currentChart.title,
+      size: 'small',
     },
     {
       label: '描述',
       name: 'description',
       type: 'textArea',
       initialValue: currentChart.description,
+      size: 'small',
     },
     {
       label: '指示参数',
@@ -78,6 +80,7 @@ const LineConfigurator = (props: IProps) => {
             itemProps: {
               span: 3,
             },
+            size: 'small',
           },
           {
             label: 'transitionDuration',
@@ -88,6 +91,7 @@ const LineConfigurator = (props: IProps) => {
             itemProps: {
               span: 5,
             },
+            size: 'small',
           },
           {
             label: 'confine',
@@ -99,6 +103,7 @@ const LineConfigurator = (props: IProps) => {
             itemProps: {
               span: 4,
             },
+            size: 'small',
           },
         ],
       ],
@@ -115,6 +120,7 @@ const LineConfigurator = (props: IProps) => {
             itemProps: {
               span: 4,
             },
+            size: 'small',
           },
           {
             label: 'orient',
@@ -125,6 +131,7 @@ const LineConfigurator = (props: IProps) => {
             itemProps: {
               span: 4,
             },
+            size: 'small',
           },
           {
             label: 'align',
@@ -135,6 +142,7 @@ const LineConfigurator = (props: IProps) => {
             itemProps: {
               span: 4,
             },
+            size: 'small',
           },
           {
             label: 'type',
@@ -145,6 +153,7 @@ const LineConfigurator = (props: IProps) => {
             itemProps: {
               span: 4,
             },
+            size: 'small',
           },
         ],
       ],

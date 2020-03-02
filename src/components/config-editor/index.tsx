@@ -124,10 +124,16 @@ const PureChartEditor = (props: IProps) => {
       <EditorContainer
         visible={visible}
         onClose={addMode ? deleteEditor : closeEditor}
-        className="bi-config-editor"
+        bodyStyle={{
+          padding: 0,
+          height: '350px',
+          overflow: 'auto',
+          display: 'flex',
+          flexDirection: 'column',
+        }}
       >
         <div className="bi-config-editor-content">
-          <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
+          <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
         </div>
         <div className="bi-config-editor-footer">
           <div className="bi-config-editor-footer-right">
@@ -141,14 +147,14 @@ const PureChartEditor = (props: IProps) => {
                   title="确认丢弃数据?"
                   onConfirm={addMode ? deleteEditor : closeEditor}
                 >
-                  <Button style={{ marginRight: 8 }}>
+                  <Button size="small" style={{ marginRight: 8 }}>
                     取消
                   </Button>
                 </Popconfirm>
               ) :
-              (<Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
+              (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
           }
-            <Button onClick={saveChart} type="primary">
+            <Button size="small" onClick={saveChart} type="primary">
               {addMode ? '新增' : '保存'}
             </Button>
           </div>

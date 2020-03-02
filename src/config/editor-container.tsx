@@ -13,7 +13,6 @@ export const EditorContainer = ({ visible, onClose, children, ...rest }: IProps)
     mask={false}
     closable={false}
     height="350px"
-    className="bi-config                                                                                                                                                                                                                                         w'w'w'w'w'w'w'w'w'wwwwwwwwwwwwwwwww-editor"
     visible={visible}
     onClose={onClose}
     {...rest}

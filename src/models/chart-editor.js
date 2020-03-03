@@ -1,6 +1,7 @@
 import { cloneDeep, forEach, startsWith, set } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
+import { NEW_CHART_VIEW_MAP } from '../constants';
 
 const defaultState = {
   visible: false,
@@ -10,18 +11,6 @@ const defaultState = {
   codeVisible: false, // 代码编辑
   viewCopy: {}, // 修改时用于恢复的复制对象
   isTouched: false,
-};
-
-const newChartTpl = {
-  chartType: 'chart:line',
-  staticData: {
-    xData: [],
-    yData: [],
-    metricData: {},
-  },
-  config: {
-    option: {},
-  },
 };
 
 export default {
@@ -40,7 +29,7 @@ export default {
           addMode: true,
           viewMap: {
             ...viewMap,
-            [viewId]: newChartTpl,
+            [viewId]: NEW_CHART_VIEW_MAP,
           },
         },
       });

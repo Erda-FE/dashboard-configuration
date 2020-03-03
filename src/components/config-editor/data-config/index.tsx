@@ -14,10 +14,11 @@ interface IProps {
   formData: any;
   forwardedRef: { current: any };
   isTouched: boolean;
+  currentChart: IChart;
   setTouched(v: boolean): void;
 }
 
-const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IProps) => {
+const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, currentChart }: IProps) => {
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -51,6 +52,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
         name: 'staticData',
         label: '录入数据',
         type: 'textArea',
+        initialValue: currentChart.staticData ? JSON.stringify(currentChart.staticData) : '',
         itemProps: {
           placeholder: '请填写 JSON 格式的数据',
           autosize: { minRows: 5, maxRows: 10 },

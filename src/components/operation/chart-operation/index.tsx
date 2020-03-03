@@ -17,6 +17,7 @@ import './index.scss';
 interface IProps extends ReturnType<typeof mapStateToProps> {
   viewId: string
   view: any
+  chartEditorVisible: boolean;
   children: ReactElement<any>
   setViewInfo(data: object): void;
   editView(viewId: string): void;
@@ -138,7 +139,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const { view, children, isEditLayout, isEditView, viewId, editView, deleteView, setViewInfo } = this.props;
+    const { view, children, isEditLayout, isEditView, viewId, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = getMessage({ fetchStatus });
@@ -181,7 +182,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           )
         }
         {
-          isEditLayout && (
+          isEditLayout && ((chartEditorVisible && isEditView) || !chartEditorVisible) && (
             <div className="bi-view-edit-op">
               <Tooltip placement="right" title="编辑">
                 <Icon type="edit" onClick={() => editView(viewId)} />
@@ -235,10 +236,12 @@ const mapStateToProps = (
   {
     dashBoard: { isEditMode: isEditLayout },
     chartEditor: { editChartId },
+    chartEditor: { visible },
   }: any
   , { viewId }: any
 ) => ({
   isEditLayout,
+  chartEditorVisible: visible,
   isEditView: editChartId === viewId,
 });
 const mapDispatchToProps = (dispatch: any) => ({

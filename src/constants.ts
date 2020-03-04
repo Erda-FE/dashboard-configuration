@@ -1,3 +1,5 @@
+import { cutStr } from './components/common/utils';
+
 export const NEW_CHART_VIEW_MAP = {
   name: 'Chart Name',
   chartType: 'chart:line',
@@ -9,10 +11,27 @@ export const NEW_CHART_VIEW_MAP = {
   controls: ['input', 'input2'],
   config: {
     option: {
-      tooltip: {},
+      tooltip: {
+        trigger: 'axis',
+        transitionDuration: 0,
+        confine: true,
+        axisPointer: {
+          type: 'none',
+        },
+      },
       legend: {
         bottom: 0,
+        padding: [15, 5, 0, 5],
+        orient: 'horizontal',
         align: 'left',
+        type: 'scroll',
+        tooltip: {
+          show: true,
+          formatter: (t: any) => cutStr(t.name, 100),
+        },
+      },
+      textStyle: {
+        fontFamily: 'arial',
       },
       yAxis: [
         {

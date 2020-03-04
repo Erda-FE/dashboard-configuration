@@ -51,7 +51,9 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched }:
         ryUnit: formatter.replace(/^{value} /g, ''),
       };
     }
-    form.setFieldsValue(formData);
+    setTimeout(() => {
+      form.setFieldsValue(formData);
+    }, 0);
   }, [currentChart]);
 
   const leftfields = [

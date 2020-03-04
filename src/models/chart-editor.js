@@ -88,15 +88,7 @@ export default {
       const { viewMap, editChartId } = yield select(state => state.chartEditor);
       const drawerInfo = viewMap[editChartId];
       let tempPayload = {};
-      if (chartType === drawerInfo.chartType) {
-        // forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
-        //   if (startsWith(key, panelDataPrefix)) {
-        //     delete drawerInfo[key];
-        //   }
-        // });
-        // yield put({ type: 'dashBoard/deleteLayout', viewId: editChartId });
-        // tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
-      } else {
+      if (chartType !== drawerInfo.chartType) {
         tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType } } };
       }
       yield put({ type: 'updateState', payload: tempPayload });

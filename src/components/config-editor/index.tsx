@@ -96,14 +96,13 @@ const PureChartEditor = (props: IProps) => {
   const EditorContainer = getConfig('EditorContainer');
   const info = getConfig('chartConfigMap')[currentChart.chartType];
   const { Configurator = noop } = info;
-  const { config: { option: chartOptions } } = currentChart;
 
   console.log(currentChart);
 
   const tabPanes = [
     <TabPane tab="图表配置" key="setting">
       <PanelCharts />
-      <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
+      <Configurator ref={baseConfigFormRef} />
     </TabPane>,
     <TabPane tab="数据配置" key="data">
       <DataConfig ref={dataConfigFormRef} />

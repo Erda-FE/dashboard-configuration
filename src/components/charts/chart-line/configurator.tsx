@@ -29,11 +29,10 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   currentChart: IChart;
   form: WrappedFormUtils;
   forwardedRef: { current: any };
-  formData: any;
 }
 
 const LineConfigurator = (props: IProps) => {
-  const { form, formData, forwardedRef, currentChart, setTouched, isTouched } = props;
+  const { form, forwardedRef, currentChart, setTouched, isTouched } = props;
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -43,27 +42,22 @@ const LineConfigurator = (props: IProps) => {
 
   React.useEffect(() => {
     setTimeout(() => {
-      const defaultOption = getDefaultOption();
-      const fieldsValues = collectFields(formData);
-      form.setFieldsValue(merge(defaultOption, fieldsValues));
+      // const defaultOption = getDefaultOption();
+      form.setFieldsValue(currentChart);
     }, 0);
-  }, [formData]);
-
-  console.log(currentChart);
+  }, [currentChart]);
 
   const fields = [
     {
       label: '标题',
       name: 'title',
       type: 'input',
-      initialValue: currentChart.title,
       size: 'small',
     },
     {
       label: '描述',
       name: 'description',
       type: 'textArea',
-      initialValue: currentChart.description,
       size: 'small',
     },
     {
@@ -73,8 +67,7 @@ const LineConfigurator = (props: IProps) => {
           {
             label: 'trigger',
             tooltip: '触发类型',
-            name: 'tooltip.trigger',
-            initialValue: currentChart.tooltip ? currentChart.tooltip.trigger : 'axis',
+            name: 'config.option.tooltip.trigger',
             type: 'select',
             options: ['item', 'axis', 'none'].map(d => ({ name: d, value: d })),
             itemProps: {
@@ -85,8 +78,7 @@ const LineConfigurator = (props: IProps) => {
           {
             label: 'transitionDuration',
             tooltip: '提示框浮层的移动动画过渡时间，单位是 s，设置为 0 的时候会紧跟着鼠标移动。',
-            name: 'tooltip.transitionDuration',
-            initialValue: currentChart.tooltip ? currentChart.tooltip.transitionDuration : '0',
+            name: 'config.option.tooltip.transitionDuration',
             type: 'inputNumber',
             itemProps: {
               span: 5,
@@ -96,8 +88,7 @@ const LineConfigurator = (props: IProps) => {
           {
             label: 'confine',
             tooltip: '是否将 tooltip 框限制在图表的区域内。',
-            name: 'tooltip.confine',
-            initialValue: currentChart.tooltip ? currentChart.tooltip.confine : true,
+            name: 'config.option.tooltip.confine',
             type: 'select',
             options: [{ name: 'true', value: true }, { name: 'false', value: false }],
             itemProps: {
@@ -114,7 +105,7 @@ const LineConfigurator = (props: IProps) => {
         [
           {
             label: 'bottom',
-            name: 'legend.bottom',
+            name: 'config.option.legend.bottom',
             tooltip: '图例组件离容器下侧的距离。',
             type: 'inputNumber',
             itemProps: {
@@ -124,7 +115,7 @@ const LineConfigurator = (props: IProps) => {
           },
           {
             label: 'orient',
-            name: 'legend.orient',
+            name: 'config.option.legend.orient',
             tooltip: '图例列表的布局朝向。',
             type: 'select',
             options: ['horizontal', 'vertical'].map(d => ({ name: d, value: d })),
@@ -135,7 +126,7 @@ const LineConfigurator = (props: IProps) => {
           },
           {
             label: 'align',
-            name: 'legend.align',
+            name: 'config.option.legend.align',
             type: 'select',
             options: ['auto', 'left', 'right'].map(d => ({ name: d, value: d })),
             tooltip: '图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 \'right\' 以及纵向布局（orient 为 \'vertical\'）的时候为右对齐，及为 \'right\'。',
@@ -146,7 +137,7 @@ const LineConfigurator = (props: IProps) => {
           },
           {
             label: 'type',
-            name: 'legend.type',
+            name: 'config.option.legend.type',
             type: 'select',
             options: ['plain', 'scroll'].map(d => ({ name: d, value: d })),
             tooltip: '图例的类型',
@@ -170,16 +161,10 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
-  // const drawerInfo = viewMap[viewId] || {};
-  ({
-    // chartType: drawerInfo.chartType as string,
-    // names: isMock ? mockDataLine.names : (names || []) as string[],
-    // datas: isMock ? mockDataLine.datas : (datas || []) as IData[],
-    // option: convertSettingToOption(drawerInfo),
-    currentChart: get(viewMap, [editChartId]),
-    isTouched,
-  });
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any) => ({
+  currentChart: get(viewMap, [editChartId]),
+  isTouched,
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   setTouched(isTouched: any) {

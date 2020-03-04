@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { map } from 'lodash';
+import { get, map } from 'lodash';
 import { connect } from 'dva';
 import { RenderPureForm } from '../../common';
 import { collectFields } from '../../common/utils';
@@ -52,7 +52,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, curre
         name: 'staticData',
         label: '录入数据',
         type: 'textArea',
-        initialValue: currentChart.staticData ? JSON.stringify(currentChart.staticData) : '',
+        initialValue: currentChart.staticData ? JSON.stringify(currentChart.staticData, null, 2) : '',
         itemProps: {
           placeholder: '请填写 JSON 格式的数据',
           autosize: { minRows: 5, maxRows: 10 },
@@ -93,11 +93,10 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, curre
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
-  // const drawerInfo = viewMap[viewId] || {};
-  ({
-    isTouched,
-  });
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any) => ({
+  isTouched,
+  currentChart: get(viewMap, [editChartId]),
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   setTouched(isTouched: any) {

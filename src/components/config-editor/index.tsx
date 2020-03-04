@@ -7,7 +7,7 @@ import { getData } from '../../utils/comp';
 import { getConfig } from '../../config';
 import './index.scss';
 import DataConfig from './data-config';
-import AxesConfig from './axes-config';
+import AxisConfig from './axis-config';
 import PanelCharts from './panel-views';
 
 const { TabPane } = Tabs;
@@ -37,7 +37,6 @@ const PureChartEditor = (props: IProps) => {
       dataConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
         if (errors) return;
         if (options.staticData) {
-          console.log(options.staticData);
           amalgamatedOptions = { ...amalgamatedOptions, ...options, staticData: JSON.parse(options.staticData) };
         }
         if (options.chartQuery) {
@@ -47,11 +46,11 @@ const PureChartEditor = (props: IProps) => {
             loadData: getData,
           };
         }
-        valiAxesConfig();
+        valiAxisConfig();
       });
     };
 
-    const valiAxesConfig = () => {
+    const valiAxisConfig = () => {
       axesConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
         if (errors) return;
         const { lyName, lyMax, lyMin, lyInterval, lyUnit = '', ryName, ryMax, ryMin, ryInterval, ryUnit = '' } = options;
@@ -107,18 +106,18 @@ const PureChartEditor = (props: IProps) => {
       <Configurator ref={baseConfigFormRef} currentChart={currentChart} formData={chartOptions} />
     </TabPane>,
     <TabPane tab="数据配置" key="data">
-      <DataConfig ref={dataConfigFormRef} currentChart={currentChart} />
+      <DataConfig ref={dataConfigFormRef} />
     </TabPane>,
     <TabPane tab="轴配置" key="axes">
-      <AxesConfig ref={axesConfigFormRef} />
+      <AxisConfig ref={axesConfigFormRef} />
     </TabPane>,
   ];
 
-  if (!addMode) {
-    tabPanes.push(
-      <TabPane tab="数据系列" key="plot" />
-    );
-  }
+  // if (!addMode) {
+  //   tabPanes.push(
+  //     <TabPane tab="数据系列" key="plot" />
+  //   );
+  // }
 
   return (
     <React.Fragment>

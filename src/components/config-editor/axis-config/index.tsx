@@ -1,24 +1,22 @@
 import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { map } from 'lodash';
+import { get } from 'lodash';
 import { connect } from 'dva';
 import { RenderPureForm } from '../../common';
-import { collectFields } from '../../common/utils';
+// import { collectFields } from '../../common/utils';
 
 import './index.scss';
 
-const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
-
 interface IProps {
   form: WrappedFormUtils;
-  formData: any;
+  currentChart: IChart;
   forwardedRef: { current: any };
   isTouched: boolean;
   setTouched(v: boolean): void;
 }
 
-const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IProps) => {
+const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched }: IProps) => {
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -27,11 +25,34 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
   }, [form]);
 
   React.useEffect(() => {
-    setTimeout(() => {
-      const fieldsValues = collectFields(formData);
-      form.setFieldsValue(fieldsValues);
-    }, 0);
-  }, [formData]);
+    const [leftAxisData, rightAxisData] = get(currentChart, 'config.option.yAxis');
+    let formData = {};
+    if (leftAxisData) {
+      const { name: lyName, min: lyMin, max: lyMax, interval: lyInterval, axisLabel } = leftAxisData;
+      const formatter = get(axisLabel, 'formatter') || '';
+      formData = {
+        ...formData,
+        lyName,
+        lyMax,
+        lyMin,
+        lyInterval,
+        lyUnit: formatter.replace(/^{value} /g, ''),
+      };
+    }
+    if (rightAxisData) {
+      const { name: ryName, min: ryMin, max: ryMax, interval: ryInterval, axisLabel } = rightAxisData;
+      const formatter = get(axisLabel, 'formatter') || '';
+      formData = {
+        ...formData,
+        ryName,
+        ryMax,
+        ryMin,
+        ryInterval,
+        ryUnit: formatter.replace(/^{value} /g, ''),
+      };
+    }
+    form.setFieldsValue(formData);
+  }, [currentChart]);
 
   const leftfields = [
     {
@@ -73,7 +94,7 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
   const rightfields = [
     {
       label: '名称',
-      name: 'rName',
+      name: 'ryName',
       size: 'small',
     },
     {
@@ -129,11 +150,10 @@ const AxesConfig = ({ form, formData, forwardedRef, isTouched, setTouched }: IPr
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any, { viewId, isMock, names, datas }: any) =>
-  // const drawerInfo = viewMap[viewId] || {};
-  ({
-    isTouched,
-  });
+const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any) => ({
+  isTouched,
+  currentChart: get(viewMap, [editChartId]),
+});
 
 const mapDispatchToProps = (dispatch: any) => ({
   setTouched(isTouched: any) {
@@ -141,7 +161,7 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-const Config = connect(mapStateToProps, mapDispatchToProps)(Form.create()(AxesConfig));
+const Config = connect(mapStateToProps, mapDispatchToProps)(Form.create()(AxisConfig));
 
 export default React.forwardRef((props, ref) => (
   <Config forwardedRef={ref} {...props} />

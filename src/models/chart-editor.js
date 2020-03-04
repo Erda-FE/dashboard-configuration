@@ -1,4 +1,4 @@
-import { cloneDeep, forEach, startsWith, set } from 'lodash';
+import { cloneDeep, forEach, startsWith } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 import { NEW_CHART_VIEW_MAP } from '../constants';
@@ -168,4 +168,3 @@ export default {
     },
   },
 };
-

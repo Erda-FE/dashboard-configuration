@@ -33,7 +33,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
-    const yAxisIndex = 0; // axisIndex || 0;
+    const yAxisIndex = axisIndex || 0;
     const areaColor = areaColors[i];
     series.push({
       type: value.type || 'line',

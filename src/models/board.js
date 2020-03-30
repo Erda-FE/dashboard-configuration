@@ -33,9 +33,8 @@ export default {
       const {
         dashBoard: { layout },
         chartEditor: { viewMap },
-        linkSetting: { linkMap },
       } = yield select(state => state);
-      return { layout, viewMap, linkMap }; // 只输出外部需要的
+      return { layout, viewMap }; // 只输出外部需要的
     },
     * deleteView({ viewId }, { put }) {
       yield put({ type: 'deleteLayout', viewId });

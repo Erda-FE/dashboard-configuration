@@ -8,7 +8,7 @@
 import { Icon, Input, Tooltip } from 'antd';
 import classnames from 'classnames';
 import { connect } from 'dva';
-import { get, isEqual, isPlainObject, isEmpty } from 'lodash';
+import { get, isEqual, isPlainObject, isEmpty, map } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -34,7 +34,7 @@ interface IUrlData {
 interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
   readOnly?: boolean // 只读
   layout?: any // 配置信息，包含图表布局、各图表配置信息
-  onSave?: (extra: any) => void, // 保存
+  onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
   theme?: string, // 主题名
   themeObj?: {}, // 主题内容
   customCharts?: IChartsMap // 用户自定义图表（xx图）
@@ -146,8 +146,15 @@ class BoardGrid extends React.PureComponent<IProps> {
 
   onSave = () => {
     const { saveEdit, onSave } = this.props;
-    saveEdit().then((full: any) => {
-      if (onSave) onSave(full);
+    saveEdit().then((full: { layout: any[]; viewMap: { [k: string]: any } }) => {
+      if (onSave) {
+        const { layout: singleLayouts, viewMap } = full;
+        const fullLayouts = map(singleLayouts, layout => ({
+          ...layout,
+          view: viewMap[layout.i],
+        }));
+        onSave(fullLayouts, { singleLayouts, viewMap });
+      }
     });
   }
 

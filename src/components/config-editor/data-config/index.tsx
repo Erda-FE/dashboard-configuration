@@ -16,9 +16,10 @@ interface IProps {
   isTouched: boolean;
   currentChart: IChart;
   setTouched(v: boolean): void;
+  onEditorChange(payload: object): void;
 }
 
-const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, currentChart }: IProps) => {
+const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, onEditorChange, currentChart }: IProps) => {
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -56,6 +57,9 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, curre
         itemProps: {
           placeholder: '请填写 JSON 格式的数据',
           autosize: { minRows: 5, maxRows: 10 },
+          onBlur(e: any) {
+            onEditorChange({ staticData: JSON.parse(e.target.value) });
+          },
         },
         size: 'small',
       },
@@ -101,6 +105,9 @@ const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: a
 const mapDispatchToProps = (dispatch: any) => ({
   setTouched(isTouched: any) {
     dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
+  },
+  onEditorChange(payload: object) {
+    dispatch({ type: 'chartEditor/onEditorChange', payload });
   },
 });
 

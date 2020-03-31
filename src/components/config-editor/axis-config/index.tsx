@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { get } from 'lodash';
+import { get, cloneDeep, set } from 'lodash';
 import { connect } from 'dva';
 import { RenderPureForm } from '../../common';
 // import { collectFields } from '../../common/utils';
@@ -14,9 +14,10 @@ interface IProps {
   forwardedRef: { current: any };
   isTouched: boolean;
   setTouched(v: boolean): void;
+  onEditorChange(payload: object): void;
 }
 
-const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched }: IProps) => {
+const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched, onEditorChange }: IProps) => {
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -56,11 +57,32 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched }:
     }, 0);
   }, [currentChart]);
 
+  const onAxisConfigChange = (key: string, value: any) => {
+    const [yType, ...rest] = key.split('.');
+    if (['left', 'right'].includes(yType)) {
+      const _config = cloneDeep(currentChart.config);
+      const yAxis = get(_config, 'option.yAxis');
+      if (yType === 'right') {
+        yAxis[1] = yAxis[1] || {};
+        set(yAxis[1], rest.join('.'), value);
+      } else {
+        yAxis[0] = yAxis[0] || {};
+        set(yAxis[0], rest.join('.'), value);
+      }
+      onEditorChange({ config: _config });
+    }
+  };
+
   const leftfields = [
     {
       label: '名称',
       name: 'lyName',
       size: 'small',
+      itemProps: {
+        onBlur(e: any) {
+          onAxisConfigChange('left.name', e.target.value);
+        },
+      },
     },
     {
       label: '最大值',
@@ -69,6 +91,9 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched }:
       type: 'inputNumber',
       itemProps: {
         precision: 0,
+        onChange(v: number) {
+          onAxisConfigChange('left.max', v);
+        },
       },
     },
     {
@@ -78,6 +103,9 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched }:
       type: 'inputNumber',
       itemProps: {
         precision: 0,
+        onChange(v: number) {
+          onAxisConfigChange('left.min', v);
+        },
       },
     },
     {
@@ -85,11 +113,21 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched }:
       name: 'lyInterval',
       size: 'small',
       type: 'inputNumber',
+      itemProps: {
+        onChange(v: number) {
+          onAxisConfigChange('left.interval', v);
+        },
+      },
     },
     {
       label: '单位',
       name: 'lyUnit',
       size: 'small',
+      itemProps: {
+        onBlur(e: any) {
+          onAxisConfigChange('left.axisLabel.formatter', `{value} ${e.target.value}`);
+        },
+      },
     },
   ];
 
@@ -160,6 +198,9 @@ const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: a
 const mapDispatchToProps = (dispatch: any) => ({
   setTouched(isTouched: any) {
     dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
+  },
+  onEditorChange(payload: object) {
+    dispatch({ type: 'chartEditor/onEditorChange', payload });
   },
 });
 

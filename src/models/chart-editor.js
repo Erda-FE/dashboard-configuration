@@ -29,12 +29,13 @@ export default {
           addMode: true,
           viewMap: {
             ...viewMap,
-            [viewId]: NEW_CHART_VIEW_MAP,
+            [viewId]: NEW_CHART_VIEW_MAP, // 初始化静态数据
           },
         },
       });
       yield put({ type: 'dashBoard/generateChart', viewId });
     },
+
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
     * saveEditor({ payload }, { put, select }) {
       const { editChartId, viewMap } = yield select(state => state.chartEditor);
@@ -89,7 +90,12 @@ export default {
       const drawerInfo = viewMap[editChartId];
       let tempPayload = {};
       if (chartType !== drawerInfo.chartType) {
-        tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType } } };
+        tempPayload = {
+          viewMap: {
+            ...viewMap,
+            [editChartId]: { ...drawerInfo, chartType },
+          },
+        };
       }
       yield put({ type: 'updateState', payload: tempPayload });
     },

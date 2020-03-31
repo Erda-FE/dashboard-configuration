@@ -1,7 +1,7 @@
 /**
  * 2D 线形图：折线、柱状、曲线
  */
-import { merge, map, get } from 'lodash';
+import { set, get, cloneDeep } from 'lodash';
 import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
@@ -32,7 +32,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 }
 
 const LineConfigurator = (props: IProps) => {
-  const { form, forwardedRef, currentChart, setTouched, isTouched } = props;
+  const { form, forwardedRef, currentChart, setTouched, onEditorChange, isTouched } = props;
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -47,18 +47,34 @@ const LineConfigurator = (props: IProps) => {
     }, 0);
   }, [currentChart]);
 
+  const onConfigChange = (key: string, value: any) => {
+    const _config = cloneDeep(currentChart.config);
+    set(_config, key, value);
+    onEditorChange({ config: _config });
+  };
+
   const fields = [
     {
       label: '标题',
       name: 'title',
       type: 'input',
       size: 'small',
+      itemProps: {
+        onBlur(e: React.MouseEvent) {
+          onEditorChange({ title: e.target.value });
+        },
+      },
     },
     {
       label: '描述',
       name: 'description',
       type: 'textArea',
       size: 'small',
+      itemProps: {
+        onBlur(e: React.MouseEvent) {
+          onEditorChange({ description: e.target.value });
+        },
+      },
     },
     {
       label: '指示参数',
@@ -72,6 +88,9 @@ const LineConfigurator = (props: IProps) => {
             options: ['item', 'axis', 'none'].map(d => ({ name: d, value: d })),
             itemProps: {
               span: 3,
+              onSelect(v: any) {
+                onConfigChange('option.tooltip.trigger', v);
+              },
             },
             size: 'small',
           },
@@ -82,6 +101,9 @@ const LineConfigurator = (props: IProps) => {
             type: 'inputNumber',
             itemProps: {
               span: 5,
+              onChange(v: number) {
+                onConfigChange('option.tooltip.transitionDuration', v);
+              },
             },
             size: 'small',
           },
@@ -93,6 +115,9 @@ const LineConfigurator = (props: IProps) => {
             options: [{ name: 'true', value: true }, { name: 'false', value: false }],
             itemProps: {
               span: 4,
+              onSelect(v: any) {
+                onConfigChange('option.tooltip.confine', v);
+              },
             },
             size: 'small',
           },
@@ -110,6 +135,9 @@ const LineConfigurator = (props: IProps) => {
             type: 'inputNumber',
             itemProps: {
               span: 4,
+              onChange(v: number) {
+                onConfigChange('option.legend.bottom', v);
+              },
             },
             size: 'small',
           },
@@ -121,6 +149,9 @@ const LineConfigurator = (props: IProps) => {
             options: ['horizontal', 'vertical'].map(d => ({ name: d, value: d })),
             itemProps: {
               span: 4,
+              onSelect(v: any) {
+                onConfigChange('option.legend.orient', v);
+              },
             },
             size: 'small',
           },
@@ -132,6 +163,9 @@ const LineConfigurator = (props: IProps) => {
             tooltip: '图例标记和文本的对齐。默认自动，根据组件的位置和 orient 决定，当组件的 left 值为 \'right\' 以及纵向布局（orient 为 \'vertical\'）的时候为右对齐，及为 \'right\'。',
             itemProps: {
               span: 4,
+              onSelect(v: any) {
+                onConfigChange('option.legend.align', v);
+              },
             },
             size: 'small',
           },
@@ -143,6 +177,9 @@ const LineConfigurator = (props: IProps) => {
             tooltip: '图例的类型',
             itemProps: {
               span: 4,
+              onSelect(v: any) {
+                onConfigChange('option.legend.type', v);
+              },
             },
             size: 'small',
           },
@@ -169,6 +206,9 @@ const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: a
 const mapDispatchToProps = (dispatch: any) => ({
   setTouched(isTouched: any) {
     dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
+  },
+  onEditorChange(payload: object) {
+    dispatch({ type: 'chartEditor/onEditorChange', payload });
   },
 });
 

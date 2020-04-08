@@ -41,7 +41,6 @@ const basicCharts: IChartsMap = {
       const metricData = get(props, 'data.metricData');
       const newMetricData = map(metricData, (metric => ({ ...metric, type: 'bar' })));
       set(props, 'data.metricData', newMetricData);
-      console.log(newMetricData);
       return <ChartLine {...props} metricData={newMetricData} />;
     },
     Configurator: LineConfigurator,

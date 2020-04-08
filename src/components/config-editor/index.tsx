@@ -97,8 +97,6 @@ const PureChartEditor = (props: IProps) => {
   const info = getConfig('chartConfigMap')[currentChart.chartType];
   const { Configurator = noop } = info;
 
-  console.log(currentChart);
-
   const tabPanes = [
     <TabPane tab="图表配置" key="setting">
       <PanelCharts />

@@ -4,7 +4,7 @@
 现在前端对接图表时，相同的数据结构，总是要花不少时间去调整很多细节。需要一个封装好的库，对后端和用户赋能，通过自定义图表大盘的能力，解放前端的重复劳动。
 
 ## 整体架构
-基于cube-state状态管理和ECharts图表库、antd组件库
+基于 cube-state 状态管理和 ECharts 图表库、antd 组件库
 
 ### 文件结构
 grid：布局
@@ -19,7 +19,7 @@ models：所有状态数据
 2. 进入编辑态后，空白区域网格化展示，点击添加新增一块默认大小的内容方块，内部填充默认图表和数据
 3. 方块可以拖拽改变大小和位置
 4. 点击方块内的操作，可以打开该方块内图表的配置器
-5. 配置器中包含图表相关配置项（同ECharts）、数据源配置等
+5. 配置器中包含图表相关配置项（ECharts 配置的有限集）、数据源配置等
 6. 配置完成后保存，可继续添加新的内容块或退出编辑态
 7. 提供外部扩展能力，包括主题、交互控件、数据转换函数等，提前注册后可使用
 
@@ -66,10 +66,22 @@ webpack相关配置变更，因为当前没有转为es5，需要项目中转换
       moved: false, // 是否可移动
       static: false, //
       view: { // 区块内容，不限于图表，可自定义注册组件
-        title: 'error type analytics', // 区块标题
-        chartType: 'chart:line', // 区块内容类型
+        title: '', // 区块标题
+        description: '', // 区块描述
+        chartType: 'chart:line | chart:bar | chart:pie | list | card', // 区块内容类型
         hideReload: true, // 隐藏刷新按钮
-        staticData: realTimeStaticData, // 使用静态数据
+        hideHeader: true, // 隐藏header区块（包含control组件和刷新按钮等）
+        dataSourceType: 'static | api',
+        staticData: realTimeStaticData, // 使用的静态数据
+        dataHandler: '', // 外部注册的数据处理方法名称
+        // controls: [], // 外部注册的组件名称列表
+        api: {
+          url: '',
+          query: {},
+          body: {},
+          header: {},
+        },  // 使用的 api
+        config: {}, // 图表自定义配置
       },
     },
   ];

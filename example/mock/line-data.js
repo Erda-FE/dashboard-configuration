@@ -265,8 +265,8 @@ const staticData = {
 
 export default [
   {
-    w: 6,
-    h: 12,
+    w: 8,
+    h: 9,
     x: 0,
     y: 0,
     i: 'view-1',

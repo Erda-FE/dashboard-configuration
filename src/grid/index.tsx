@@ -48,7 +48,7 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 
 const GRID_MARGIN = 10; // Cell间距
 const RECT_BORDER_WIDTH = 1; // rect border宽度
-const cols = 12;
+const cols = 24;
 const rowHeight = 30;
 const getCellSize = (width: number) => ({
   width: (width - GRID_MARGIN) / cols,
@@ -220,7 +220,7 @@ class BoardGrid extends React.PureComponent<IProps> {
                 autoSize
                 layout={dashboardLayout}
                 cols={cols}
-                rowHeight={30}
+                rowHeight={rowHeight}
                 width={size.width || 800}
                 onLayoutChange={updateLayout}
                 isDraggable

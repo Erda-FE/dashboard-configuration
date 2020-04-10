@@ -22,9 +22,9 @@ export default {
       const { dashBoard: { layout }, chartEditor: { viewMap } } = yield select(state => state);
       const { chartType, controlType } = viewMap[viewId];
       if (chartType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 6, h: 8 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 8, h: 9 });
       } else if (controlType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 2, h: 1 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 1 });
       }
       yield put({ type: 'updateState', payload: { layout: [...layout] } });
     },

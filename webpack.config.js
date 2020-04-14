@@ -114,7 +114,7 @@ module.exports = () => {
     resolve: {
       alias: {
         // 其他
-        agent: resolve(__dirname, 'example/agent.js'),
+        agent: resolve('example/agent.js'),
         app: resolve('example'),
         ws: resolve('example/ws.js'),
         interface: resolve('interface'),

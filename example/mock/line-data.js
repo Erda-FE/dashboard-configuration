@@ -265,10 +265,10 @@ const staticData = {
 
 export default [
   {
-    w: 8,
+    w: 9,
     h: 9,
-    x: 0,
-    y: 0,
+    x: 8,
+    y: 4,
     i: 'view-1',
     moved: false,
     static: false,
@@ -279,13 +279,14 @@ export default [
       hideReload: true,
       title: '图表标题是 zookeeper',
       description: '这里配置图表的一些描述',
-      loadData() {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(staticData);
-          }, 1000);
-        });
-      },
+      // loadData() {
+      //   return new Promise((resolve) => {
+      //     setTimeout(() => {
+      //       resolve(staticData);
+      //     }, 1000);
+      //   });
+      // },
+      staticData,
       dataConvertor: 'line',
       controls: ['input', 'input2'],
       config: {
@@ -320,6 +321,55 @@ export default [
             },
           ],
         },
+      },
+    },
+  },
+  {
+    w: 9,
+    h: 9,
+    x: 8,
+    y: 14,
+    i: 'view-3',
+    moved: false,
+    static: false,
+    view: {
+      name: 'test',
+      chartType: 'table',
+      hideHeader: true,
+      hideReload: true,
+      title: '表格图',
+      staticData: {
+        metricData: [
+          { id: 1, modelType: 'ods', score: 1 },
+        ],
+        cols: [
+          { title: '模型名称', dataIndex: 'modelType' },
+          { title: '质量分', dataIndex: 'score' },
+        ],
+      },
+    },
+  },
+  {
+    w: 9,
+    h: 4,
+    x: 8,
+    y: 0,
+    i: 'view-2',
+    moved: false,
+    static: false,
+    view: {
+      name: 'test',
+      chartType: 'card',
+      hideHeader: true,
+      hideReload: true,
+      title: '卡片图',
+      staticData: {
+        metricData: [
+          { name: '数据1', value: 820, unit: 'MB', status: 'rise', color: 'error' },
+          { name: '数据2', value: 932, color: 'warning' },
+          { name: '数据3', value: 24, unit: 'KB', status: 'fall', color: 'cancel' },
+        ],
+        proportion: [[1, 1, 1, 1], [1, 1]],
       },
     },
   },

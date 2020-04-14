@@ -240,16 +240,16 @@ class BoardGrid extends React.PureComponent<IProps> {
                   }
                   if (isPlainObject(view)) {
                     const { chartType = '' } = view;
-                    if (chartType.startsWith('chart')) {
-                      const ChartNode = get(this.chartConfigMap, [chartType, 'Component']);
-                      ChildComp = (
-                        <React.Fragment>
-                          <ChartOperation viewId={i} view={view} expandOption={expandOption}>
-                            <ChartNode />
-                          </ChartOperation>
-                        </React.Fragment>
-                      );
-                    }
+                    // if (chartType.startsWith('chart')) {
+                    const ChartNode = get(this.chartConfigMap, [chartType, 'Component']);
+                    ChildComp = (
+                      <React.Fragment>
+                        <ChartOperation viewId={i} view={view} expandOption={expandOption}>
+                          <ChartNode />
+                        </ChartOperation>
+                      </React.Fragment>
+                    );
+                    // }
                   } else {
                     console.error('layout view should be object or function');
                   }

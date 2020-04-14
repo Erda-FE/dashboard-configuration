@@ -1,5 +1,5 @@
 import { forEach, replace } from 'lodash';
-import agent from 'agent';
+import agent from '../../example/agent';
 import domtoimage from 'dom-to-image';
 import { message } from 'antd';
 import screenfull from 'screenfull';

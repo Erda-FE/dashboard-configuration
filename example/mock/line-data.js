@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 const staticData = {
   xData: [
     '13:39',
@@ -362,7 +364,13 @@ export default [
       chartType: 'card',
       hideHeader: true,
       hideReload: true,
-      title: '卡片图',
+      // title: '卡片图',
+      customRender: chartNode => (
+        <div>
+          <span>查看详情</span>
+          {chartNode}
+        </div>
+      ),
       staticData: {
         metricData: [
           { name: '数据1', value: 820, unit: 'MB', status: 'rise', color: 'error' },

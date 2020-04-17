@@ -76,6 +76,8 @@ const splitLayoutAndView = (layout: ILayout) => {
   return [pureLayout, viewMap];
 };
 
+const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);
+
 class BoardGrid extends React.PureComponent<IProps> {
   static defaultProps = {
     layout: [],
@@ -167,6 +169,7 @@ class BoardGrid extends React.PureComponent<IProps> {
     this.forceUpdate();
   }
 
+
   render() {
     const {
       dashboardLayout, viewMap, isEditMode, openEdit, readOnly,
@@ -239,17 +242,21 @@ class BoardGrid extends React.PureComponent<IProps> {
                     return null;
                   }
                   if (isPlainObject(view)) {
-                    const { chartType = '' } = view;
-                    // if (chartType.startsWith('chart')) {
+                    const { chartType = '', customRender } = view;
                     const ChartNode = get(this.chartConfigMap, [chartType, 'Component']);
                     ChildComp = (
                       <React.Fragment>
                         <ChartOperation viewId={i} view={view} expandOption={expandOption}>
-                          <ChartNode />
+                          {
+                            customRender && (typeof customRender === 'function')
+                              ?
+                                <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
+                              :
+                                <ChartNode />
+                          }
                         </ChartOperation>
                       </React.Fragment>
                     );
-                    // }
                   } else {
                     console.error('layout view should be object or function');
                   }

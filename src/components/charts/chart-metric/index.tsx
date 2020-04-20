@@ -23,7 +23,7 @@ interface IProps extends ReturnType<typeof mapStateToProps> {
 
 const Metric = ({ results = [], viewId }: IProps) => (
   <React.Fragment>
-    <section className="metrics-panel">
+    <section className="dc-metrics-panel">
       {
         map(results, ({ name, value, unit, status, color }) => (
           <div className="metric-item" key={uniqueId(viewId)}>

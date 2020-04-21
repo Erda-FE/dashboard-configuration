@@ -143,7 +143,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = getMessage({ fetchStatus });
-    const { title, description } = view;
+    const { title, description, hideHeader = true } = view;
 
     return (
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
@@ -156,7 +156,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           </IF>
         </div>
         {
-          !view.hideHeader &&
+          !hideHeader &&
           (
             <div className="bi-view-header">
               {/* <div className="bi-view-header-left">

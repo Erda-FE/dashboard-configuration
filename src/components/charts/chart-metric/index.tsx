@@ -6,7 +6,7 @@ import './index.scss';
 import { Icon } from 'antd';
 import React from 'react';
 import { connect } from 'dva';
-import { uniqueId, map } from 'lodash';
+import { uniqueId, map, isNumber, ceil } from 'lodash';
 
 interface IResult {
   name?: string;
@@ -28,7 +28,7 @@ const Metric = ({ results = [], viewId }: IProps) => (
         map(results, ({ name, value, unit, status, color }) => (
           <div className="metric-item" key={uniqueId(viewId)}>
             <span className={`metric-value ${color ? `color-${color}` : ''}`}>
-              {`${value || '--'}${unit || ''}`}
+              {`${isNumber(value) ? ceil(value, 2) : value || '--'}${unit || ''}`}
             </span>
             <span className="metric-name">{name || ''}</span>
           </div>

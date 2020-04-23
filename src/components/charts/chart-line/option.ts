@@ -20,13 +20,14 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     yAxisNames = [],
     legendFormatter,
     timeSpan,
+    isMoreThanOneDay,
     moreThanOneDayFormat,
   } = optionProps;
 
   const yAxis: any[] = [];
   const series: any[] = [];
   const legendData: {name: string}[] = [];
-  const moreThanOneDay = timeSpan ? timeSpan.seconds > (24 * 3600) : false;
+  const moreThanOneDay = isMoreThanOneDay || (timeSpan ? timeSpan.seconds > (24 * 3600) : false);
 
   map(metricData, (value, i) => {
     const { axisIndex, name, tag } = value;

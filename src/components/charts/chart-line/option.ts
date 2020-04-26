@@ -22,7 +22,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     timeSpan,
     isMoreThanOneDay,
     moreThanOneDayFormat,
-    preciseYAxis,
+    preciseTooltip,
   } = optionProps;
 
   const yAxis: any[] = [];
@@ -87,7 +87,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
       unit: curUnit,
       axisLabel: {
         margin: 0,
-        formatter: preciseYAxis ? (val: string) => val : (val: string) => getFormatter(curUnitType, curUnit).format(val, decimal),
+        formatter: (val: string) => getFormatter(curUnitType, curUnit).format(val, decimal),
       },
     };
   });
@@ -102,7 +102,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     return [curYAxis.unitType, curYAxis.unit];
   };
 
-  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
+  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${preciseTooltip ? unit.value : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
 
   const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
 

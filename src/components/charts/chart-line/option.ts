@@ -22,6 +22,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     timeSpan,
     isMoreThanOneDay,
     moreThanOneDayFormat,
+    preciseYAxis,
   } = optionProps;
 
   const yAxis: any[] = [];
@@ -86,7 +87,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
       unit: curUnit,
       axisLabel: {
         margin: 0,
-        formatter: (val: string) => getFormatter(curUnitType, curUnit).format(val, decimal),
+        formatter: preciseYAxis ? (val: string) => val : (val: string) => getFormatter(curUnitType, curUnit).format(val, decimal),
       },
     };
   });

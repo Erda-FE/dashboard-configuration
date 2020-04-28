@@ -1,0 +1,46 @@
+:global {
+  .dc-metrics-panel {
+    display: flex;
+    height: 100%;
+    .metric-item {
+      position: relative;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      text-align: center;
+      &:not(:last-child)::after {
+        position: absolute;
+        top: calc(50% - 20px);
+        right: 0;
+        width: 1px;
+        height: 40px;
+        background: rgba(0, 0, 0, .1);
+        content: "";
+      }
+      .metric-value {
+        margin-bottom: 8px;
+        font-size: 20px;
+      }
+      .metric-name {
+        color: rgba(0, 0, 0, .4);
+        font-size: 14px;
+      }
+    }
+  }
+  .color-error {
+    color: #df3409;
+  }
+  .color-cancel {
+    color: rgba(0, 0, 0, .6);
+  }
+  .color-info {
+    color: #035be3;
+  }
+  .color-success {
+    color: #34b37e;
+  }
+  .color-warning {
+    color: #feab00;
+  }
+}

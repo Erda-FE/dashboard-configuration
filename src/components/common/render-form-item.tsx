@@ -52,7 +52,7 @@ export interface IFormItem {
   extraProps?: object;
   rules?: any[];
   config?: object;
-  options?: {name: string, value: string}[] | Function;
+  options?: {name: string, value: string, disabled?: boolean}[] | Function;
   suffix?: string | null;
   formItemLayout?: object;
   tailFormItemLayout?: object;
@@ -133,7 +133,7 @@ export const RenderFormItem = ({
           {
             typeof options === 'function'
               ? options()
-              : options.map(single => <Radio.Button key={single.value} value={`${single.value}`}>{single.name}</Radio.Button>)
+              : options.map(single => <Radio.Button disabled={single.disabled || false} key={single.value} value={`${single.value}`}>{single.name}</Radio.Button>)
           }
         </Radio.Group>
       );

@@ -17,7 +17,7 @@ class AppRouter extends React.PureComponent<IProps> {
         <Switch>
           <Route
             path="*"
-            render={childProps => <BoardGrid {...childProps} layout={layout} />}
+            render={childProps => <BoardGrid {...childProps} layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} />}
           />
         </Switch>
       </Router>

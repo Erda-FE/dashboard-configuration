@@ -7,19 +7,16 @@ interface IProps {
   onClose(): void
 }
 
-export const EditorContainer = ({ visible, onClose, children, ...rest }: IProps) => {
-  return (
-    <Drawer
-      placement="right"
-      mask={false}
-      closable={false}
-      width="70%"
-      className="bi-config-editor"
-      visible={visible}
-      onClose={onClose}
-      {...rest}
-    >
-      {children}
-    </Drawer>
-  );
-};
+export const EditorContainer = ({ visible, onClose, children, ...rest }: IProps) => (
+  <Drawer
+    placement="bottom"
+    mask={false}
+    closable={false}
+    height="350px"
+    visible={visible}
+    onClose={onClose}
+    {...rest}
+  >
+    {children}
+  </Drawer>
+);

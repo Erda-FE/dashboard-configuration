@@ -17,6 +17,7 @@ import './index.scss';
 interface IProps extends ReturnType<typeof mapStateToProps> {
   viewId: string
   view: any
+  chartEditorVisible: boolean;
   children: ReactElement<any>
   setViewInfo(data: object): void;
   editView(viewId: string): void;
@@ -138,27 +139,33 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const { view, children, isEditLayout, isEditView, viewId, editView, deleteView, setViewInfo } = this.props;
+    const { view, children, isEditLayout, isEditView, viewId, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = getMessage({ fetchStatus });
-    const { title } = view;
+    const { title, description, hideHeader = true } = view;
 
     return (
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
-        <h2 className="bi-chart-title">{title}</h2>
+        <div className="header bi-chart-header">
+          <h2 className="bi-chart-title">{title}</h2>
+          <IF check={description}>
+            <Tooltip title={description}>
+              <Icon type="question-circle-o" />
+            </Tooltip>
+          </IF>
+        </div>
         {
-          !view.hideHeader &&
+          !hideHeader &&
           (
             <div className="bi-view-header">
-              <div className="bi-view-header-left">
+              {/* <div className="bi-view-header-left">
                 {
                   isEditLayout
                     ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
                     : <div className="bi-view-title">{view.name}</div>
                 }
-                {isEditLayout && <span className="bi-draggable-handle"><Icon type="drag" /></span>}
-              </div>
+              </div> */}
               <div className="bi-view-header-right">
                 <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
                 {this.hasLoadFn && !view.hideReload && <Icon className="reload-icon" type="reload" onClick={this.loadData} />}
@@ -169,11 +176,18 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         <ViewMask message={message} />
         {
           isEditLayout && (
+            <Tooltip placement="right" title="移动">
+              <Icon className="bi-draggable-handle" type="drag" />
+            </Tooltip>
+          )
+        }
+        {
+          isEditLayout && ((chartEditorVisible && isEditView) || !chartEditorVisible) && (
             <div className="bi-view-edit-op">
-              <Tooltip placement="bottom" title="编辑">
+              <Tooltip placement="right" title="编辑">
                 <Icon type="edit" onClick={() => editView(viewId)} />
               </Tooltip>
-              <Tooltip placement="bottom" title="删除">
+              <Tooltip placement="right" title="删除">
                 <Popconfirm
                   okText="确认"
                   cancelText="取消"
@@ -184,10 +198,10 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                   <Icon type="delete" />
                 </Popconfirm>
               </Tooltip>
-              <Tooltip placement="bottom" title="导出图片">
+              <Tooltip placement="right" title="导出图片">
                 <Icon type="camera" onClick={this.onSaveImg} />
               </Tooltip>
-              <Tooltip placement="bottom" title="图表全屏">
+              <Tooltip placement="right" title="图表全屏">
                 <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
               </Tooltip>
             </div>
@@ -222,10 +236,12 @@ const mapStateToProps = (
   {
     dashBoard: { isEditMode: isEditLayout },
     chartEditor: { editChartId },
+    chartEditor: { visible },
   }: any
   , { viewId }: any
 ) => ({
   isEditLayout,
+  chartEditorVisible: visible,
   isEditView: editChartId === viewId,
 });
 const mapDispatchToProps = (dispatch: any) => ({

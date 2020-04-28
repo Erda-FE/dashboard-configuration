@@ -20,23 +20,25 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     yAxisNames = [],
     legendFormatter,
     timeSpan,
+    isMoreThanOneDay,
     moreThanOneDayFormat,
+    preciseTooltip,
   } = optionProps;
 
   const yAxis: any[] = [];
   const series: any[] = [];
   const legendData: {name: string}[] = [];
-  const moreThanOneDay = timeSpan ? timeSpan.seconds > (24 * 3600) : false;
+  const moreThanOneDay = isMoreThanOneDay || (timeSpan ? timeSpan.seconds > (24 * 3600) : false);
 
   map(metricData, (value, i) => {
     const { axisIndex, name, tag } = value;
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
-    const yAxisIndex = 0; // axisIndex || 0;
+    const yAxisIndex = axisIndex || 0;
     const areaColor = areaColors[i];
     series.push({
-      type: value.chartType || 'line',
+      type: value.type || 'line',
       name: value.tag || seriesName || value.name || value.key,
       yAxisIndex,
       data: !isBarChangeColor ? value.data : map(value.data, (item: any, j) => {
@@ -100,7 +102,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     return [curYAxis.unitType, curYAxis.unit];
   };
 
-  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
+  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${preciseTooltip ? unit.value : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
 
   const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
 

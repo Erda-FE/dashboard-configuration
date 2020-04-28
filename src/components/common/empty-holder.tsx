@@ -5,7 +5,7 @@ import './empty-holder.scss';
 
 const EmptyHolder = () => (
   <div className="bi-empty-holder">
-    <Empty description="no data" />
+    <Empty description=" " />
   </div>
 );
 

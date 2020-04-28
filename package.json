@@ -1,6 +1,6 @@
 {
   "name": "@terminus/dashboard-configurator",
-  "version": "0.3.43",
+  "version": "0.3.55",
   "description": "Dashboard configurator with Echart",
   "main": "./index.js",
   "types": "./src/types/index.d.ts",
@@ -19,7 +19,8 @@
     "precommit": "lint-staged",
     "lint-fix": "eslint --fix example ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
     "tslint-fix": "tslint --fix 'src/**/*.tsx' ",
-    "stylelint-fix": "stylelint 'example/**/*.scss' --config .stylelintrc.json --fix"
+    "stylelint-fix": "stylelint 'example/**/*.scss' --config .stylelintrc.json --fix",
+    "pub": "npm version patch && npm publish && git push"
   },
   "repository": {
     "type": "git",
@@ -37,6 +38,7 @@
   "dependencies": {
     "antd": "^3.20.1",
     "classnames": "^2.2.6",
+    "cube-state": "1.0.6",
     "dom-to-image": "^2.6.0",
     "dva": "^2.3.0",
     "echarts": "^4.2.1",

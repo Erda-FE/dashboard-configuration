@@ -27,7 +27,7 @@ export const ajaxConvertor = (body) => {
 
 export default [
   {
-    w: 9,
+    w: 12,
     h: 9,
     x: 0,
     y: 0,
@@ -36,7 +36,7 @@ export default [
     static: false,
     view: {
       name: '性能区间',
-      chartType: 'chart:mix',
+      chartType: 'chart:line',
       // staticData,
       loadData() {
         return new Promise((resolve) => {

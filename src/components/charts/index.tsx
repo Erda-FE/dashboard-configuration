@@ -4,18 +4,14 @@ import { get, map, set } from 'lodash';
 // 图表
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
+import ChartMetric from './chart-metric';
+import ChartTable from './chart-table';
 // 图表配置器
 import LineConfigurator from './chart-line/configurator';
 import PieConfigurator from './chart-pie/configurator';
 
 
 const basicCharts: IChartsMap = {
-  'chart:mix': {
-    name: '混合图',
-    icon: <Icon type="line-chart" />,
-    Component: ChartLine,
-    Configurator: LineConfigurator,
-  },
   'chart:line': {
     name: '折线图',
     icon: <Icon type="line-chart" />,
@@ -23,6 +19,19 @@ const basicCharts: IChartsMap = {
       const metricData = get(props, 'data.metricData');
       const newMetricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
       set(props, 'data.metricData', newMetricData);
+      set(props, 'config.optionProps.noAreaColor', true);
+      return <ChartLine {...props} metricData={newMetricData} />;
+    },
+    Configurator: LineConfigurator,
+  },
+  'chart:area': {
+    name: '面积图',
+    icon: <Icon type="area-chart" />,
+    Component(props) {
+      const metricData = get(props, 'data.metricData');
+      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
+      set(props, 'data.metricData', newMetricData);
+      set(props, 'config.optionProps.noAreaColor', false);
       return <ChartLine {...props} metricData={newMetricData} />;
     },
     Configurator: LineConfigurator,
@@ -38,28 +47,25 @@ const basicCharts: IChartsMap = {
     },
     Configurator: LineConfigurator,
   },
-  // 'chart:area': {
-  //   name: '面积图',
-  //   icon: <Icon type="area-chart" />,
-  //   Component: ChartLine,
-  //   mockData: mockDataLine,
-  //   Configurator: LineConfigurator,
-  //   dataSettings: [DataSettingsCommon],
-  // },
   'chart:pie': {
     name: '饼图',
     icon: <Icon type="pie-chart" />,
     Component: ChartPie,
     Configurator: PieConfigurator,
   },
-  // 'chart:card': {
-  //   name: '卡片图',
-  //   icon: <Icon type="fund" />,
-  //   Component: ChartCards,
-  //   mockData: mockDataCards,
-  //   Configurator: LineConfigurator,
-  //   dataSettings: [DataSettingsCommon, DataSettingsCards],
-  // },
+  card: {
+    name: '卡片图',
+    icon: <Icon type="fund" />,
+    Component: ChartMetric,
+    Configurator: LineConfigurator,
+    // dataSettings: [DataSettingsCommon, DataSettingsCards],
+  },
+  table: {
+    name: '表格图',
+    icon: <Icon type="fund" />,
+    Component: ChartTable,
+    Configurator: LineConfigurator,
+  },
   // 'chart:radar': {
   //   name: '雷达图',
   //   icon: <Icon type="radar-chart" />,

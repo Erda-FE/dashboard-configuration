@@ -1,6 +1,7 @@
-import { cloneDeep, forEach, startsWith, set } from 'lodash';
+import { cloneDeep, forEach, startsWith } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
+import { NEW_CHART_VIEW_MAP } from '../constants';
 
 const defaultState = {
   visible: false,
@@ -12,18 +13,6 @@ const defaultState = {
   isTouched: false,
 };
 
-const newChartTpl = {
-  chartType: 'chart:line',
-  staticData: {
-    xData: [],
-    yData: [],
-    metricData: {},
-  },
-  config: {
-    options: {},
-  },
-};
-
 export default {
   namespace: 'chartEditor',
   state: cloneDeep(defaultState),
@@ -32,7 +21,7 @@ export default {
       const viewId = `view-${generateUUID()}`;
       const { viewMap } = yield select(state => state.chartEditor);
 
-      yield yield put({
+      yield put({
         type: 'updateState',
         payload: {
           visible: true,
@@ -40,19 +29,27 @@ export default {
           addMode: true,
           viewMap: {
             ...viewMap,
-            [viewId]: newChartTpl,
+            [viewId]: NEW_CHART_VIEW_MAP, // 初始化静态数据
           },
         },
       });
       yield put({ type: 'dashBoard/generateChart', viewId });
     },
+
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
     * saveEditor({ payload }, { put, select }) {
       const { editChartId, viewMap } = yield select(state => state.chartEditor);
       const editChart = cloneDeep(viewMap[editChartId]);
-      const { option = {} } = payload;
-      set(editChart, 'config.option', option);
-      yield put({ type: 'updateState', payload: { viewMap: { ...viewMap, [editChartId]: editChart }, visible: false, addMode: false, editChartId: '', viewCopy: {} } });
+      yield put({
+        type: 'updateState',
+        payload: {
+          viewMap: { ...viewMap, [editChartId]: { ...editChart, ...payload } },
+          visible: false,
+          addMode: false,
+          editChartId: '',
+          viewCopy: {},
+        },
+      });
       yield put({ type: 'setTouched', payload: false });
     },
     // 表单变化时自动保存
@@ -92,16 +89,13 @@ export default {
       const { viewMap, editChartId } = yield select(state => state.chartEditor);
       const drawerInfo = viewMap[editChartId];
       let tempPayload = {};
-      if (chartType === drawerInfo.chartType) {
-        // forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
-        //   if (startsWith(key, panelDataPrefix)) {
-        //     delete drawerInfo[key];
-        //   }
-        // });
-        yield yield put({ type: 'dashBoard/deleteLayout', viewId: editChartId });
-        tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
-      } else {
-        tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType } } };
+      if (chartType !== drawerInfo.chartType) {
+        tempPayload = {
+          viewMap: {
+            ...viewMap,
+            [editChartId]: { ...drawerInfo, chartType },
+          },
+        };
       }
       yield put({ type: 'updateState', payload: tempPayload });
     },
@@ -172,4 +166,3 @@ export default {
     },
   },
 };
-

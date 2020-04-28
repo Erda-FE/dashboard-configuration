@@ -1,5 +1,5 @@
 import React from 'react';
-import { RenderFormItem } from '../../../../components/common';
+import { RenderFormItem } from '../../../common';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelDataPrefix } from '../../../../utils/constants';
 import { formItemLayout } from '../../../../utils/comp';

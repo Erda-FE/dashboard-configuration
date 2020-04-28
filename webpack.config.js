@@ -9,6 +9,7 @@ const HappyPack = require('happypack');
 const os = require('os');
 
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+const resolve = pathname => path.resolve(__dirname, pathname);
 
 module.exports = () => {
   const isBuild = process.env.NODE_ENV === 'production';
@@ -75,8 +76,8 @@ module.exports = () => {
         {
           test: /\.scss$/,
           include: [
-            path.resolve(__dirname, 'example'),
-            path.resolve(__dirname, 'src'),
+            resolve('example'),
+            resolve('src'),
           ],
           exclude: /node_modules/,
           loaders: [
@@ -91,9 +92,9 @@ module.exports = () => {
             'happypack/loader?id=less',
           ],
           include: [
-            path.resolve(__dirname, 'example'),
-            path.resolve(__dirname, 'src'),
-            path.resolve(__dirname, 'node_modules/antd'),
+            resolve('example'),
+            resolve('src'),
+            resolve('node_modules/antd'),
           ],
         },
         {
@@ -113,15 +114,15 @@ module.exports = () => {
     resolve: {
       alias: {
         // 其他
-        agent: path.resolve(__dirname, 'example/agent.js'),
-        app: path.resolve(__dirname, 'example'),
-        ws: path.resolve(__dirname, 'example/ws.js'),
-        interface: path.resolve(__dirname, 'interface'),
-        common: path.resolve(__dirname, './src/components/common'),
-        theme: path.resolve(__dirname, './src/theme/dice.ts'),
+        agent: resolve('example/agent.js'),
+        app: resolve('example'),
+        ws: resolve('example/ws.js'),
+        interface: resolve('interface'),
+        common: resolve('./src/components/common'),
+        theme: resolve('./src/theme/dice.ts'),
       },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
-      modules: [path.resolve(__dirname, 'example'), path.resolve(__dirname, 'src'), 'node_modules'],
+      modules: [resolve('example'), resolve('src'), 'node_modules'],
     },
     optimization: {
       minimize: isBuild,
@@ -145,7 +146,7 @@ module.exports = () => {
           },
           commons: {
             name: 'chunk-commons',
-            test: path.resolve(__dirname, 'example/common'),
+            test: resolve('example/common'),
             minChunks: 2, // 最小公用次数
             priority: 2,
             chunks: 'all',
@@ -283,7 +284,7 @@ module.exports = () => {
             options: {
               sourceMap: false,
               resources: [
-                path.resolve(__dirname, './example/styles/_color.scss'),
+                resolve('./example/styles/_color.scss'),
               ],
             },
           },

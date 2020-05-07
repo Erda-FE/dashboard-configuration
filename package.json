@@ -1,6 +1,6 @@
 {
   "name": "@terminus/dashboard-configurator",
-  "version": "0.3.55",
+  "version": "0.3.56",
   "description": "Dashboard configurator with Echart",
   "main": "./index.js",
   "types": "./src/types/index.d.ts",

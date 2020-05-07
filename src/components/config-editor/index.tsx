@@ -1,6 +1,5 @@
 import { Button, message, Tabs, Popconfirm } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { connect } from 'dva';
 import { get, isEmpty, set } from 'lodash';
 import React from 'react';
 import { getData } from '../../utils/comp';
@@ -9,15 +8,25 @@ import './index.scss';
 import DataConfig from './data-config';
 import AxisConfig from './axis-config';
 import PanelCharts from './panel-views';
+import ChartEditorStore from '../../stores/chart-editor';
 
 const { TabPane } = Tabs;
 
-type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
-
+interface IProps extends FormComponentProps {
+  visible: any;
+  editChartId: any;
+  addMode: any;
+  currentChart: any;
+  isTouched: any;
+  viewCopy: any;
+  deleteEditor: any;
+  closeEditor: any;
+  saveEditor: any;
+}
 const noop = () => null;
 
 const PureChartEditor = (props: IProps) => {
-  const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, viewCopy, isTouched } = props;
+  const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, isTouched } = props;
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
   const axesConfigFormRef = React.useRef(null as any);
@@ -165,30 +174,19 @@ const PureChartEditor = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({
-  chartEditor: { visible, addMode, viewMap, editChartId, isTouched, viewCopy },
-}: any) => ({
-  visible,
-  editChartId,
-  addMode,
-  currentChart: get(viewMap, [editChartId]),
-  isTouched,
-  viewCopy,
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  deleteEditor() {
-    dispatch({ type: 'chartEditor/deleteEditor' });
-  },
-  closeEditor() {
-    dispatch({ type: 'chartEditor/closeEditor' });
-  },
-  saveEditor(payload: object) {
-    dispatch({ type: 'chartEditor/saveEditor', payload });
-  },
-  onEditorChange(payload: object) {
-    dispatch({ type: 'chartEditor/updateState', payload: { tempView: payload } });
-  },
-});
-
-export const ChartEditor = connect(mapStateToProps, mapDispatchToProps)(PureChartEditor);
+export const ChartEditor = (p: any) => {
+  const [visible, addMode, viewMap, editChartId, isTouched, viewCopy] = ChartEditorStore.useStore(s => [s.visible, s.addMode, s.viewMap, s.editChartId, s.isTouched, s.viewCopy]);
+  const { deleteEditor, closeEditor, saveEditor } = ChartEditorStore;
+  const props = {
+    visible,
+    editChartId,
+    addMode,
+    currentChart: get(viewMap, [editChartId]),
+    isTouched,
+    viewCopy,
+    deleteEditor,
+    closeEditor,
+    saveEditor,
+  };
+  return <PureChartEditor {...props} {...p} />;
+};

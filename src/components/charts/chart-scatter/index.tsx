@@ -5,7 +5,6 @@ import { isObject, merge } from 'lodash';
 
 import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
-import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
 import { mockDataScatter } from './utils';
 
@@ -64,5 +63,3 @@ const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, na
     option: convertSettingToOption(drawerInfo),
   };
 };
-
-export default connect(mapStateToProps)(ChartScatter);

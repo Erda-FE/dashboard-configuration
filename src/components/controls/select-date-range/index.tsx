@@ -1,14 +1,16 @@
 import React from 'react';
 import { get } from 'lodash';
-import { connect } from 'dva';
 import { DatePicker } from 'antd';
 import { panelControlPrefix } from '../../../utils/constants';
+import ChartEditorStore from '../../../stores/chart-editor';
 
 const { RangePicker } = DatePicker;
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps {
   onChange: (query: any) => void
   style?: React.CSSProperties
+  searchName: string
+  width: string
 }
 
 class SelectDateRange extends React.PureComponent<IProps> {
@@ -32,15 +34,14 @@ class SelectDateRange extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId }: any) => ({
-  width: `${get(viewMap, [viewId, `${panelControlPrefix}width`], 120)}px`,
-  searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
-});
+export default ({ viewId, ...rest }: any) => {
+  const viewMap = ChartEditorStore.useStore(s => s.viewMap);
+  const { chooseControl } = ChartEditorStore;
+  const props = {
+    width: `${get(viewMap, [viewId, `${panelControlPrefix}width`], 120)}px`,
+    searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
+    onChoose: chooseControl,
+  };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  onChoose(controlType: string) {
-    dispatch({ type: 'chartEditor/chooseControl', controlType });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SelectDateRange);
+  return <SelectDateRange {...props} {...rest} />;
+};

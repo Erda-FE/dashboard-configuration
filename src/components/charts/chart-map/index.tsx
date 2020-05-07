@@ -6,7 +6,6 @@ import { map, merge } from 'lodash';
 import ChartSizeMe from '../chart-sizeme';
 import ChinaMap from './utils/china.json';
 import React from 'react';
-import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
 import echarts from 'echarts';
 import { mockDataMap } from './utils';
@@ -79,5 +78,3 @@ const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, da
     option: convertSettingToOption(drawerInfo),
   };
 };
-
-export default connect(mapStateToProps)(ChartMap);

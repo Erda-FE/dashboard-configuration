@@ -1,5 +1,4 @@
 import { Dropdown, Icon, Menu } from 'antd';
-import { connect } from 'dva';
 import { find } from 'lodash';
 import React from 'react';
 import { getKeyValue } from '../utils';
@@ -9,7 +8,6 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
 }
 
 class OperationMenu extends React.PureComponent<IProps> {
-
   doAction = ({ key }: any) => {
     switch (key) {
       case 'link':
@@ -59,4 +57,4 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OperationMenu);
+export default (p: any) => <OperationMenu {...p} />;

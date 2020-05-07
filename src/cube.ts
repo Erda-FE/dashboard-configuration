@@ -1,5 +1,5 @@
 import cube from 'cube-state';
 
-const { createStore, use, getStoreMap } = cube();
+const { createStore, use, createFlatStore } = cube();
 
-export { createStore, use, getStoreMap };
+export { createStore, use, createFlatStore };

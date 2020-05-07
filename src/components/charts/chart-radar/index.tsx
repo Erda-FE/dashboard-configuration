@@ -5,7 +5,6 @@ import { mockDataRadar, mockIndicator } from './utils';
 
 import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
-import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
 import { merge } from 'lodash';
 import { panelDataPrefix } from '../../../utils/constants';
@@ -71,4 +70,3 @@ const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, da
   };
 };
 
-export default connect(mapStateToProps)(ChartRadar);

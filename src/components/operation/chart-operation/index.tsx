@@ -1,6 +1,5 @@
-import { Icon, Input, Popconfirm, Tooltip } from 'antd';
+import { Icon, Popconfirm, Tooltip } from 'antd';
 import classnames from 'classnames';
-import { connect } from 'dva';
 import { isEmpty, isString, isEqual, get } from 'lodash';
 import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
@@ -10,14 +9,19 @@ import { saveImage, setScreenFull } from '../../../utils/comp';
 import { EmptyHolder, IF } from '../../common';
 import ViewControl from './control';
 import ViewMask from '../../charts/chart-mask';
+import ChartEditorStore from '../../../stores/chart-editor';
+import DashboardStore from '../../../stores/dash-board';
+
 import './index.scss';
 
 
 // tslint:disable-next-line: no-use-before-declare
-interface IProps extends ReturnType<typeof mapStateToProps> {
+interface IProps {
   viewId: string
   view: any
   chartEditorVisible: boolean;
+  isEditLayout: boolean;
+  isEditView: boolean;
   children: ReactElement<any>
   setViewInfo(data: object): void;
   editView(viewId: string): void;
@@ -232,28 +236,18 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   }
 }
 
-const mapStateToProps = (
-  {
-    dashBoard: { isEditMode: isEditLayout },
-    chartEditor: { editChartId },
-    chartEditor: { visible },
-  }: any
-  , { viewId }: any
-) => ({
-  isEditLayout,
-  chartEditorVisible: visible,
-  isEditView: editChartId === viewId,
-});
-const mapDispatchToProps = (dispatch: any) => ({
-  setViewInfo(payload: any) {
-    return dispatch({ type: 'chartEditor/updateViewInfo', payload });
-  },
-  editView(viewId: string) {
-    return dispatch({ type: 'chartEditor/editView', payload: viewId });
-  },
-  deleteView(viewId: string) {
-    return dispatch({ type: 'dashBoard/deleteView', viewId });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChartOperation);
+export default ({ viewId, ...rest }: any) => {
+  const isEditLayout = DashboardStore.useStore(s => s.isEditMode);
+  const [editChartId, visible] = ChartEditorStore.useStore(s => [s.editChartId, s.visible]);
+  const { updateViewInfo: setViewInfo, editView } = ChartEditorStore;
+  const { deleteView } = DashboardStore;
+  const props = {
+    isEditLayout,
+    chartEditorVisible: visible,
+    isEditView: editChartId === viewId,
+    setViewInfo,
+    editView,
+    deleteView,
+  };
+  return <ChartOperation {...props} {...rest} />;
+};

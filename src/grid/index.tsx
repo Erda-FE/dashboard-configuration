@@ -1,13 +1,5 @@
-/**
- * 栅格化仪表盘
- * 1、阻止拖动是通过onDragStart来实现而非isDraggable
- * 2、阻止缩放，是通过隐藏样式，而非isResizable
- * 因为react-grid-layout会在相关变化时子组件注销重新加载，从而导致图表重绘，
- * 见GridItem相关实现即知,https://github.com/STRML/react-grid-layout/blob/master/lib/GridItem.jsx
- */
 import { Icon, Input, Tooltip } from 'antd';
 import classnames from 'classnames';
-import { connect } from 'dva';
 import { get, isEqual, isPlainObject, isEmpty, map } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -22,8 +14,9 @@ import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartEditor, ChartOperation, defaultChartsMap } from '../components';
 import { EmptyHolder, IF } from '../components/common';
+import DashboardStore from '../stores/dash-board';
+import ChartEditorStore from '../stores/chart-editor';
 import './index.scss';
-
 
 interface IUrlData {
   type: string
@@ -31,7 +24,7 @@ interface IUrlData {
   data: any
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps {
   readOnly?: boolean // 只读
   layout?: any // 配置信息，包含图表布局、各图表配置信息
   onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
@@ -44,6 +37,16 @@ interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof m
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   urlDataHandle?: ({ type, url, data }: IUrlData) => any // 接口数据处理
   expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
+  updateLayout: any
+  updateChildMap: any
+  addEditor: any
+  openEdit: any
+  saveEdit: any
+  resetBoard: any
+  resetDrawer: any
+  dashboardLayout: any
+  viewMap: any
+  isEditMode: any
 }
 
 const GRID_MARGIN = 10; // Cell间距
@@ -277,37 +280,23 @@ class BoardGrid extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({
-  dashBoard: { layout, isEditMode },
-  chartEditor: { viewMap },
-}: any) => ({
-  dashboardLayout: layout,
-  viewMap,
-  isEditMode,
-});
+export default (p: any) => {
+  const [layout, isEditMode] = DashboardStore.useStore(s => [s.layout, s.isEditMode]);
+  const viewMap = ChartEditorStore.useStore(s => s.viewMap);
+  const { updateLayout, openEdit, saveEdit, reset: resetBoard } = DashboardStore;
+  const { updateViewMap, addEditor, reset: resetDrawer } = ChartEditorStore;
 
-const mapDispatchToProps = (dispatch: any) => ({
-  updateLayout(layout: any) {
-    dispatch({ type: 'dashBoard/updateState', payload: { layout } });
-  },
-  updateChildMap(viewMap: any) {
-    dispatch({ type: 'chartEditor/updateState', payload: { viewMap } });
-  },
-  addEditor() {
-    dispatch({ type: 'chartEditor/addEditor' });
-  },
-  openEdit() {
-    dispatch({ type: 'dashBoard/openEdit' });
-  },
-  saveEdit() {
-    return dispatch({ type: 'dashBoard/saveEdit' });
-  },
-  resetBoard() {
-    return dispatch({ type: 'dashBoard/reset' });
-  },
-  resetDrawer() {
-    return dispatch({ type: 'chartEditor/reset' });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(BoardGrid);
+  const storeProps = {
+    updateLayout,
+    updateChildMap: updateViewMap,
+    addEditor,
+    openEdit,
+    saveEdit,
+    resetBoard,
+    resetDrawer,
+    dashboardLayout: layout,
+    viewMap,
+    isEditMode,
+  };
+  return <BoardGrid {...p} {...storeProps} />;
+};

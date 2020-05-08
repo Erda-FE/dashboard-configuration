@@ -54,6 +54,7 @@ export const themeObj = {
     symbolSize: '6',
     symbol: 'emptyCircle',
     smooth: true,
+    smoothMonotone: 'x',
   },
   radar: {
     itemStyle: {

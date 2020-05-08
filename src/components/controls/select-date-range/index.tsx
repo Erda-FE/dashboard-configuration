@@ -34,14 +34,14 @@ class SelectDateRange extends React.PureComponent<IProps> {
   }
 }
 
-export default ({ viewId, ...rest }: any) => {
+export default (p: any) => {
   const viewMap = ChartEditorStore.useStore(s => s.viewMap);
   const { chooseControl } = ChartEditorStore;
   const props = {
-    width: `${get(viewMap, [viewId, `${panelControlPrefix}width`], 120)}px`,
-    searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
+    width: `${get(viewMap, [p.viewId, `${panelControlPrefix}width`], 120)}px`,
+    searchName: get(viewMap, [p.viewId, `${panelControlPrefix}searchName`], ''),
     onChoose: chooseControl,
   };
 
-  return <SelectDateRange {...props} {...rest} />;
+  return <SelectDateRange {...props} {...p} />;
 };

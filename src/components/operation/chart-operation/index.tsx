@@ -236,7 +236,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   }
 }
 
-export default ({ viewId, ...rest }: any) => {
+export default (p: any) => {
   const isEditLayout = DashboardStore.useStore(s => s.isEditMode);
   const [editChartId, visible] = ChartEditorStore.useStore(s => [s.editChartId, s.visible]);
   const { updateViewInfo: setViewInfo, editView } = ChartEditorStore;
@@ -244,10 +244,10 @@ export default ({ viewId, ...rest }: any) => {
   const props = {
     isEditLayout,
     chartEditorVisible: visible,
-    isEditView: editChartId === viewId,
+    isEditView: editChartId === p.viewId,
     setViewInfo,
     editView,
     deleteView,
   };
-  return <ChartOperation {...props} {...rest} />;
+  return <ChartOperation {...props} {...p} />;
 };

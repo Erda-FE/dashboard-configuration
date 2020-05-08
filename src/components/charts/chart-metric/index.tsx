@@ -39,9 +39,9 @@ const Metric = ({ results = [], viewId }: IProps) => (
   </React.Fragment>
 );
 
-export default ({ viewId, data: { metricData: results, proportion }, option, ...rest }: any) => {
+export default ({ data: { metricData: results, proportion }, option, ...rest }: any) => {
   const viewMap = ChartEditorStore.useStore(s => s.viewMap);
-  const drawerInfo = viewMap[viewId] || {};
+  const drawerInfo = viewMap[rest.viewId] || {};
   const props = {
     chartType: drawerInfo.chartType as string,
     results,

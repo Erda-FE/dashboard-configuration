@@ -84,18 +84,18 @@ class SelectNormal extends React.PureComponent<IProps> {
   }
 }
 
-export default ({ viewId, ...rest }: any) => {
+export default (p: any) => {
   const viewMap = ChartEditorStore.useStore(s => s.viewMap);
   const { chooseControl } = ChartEditorStore;
   const props = {
-    width: get(viewMap, [viewId, `${panelControlPrefix}width`], 120),
-    searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
-    multiple: get(viewMap, [viewId, `${panelControlPrefix}multiple`], false),
-    canSearch: get(viewMap, [viewId, `${panelControlPrefix}canSearch`], false),
-    url: get(viewMap, [viewId, `${panelControlPrefix}url`], ''),
-    fixedData: get(viewMap, [viewId, `${panelControlPrefix}fixedData`], '[]'),
+    width: get(viewMap, [p.viewId, `${panelControlPrefix}width`], 120),
+    searchName: get(viewMap, [p.viewId, `${panelControlPrefix}searchName`], ''),
+    multiple: get(viewMap, [p.viewId, `${panelControlPrefix}multiple`], false),
+    canSearch: get(viewMap, [p.viewId, `${panelControlPrefix}canSearch`], false),
+    url: get(viewMap, [p.viewId, `${panelControlPrefix}url`], ''),
+    fixedData: get(viewMap, [p.viewId, `${panelControlPrefix}fixedData`], '[]'),
     onChoose: chooseControl,
   };
 
-  return <SelectNormal {...props} {...rest} />;
+  return <SelectNormal {...props} {...p} />;
 };

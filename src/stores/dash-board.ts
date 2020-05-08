@@ -27,14 +27,14 @@ const dashBoardStore = createFlatStore({
       const viewMap = chartEditorStore.getState(s => s.viewMap);
       const { chartType, controlType } = viewMap[viewId];
       if (chartType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 6 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 8, h: 9 });
       } else if (controlType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 2, h: 1 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 1 });
       }
       dashBoardStore.updateLayout([...layout]);
     },
     async saveEdit({ select }) {
-      dashBoardStore.changeEditMode(false);
+      dashBoardStore.closeEdit();
       const layout = select(s => s.layout);
       const viewMap = chartEditorStore.getState(s => s.viewMap);
       return { layout, viewMap }; // 只输出外部需要的
@@ -48,8 +48,8 @@ const dashBoardStore = createFlatStore({
     updateLayout(state, layout: any[]) {
       state.layout = layout;
     },
-    changeEditMode(state, isEditMode: boolean) {
-      state.isEditMode = isEditMode;
+    closeEdit(state) {
+      state.isEditMode = false;
     },
     openEdit(state) {
       state.isEditMode = true;

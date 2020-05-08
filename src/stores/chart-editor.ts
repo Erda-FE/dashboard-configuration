@@ -1,8 +1,9 @@
 import { createFlatStore } from '../cube';
-import { cloneDeep, forEach, startsWith, set } from 'lodash';
+import { cloneDeep, forEach, startsWith } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 import dashBoardStore from './dash-board';
+import { NEW_CHART_VIEW_MAP } from '../constants';
 
 interface IState {
   visible: boolean,
@@ -13,18 +14,6 @@ interface IState {
   viewCopy: any, // 修改时用于恢复的复制对象
   isTouched: boolean,
 }
-
-const newChartTpl = {
-  chartType: 'chart:line',
-  staticData: {
-    xData: [],
-    yData: [],
-    metricData: {},
-  },
-  config: {
-    option: {},
-  },
-};
 
 const initState: IState = {
   visible: false,
@@ -50,7 +39,7 @@ const chartEditorStore = createFlatStore({
         addMode: true,
         viewMap: {
           ...viewMap,
-          [viewId]: newChartTpl,
+          [viewId]: NEW_CHART_VIEW_MAP,
         },
       });
 

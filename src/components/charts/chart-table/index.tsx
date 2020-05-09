@@ -2,11 +2,10 @@
  * 数据表格
  */
 import React from 'react';
-import { connect } from 'dva';
 import { Table } from 'antd';
 import { map } from 'lodash';
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
+interface IProps {
   viewId: string;
   results: { [k: string]: any }[];
   cols: { title: string; dataIndex: string; unit?: string; render?: any }[];
@@ -39,9 +38,10 @@ const ChartTable = ({ results = [], cols }: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, data: { metricData: results, cols } }: any) => ({
-  results,
-  cols,
-});
-
-export default connect(mapStateToProps)(ChartTable);
+export default ({ data: { metricData: results, cols }, ...rest }: any) => {
+  const props = {
+    results,
+    cols,
+  };
+  return <ChartTable {...props} {...rest} />;
+};

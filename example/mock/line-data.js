@@ -132,7 +132,7 @@ const staticData = {
     },
     {
       name: 'tset2',
-      type: 'bar',
+      type: 'line',
       data: [
         '0.78',
         '0.78',

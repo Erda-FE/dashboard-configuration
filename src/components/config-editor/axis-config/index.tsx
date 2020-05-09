@@ -2,9 +2,8 @@ import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { get, cloneDeep, set } from 'lodash';
-import { connect } from 'dva';
 import { RenderPureForm } from '../../common';
-// import { collectFields } from '../../common/utils';
+import ChartEditorStore from '../../../stores/chart-editor';
 
 import './index.scss';
 
@@ -190,21 +189,18 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched, o
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any) => ({
-  isTouched,
-  currentChart: get(viewMap, [editChartId]),
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  setTouched(isTouched: any) {
-    dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
-  },
-  onEditorChange(payload: object) {
-    dispatch({ type: 'chartEditor/onEditorChange', payload });
-  },
-});
-
-const Config = connect(mapStateToProps, mapDispatchToProps)(Form.create()(AxisConfig));
+const Config = (p: any) => {
+  const FormConfig = Form.create()(AxisConfig);
+  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId, s.isTouched]);
+  const { setTouched, onEditorChange } = ChartEditorStore;
+  const props = {
+    isTouched,
+    currentChart: get(viewMap, [editChartId]),
+    setTouched,
+    onEditorChange,
+  };
+  return <FormConfig {...props} {...p} />;
+};
 
 export default React.forwardRef((props, ref) => (
   <Config forwardedRef={ref} {...props} />

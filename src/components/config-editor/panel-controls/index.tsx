@@ -1,6 +1,5 @@
 import React from 'react';
 import { get, map } from 'lodash';
-import { connect } from 'dva';
 import { Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import PropTypes from 'prop-types';
@@ -45,5 +44,3 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch({ type: 'chartEditor/chooseControl', controlType });
   },
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(PanelControls);

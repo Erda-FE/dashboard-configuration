@@ -5,30 +5,24 @@ import { set, get, cloneDeep } from 'lodash';
 import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { connect } from 'dva';
 // import { convertSettingToOption } from '../utils';
-import { mockDataLine } from './utils';
+// import { mockDataLine } from './utils';
 import { RenderPureForm } from '../../common';
-import { collectFields } from '../../common/utils';
-import { getDefaultOption } from './option';
-
-type IType = 'line' | 'bar' | 'area';
-
-interface IData {
-  type?: IType
-  data: number[]
-  smooth?: boolean
-  areaStyle?: object // 基本面积图时，传入空的{}即可
-}
+// import { collectFields } from '../../common/utils';
+// import { getDefaultOption } from './option';
+import ChartEditorStore from '../../../stores/chart-editor';
 
 // tslint:disable-next-line: no-use-before-declare
-interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps {
   viewId: string;
   isMock: boolean;
   defaultOption: object;
   currentChart: IChart;
   form: WrappedFormUtils;
   forwardedRef: { current: any };
+  setTouched: any;
+  onEditorChange: any;
+  isTouched: any;
 }
 
 const LineConfigurator = (props: IProps) => {
@@ -198,21 +192,20 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, editChartId, isTouched } }: any) => ({
-  currentChart: get(viewMap, [editChartId]),
-  isTouched,
-});
+const LineForm = Form.create()(LineConfigurator);
 
-const mapDispatchToProps = (dispatch: any) => ({
-  setTouched(isTouched: any) {
-    dispatch({ type: 'chartEditor/setTouched', payload: isTouched });
-  },
-  onEditorChange(payload: object) {
-    dispatch({ type: 'chartEditor/onEditorChange', payload });
-  },
-});
+const Configurator = (p: any) => {
+  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId, s.isTouched]);
 
-const Configurator = connect(mapStateToProps, mapDispatchToProps)(Form.create()(LineConfigurator));
+  const { setTouched, onEditorChange } = ChartEditorStore;
+  const storeProps = {
+    setTouched,
+    onEditorChange,
+    isTouched,
+    currentChart: get(viewMap, [editChartId]),
+  };
+  return <LineForm {...p} {...storeProps} />;
+};
 
 export default React.forwardRef((props, ref) => (
   <Configurator forwardedRef={ref} {...props} />

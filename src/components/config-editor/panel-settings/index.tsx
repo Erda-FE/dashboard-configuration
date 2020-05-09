@@ -1,13 +1,12 @@
 import React from 'react';
 import { Icon, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import { connect } from 'dva';
-import SettingTooltip from './setting-tooltip';
-import CodeModal from './code-modal';
-import SettingLegend from './setting-legend';
-import SettingTitle from './setting-title';
-import SettingYAxis from './setting-yAxis';
-import SettingXAxis from './setting-xAxis';
+// import SettingTooltip from './setting-tooltip';
+// import CodeModal from './code-modal';
+// import SettingLegend from './setting-legend';
+// import SettingTitle from './setting-title';
+// import SettingYAxis from './setting-yAxis';
+// import SettingXAxis from './setting-xAxis';
 import './index.scss';
 
 type IProps = FormComponentProps & ReturnType<typeof mapDispatchToProps>;
@@ -47,5 +46,3 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch({ type: 'chartEditor/openCodeModal' });
   },
 });
-
-export default connect(undefined, mapDispatchToProps)(SettingPanel);

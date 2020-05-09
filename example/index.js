@@ -3,7 +3,6 @@ import 'antd/lib/style/v2-compatible-reset';
 import dva from 'dva';
 import { Input } from 'antd';
 import createHistory from 'history/createBrowserHistory';
-import models from '../src/models';
 import { registDataConvertor, registControl, registChartOption, registTheme } from '../src/config';
 import { ajaxConvertor } from './mock/ajax-data';
 import AppRouter from './router';
@@ -51,8 +50,5 @@ registChartOption('line', {
   },
 });
 
-models.forEach((model) => {
-  app.model(model);
-});
 app.router(() => <AppRouter {...{ app, history }} />);
 app.start('#content');

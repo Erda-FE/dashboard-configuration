@@ -7,7 +7,6 @@
 import React from 'react';
 import { get } from 'lodash';
 import { Modal, Tooltip, Icon } from 'antd';
-import { connect } from 'dva';
 import { pretty } from 'js-object-pretty-print';
 import { convertSettingToOption, convertOptionToSetting, convertFormatter } from '../../../charts/utils';
 import AceEditor from '../../../ace-editor';
@@ -97,5 +96,3 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch({ type: 'chartEditor/submitCode', settingInfo });
   },
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(CodeModal);

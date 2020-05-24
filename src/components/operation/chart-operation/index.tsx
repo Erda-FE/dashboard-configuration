@@ -1,6 +1,6 @@
 import { Icon, Popconfirm, Tooltip } from 'antd';
 import classnames from 'classnames';
-import { isEmpty, isString, isEqual, get } from 'lodash';
+import { isEmpty, isString, isEqual, get, isFunction } from 'lodash';
 import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
@@ -147,7 +147,9 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = getMessage({ fetchStatus });
-    const { title, description, hideHeader = true } = view;
+    const { title: _title, description: _description, hideHeader = true } = view;
+    const title = isFunction(_title) ? _title() : _title;
+    const description = isFunction(_description) ? _description() : _description;
 
     return (
       <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>

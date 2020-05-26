@@ -1,14 +1,16 @@
 import React from 'react';
-import { connect } from 'dva';
-import { Form, Input, Checkbox } from 'antd';
+import { Form, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import EditorFrom from '../../../editor-form';
 import PropTypes from 'prop-types';
 import { formItemLayout } from '../../../../utils/comp';
 import { panelControlPrefix } from '../../../../utils/constants';
 import { checkFixedData } from '../utils';
+import ChartEditorStore from '../../../../stores/chart-editor';
 
-type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
+interface IProps extends FormComponentProps {
+  editChartId: string;
+}
 
 class DataSettings extends React.PureComponent<IProps> {
   static contextTypes = {
@@ -61,10 +63,7 @@ class DataSettings extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({
-  chartEditor: { editChartId },
-}: any) => ({
-  editChartId,
-});
-
-export default connect(mapStateToProps)(DataSettings);
+export default (p: any) => {
+  const editChartId = ChartEditorStore.useStore(s => s.editChartId);
+  return <DataSettings editChartId={editChartId} {...p} />;
+};

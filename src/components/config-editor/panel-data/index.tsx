@@ -1,6 +1,5 @@
 import React from 'react';
 import { get, map } from 'lodash';
-import { connect } from 'dva';
 import { FormComponentProps } from 'antd/lib/form';
 import { pretty } from 'js-object-pretty-print';
 import PropTypes from 'prop-types';
@@ -41,5 +40,3 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch({ type: 'chartEditor/chooseChartType' });
   },
 });
-
-export default connect(mapStateToProps, mapDispatchToProps)(PanelData);

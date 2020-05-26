@@ -2,17 +2,17 @@
  * 公用的dataSettings
  */
 import React from 'react';
-import { connect } from 'dva';
-import { Form, Input } from 'antd';
+import { Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelDataPrefix } from '../../../utils/constants';
 import { funcValidator } from '../utils';
 import PropTypes from 'prop-types';
 import EditorFrom from '../../editor-form';
+import ChartEditorStore from '../../../stores/chart-editor';
 
-
-type IProps = FormComponentProps & ReturnType<typeof mapStateToProps>;
-
+interface IProps extends FormComponentProps {
+  editChartId: string;
+}
 class DataSettings extends React.PureComponent<IProps> {
   static contextTypes = {
     UrlComponent: PropTypes.func,
@@ -62,10 +62,7 @@ class DataSettings extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({
-  chartEditor: { editChartId },
-}: any) => ({
-  editChartId,
-});
-
-export default connect(mapStateToProps)(DataSettings);
+export default (p: any) => {
+  const editChartId = ChartEditorStore.useStore(s => s.editChartId);
+  return <DataSettings editChartId={editChartId} {...p} />;
+};

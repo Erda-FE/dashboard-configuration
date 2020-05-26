@@ -1,12 +1,11 @@
 /**
  * 数据指标
  */
-import './index.scss';
-
-import { Icon } from 'antd';
 import React from 'react';
-import { connect } from 'dva';
 import { uniqueId, map, isNumber, ceil } from 'lodash';
+import ChartEditorStore from '../../../stores/chart-editor';
+
+import './index.scss';
 
 interface IResult {
   name?: string;
@@ -16,9 +15,11 @@ interface IResult {
   color?: string;
 }
 
-interface IProps extends ReturnType<typeof mapStateToProps> {
-  viewId: string
+interface IProps {
+  viewId: string;
   results: IResult[];
+  chartType: string;
+  option: any;
 }
 
 const Metric = ({ results = [], viewId }: IProps) => (
@@ -35,15 +36,16 @@ const Metric = ({ results = [], viewId }: IProps) => (
         ))
       }
     </section>
-  </React.Fragment>);
+  </React.Fragment>
+);
 
-const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, data: { metricData: results, proportion }, option }: any) => {
-  const drawerInfo = viewMap[viewId] || {};
-  return {
+export default ({ data: { metricData: results, proportion }, option, ...rest }: any) => {
+  const viewMap = ChartEditorStore.useStore(s => s.viewMap);
+  const drawerInfo = viewMap[rest.viewId] || {};
+  const props = {
     chartType: drawerInfo.chartType as string,
     results,
     option: { ...option, proportion },
   };
+  return <Metric {...props} {...rest} />;
 };
-
-export default connect(mapStateToProps)(Metric);

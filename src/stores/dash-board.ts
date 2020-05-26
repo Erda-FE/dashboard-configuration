@@ -1,5 +1,5 @@
-import { createStore } from 'src/cube';
 import { maxBy, remove } from 'lodash';
+import { createFlatStore } from '../cube';
 import chartEditorStore from './chart-editor';
 
 interface IState {
@@ -18,7 +18,7 @@ const getNewChartYPosition = (layout: any[]) => {
 };
 
 
-const dashBoardStore = createStore({
+const dashBoardStore = createFlatStore({
   name: 'dashBoard',
   state: initState,
   effects: {
@@ -27,29 +27,32 @@ const dashBoardStore = createStore({
       const viewMap = chartEditorStore.getState(s => s.viewMap);
       const { chartType, controlType } = viewMap[viewId];
       if (chartType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 6 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 8, h: 9 });
       } else if (controlType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 2, h: 1 });
+        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 1 });
       }
-      dashBoardStore.reducers.updateLayout([...layout]);
+      dashBoardStore.updateLayout([...layout]);
     },
     async saveEdit({ select }) {
-      dashBoardStore.reducers.changeEditMode(false);
+      dashBoardStore.closeEdit();
       const layout = select(s => s.layout);
       const viewMap = chartEditorStore.getState(s => s.viewMap);
       return { layout, viewMap }; // 只输出外部需要的
     },
     async deleteView(_, viewId: string) {
-      dashBoardStore.reducers.deleteLayout(viewId);
-      chartEditorStore.reducers.deleteEditorInfo(viewId);
+      dashBoardStore.deleteLayout(viewId);
+      chartEditorStore.deleteEditorInfo(viewId);
     },
   },
   reducers: {
     updateLayout(state, layout: any[]) {
       state.layout = layout;
     },
-    changeEditMode(state, isEditMode: boolean) {
-      state.isEditMode = isEditMode;
+    closeEdit(state) {
+      state.isEditMode = false;
+    },
+    openEdit(state) {
+      state.isEditMode = true;
     },
     deleteLayout(state, viewId: string) {
       remove(state.layout, ({ i }) => viewId === i);

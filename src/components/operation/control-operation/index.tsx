@@ -1,12 +1,15 @@
 import React, { ReactElement } from 'react';
-import { connect } from 'dva';
 import { values, get } from 'lodash';
 import OperationMenu from '../operation-menu';
+import DashboardStore from '../../../stores/dash-board';
+
 import './index.scss';
 
-interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps {
   viewId: string
   children: ReactElement<any>
+  isEditMode: boolean;
+  onChange: any;
 }
 
 const ControlOperation = ({ children, viewId, isEditMode, onChange }: IProps) => (
@@ -16,14 +19,11 @@ const ControlOperation = ({ children, viewId, isEditMode, onChange }: IProps) =>
   </div>
 );
 
-const mapStateToProps = ({ dashBoard: { isEditMode } }: any) => ({
-  isEditMode,
-});
-
-const mapDispatchToProps = (dispatch: any, { viewId }: any) => ({
-  onChange(query: object) {
-    dispatch({ type: 'linkSetting/updateLinkDataMap', linkId: viewId, values: { chartValue: get(values(query), [0], '') } });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(ControlOperation);
+export default (p: any) => {
+  const isEditMode = DashboardStore.useStore(s => s.isEditMode);
+  const props = {
+    isEditMode,
+    onChange: () => {},
+  };
+  return <ControlOperation {...props} {...p} />;
+};

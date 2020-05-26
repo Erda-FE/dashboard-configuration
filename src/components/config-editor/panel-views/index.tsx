@@ -1,9 +1,10 @@
 import React from 'react';
 import { get, map, pick } from 'lodash';
 import classnames from 'classnames';
-import { connect } from 'dva';
 import { Tooltip } from 'antd';
 import { getConfig } from '../../../config';
+import ChartEditorStore from '../../../stores/chart-editor';
+
 import './index.scss';
 
 interface IProps {
@@ -38,14 +39,12 @@ const PanelViews = ({ chartType, onChoose }: IProps) => {
   );
 };
 
-const mapStateToProps = ({ chartEditor: { viewMap, editChartId } }: any) => ({
-  chartType: get(viewMap, [editChartId, 'chartType'], ''),
-});
-
-const mapDispatchToProps = (dispatch: any) => ({
-  onChoose(chartType: string) {
-    dispatch({ type: 'chartEditor/chooseChartType', chartType });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(PanelViews);
+export default (p: any) => {
+  const [viewMap, editChartId] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId]);
+  const { chooseChartType } = ChartEditorStore;
+  const props = {
+    chartType: get(viewMap, [editChartId, 'chartType'], ''),
+    onChoose: chooseChartType,
+  };
+  return <PanelViews {...props} {...p} />;
+};

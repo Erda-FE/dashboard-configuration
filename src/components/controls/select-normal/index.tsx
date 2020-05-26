@@ -1,16 +1,23 @@
 import React from 'react';
 import { get, isEqual, map, isEmpty } from 'lodash';
-import { connect } from 'dva';
 import { Select, message } from 'antd';
 import { OptionProps } from 'antd/lib/select';
 import { getData, strToObject } from '../../../utils/comp';
 import { panelControlPrefix } from '../../../utils/constants';
 import { checkFixedData } from './utils';
+import ChartEditorStore from '../../../stores/chart-editor';
 
 const { Option } = Select;
-interface IProps extends ReturnType<typeof mapStateToProps>, ReturnType<typeof mapDispatchToProps> {
+interface IProps {
   onChange: (query: any) => void
   style?: React.CSSProperties
+  width: any,
+  searchName: any,
+  multiple: any,
+  canSearch: any,
+  url: any,
+  fixedData: any,
+  onChoose: any,
 }
 
 class SelectNormal extends React.PureComponent<IProps> {
@@ -77,19 +84,18 @@ class SelectNormal extends React.PureComponent<IProps> {
   }
 }
 
-const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId }: any) => ({
-  width: get(viewMap, [viewId, `${panelControlPrefix}width`], 120),
-  searchName: get(viewMap, [viewId, `${panelControlPrefix}searchName`], ''),
-  multiple: get(viewMap, [viewId, `${panelControlPrefix}multiple`], false),
-  canSearch: get(viewMap, [viewId, `${panelControlPrefix}canSearch`], false),
-  url: get(viewMap, [viewId, `${panelControlPrefix}url`], ''),
-  fixedData: get(viewMap, [viewId, `${panelControlPrefix}fixedData`], '[]'),
-});
+export default (p: any) => {
+  const viewMap = ChartEditorStore.useStore(s => s.viewMap);
+  const { chooseControl } = ChartEditorStore;
+  const props = {
+    width: get(viewMap, [p.viewId, `${panelControlPrefix}width`], 120),
+    searchName: get(viewMap, [p.viewId, `${panelControlPrefix}searchName`], ''),
+    multiple: get(viewMap, [p.viewId, `${panelControlPrefix}multiple`], false),
+    canSearch: get(viewMap, [p.viewId, `${panelControlPrefix}canSearch`], false),
+    url: get(viewMap, [p.viewId, `${panelControlPrefix}url`], ''),
+    fixedData: get(viewMap, [p.viewId, `${panelControlPrefix}fixedData`], '[]'),
+    onChoose: chooseControl,
+  };
 
-const mapDispatchToProps = (dispatch: any) => ({
-  onChoose(controlType: string) {
-    dispatch({ type: 'chartEditor/chooseControl', controlType });
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(SelectNormal);
+  return <SelectNormal {...props} {...p} />;
+};

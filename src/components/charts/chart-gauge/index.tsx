@@ -3,7 +3,6 @@
  */
 import ChartSizeMe from '../chart-sizeme';
 import React from 'react';
-import { connect } from 'dva';
 import { convertSettingToOption } from '../utils';
 import { merge } from 'lodash';
 import { mockDataGauge } from './utils';
@@ -47,5 +46,3 @@ const mapStateToProps = ({ chartEditor: { viewMap } }: any, { viewId, isMock, da
     option: convertSettingToOption(drawerInfo),
   };
 };
-
-export default connect(mapStateToProps)(ChartGauge);

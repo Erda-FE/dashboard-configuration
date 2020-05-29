@@ -38,7 +38,7 @@
   "dependencies": {
     "antd": "^3.20.1",
     "classnames": "^2.2.6",
-    "cube-state": "1.0.6",
+    "cube-state": "1.1.2",
     "dom-to-image": "^2.6.0",
     "dva": "^2.3.0",
     "echarts": "^4.2.1",
@@ -51,6 +51,7 @@
     "react-grid-layout": "^0.16.6",
     "react-redux": "^5.0.7",
     "react-sizeme": "^2.5.2",
+    "react-use": "^15.1.0",
     "screenfull": "^4.0.0",
     "xss": "^1.0.3"
   },

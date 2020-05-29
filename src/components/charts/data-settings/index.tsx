@@ -6,22 +6,19 @@ import { Form } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { panelDataPrefix } from '../../../utils/constants';
 import { funcValidator } from '../utils';
-import PropTypes from 'prop-types';
 import EditorFrom from '../../editor-form';
 import ChartEditorStore from '../../../stores/chart-editor';
+import DashboardStore from '../../../stores/dash-board';
 
 interface IProps extends FormComponentProps {
   editChartId: string;
+  contextMap: any;
 }
 class DataSettings extends React.PureComponent<IProps> {
-  static contextTypes = {
-    UrlComponent: PropTypes.func,
-    urlItemLayout: PropTypes.object,
-  };
-
   render() {
-    const { UrlComponent, urlItemLayout } = this.context;
-    const { editChartId, form: { getFieldDecorator } } = this.props;
+    const { editChartId, form: { getFieldDecorator }, contextMap } = this.props;
+    const { getUrlComponent, urlItemLayout } = contextMap;
+    const UrlComponent = getUrlComponent();
     return (
       <div>
         <Form.Item label="接口" {...urlItemLayout}>
@@ -64,5 +61,12 @@ class DataSettings extends React.PureComponent<IProps> {
 
 export default (p: any) => {
   const editChartId = ChartEditorStore.useStore(s => s.editChartId);
-  return <DataSettings editChartId={editChartId} {...p} />;
+  const contextMap = DashboardStore.useStore(s => s.contextMap);
+
+  const storeProps = {
+    contextMap,
+    editChartId,
+  };
+
+  return <DataSettings {...storeProps} {...p} />;
 };

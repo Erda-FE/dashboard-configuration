@@ -3,20 +3,21 @@ import { createFlatStore } from '../cube';
 import chartEditorStore from './chart-editor';
 
 interface IState {
-  isEditMode: boolean;
-  layout: any[];
+  isEditMode: boolean
+  layout: any[]
+  contextMap: any
 }
 
 const initState: IState = {
   isEditMode: false,
   layout: [],
+  contextMap: {},
 };
 
 const getNewChartYPosition = (layout: any[]) => {
   const { y: maxY, h: maxH } = maxBy(layout, ({ y, h }) => y + h) || { y: 0, h: 0 };
   return maxY + maxH;
 };
-
 
 const dashBoardStore = createFlatStore({
   name: 'dashBoard',
@@ -59,6 +60,9 @@ const dashBoardStore = createFlatStore({
     },
     reset() {
       return initState;
+    },
+    updateContextMap(state, contextMap: any) {
+      state.contextMap = contextMap;
     },
   },
 });

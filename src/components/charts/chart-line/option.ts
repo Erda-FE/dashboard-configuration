@@ -73,7 +73,6 @@ export function getOption(data: IStaticData, config: IChartConfig) {
       },
       position: yAxisIndex === 0 ? 'left' : 'right',
       offset: 10,
-      min: 0,
       splitLine: {
         show: true,
       },

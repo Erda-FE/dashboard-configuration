@@ -2,22 +2,18 @@ import React from 'react';
 import { Form, Checkbox } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import EditorFrom from '../../../editor-form';
-import PropTypes from 'prop-types';
 import { formItemLayout } from '../../../../utils/comp';
 import { panelControlPrefix } from '../../../../utils/constants';
 import { checkFixedData } from '../utils';
 import ChartEditorStore from '../../../../stores/chart-editor';
+import DashboardStore from '../../../../stores/dash-board';
 
 interface IProps extends FormComponentProps {
   editChartId: string;
+  contextMap: any;
 }
 
 class DataSettings extends React.PureComponent<IProps> {
-  static contextTypes = {
-    UrlComponent: PropTypes.func,
-    urlItemLayout: PropTypes.object,
-  };
-
   validateFixedData = (rule: any, value: string, callback: Function) => {
     if (checkFixedData(value)) {
       callback();
@@ -26,8 +22,9 @@ class DataSettings extends React.PureComponent<IProps> {
   }
 
   render() {
-    const { UrlComponent, urlItemLayout } = this.context;
-    const { editChartId, form: { getFieldDecorator } } = this.props;
+    const { editChartId, form: { getFieldDecorator }, contextMap } = this.props;
+    const { getUrlComponent, urlItemLayout } = contextMap;
+    const UrlComponent = getUrlComponent();
     return (
       <React.Fragment>
         <Form.Item label="控件接口" {...urlItemLayout}>
@@ -65,5 +62,12 @@ class DataSettings extends React.PureComponent<IProps> {
 
 export default (p: any) => {
   const editChartId = ChartEditorStore.useStore(s => s.editChartId);
-  return <DataSettings editChartId={editChartId} {...p} />;
+  const contextMap = DashboardStore.useStore(s => s.contextMap);
+
+  const storeProps = {
+    contextMap,
+    editChartId,
+  };
+
+  return <DataSettings {...storeProps} {...p} />;
 };

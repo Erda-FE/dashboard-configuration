@@ -2,7 +2,7 @@ import ReactEcharts, { Func } from 'echarts-for-react';
 import { isEqual } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-
+import DashboardStore from '../../../stores/dash-board';
 
 interface IProps {
   viewId: string
@@ -11,6 +11,7 @@ interface IProps {
     option: object
   }
   style?: object
+  contextMap: any
   getOption(data: object, customOption: object): object
 }
 
@@ -35,18 +36,13 @@ class Chart extends React.Component<IProps> {
     notMerge: true, // 因v4.2.0-rc在切换图形类型或者更新数据更新存在bug,所以必须设置为true
   };
 
-  static contextTypes = {
-    theme: PropTypes.string,
-    themeObj: PropTypes.object,
-  };
-
   shouldComponentUpdate(nextProps: IProps) {
     return !isEqual(nextProps, this.props);
   }
 
   render() {
-    const { data, config = {}, getOption, style, ...others } = this.props;
-    const { theme, themeObj } = this.context;
+    const { data, config = {}, getOption, style, contextMap, ...others } = this.props;
+    const { theme, themeObj } = contextMap;
     return (
       <ReactEcharts
         {...others}
@@ -59,4 +55,10 @@ class Chart extends React.Component<IProps> {
   }
 }
 
-export default Chart;
+export default (p: any) => {
+  const contextMap = DashboardStore.useStore(s => s.contextMap);
+  const storeProps = {
+    contextMap,
+  };
+  return <Chart {...p} {...storeProps} />;
+};

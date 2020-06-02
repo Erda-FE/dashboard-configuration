@@ -1,4 +1,4 @@
-import { Button, message, Tabs, Popconfirm } from 'antd';
+import { Button, message, Tabs, Popconfirm, Modal } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
 import { get, isEmpty, set } from 'lodash';
 import React from 'react';
@@ -25,14 +25,30 @@ interface IProps extends FormComponentProps {
 }
 const noop = () => null;
 
-const PureChartEditor = (props: IProps) => {
-  const { visible, currentChart, closeEditor, addMode, deleteEditor, editChartId, isTouched } = props;
+export const ChartEditor = (props: IProps) => {
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
   const axesConfigFormRef = React.useRef(null as any);
 
+  const [
+    visible,
+    addMode,
+    viewMap,
+    editChartId,
+    isTouched,
+    viewCopy,
+  ] = ChartEditorStore.useStore(s => [
+    s.visible,
+    s.addMode,
+    s.viewMap,
+    s.editChartId,
+    s.isTouched,
+    s.viewCopy,
+  ]);
+  const { deleteEditor, closeEditor, saveEditor } = ChartEditorStore;
+  const currentChart = get(viewMap, [editChartId]);
+
   const saveChart = () => { // 可以提交图表或控件
-    const { saveEditor } = props;
     if (isEmpty(currentChart)) {
       return;
     } else if (!currentChart.chartType && !currentChart.controlType) {
@@ -119,12 +135,6 @@ const PureChartEditor = (props: IProps) => {
     </TabPane>,
   ];
 
-  // if (!addMode) {
-  //   tabPanes.push(
-  //     <TabPane tab="数据系列" key="plot" />
-  //   );
-  // }
-
   return (
     <React.Fragment>
       <div className="editor-holder" />
@@ -172,21 +182,4 @@ const PureChartEditor = (props: IProps) => {
       </EditorContainer>
     </React.Fragment>
   );
-};
-
-export const ChartEditor = (p: any) => {
-  const [visible, addMode, viewMap, editChartId, isTouched, viewCopy] = ChartEditorStore.useStore(s => [s.visible, s.addMode, s.viewMap, s.editChartId, s.isTouched, s.viewCopy]);
-  const { deleteEditor, closeEditor, saveEditor } = ChartEditorStore;
-  const props = {
-    visible,
-    editChartId,
-    addMode,
-    currentChart: get(viewMap, [editChartId]),
-    isTouched,
-    viewCopy,
-    deleteEditor,
-    closeEditor,
-    saveEditor,
-  };
-  return <PureChartEditor {...props} {...p} />;
 };

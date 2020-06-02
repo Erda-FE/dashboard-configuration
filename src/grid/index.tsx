@@ -114,7 +114,7 @@ const BoardGrid = ({
     updateContextMap({
       theme,
       themeObj,
-      customCharts: chartConfigMap,
+      // customCharts: chartConfigMap,
       getUrlComponent: () => UrlComponent,
       urlItemLayout,
     });

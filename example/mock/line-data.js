@@ -66,7 +66,6 @@ const staticData = {
   metricData: [
     {
       name: 'tset1',
-      type: 'line',
       data: [
         '0.03',
         '0.03',
@@ -132,7 +131,6 @@ const staticData = {
     },
     {
       name: 'tset2',
-      type: 'line',
       data: [
         '0.78',
         '0.78',
@@ -197,7 +195,6 @@ const staticData = {
       ],
     }, {
       name: 'tset3',
-      type: 'line',
       data: [
         '0.03',
         '0.03',
@@ -279,8 +276,8 @@ export default [
       chartType: 'chart:line',
       hideHeader: true,
       hideReload: true,
-      title: '图表标题是 zookeeper',
-      description: '这里配置图表的一些描述',
+      title: '线形图',
+      // description: '这里配置图表的一些描述',
       // loadData() {
       //   return new Promise((resolve) => {
       //     setTimeout(() => {
@@ -289,7 +286,7 @@ export default [
       //   });
       // },
       staticData,
-      dataConvertor: 'line',
+      // dataConvertor: 'line',
       controls: ['input', 'input2'],
       config: {
         option: {

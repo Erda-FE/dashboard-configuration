@@ -138,7 +138,7 @@ export const ChartEditor = (props: IProps) => {
   return (
     <React.Fragment>
       <div className="editor-holder" />
-      <EditorContainer
+      {/* <EditorContainer
         visible={visible}
         onClose={addMode ? deleteEditor : closeEditor}
         bodyStyle={{
@@ -179,7 +179,7 @@ export const ChartEditor = (props: IProps) => {
             {`图表ID: ${editChartId}`}
           </div>
         </div>
-      </EditorContainer>
+      </EditorContainer> */}
     </React.Fragment>
   );
 };

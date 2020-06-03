@@ -1,4 +1,5 @@
-import { useRef, useState, useLayoutEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect } from 'react';
+import { useSize } from 'react-use';
 
 export const useForceUpdate = () => {
   const forceUpdate = useState(0)[1];
@@ -18,4 +19,11 @@ export const useForceUpdateWithCallback = (cb: () => void): () => void => {
     isUpdating.current = 1;
     setValue(v => v + 1);
   }).current;
+};
+
+export const useComponentWidth = () => {
+  const [sized, { width }] = useSize(
+    () => <div style={{ width: '100%' }} />
+  );
+  return [sized, width];
 };

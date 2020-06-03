@@ -7,15 +7,15 @@ import { useMount, useUnmount } from 'react-use';
 import ReactGridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { SizeMe } from 'react-sizeme';
 import screenfull from 'screenfull';
 import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartEditor, ChartOperation, defaultChartsMap } from '../components';
-import { EmptyHolder, IF, useForceUpdate } from '../components/common';
+import { EmptyHolder, IF, useForceUpdate, useComponentWidth } from '../components/common';
 import DashboardStore from '../stores/dash-board';
 import ChartEditorStore from '../stores/chart-editor';
+import PickChartModal from '../components/config-editor/pick-chart-modal';
 import './index.scss';
 
 interface IProps {
@@ -81,7 +81,9 @@ const BoardGrid = ({
   const [dashboardLayout, isEditMode] = DashboardStore.useStore(s => [s.layout, s.isEditMode]);
   const viewMap = ChartEditorStore.useStore(s => s.viewMap);
   const { updateLayout, openEdit, saveEdit, reset: resetBoard, updateContextMap } = DashboardStore;
-  const { updateViewMap: updateChildMap, addEditor, reset: resetDrawer } = ChartEditorStore;
+  const { updateViewMap: updateChildMap, setPickChartModalVisible, reset: resetDrawer } = ChartEditorStore;
+
+  const [widthHolder, width] = useComponentWidth();
 
   useMount(() => {
     const [pureLayout, _viewMap] = splitLayoutAndView(layout);
@@ -144,6 +146,8 @@ const BoardGrid = ({
     forceUpdate();
   };
 
+  const handlePickChart = () => {};
+
   return (
     <div
       style={{ flex: 2 }}
@@ -158,7 +162,7 @@ const BoardGrid = ({
               ? (
                 <React.Fragment>
                   <Tooltip placement="bottom" title="新增">
-                    <Icon type="plus" onClick={addEditor} />
+                    <Icon type="plus" onClick={() => setPickChartModalVisible(true)} />
                   </Tooltip>
                   <Tooltip placement="bottom" title="保存">
                     <Icon type="save" onClick={_onSave} />
@@ -181,65 +185,63 @@ const BoardGrid = ({
           }
         </div>
       )}
+      {widthHolder}
       <IF check={isEmpty(dashboardLayout)}>
         <EmptyHolder />
         <IF.ELSE />
-        <SizeMe monitorHeight>
-          {({ size }) => (
-            <ReactGridLayout
-              ref={boardGridRef}
-              autoSize
-              layout={dashboardLayout}
-              cols={cols}
-              rowHeight={rowHeight}
-              width={size.width || 800}
-              onLayoutChange={updateLayout}
-              isDraggable
-              isResizable
-              style={isEditMode ? { backgroundImage: getGridBackground(size.width) } : {}}
-              onDragStart={onDragStart}
-              draggableHandle=".bi-draggable-handle"
-            >
-              {dashboardLayout.map(({ i, ...others }: any) => {
-                let ChildComp = null;
-                let view = viewMap[i];
-                view = typeof view === 'function'
-                  ? view({ isEditMode, isFullscreen: screenfull.isFullscreen })
-                  : view;
-                if (!view) {
-                  return null;
-                }
-                if (isPlainObject(view)) {
-                  const { chartType = '', customRender } = view;
-                  const ChartNode = get(chartConfigMap, [chartType, 'Component']);
-                  ChildComp = (
-                    <React.Fragment>
-                      <ChartOperation viewId={i} view={view} expandOption={expandOption}>
-                        {
-                          customRender && (typeof customRender === 'function')
-                            ?
-                              <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
-                            :
-                              <ChartNode />
-                        }
-                      </ChartOperation>
-                    </React.Fragment>
-                  );
-                } else {
-                  console.error('layout view should be object or function');
-                }
-                return (
-                  // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
-                  <div key={i} data-grid={{ ...others }}>
-                    {ChildComp}
-                  </div>
-                );
-              })}
-            </ReactGridLayout>
-          )}
-        </SizeMe>
+        <ReactGridLayout
+          ref={boardGridRef}
+          autoSize
+          layout={dashboardLayout}
+          cols={cols}
+          rowHeight={rowHeight}
+          width={width || 800}
+          onLayoutChange={updateLayout}
+          isDraggable
+          isResizable
+          style={isEditMode ? { backgroundImage: getGridBackground(width || 800) } : {}}
+          onDragStart={onDragStart}
+          draggableHandle=".bi-draggable-handle"
+        >
+          {dashboardLayout.map(({ i, ...others }: any) => {
+            let ChildComp = null;
+            let view = viewMap[i];
+            view = typeof view === 'function'
+              ? view({ isEditMode, isFullscreen: screenfull.isFullscreen })
+              : view;
+            if (!view) {
+              return null;
+            }
+            if (isPlainObject(view)) {
+              const { chartType = '', customRender } = view;
+              const ChartNode = get(chartConfigMap, [chartType, 'Component']);
+              ChildComp = (
+                <React.Fragment>
+                  <ChartOperation viewId={i} view={view} expandOption={expandOption}>
+                    {
+                      customRender && (typeof customRender === 'function')
+                        ?
+                          <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
+                        :
+                          <ChartNode />
+                    }
+                  </ChartOperation>
+                </React.Fragment>
+              );
+            } else {
+              console.error('layout view should be object or function');
+            }
+            return (
+              // 因ReactGridLayout内部实现原因，必须有data-grid，否则新增的图表大小会错乱
+              <div key={i} data-grid={{ ...others }}>
+                {ChildComp}
+              </div>
+            );
+          })}
+        </ReactGridLayout>
       </IF>
       <ChartEditor />
+      <PickChartModal onPickChart={handlePickChart} />
     </div>
   );
 };

@@ -103,6 +103,7 @@
     "style-loader": "^0.13.2",
     "superagent": "^3.3.1",
     "superagent-use": "^0.1.0",
+    "svg-inline-loader": "^0.8.2",
     "ts-import-plugin": "^1.4.4",
     "ts-loader": "^4.5.0",
     "tslint": "^5.11.0",

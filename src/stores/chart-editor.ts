@@ -7,6 +7,7 @@ import { NEW_CHART_VIEW_MAP } from '../constants';
 
 interface IState {
   visible: boolean,
+  pickChartModalVisible: boolean,
   editChartId: string,
   addMode: false,
   viewMap: any, // 所有图表配置信息
@@ -17,6 +18,7 @@ interface IState {
 
 const initState: IState = {
   visible: false,
+  pickChartModalVisible: false,
   editChartId: '',
   addMode: false,
   viewMap: {}, // 所有图表配置信息
@@ -43,7 +45,15 @@ const chartEditorStore = createFlatStore({
         },
       });
 
-      dashBoardStore.generateChart(viewId);
+      // dashBoardStore.generateChart(viewId); // 在布局中生成一个占位
+    },
+    // 添加时关闭直接移除新建的图表
+    async deleteEditor({ select }) {
+      const editChartId = select(s => s.editChartId);
+
+      dashBoardStore.deleteView(editChartId);
+      chartEditorStore.updateState({ visible: false, editChartId: '' });
+      chartEditorStore.setTouched(false);
     },
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
     async saveEditor({ select }, payload) {
@@ -86,14 +96,6 @@ const chartEditorStore = createFlatStore({
         viewMap: { ...viewMap },
         viewCopy: {},
       });
-      chartEditorStore.setTouched(false);
-    },
-    // 添加时关闭直接移除新建的
-    async deleteEditor({ select }) {
-      const editChartId = select(s => s.editChartId);
-
-      dashBoardStore.deleteView(editChartId);
-      chartEditorStore.updateState({ visible: false, editChartId: '' });
       chartEditorStore.setTouched(false);
     },
     async chooseChartType({ select }, chartType) { // 编辑时移除
@@ -174,6 +176,9 @@ const chartEditorStore = createFlatStore({
     },
     setTouched(state, isTouched: boolean) {
       state.isTouched = isTouched;
+    },
+    setPickChartModalVisible(state, visible: boolean) {
+      state.pickChartModalVisible = visible;
     },
   },
 });

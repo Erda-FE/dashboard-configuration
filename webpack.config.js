@@ -109,6 +109,10 @@ module.exports = () => {
           loader: 'happypack/loader?id=ts',
           exclude: /node_modules/,
         },
+        {
+          test: /\.svg$/,
+          loader: 'svg-inline-loader',
+        },
       ],
     },
     resolve: {

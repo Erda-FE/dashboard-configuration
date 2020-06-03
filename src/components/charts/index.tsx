@@ -29,7 +29,7 @@ const basicCharts: IChartsMap = {
     icon: <Icon type="area-chart" />,
     Component(props) {
       const metricData = get(props, 'data.metricData');
-      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
+      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'area' })));
       set(props, 'data.metricData', newMetricData);
       set(props, 'config.optionProps.noAreaColor', false);
       return <ChartLine {...props} metricData={newMetricData} />;

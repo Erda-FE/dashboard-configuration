@@ -25,8 +25,9 @@ const dashBoardStore = createFlatStore({
   effects: {
     async generateChart({ select }, viewId: string) {
       const layout = select(s => s.layout);
-      const viewMap = chartEditorStore.getState(s => s.viewMap);
+      const viewMap = chartEditorStore.useStore(s => s.viewMap);
       const { chartType, controlType } = viewMap[viewId];
+      console.log(viewMap[viewId]);
       if (chartType) {
         layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 8, h: 9 });
       } else if (controlType) {

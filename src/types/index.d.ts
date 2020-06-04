@@ -83,4 +83,6 @@ interface ILayoutItem {
   view: IChart;
 }
 
+type ChartType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'table' | 'card';
+
 type ILayout = ILayoutItem[];

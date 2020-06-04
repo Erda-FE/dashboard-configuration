@@ -5,7 +5,6 @@ import ChartEditorStore from '../../../stores/chart-editor';
 import pickTypes from './pick-types';
 import './index.scss';
 
-
 interface IProps {
   onPickChart: (chartType: string) => void
 }

@@ -81,7 +81,7 @@ const BoardGrid = ({
   const [dashboardLayout, isEditMode] = DashboardStore.useStore(s => [s.layout, s.isEditMode]);
   const viewMap = ChartEditorStore.useStore(s => s.viewMap);
   const { updateLayout, openEdit, saveEdit, reset: resetBoard, updateContextMap } = DashboardStore;
-  const { updateViewMap: updateChildMap, setPickChartModalVisible, reset: resetDrawer } = ChartEditorStore;
+  const { updateViewMap: updateChildMap, setPickChartModalVisible, reset: resetDrawer, addEditor } = ChartEditorStore;
 
   const [widthHolder, width] = useComponentWidth();
 
@@ -146,8 +146,8 @@ const BoardGrid = ({
     forceUpdate();
   };
 
-  const handlePickChart = (chartType: string) => {
-
+  const handlePickChart = (chartType: ChartType) => {
+    addEditor(chartType);
   };
 
   return (

@@ -18,11 +18,11 @@ interface IState {
 
 const initState: IState = {
   visible: false,
-  pickChartModalVisible: false,
+  pickChartModalVisible: false, // 添加图表时选择图表类型选择
   editChartId: '',
   addMode: false,
   viewMap: {}, // 所有图表配置信息
-  codeVisible: false, // 代码编辑
+  codeVisible: false, // 代码编辑，暂时没用到
   viewCopy: {}, // 修改时用于恢复的复制对象
   isTouched: false,
 };
@@ -31,7 +31,7 @@ const chartEditorStore = createFlatStore({
   name: 'chartEditor',
   state: initState,
   effects: {
-    async addEditor({ select }) {
+    async addEditor({ select }, chartType: ChartType) {
       const viewId = `view-${generateUUID()}`;
       const viewMap = select(s => s.viewMap);
 
@@ -41,7 +41,7 @@ const chartEditorStore = createFlatStore({
         addMode: true,
         viewMap: {
           ...viewMap,
-          [viewId]: NEW_CHART_VIEW_MAP,
+          [viewId]: NEW_CHART_VIEW_MAP[chartType],
         },
       });
 

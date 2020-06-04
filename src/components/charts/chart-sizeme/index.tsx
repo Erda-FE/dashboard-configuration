@@ -1,6 +1,5 @@
 import ReactEcharts, { Func } from 'echarts-for-react';
 import { isEqual } from 'lodash';
-import PropTypes from 'prop-types';
 import React from 'react';
 import DashboardStore from '../../../stores/dash-board';
 

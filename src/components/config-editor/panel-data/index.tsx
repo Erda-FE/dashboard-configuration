@@ -2,14 +2,13 @@ import React from 'react';
 import { get, map } from 'lodash';
 import { FormComponentProps } from 'antd/lib/form';
 import { pretty } from 'js-object-pretty-print';
-import PropTypes from 'prop-types';
 import './index.scss';
 
 type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;
 
 class PanelData extends React.Component<IProps> {
   static contextTypes = {
-    chartConfigMap: PropTypes.object,
+    chartConfigMap: {},
   };
 
   render() {

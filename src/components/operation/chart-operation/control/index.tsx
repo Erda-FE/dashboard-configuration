@@ -3,7 +3,6 @@
  */
 import React from 'react';
 import { map, isString, isEmpty } from 'lodash';
-import PropTypes from 'prop-types';
 import { getConfig } from '../../../../config';
 import './index.scss';
 
@@ -18,7 +17,7 @@ interface IProps {
 
 class Control extends React.PureComponent<IProps> {
   static contextTypes = {
-    controlsMap: PropTypes.object,
+    controlsMap: {},
   };
 
   state = {

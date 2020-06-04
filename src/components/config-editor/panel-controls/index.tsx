@@ -2,7 +2,6 @@ import React from 'react';
 import { get, map } from 'lodash';
 import { Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/lib/form';
-import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import './index.scss';
 
@@ -10,7 +9,7 @@ type IProps = FormComponentProps & ReturnType<typeof mapStateToProps> & ReturnTy
 
 class PanelControls extends React.PureComponent<IProps> {
   static contextTypes = {
-    controlsMap: PropTypes.object,
+    controlsMap: {},
   };
 
   render() {

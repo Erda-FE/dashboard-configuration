@@ -4,7 +4,6 @@ const webpack = require('webpack');
 const vendors = [
   'react',
   'react-dom',
-  'dva',
   'lodash',
   'antd',
 ];

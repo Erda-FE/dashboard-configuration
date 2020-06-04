@@ -29,6 +29,7 @@ const ChartTable = ({ results = [], cols }: IProps) => {
     <React.Fragment>
       <section className="table-panel">
         <Table
+          rowKey={'id'}
           columns={_cols}
           dataSource={results}
           pagination={false}

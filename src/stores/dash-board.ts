@@ -25,15 +25,15 @@ const dashBoardStore = createFlatStore({
   effects: {
     async generateChart({ select }, viewId: string) {
       const layout = select(s => s.layout);
-      const viewMap = chartEditorStore.useStore(s => s.viewMap);
+      const viewMap = chartEditorStore.getState(s => s.viewMap);
       const { chartType, controlType } = viewMap[viewId];
-      console.log(viewMap[viewId]);
+      let size;
       if (chartType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 8, h: 9 });
+        size = { w: 8, h: 9 };
       } else if (controlType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 1 });
+        size = { w: 4, h: 1 };
       }
-      dashBoardStore.updateLayout([...layout]);
+      dashBoardStore.updateLayout([...layout, { ...size, i: viewId, x: 0, y: getNewChartYPosition(layout) }]);
     },
     async saveEdit({ select }) {
       dashBoardStore.closeEdit();

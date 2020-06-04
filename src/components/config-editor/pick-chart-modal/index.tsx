@@ -6,14 +6,14 @@ import pickTypes from './pick-types';
 import './index.scss';
 
 interface IProps {
-  onPickChart: (chartType: string) => void
+  onPickChart: (chartType: ChartType) => void
 }
 
 export default ({ onPickChart }: IProps) => {
   const [pickChartModalVisible] = ChartEditorStore.useStore(s => [s.pickChartModalVisible]);
   const { setPickChartModalVisible } = ChartEditorStore;
 
-  const handlePickChart = (chartType: string) => {
+  const handlePickChart = (chartType: ChartType) => {
     onPickChart(chartType);
     setPickChartModalVisible(false);
   };

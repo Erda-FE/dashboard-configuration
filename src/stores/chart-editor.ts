@@ -45,7 +45,7 @@ const chartEditorStore = createFlatStore({
         },
       });
 
-      // dashBoardStore.generateChart(viewId); // 在布局中生成一个占位
+      dashBoardStore.generateChart(viewId); // 在布局中生成一个占位
     },
     // 添加时关闭直接移除新建的图表
     async deleteEditor({ select }) {

@@ -39,16 +39,23 @@ $color-border: #e8e8e8;
       }
     }
   }
-  .bi-draggable-handle {
+  .dc-view-edit-op {
     position: absolute;
     top: 0;
     right: 0;
     z-index: 1;
-    padding: 10px;
+    display: flex;
     font-size: 18px;
-    cursor: move;
-    &:hover {
-      color: $color-primary;
+    i {
+      padding: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      &:hover {
+        color: $color-primary;
+      }
+      &.dc-draggable-handle {
+        cursor: move;
+      }
     }
   }
   .bi-view-edit-op {

@@ -180,40 +180,41 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           )
         }
         <ViewMask message={message} />
-        {
-          isEditLayout && (
-            <Tooltip placement="right" title="移动">
-              <Icon className="bi-draggable-handle" type="drag" />
-            </Tooltip>
-          )
-        }
-        {
-          isEditLayout && ((chartEditorVisible && isEditView) || !chartEditorVisible) && (
-            <div className="bi-view-edit-op">
-              <Tooltip placement="right" title="编辑">
-                <Icon type="edit" onClick={() => editView(viewId)} />
+        <div className="dc-view-edit-op">
+          {
+            isEditLayout && ((chartEditorVisible && isEditView) || !chartEditorVisible) && (
+              <div>
+                <Tooltip title="编辑">
+                  <Icon type="edit" onClick={() => editView(viewId)} />
+                </Tooltip>
+                <Tooltip title="删除">
+                  <Popconfirm
+                    okText="确认"
+                    cancelText="取消"
+                    placement="top"
+                    title="确认删除?"
+                    onConfirm={() => deleteView(viewId)}
+                  >
+                    <Icon type="delete" />
+                  </Popconfirm>
+                </Tooltip>
+                <Tooltip title="导出图片">
+                  <Icon type="camera" onClick={this.onSaveImg} />
+                </Tooltip>
+                <Tooltip title="图表全屏">
+                  <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
+                </Tooltip>
+              </div>
+            )
+          }
+          {
+            isEditLayout && (
+              <Tooltip title="移动">
+                <Icon className="dc-draggable-handle" type="drag" />
               </Tooltip>
-              <Tooltip placement="right" title="删除">
-                <Popconfirm
-                  okText="确认"
-                  cancelText="取消"
-                  placement="top"
-                  title="确认删除?"
-                  onConfirm={() => deleteView(viewId)}
-                >
-                  <Icon type="delete" />
-                </Popconfirm>
-              </Tooltip>
-              <Tooltip placement="right" title="导出图片">
-                <Icon type="camera" onClick={this.onSaveImg} />
-              </Tooltip>
-              <Tooltip placement="right" title="图表全屏">
-                <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
-              </Tooltip>
-            </div>
-          )
-        }
-
+            )
+          }
+        </div>
         {
           isEmpty(resData.metricData) ?
             <EmptyHolder />

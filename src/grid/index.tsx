@@ -85,38 +85,25 @@ const BoardGrid = ({
 
   const [widthHolder, width] = useComponentWidth();
 
-  useMount(() => {
-    const [pureLayout, _viewMap] = splitLayoutAndView(layout);
-    updateLayout(pureLayout);
-    updateChildMap(_viewMap);
-    setChartConfigMap(registCharts({ ...defaultChartsMap, ...customCharts }));
-  });
-
   useUnmount(() => {
     resetBoard();
     resetDrawer();
   });
 
   React.useEffect(() => {
-    updateLayout(dashboardLayout);
-  }, [dashboardLayout]);
-
-  React.useEffect(() => {
-    setChartConfigMap({ ...defaultChartsMap, ...customCharts });
+    setChartConfigMap(registCharts({ ...defaultChartsMap, ...customCharts }));
   }, [customCharts]);
 
   React.useEffect(() => {
     const [pureLayout, _viewMap] = splitLayoutAndView(layout);
     updateLayout(pureLayout);
     updateChildMap(_viewMap);
-    setChartConfigMap(registCharts({ ...defaultChartsMap, ...customCharts }));
   }, [layout]);
 
   React.useEffect(() => {
     updateContextMap({
       theme,
       themeObj,
-      // customCharts: chartConfigMap,
       getUrlComponent: () => UrlComponent,
       urlItemLayout,
     });
@@ -203,7 +190,7 @@ const BoardGrid = ({
           isResizable
           style={isEditMode ? { backgroundImage: getGridBackground(width || 800) } : {}}
           onDragStart={onDragStart}
-          draggableHandle=".bi-draggable-handle"
+          draggableHandle=".dc-draggable-handle"
         >
           {dashboardLayout.map(({ i, ...others }: any) => {
             let ChildComp = null;

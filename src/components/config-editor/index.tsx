@@ -12,20 +12,9 @@ import ChartEditorStore from '../../stores/chart-editor';
 
 const { TabPane } = Tabs;
 
-interface IProps extends FormComponentProps {
-  visible: any;
-  editChartId: any;
-  addMode: any;
-  currentChart: any;
-  isTouched: any;
-  viewCopy: any;
-  deleteEditor: any;
-  closeEditor: any;
-  saveEditor: any;
-}
 const noop = () => null;
 
-export const ChartEditor = (props: IProps) => {
+export const ChartEditor = () => {
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
   const axesConfigFormRef = React.useRef(null as any);

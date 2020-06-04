@@ -138,15 +138,17 @@ const BoardGrid = ({
   };
 
   const onSaveImg = () => {
-    saveImage(ReactDOM.findDOMNode(boardGridRef), 'dashboard'); // eslint-disable-line
+    saveImage(ReactDOM.findDOMNode(boardGridRef.current), 'dashboard'); // eslint-disable-line
   };
 
   const onSetScreenFull = () => {
-    setScreenFull(boardRef, screenfull.isFullscreen);
+    setScreenFull(boardRef.current, screenfull.isFullscreen);
     forceUpdate();
   };
 
-  const handlePickChart = () => {};
+  const handlePickChart = (chartType: string) => {
+
+  };
 
   return (
     <div
@@ -240,8 +242,8 @@ const BoardGrid = ({
           })}
         </ReactGridLayout>
       </IF>
-      <ChartEditor />
       <PickChartModal onPickChart={handlePickChart} />
+      <ChartEditor />
     </div>
   );
 };

@@ -2,40 +2,9 @@ import * as React from 'react';
 import { Modal, Row, Col } from 'antd';
 import { map } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
+import pickTypes from './pick-types';
 import './index.scss';
 
-const pickCharts = [
-  {
-    chartName: '线形图',
-    chartType: 'chart:line',
-    chartImg: 'images/line-chart-select.svg',
-  },
-  {
-    chartName: '面积图',
-    chartType: 'chart:area',
-    chartImg: '/images/area-chart-select.svg',
-  },
-  {
-    chartName: '柱状图',
-    chartType: 'chart:bar',
-    chartImg: '/images/bar-chart-select.svg',
-  },
-  {
-    chartName: '饼图',
-    chartType: 'chart:pie',
-    chartImg: '/images/pie-chart-select.svg',
-  },
-  {
-    chartName: '表格',
-    chartType: 'table',
-    chartImg: '/images/table-chart-select.svg',
-  },
-  {
-    chartName: '指标',
-    chartType: 'card',
-    chartImg: '/images/metric-chart-select.svg',
-  },
-];
 
 interface IProps {
   onPickChart: (chartType: string) => void
@@ -60,10 +29,10 @@ export default ({ onPickChart }: IProps) => {
     >
       <div className="pick-chart-wp">
         <Row>
-          {map(pickCharts, ({ chartName, chartImg, chartType }) => (
+          {map(pickTypes, ({ chartName, chartImg, chartType }) => (
             <Col span={8} key={chartName}>
               <div className="chart-view" onClick={() => handlePickChart(chartType)}>
-                <img className="logo" src={chartImg} />
+                {chartImg}
                 <div className="desc">{chartName}</div>
               </div>
             </Col>

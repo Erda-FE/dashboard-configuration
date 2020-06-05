@@ -4,7 +4,7 @@ $gray-color: rgba(0, 0, 0, .04);
   .fz12 {
     font-size: 12px;
   }
-  .chart-view {
+  .chart-type-item {
     &:hover {
       background-color: $gray-color;
       cursor: pointer;
@@ -13,9 +13,6 @@ $gray-color: rgba(0, 0, 0, .04);
     text-align: center;
     border: $border;
     border-radius: 3px;
-    .logo {
-      width: 90px;
-    }
     .desc {
       margin-bottom: 8px;
     }

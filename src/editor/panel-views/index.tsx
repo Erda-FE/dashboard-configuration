@@ -2,8 +2,8 @@ import React from 'react';
 import { get, map, pick } from 'lodash';
 import classnames from 'classnames';
 import { Tooltip } from 'antd';
-import { getConfig } from '../../../config';
-import ChartEditorStore from '../../../stores/chart-editor';
+import { getConfig } from '../../config';
+import ChartEditorStore from '../../stores/chart-editor';
 
 import './index.scss';
 

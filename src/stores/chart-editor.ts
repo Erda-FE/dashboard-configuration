@@ -52,7 +52,7 @@ const chartEditorStore = createFlatStore({
       const editChartId = select(s => s.editChartId);
 
       dashBoardStore.deleteView(editChartId);
-      chartEditorStore.updateState({ visible: false, editChartId: '' });
+      chartEditorStore.updateState({ editChartId: '' });
       chartEditorStore.setTouched(false);
     },
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）

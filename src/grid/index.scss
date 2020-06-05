@@ -23,6 +23,15 @@ $full-background-color: rgba(55, 55, 55, .6);
       }
     }
   }
+  .dashboard-content {
+    display: flex;
+    .chart-view {
+      flex: 1;
+    }
+    .chart-editor {
+      width: 300px;
+    }
+  }
   .bi-off-edit .react-resizable-handle {
     display: none;
   }

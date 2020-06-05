@@ -1,41 +1,42 @@
-import { Button, message, Tabs, Popconfirm, Modal } from 'antd';
-import { FormComponentProps } from 'antd/lib/form';
+import { Button, message, Tabs, Popconfirm } from 'antd';
 import { get, isEmpty, set } from 'lodash';
 import React from 'react';
-import { getData } from '../../utils/comp';
-import { getConfig } from '../../config';
+import { getData } from '../utils/comp';
+import { getConfig } from '../config';
 import './index.scss';
 import DataConfig from './data-config';
 import AxisConfig from './axis-config';
 import PanelCharts from './panel-views';
-import ChartEditorStore from '../../stores/chart-editor';
+import ChartEditorStore from '../stores/chart-editor';
 
 const { TabPane } = Tabs;
 
 const noop = () => null;
 
-export const ChartEditor = () => {
+export default () => {
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
   const axesConfigFormRef = React.useRef(null as any);
 
   const [
-    visible,
     addMode,
     viewMap,
     editChartId,
     isTouched,
     viewCopy,
   ] = ChartEditorStore.useStore(s => [
-    s.visible,
     s.addMode,
     s.viewMap,
     s.editChartId,
     s.isTouched,
     s.viewCopy,
   ]);
+  const currentChart = React.useMemo(() => get(viewMap, [editChartId]), [viewMap, editChartId]);
+  if (!currentChart) {
+    return null;
+  }
+
   const { deleteEditor, closeEditor, saveEditor } = ChartEditorStore;
-  const currentChart = get(viewMap, [editChartId]);
 
   const saveChart = () => { // 可以提交图表或控件
     if (isEmpty(currentChart)) {
@@ -102,12 +103,6 @@ export const ChartEditor = () => {
     });
   };
 
-  if (!currentChart) {
-    return null;
-  }
-
-
-  const EditorContainer = getConfig('EditorContainer');
   const info = getConfig('chartConfigMap')[currentChart.chartType];
   const { Configurator = noop } = info;
 
@@ -126,7 +121,6 @@ export const ChartEditor = () => {
 
   return (
     <React.Fragment>
-      <div className="editor-holder" />
       {/* <EditorContainer
         visible={visible}
         onClose={addMode ? deleteEditor : closeEditor}
@@ -137,38 +131,36 @@ export const ChartEditor = () => {
           display: 'flex',
           flexDirection: 'column',
         }}
-      >
-        <div className="bi-config-editor-content">
-          <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
+      > */}
+      <div className="chart-editor-header">
+        <div className="header-right">
+          {
+          isTouched ?
+            (
+              <Popconfirm
+                okText="确认"
+                cancelText="取消"
+                placement="top"
+                title="确认丢弃数据?"
+                onConfirm={addMode ? deleteEditor : closeEditor}
+              >
+                <Button size="small" style={{ marginRight: 8 }}>
+                  取消
+                </Button>
+              </Popconfirm>
+            ) :
+            (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
+        }
+          <Button size="small" onClick={saveChart} type="primary">
+            {/* {addMode ? '新增' : '保存'} */}
+            完成
+          </Button>
         </div>
-        <div className="bi-config-editor-footer">
-          <div className="bi-config-editor-footer-right">
-            {
-            isTouched ?
-              (
-                <Popconfirm
-                  okText="确认"
-                  cancelText="取消"
-                  placement="top"
-                  title="确认丢弃数据?"
-                  onConfirm={addMode ? deleteEditor : closeEditor}
-                >
-                  <Button size="small" style={{ marginRight: 8 }}>
-                    取消
-                  </Button>
-                </Popconfirm>
-              ) :
-              (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
-          }
-            <Button size="small" onClick={saveChart} type="primary">
-              {addMode ? '新增' : '保存'}
-            </Button>
-          </div>
-          <div className="bi-config-editor-footer-left">
-            {`图表ID: ${editChartId}`}
-          </div>
-        </div>
-      </EditorContainer> */}
+      </div>
+      <div className="chart-editor-content">
+        <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
+      </div>
+      {/* </EditorContainer> */}
     </React.Fragment>
   );
 };

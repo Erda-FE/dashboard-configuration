@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { get, map } from 'lodash';
-import { RenderPureForm } from '../../common';
-import { collectFields } from '../../common/utils';
-import ChartEditorStore from '../../../stores/chart-editor';
+import { RenderPureForm } from '../../components/common';
+import { collectFields } from '../../components/common/utils';
+import ChartEditorStore from '../../stores/chart-editor';
 
 const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
 const options = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据' }];

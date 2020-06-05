@@ -8,8 +8,8 @@ import React from 'react';
 import { get } from 'lodash';
 import { Modal, Tooltip, Icon } from 'antd';
 import { pretty } from 'js-object-pretty-print';
-import { convertSettingToOption, convertOptionToSetting, convertFormatter } from '../../../charts/utils';
-import AceEditor from '../../../ace-editor';
+import { convertSettingToOption, convertOptionToSetting, convertFormatter } from '../../../components/charts/utils';
+import AceEditor from '../../../components/ace-editor';
 import './index.scss';
 
 type IProps = ReturnType<typeof mapStateToProps> & ReturnType<typeof mapDispatchToProps>;

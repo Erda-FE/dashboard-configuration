@@ -181,7 +181,7 @@ export const NEW_CHART_VIEW_MAP = {
         },
         {
           name: 'plotB',
-          type: 'bar',
+          type: 'line',
           data: [
             '0.08',
             '0.08',
@@ -427,7 +427,7 @@ export const NEW_CHART_VIEW_MAP = {
         },
         {
           name: 'plotB',
-          type: 'bar',
+          type: 'line',
           data: [
             '0.08',
             '0.08',
@@ -552,7 +552,7 @@ export const NEW_CHART_VIEW_MAP = {
       metricData: [
         {
           name: 'plotA',
-          type: 'line',
+          type: 'bar',
           data: [
             '0.03',
             '0.03',

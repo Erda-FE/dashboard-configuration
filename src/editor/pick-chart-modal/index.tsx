@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Modal, Row, Col } from 'antd';
 import { map } from 'lodash';
-import ChartEditorStore from '../../../stores/chart-editor';
+import ChartEditorStore from '../../stores/chart-editor';
 import pickTypes from './pick-types';
 import './index.scss';
 
@@ -30,7 +30,7 @@ export default ({ onPickChart }: IProps) => {
         <Row>
           {map(pickTypes, ({ chartName, chartImg, chartType }) => (
             <Col span={8} key={chartName}>
-              <div className="chart-view" onClick={() => handlePickChart(chartType)}>
+              <div className="chart-type-item" onClick={() => handlePickChart(chartType)}>
                 {chartImg}
                 <div className="desc">{chartName}</div>
               </div>

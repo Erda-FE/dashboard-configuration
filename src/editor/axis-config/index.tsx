@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { get, cloneDeep, set } from 'lodash';
-import { RenderPureForm } from '../../common';
-import ChartEditorStore from '../../../stores/chart-editor';
+import { RenderPureForm } from '../../components/common';
+import ChartEditorStore from '../../stores/chart-editor';
 
 import './index.scss';
 

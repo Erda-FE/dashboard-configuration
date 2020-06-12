@@ -28,6 +28,7 @@ interface IProps {
   customCharts?: IChartsMap // 用户自定义图表（xx图）
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
+  QueryComponent?: React.ReactNode | React.SFC // url query配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
@@ -55,7 +56,7 @@ const getGridBackground = (width: number) => {
 
 const splitLayoutAndView = (layout: ILayout): [any[], any] => {
   const viewMap = {};
-  const pureLayout = layout.map((item) => {
+  const pureLayout = map(layout, (item) => {
     const { view, ...rest } = item;
     viewMap[item.i] = view;
     return rest;
@@ -68,6 +69,7 @@ const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<Chart
 const BoardGrid = ({
   readOnly = false,
   UrlComponent = Input,
+  QueryComponent = Input.TextArea,
   urlItemLayout = formItemLayout,
   customCharts,
   layout,
@@ -106,9 +108,10 @@ const BoardGrid = ({
       theme,
       themeObj,
       getUrlComponent: () => UrlComponent,
+      getQueryComponent: () => QueryComponent,
       urlItemLayout,
     });
-  }, [chartConfigMap, UrlComponent, urlItemLayout]);
+  }, [chartConfigMap, UrlComponent, QueryComponent, urlItemLayout]);
 
   const onDragStart = React.useCallback(() => isEditMode, [isEditMode]);
 
@@ -197,7 +200,7 @@ const BoardGrid = ({
               onDragStart={onDragStart}
               draggableHandle=".dc-draggable-handle"
             >
-              {dashboardLayout.map(({ i, ...others }: any) => {
+              {map(dashboardLayout, ({ i, ...others }: any) => {
                 let ChildComp = null;
                 let view = viewMap[i];
                 view = typeof view === 'function'

@@ -40,12 +40,12 @@ export default () => {
   const { deleteEditor, closeEditor, saveEditor } = ChartEditorStore;
 
   const saveChart = () => { // 可以提交图表或控件
-    if (isEmpty(currentChart)) {
-      return;
-    } else if (!currentChart.chartType && !currentChart.controlType) {
-      message.error('请选择图表或者控件');
-      return;
-    }
+    // if (isEmpty(currentChart)) {
+    //   return;
+    // } else if (!currentChart.chartType && !currentChart.controlType) {
+    //   message.error('请选择图表或者控件');
+    //   return;
+    // }
     // TODO add validation for each tab
     let amalgamatedOptions = {};
 
@@ -62,7 +62,7 @@ export default () => {
             loadData: getData,
           };
         }
-        valiAxisConfig();
+        saveEditor(amalgamatedOptions);
       });
     };
 
@@ -99,6 +99,10 @@ export default () => {
 
     baseConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
       if (errors) return;
+      if (!dataConfigFormRef.current) {
+        message.warning('请完成数据配置！');
+        return;
+      }
       amalgamatedOptions = { ...amalgamatedOptions, ...options };
       valiDataConfig();
     });
@@ -152,7 +156,7 @@ export default () => {
             ) :
             (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
         }
-          <Button disabled size="small" onClick={saveChart} type="primary">完成</Button>
+          <Button size="small" onClick={saveChart} type="primary">完成</Button>
         </div>
       </div>
       <div className="chart-editor-content">

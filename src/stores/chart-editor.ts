@@ -6,7 +6,6 @@ import dashBoardStore from './dash-board';
 import { NEW_CHART_VIEW_MAP } from '../constants';
 
 interface IState {
-  visible: boolean,
   pickChartModalVisible: boolean,
   editChartId: string,
   addMode: false,
@@ -17,14 +16,13 @@ interface IState {
 }
 
 const initState: IState = {
-  visible: false,
   pickChartModalVisible: false, // 添加图表时选择图表类型选择
+  isTouched: false, // 数据是否变动，用于取消编辑时的判断
   editChartId: '',
   addMode: false,
   viewMap: {}, // 所有图表配置信息
   codeVisible: false, // 代码编辑，暂时没用到
   viewCopy: {}, // 修改时用于恢复的复制对象
-  isTouched: false,
 };
 
 const chartEditorStore = createFlatStore({
@@ -36,7 +34,6 @@ const chartEditorStore = createFlatStore({
       const viewMap = select(s => s.viewMap);
 
       chartEditorStore.updateState({
-        visible: true,
         editChartId: viewId,
         addMode: true,
         viewMap: {
@@ -62,7 +59,6 @@ const chartEditorStore = createFlatStore({
 
       chartEditorStore.updateState({
         viewMap: { ...viewMap, [editChartId]: { ...editChart, ...payload } },
-        visible: false,
         addMode: false,
         editChartId: '',
         viewCopy: {},
@@ -91,7 +87,6 @@ const chartEditorStore = createFlatStore({
       viewMap[editChartId] = viewCopy;
 
       chartEditorStore.updateState({
-        visible: false,
         editChartId: '',
         viewMap: { ...viewMap },
         viewCopy: {},
@@ -102,15 +97,7 @@ const chartEditorStore = createFlatStore({
       const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
       const drawerInfo = viewMap[editChartId];
       let tempPayload = {};
-      if (chartType === drawerInfo.chartType) {
-        // forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
-        //   if (startsWith(key, panelDataPrefix)) {
-        //     delete drawerInfo[key];
-        //   }
-        // });
-        // yield put({ type: 'dashBoard/deleteLayout', viewId: editChartId });
-        // tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
-      } else {
+      if (chartType !== drawerInfo.chartType) {
         tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType } } };
       }
       chartEditorStore.updateState(tempPayload);
@@ -122,7 +109,7 @@ const chartEditorStore = createFlatStore({
     },
     editView(state, editChartId: string) {
       const viewCopy = cloneDeep(state.viewMap[editChartId]);
-      return { ...state, visible: true, editChartId, viewCopy };
+      return { ...state, editChartId, viewCopy };
     },
     updateViewInfo(state, payload: any) { // 修改标题时editChartId还是空的，所以自己传要更新的viewId
       const { viewId, ...rest } = payload;
@@ -177,8 +164,8 @@ const chartEditorStore = createFlatStore({
     setTouched(state, isTouched: boolean) {
       state.isTouched = isTouched;
     },
-    setPickChartModalVisible(state, visible: boolean) {
-      state.pickChartModalVisible = visible;
+    setPickChartModalVisible(state, pickChartModalVisible: boolean) {
+      state.pickChartModalVisible = pickChartModalVisible;
     },
   },
 });

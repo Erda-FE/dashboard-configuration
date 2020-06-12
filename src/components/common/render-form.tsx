@@ -66,13 +66,15 @@ class RenderPureForm extends React.Component<IProps> {
         }
         return subRows;
       } else {
-        return (<RenderFormItem
-          key={info.name || i}
-          form={form}
-          formItemLayout={itemLayout}
-          formLayout={layout}
-          {...info}
-        />);
+        return (
+          <RenderFormItem
+            key={info.name || i}
+            form={form}
+            formItemLayout={itemLayout}
+            formLayout={layout}
+            {...info}
+          />
+        );
       }
     });
     const formClass = classNames(className, 'render-form');

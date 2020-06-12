@@ -1,4 +1,4 @@
-import { Button, message, Tabs, Popconfirm } from 'antd';
+import { Button, message, Tabs, Popconfirm, Steps } from 'antd';
 import { get, isEmpty, set } from 'lodash';
 import React from 'react';
 import { getData } from '../utils/comp';
@@ -10,6 +10,7 @@ import PanelCharts from './panel-views';
 import ChartEditorStore from '../stores/chart-editor';
 
 const { TabPane } = Tabs;
+const { Step } = Steps;
 
 const noop = () => null;
 
@@ -107,20 +108,20 @@ export default () => {
   const { Configurator = noop } = info;
 
   const tabPanes = [
-    <TabPane tab="图表配置" key="setting">
-      <PanelCharts />
+    <TabPane tab="参数配置" key="setting">
+      {/* <PanelCharts /> */}
       <Configurator ref={baseConfigFormRef} />
     </TabPane>,
     <TabPane tab="数据配置" key="data">
       <DataConfig ref={dataConfigFormRef} />
     </TabPane>,
-    <TabPane tab="轴配置" key="axes">
-      <AxisConfig ref={axesConfigFormRef} />
-    </TabPane>,
+    // <TabPane tab="轴配置" key="axes">
+    //   <AxisConfig ref={axesConfigFormRef} />
+    // </TabPane>,
   ];
 
   return (
-    <React.Fragment>
+    <div className="chart-editor">
       {/* <EditorContainer
         visible={visible}
         onClose={addMode ? deleteEditor : closeEditor}
@@ -151,16 +152,12 @@ export default () => {
             ) :
             (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
         }
-          <Button size="small" onClick={saveChart} type="primary">
-            {/* {addMode ? '新增' : '保存'} */}
-            完成
-          </Button>
+          <Button disabled size="small" onClick={saveChart} type="primary">完成</Button>
         </div>
       </div>
       <div className="chart-editor-content">
         <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
       </div>
-      {/* </EditorContainer> */}
-    </React.Fragment>
+    </div>
   );
 };

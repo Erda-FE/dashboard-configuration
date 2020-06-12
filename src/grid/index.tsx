@@ -81,9 +81,9 @@ const BoardGrid = ({
 
   const [dashboardLayout, isEditMode] = DashboardStore.useStore(s => [s.layout, s.isEditMode]);
   const [viewMap, editChartId] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId]);
-  const { updateLayout, openEdit, saveEdit, reset: resetBoard, updateContextMap } = DashboardStore;
+  const { updateLayout, setEditMode, saveEdit, reset: resetBoard, updateContextMap } = DashboardStore;
   const { updateViewMap: updateChildMap, setPickChartModalVisible, reset: resetDrawer, addEditor } = ChartEditorStore;
-  const isChartEditorVisible = !isEmpty(viewMap[editChartId]);
+  const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const [widthHolder, width] = useComponentWidth();
 
   useUnmount(() => {
@@ -150,14 +150,16 @@ const BoardGrid = ({
           {
             isEditMode
               ? (
-                <React.Fragment>
-                  <Tooltip placement="bottom" title="新增">
-                    <Icon type="plus" onClick={() => setPickChartModalVisible(true)} />
-                  </Tooltip>
-                  <Tooltip placement="bottom" title="保存">
-                    <Icon type="save" onClick={_onSave} />
-                  </Tooltip>
-                </React.Fragment>
+                <IF check={!chartEditorVisible}>
+                  <React.Fragment>
+                    <Tooltip placement="bottom" title="新增">
+                      <Icon type="plus" onClick={() => setPickChartModalVisible(true)} />
+                    </Tooltip>
+                    <Tooltip placement="bottom" title="保存">
+                      <Icon type="save" onClick={_onSave} />
+                    </Tooltip>
+                  </React.Fragment>
+                </IF>
               )
               : (
                 <React.Fragment>
@@ -168,7 +170,7 @@ const BoardGrid = ({
                     <Icon type="camera" onClick={onSaveImg} />
                   </Tooltip>
                   <Tooltip placement="bottom" title="编辑">
-                    <Icon type="edit" onClick={openEdit} />
+                    <Icon type="edit" onClick={() => setEditMode(true)} />
                   </Tooltip>
                 </React.Fragment>
               )
@@ -233,8 +235,8 @@ const BoardGrid = ({
             </ReactGridLayout>
           </IF>
         </div>
-        <IF check={isChartEditorVisible}>
-          <div className="chart-editor">
+        <IF check={chartEditorVisible}>
+          <div className="chart-editor-wp">
             <ChartEditor />
           </div>
         </IF>

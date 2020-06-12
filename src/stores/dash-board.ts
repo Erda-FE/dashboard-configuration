@@ -36,7 +36,7 @@ const dashBoardStore = createFlatStore({
       dashBoardStore.updateLayout([...layout, { ...size, i: viewId, x: 0, y: getNewChartYPosition(layout) }]);
     },
     async saveEdit({ select }) {
-      dashBoardStore.closeEdit();
+      dashBoardStore.setEditMode(false);
       const layout = select(s => s.layout);
       const viewMap = chartEditorStore.getState(s => s.viewMap);
       return { layout, viewMap }; // 只输出外部需要的
@@ -50,11 +50,8 @@ const dashBoardStore = createFlatStore({
     updateLayout(state, layout: any[]) {
       state.layout = layout;
     },
-    closeEdit(state) {
-      state.isEditMode = false;
-    },
-    openEdit(state) {
-      state.isEditMode = true;
+    setEditMode(state, status: boolean) {
+      state.isEditMode = status;
     },
     deleteLayout(state, viewId: string) {
       remove(state.layout, ({ i }) => viewId === i);

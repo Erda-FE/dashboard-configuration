@@ -10,17 +10,16 @@ import ChartTable from './chart-table';
 import LineConfigurator from './chart-line/configurator';
 import PieConfigurator from './chart-pie/configurator';
 
-
 const basicCharts: IChartsMap = {
   'chart:line': {
     name: '折线图',
     icon: <Icon type="line-chart" />,
     Component(props) {
       const metricData = get(props, 'data.metricData');
-      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
-      set(props, 'data.metricData', newMetricData);
+      const _metricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
+      set(props, 'data.metricData', _metricData);
       set(props, 'config.optionProps.noAreaColor', true);
-      return <ChartLine {...props} metricData={newMetricData} />;
+      return <ChartLine {...props} metricData={_metricData} />;
     },
     Configurator: LineConfigurator,
   },
@@ -29,10 +28,10 @@ const basicCharts: IChartsMap = {
     icon: <Icon type="area-chart" />,
     Component(props) {
       const metricData = get(props, 'data.metricData');
-      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'area' })));
-      set(props, 'data.metricData', newMetricData);
+      const _metricData = map(metricData, (metric => ({ ...metric, type: 'area' })));
+      set(props, 'data.metricData', _metricData);
       set(props, 'config.optionProps.noAreaColor', false);
-      return <ChartLine {...props} metricData={newMetricData} />;
+      return <ChartLine {...props} metricData={_metricData} />;
     },
     Configurator: LineConfigurator,
   },
@@ -41,9 +40,9 @@ const basicCharts: IChartsMap = {
     icon: <Icon type="bar-chart" />,
     Component(props) {
       const metricData = get(props, 'data.metricData');
-      const newMetricData = map(metricData, (metric => ({ ...metric, type: 'bar' })));
-      set(props, 'data.metricData', newMetricData);
-      return <ChartLine {...props} metricData={newMetricData} />;
+      const _metricData = map(metricData, (metric => ({ ...metric, type: 'bar' })));
+      set(props, 'data.metricData', _metricData);
+      return <ChartLine {...props} metricData={_metricData} />;
     },
     Configurator: LineConfigurator,
   },
@@ -57,47 +56,14 @@ const basicCharts: IChartsMap = {
     name: '卡片图',
     icon: <Icon type="fund" />,
     Component: ChartMetric,
-    Configurator: LineConfigurator,
-    // dataSettings: [DataSettingsCommon, DataSettingsCards],
+    Configurator: null,
   },
   table: {
     name: '表格图',
     icon: <Icon type="fund" />,
     Component: ChartTable,
-    Configurator: LineConfigurator,
+    Configurator: null,
   },
-  // 'chart:radar': {
-  //   name: '雷达图',
-  //   icon: <Icon type="radar-chart" />,
-  //   Component: ChartRadar,
-  //   mockData: mockDataRadar,
-  //   Configurator: LineConfigurator,
-  //   dataSettings: [DataSettingsCommon, DataSettingsRadar],
-  // },
-  // 'chart:gauge': {
-  //   name: '仪表盘',
-  //   icon: <Icon type="dashboard" />,
-  //   Component: ChartGauge,
-  //   mockData: mockDataGauge,
-  //   Configurator: LineConfigurator,
-  //   dataSettings: [DataSettingsCommon],
-  // },
-  // 'chart:map': {
-  //   name: '全国地图',
-  //   /* eslint-disable react/no-danger */
-  //   icon: <i className="anticon" dangerouslySetInnerHTML={mapIcon} />,
-  //   Component: ChartMap,
-  //   mockData: mockDataMap,
-  //   Configurator: LineConfigurator,
-  //   dataSettings: [DataSettingsCommon],
-  // },
-  // 'chart:dot': {
-  //   name: '散点图',
-  //   icon: <Icon type="dot-chart" />,
-  //   Component: ChartScatter,
-  //   Configurator: LineConfigurator,
-  //   mockData: mockDataScatter,
-  // },
 };
 
 export default basicCharts;

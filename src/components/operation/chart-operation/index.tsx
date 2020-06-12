@@ -20,7 +20,7 @@ interface IProps {
   viewId: string
   view: any
   chartEditorVisible: boolean;
-  isEditLayout: boolean;
+  isEditMode: boolean;
   isEditView: boolean;
   children: ReactElement<any>
   setViewInfo(data: object): void;
@@ -143,7 +143,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const { view, children, isEditLayout, isEditView, viewId, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
+    const { view, children, isEditMode, isEditView, viewId, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = getMessage({ fetchStatus });
@@ -167,7 +167,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
             <div className="bi-view-header">
               {/* <div className="bi-view-header-left">
                 {
-                  isEditLayout
+                  isEditMode
                     ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
                     : <div className="bi-view-title">{view.name}</div>
                 }
@@ -182,7 +182,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         <ViewMask message={message} />
         <div className="dc-view-edit-op">
           {
-            isEditLayout && ((chartEditorVisible && isEditView) || !chartEditorVisible) && (
+            isEditMode && !chartEditorVisible && (
               <div>
                 <Tooltip title="编辑">
                   <Icon type="edit" onClick={() => editView(viewId)} />
@@ -208,7 +208,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
             )
           }
           {
-            isEditLayout && (
+            isEditMode && (
               <Tooltip title="移动">
                 <Icon className="dc-draggable-handle" type="drag" />
               </Tooltip>
@@ -240,13 +240,14 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 }
 
 export default (p: any) => {
-  const isEditLayout = DashboardStore.useStore(s => s.isEditMode);
-  const [editChartId, visible] = ChartEditorStore.useStore(s => [s.editChartId, s.visible]);
+  const isEditMode = DashboardStore.useStore(s => s.isEditMode);
+  const [editChartId, viewMap] = ChartEditorStore.useStore(s => [s.editChartId, s.viewMap]);
   const { updateViewInfo: setViewInfo, editView } = ChartEditorStore;
   const { deleteView } = DashboardStore;
+  const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const props = {
-    isEditLayout,
-    chartEditorVisible: visible,
+    isEditMode,
+    chartEditorVisible,
     isEditView: editChartId === p.viewId,
     setViewInfo,
     editView,

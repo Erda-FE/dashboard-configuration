@@ -7,7 +7,8 @@ import { collectFields } from '../../components/common/utils';
 import ChartEditorStore from '../../stores/chart-editor';
 
 const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
-const options = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据' }];
+const dataSourceTypes = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据' }];
+const apiMethods = [{ value: 'GET', name: 'GET' }, { value: 'POST', name: 'POST' }];
 
 interface IProps {
   form: WrappedFormUtils;
@@ -41,7 +42,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, onEdi
       name: 'dataSourceType',
       type: 'radioGroup',
       initialValue: 'static',
-      options,
+      options: dataSourceTypes,
       size: 'small',
     },
   ];
@@ -68,18 +69,48 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, onEdi
     fields = [
       ...baseFields,
       {
-        name: 'chartQuery',
-        label: '请求 API',
+        name: 'reqUrl',
+        label: 'api url',
         type: 'input',
         rules: [{
-          message: '请输入请求 API',
+          message: '请输入请求 url',
           required: true,
         }],
         size: 'small',
       },
       {
+        name: 'reqMethod',
+        label: 'api method',
+        type: 'radioGroup',
+        rules: [{
+          message: '请选择请求方法',
+          required: true,
+        }],
+        initialValue: 'GET',
+        options: apiMethods,
+        size: 'small',
+      },
+      {
+        name: 'reqQuery',
+        label: 'api query',
+        type: 'textArea',
+        size: 'small',
+        itemProps: {
+          placeholder: '请输入JSON格式',
+        },
+      },
+      {
+        name: 'reqBody',
+        label: 'api body',
+        type: 'textArea',
+        size: 'small',
+        itemProps: {
+          placeholder: '请输入JSON格式',
+        },
+      },
+      {
         name: 'dataHandler',
-        label: '数据处理（引入时注入）',
+        label: '数据处理',
         type: 'select',
         options: map(dataHandlerList, (name, value) => ({ value, name })),
         size: 'small',

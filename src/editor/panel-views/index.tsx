@@ -1,3 +1,4 @@
+// 切换图表类型
 import React from 'react';
 import { get, map, pick } from 'lodash';
 import classnames from 'classnames';

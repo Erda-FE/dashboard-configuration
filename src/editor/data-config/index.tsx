@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { get, map } from 'lodash';
+import { get } from 'lodash';
 import { RenderPureForm } from '../../components/common';
 import { collectFields } from '../../components/common/utils';
 import ChartEditorStore from '../../stores/chart-editor';
@@ -9,7 +9,7 @@ import DashboardStore from '../../stores/dash-board';
 
 const dataHandlerList = { handler1: 'handler1', handler2: 'handler2' };
 const dataSourceTypes = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据' }];
-const apiMethods = [{ value: 'GET', name: 'GET' }];
+const apiMethods = [{ value: 'GET', name: 'GET' }, { value: 'POST', name: 'POST' }];
 
 interface IProps {
   form: WrappedFormUtils;
@@ -23,8 +23,9 @@ interface IProps {
 }
 
 const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, contextMap }: IProps) => {
-  const { getQueryComponent } = contextMap;
+  const { getQueryComponent, getPathComponent } = contextMap;
   const QueryComponent = getQueryComponent();
+  const PathComponent = getPathComponent();
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -50,45 +51,35 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
   //     size: 'small',
   //   },
   // ];
-  const fields = React.useMemo(() => [
-    {
-      name: 'reqUrl',
-      label: 'api path',
-      type: 'input',
-      rules: [{
-        message: '请输入请求 path',
-        required: true,
-      }],
-      size: 'small',
-    },
-    {
-      name: 'reqMethod',
-      label: 'api method',
-      type: 'radioGroup',
-      rules: [{
-        message: '请选择请求方法',
-        required: true,
-      }],
-      initialValue: 'GET',
-      options: apiMethods,
-      size: 'small',
-    },
-    {
-      name: 'reqQuery',
-      label: 'api query',
-      getComp: () => (
-        <QueryComponent />
-      ),
-    },
-    // {
-    //   name: 'reqBody',
-    //   label: 'api body',
-    //   type: 'textArea',
-    //   size: 'small',
-    //   itemProps: {
-    //     placeholder: '请输入JSON格式',
-    //   },
-    // },
+  const getFields = React.useCallback(() => {
+    const _fields = [
+      {
+        name: 'api.url',
+        label: 'api path',
+        rules: [{
+          message: '请输入请求 path',
+          required: true,
+        }],
+        size: 'small',
+        getComp: () => <PathComponent getResult={(result: any) => { form.setFieldsValue({ reqUrl: result }); }} />,
+      },
+      {
+        name: 'api.method',
+        label: 'api method',
+        type: 'radioGroup',
+        rules: [{
+          message: '请选择请求方法',
+          required: true,
+        }],
+        initialValue: 'GET',
+        options: apiMethods,
+        size: 'small',
+      },
+      {
+        name: 'api.query',
+        label: 'api query',
+        getComp: () => <QueryComponent getResult={(result: any) => { form.setFieldsValue({ reqMethod: result }); }} />,
+      },
     // {
     //   name: 'dataHandler',
     //   label: '数据处理',
@@ -96,7 +87,20 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
     //   options: map(dataHandlerList, (name, value) => ({ value, name })),
     //   size: 'small',
     // },
-  ], [QueryComponent]);
+    ];
+    if (form.getFieldValue('reqMethod') === 'POST') {
+      _fields.push({
+        name: 'api.body',
+        label: 'api body',
+        type: 'textArea',
+        size: 'small',
+        itemProps: {
+          placeholder: '请输入JSON格式',
+        },
+      });
+    }
+    return _fields;
+  }, [QueryComponent, PathComponent, form]);
 
   // if (form.getFieldsValue().dataSourceType === 'static') {
   //   fields = [
@@ -172,7 +176,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
   return (
     <section className="configurator-section">
       <RenderPureForm
-        list={fields}
+        list={getFields()}
         form={form}
       />
     </section>

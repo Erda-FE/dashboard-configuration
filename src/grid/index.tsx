@@ -29,6 +29,7 @@ interface IProps {
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
   QueryComponent?: React.ReactNode | React.SFC // url query配置器
+  PathComponent?: React.ReactNode | React.SFC // url query配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
@@ -70,6 +71,7 @@ const BoardGrid = ({
   readOnly = false,
   UrlComponent = Input,
   QueryComponent = Input.TextArea,
+  PathComponent = Input,
   urlItemLayout = formItemLayout,
   customCharts,
   layout,
@@ -109,9 +111,10 @@ const BoardGrid = ({
       themeObj,
       getUrlComponent: () => UrlComponent,
       getQueryComponent: () => QueryComponent,
+      getPathComponent: () => PathComponent,
       urlItemLayout,
     });
-  }, [chartConfigMap, UrlComponent, QueryComponent, urlItemLayout]);
+  }, [chartConfigMap, UrlComponent, QueryComponent, PathComponent, urlItemLayout]);
 
   const onDragStart = React.useCallback(() => isEditMode, [isEditMode]);
 

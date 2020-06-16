@@ -53,15 +53,19 @@ export default () => {
       dataConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
         if (errors) return;
         if (options.staticData) {
-          amalgamatedOptions = { ...amalgamatedOptions, ...options, staticData: JSON.parse(options.staticData) };
-        }
-        if (options.chartQuery) {
           amalgamatedOptions = {
             ...amalgamatedOptions,
             ...options,
-            loadData: getData,
+            staticData: JSON.parse(options.staticData),
           };
         }
+        // if (options.chartQuery) {
+        // }
+        amalgamatedOptions = {
+          ...amalgamatedOptions,
+          ...options,
+          // loadData: getData,
+        };
         saveEditor(amalgamatedOptions);
       });
     };
@@ -137,6 +141,9 @@ export default () => {
           flexDirection: 'column',
         }}
       > */}
+      <div className="chart-editor-content">
+        <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
+      </div>
       <div className="chart-editor-header">
         <div className="header-right">
           {
@@ -158,9 +165,6 @@ export default () => {
         }
           <Button size="small" onClick={saveChart} type="primary">完成</Button>
         </div>
-      </div>
-      <div className="chart-editor-content">
-        <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
       </div>
     </div>
   );

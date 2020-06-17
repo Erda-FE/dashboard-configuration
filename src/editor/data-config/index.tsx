@@ -84,7 +84,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
         size: 'small',
         itemProps: {
           onChange(e: any) {
-            onEditorChange({ api: { ...currentChart.api, method: e.target.value } });
+            // onEditorChange({ api: { ...currentChart.api, method: e.target.value } });
           },
         },
       },
@@ -95,7 +95,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
           <QueryComponent
             submitResult={(result: any) => {
               form.setFieldsValue({ 'api.query': result });
-              onEditorChange({ api: { ...currentChart.api, query: result } });
+              // onEditorChange({ api: { ...currentChart.api, query: result } });
             }}
             getCurrentChart={() => currentChart}
           />

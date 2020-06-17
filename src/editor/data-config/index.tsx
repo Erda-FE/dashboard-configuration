@@ -22,7 +22,7 @@ interface IProps {
   onEditorChange(payload: object): void;
 }
 
-const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, contextMap }: IProps) => {
+const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, contextMap, onEditorChange, currentChart }: IProps) => {
   const { getQueryComponent, getPathComponent } = contextMap;
   const QueryComponent = getQueryComponent();
   const PathComponent = getPathComponent();
@@ -63,8 +63,11 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
         size: 'small',
         getComp: () => (
           <PathComponent
-
-            submitResult={(result: any) => { form.setFieldsValue({ 'api.url': result }); }}
+            submitResult={(result: any) => {
+              form.setFieldsValue({ 'api.url': result });
+              onEditorChange({ api: { ...currentChart.api, url: result } });
+            }}
+            getCurrentChart={() => currentChart}
           />
         ),
       },
@@ -79,11 +82,24 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
         initialValue: 'GET',
         options: apiMethods,
         size: 'small',
+        itemProps: {
+          onChange(e: any) {
+            onEditorChange({ api: { ...currentChart.api, method: e.target.value } });
+          },
+        },
       },
       {
         name: 'api.query',
         label: 'api query',
-        getComp: () => <QueryComponent submitResult={(result: any) => { form.setFieldsValue({ 'api.query': result }); }} />,
+        getComp: () => (
+          <QueryComponent
+            submitResult={(result: any) => {
+              form.setFieldsValue({ 'api.query': result });
+              onEditorChange({ api: { ...currentChart.api, query: result } });
+            }}
+            getCurrentChart={() => currentChart}
+          />
+        ),
       },
     // {
     //   name: 'dataHandler',
@@ -105,7 +121,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
       });
     }
     return _fields;
-  }, [QueryComponent, PathComponent, form]);
+  }, [QueryComponent, PathComponent, form, currentChart]);
 
   // if (form.getFieldsValue().dataSourceType === 'static') {
   //   fields = [

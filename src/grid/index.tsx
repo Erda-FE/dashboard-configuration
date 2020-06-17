@@ -95,6 +95,8 @@ const BoardGrid = ({
     resetDrawer();
   });
 
+  React.useEffect(() => { console.log(viewMap); }, [viewMap]);
+
   React.useEffect(() => {
     setChartConfigMap(registCharts({ ...defaultChartsMap, ...customCharts }));
   }, [customCharts]);

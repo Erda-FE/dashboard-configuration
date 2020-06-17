@@ -65,7 +65,6 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
           <PathComponent
             submitResult={(result: any) => {
               form.setFieldsValue({ 'api.url': result });
-              onEditorChange({ api: { ...currentChart.api, url: result } });
             }}
             getCurrentChart={() => currentChart}
           />
@@ -82,11 +81,6 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
         initialValue: 'GET',
         options: apiMethods,
         size: 'small',
-        itemProps: {
-          onChange(e: any) {
-            // onEditorChange({ api: { ...currentChart.api, method: e.target.value } });
-          },
-        },
       },
       {
         name: 'api.query',
@@ -95,7 +89,6 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
           <QueryComponent
             submitResult={(result: any) => {
               form.setFieldsValue({ 'api.query': result });
-              // onEditorChange({ api: { ...currentChart.api, query: result } });
             }}
             getCurrentChart={() => currentChart}
           />

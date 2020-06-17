@@ -9,6 +9,8 @@ import ChartTable from './chart-table';
 // 图表配置器
 import LineConfigurator from './chart-line/configurator';
 import PieConfigurator from './chart-pie/configurator';
+import MetricConfigurator from './chart-metric/configurator';
+import TableConfigurator from './chart-table/configurator';
 
 const basicCharts: IChartsMap = {
   'chart:line': {
@@ -56,13 +58,13 @@ const basicCharts: IChartsMap = {
     name: '卡片图',
     icon: <Icon type="fund" />,
     Component: ChartMetric,
-    Configurator: null,
+    Configurator: MetricConfigurator,
   },
   table: {
     name: '表格图',
     icon: <Icon type="fund" />,
     Component: ChartTable,
-    Configurator: null,
+    Configurator: TableConfigurator,
   },
 };
 

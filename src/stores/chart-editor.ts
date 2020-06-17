@@ -41,7 +41,6 @@ const chartEditorStore = createFlatStore({
           [viewId]: NEW_CHART_VIEW_MAP[chartType],
         },
       });
-
       dashBoardStore.generateChart(viewId); // 在布局中生成一个占位
     },
     // 添加时关闭直接移除新建的图表

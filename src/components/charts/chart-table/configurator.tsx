@@ -14,7 +14,7 @@ interface IProps {
   forwardedRef: { current: any };
 }
 
-const PieConfigurator = (props: IProps) => {
+const TableConfigurator = (props: IProps) => {
   const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId, s.isTouched]);
   const { setTouched, onEditorChange } = ChartEditorStore;
   const currentChart = get(viewMap, [editChartId]);
@@ -68,8 +68,8 @@ const PieConfigurator = (props: IProps) => {
   );
 };
 
-const PieForm = Form.create()(PieConfigurator);
+const TableForm = Form.create()(TableConfigurator);
 
 export default React.forwardRef((props, ref) => (
-  <PieForm forwardedRef={ref} {...props} />
+  <TableForm forwardedRef={ref} {...props} />
 ));

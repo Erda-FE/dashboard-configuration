@@ -61,7 +61,12 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
           required: true,
         }],
         size: 'small',
-        getComp: () => <PathComponent getResult={(result: any) => { form.setFieldsValue({ 'api.url': result }); }} />,
+        getComp: () => (
+          <PathComponent
+
+            submitResult={(result: any) => { form.setFieldsValue({ 'api.url': result }); }}
+          />
+        ),
       },
       {
         name: 'api.method',
@@ -78,7 +83,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
       {
         name: 'api.query',
         label: 'api query',
-        getComp: () => <QueryComponent getResult={(result: any) => { form.setFieldsValue({ 'api.query': result }); }} />,
+        getComp: () => <QueryComponent submitResult={(result: any) => { form.setFieldsValue({ 'api.query': result }); }} />,
       },
     // {
     //   name: 'dataHandler',

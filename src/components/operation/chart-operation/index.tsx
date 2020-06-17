@@ -78,7 +78,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const staticData = get(nextProps, 'view.staticData');
     if (!isEqual(prevState.prevStaticData, staticData) && staticData) {
       return {
-        resData: staticData,
+        resData: staticData || {},
         prevStaticData: staticData,
       };
     }
@@ -216,7 +216,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           }
         </div>
         {
-          isEmpty(resData.metricData) ?
+          (!resData || isEmpty(resData.metricData)) ?
             <EmptyHolder />
             :
             <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
@@ -228,10 +228,6 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                 })
               }
             </div>
-          // <IF check={isEmpty(resData.metricData)}>
-
-            // <IF.ELSE />
-          // </IF>
         }
 
       </div>

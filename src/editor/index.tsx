@@ -120,7 +120,7 @@ export default () => {
       {/* <PanelCharts /> */}
       <Configurator ref={baseConfigFormRef} />
     </TabPane>,
-    <TabPane tab="数据配置" key="data">
+    <TabPane tab="数据源配置" key="data">
       <DataConfig ref={dataConfigFormRef} />
     </TabPane>,
     // <TabPane tab="轴配置" key="axes">

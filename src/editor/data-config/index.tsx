@@ -53,35 +53,33 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
   // ];
   const getFields = React.useCallback(() => {
     const _fields = [
-      {
-        name: 'api.url',
-        label: 'api path',
-        rules: [{
-          message: '请输入请求 path',
-          required: true,
-        }],
-        size: 'small',
-        getComp: () => (
-          <PathComponent
-            submitResult={(result: any) => {
-              form.setFieldsValue({ 'api.url': result });
-            }}
-            getCurrentChart={() => currentChart}
-          />
-        ),
-      },
-      {
-        name: 'api.method',
-        label: 'api method',
-        type: 'radioGroup',
-        rules: [{
-          message: '请选择请求方法',
-          required: true,
-        }],
-        initialValue: 'GET',
-        options: apiMethods,
-        size: 'small',
-      },
+      // {
+      //   name: 'api.url',
+      //   label: 'api path',
+      //   rules: [{
+      //     message: '请输入请求 path',
+      //     required: true,
+      //   }],
+      //   size: 'small',
+      //   getComp: () => (
+      //     <PathComponent
+      //       submitResult={(result: any) => form.setFieldsValue({ 'api.url': result })}
+      //       getCurrentChart={() => currentChart}
+      //     />
+      //   ),
+      // },
+      // {
+      //   name: 'api.method',
+      //   label: 'api method',
+      //   type: 'radioGroup',
+      //   rules: [{
+      //     message: '请选择请求方法',
+      //     required: true,
+      //   }],
+      //   initialValue: 'GET',
+      //   options: apiMethods,
+      //   size: 'small',
+      // },
       {
         name: 'api.query',
         label: 'api query',

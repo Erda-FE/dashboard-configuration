@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from 'antd';
-import { get, map, set } from 'lodash';
+import { get, map, set, cloneDeep } from 'lodash';
 // 图表
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
@@ -21,7 +21,7 @@ const basicCharts: IChartsMap = {
       const _metricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
       set(props, 'data.metricData', _metricData);
       set(props, 'config.optionProps.noAreaColor', true);
-      return <ChartLine {...props} metricData={_metricData} />;
+      return <ChartLine {...props} />;
     },
     Configurator: LineConfigurator,
   },
@@ -33,7 +33,7 @@ const basicCharts: IChartsMap = {
       const _metricData = map(metricData, (metric => ({ ...metric, type: 'area' })));
       set(props, 'data.metricData', _metricData);
       set(props, 'config.optionProps.noAreaColor', false);
-      return <ChartLine {...props} metricData={_metricData} />;
+      return <ChartLine {...props} />;
     },
     Configurator: LineConfigurator,
   },
@@ -41,10 +41,11 @@ const basicCharts: IChartsMap = {
     name: '柱状图',
     icon: <Icon type="bar-chart" />,
     Component(props) {
+      const data = get(props, 'data');
       const metricData = get(props, 'data.metricData');
       const _metricData = map(metricData, (metric => ({ ...metric, type: 'bar' })));
-      set(props, 'data.metricData', _metricData);
-      return <ChartLine {...props} metricData={_metricData} />;
+      const _props = { ...props, data: { ...data, metricData: _metricData } };
+      return <ChartLine {..._props} />;
     },
     Configurator: LineConfigurator,
   },

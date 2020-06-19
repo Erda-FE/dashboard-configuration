@@ -13,6 +13,8 @@ interface IState {
   codeVisible: boolean, // 代码编辑
   viewCopy: any, // 修改时用于恢复的复制对象
   isTouched: boolean,
+  dataConfigForm: any;
+  baseConfigForm: any;
 }
 
 const initState: IState = {
@@ -23,6 +25,8 @@ const initState: IState = {
   viewMap: {}, // 所有图表配置信息
   codeVisible: false, // 代码编辑，暂时没用到
   viewCopy: {}, // 修改时用于恢复的复制对象
+  dataConfigForm: null, // 存储数据配置表单对象
+  baseConfigForm: null, // 存储基础配置表单对象
 };
 
 const chartEditorStore = createFlatStore({
@@ -165,6 +169,12 @@ const chartEditorStore = createFlatStore({
     },
     setPickChartModalVisible(state, pickChartModalVisible: boolean) {
       state.pickChartModalVisible = pickChartModalVisible;
+    },
+    setDataConfigForm(state, dataConfigForm: any) {
+      state.dataConfigForm = dataConfigForm;
+    },
+    setBaseConfigForm(state, baseConfigForm: any) {
+      state.baseConfigForm = baseConfigForm;
     },
   },
 });

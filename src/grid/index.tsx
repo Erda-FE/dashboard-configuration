@@ -12,7 +12,8 @@ import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartOperation, defaultChartsMap } from '../components';
-import { EmptyHolder, IF, useForceUpdate, useComponentWidth } from '../components/common';
+import { EmptyHolder, IF, useForceUpdate, useComponentWidth, RenderPureForm } from '../components/common';
+import DefaultAPIFormComponent from '../editor/data-config/default-api-form';
 import ChartEditor from '../editor';
 import DashboardStore from '../stores/dash-board';
 import ChartEditorStore from '../stores/chart-editor';
@@ -28,8 +29,7 @@ interface IProps {
   customCharts?: IChartsMap // 用户自定义图表（xx图）
   controlsMap?: IChartsMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
-  QueryComponent?: React.ReactNode | React.SFC // url query配置器
-  PathComponent?: React.ReactNode | React.SFC // url query配置器
+  APIFormComponent?: React.ReactNode | React.SFC // 外部 API 表单配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
   urlItemLayout?: { [name: string]: any } // url的Form.Item布局
   expandOption?: ({ chartType, url }: IExpand) => object // 扩展图表样式，不会再编辑器中被显示，应当设置对用户无感的全局自定义设置，否则会出现来回编辑清掉图表自定义设置后，又再次受到全局的影响
@@ -70,8 +70,7 @@ const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<Chart
 const BoardGrid = ({
   readOnly = false,
   UrlComponent = Input,
-  QueryComponent = Input.TextArea,
-  PathComponent = Input,
+  APIFormComponent = DefaultAPIFormComponent,
   urlItemLayout = formItemLayout,
   customCharts,
   layout,
@@ -112,11 +111,10 @@ const BoardGrid = ({
       theme,
       themeObj,
       getUrlComponent: () => UrlComponent,
-      getQueryComponent: () => QueryComponent,
-      getPathComponent: () => PathComponent,
+      getAPIFormComponent: () => APIFormComponent,
       urlItemLayout,
     });
-  }, [chartConfigMap, UrlComponent, QueryComponent, PathComponent, urlItemLayout]);
+  }, [chartConfigMap, UrlComponent, APIFormComponent, urlItemLayout]);
 
   const onDragStart = React.useCallback(() => isEditMode, [isEditMode]);
 

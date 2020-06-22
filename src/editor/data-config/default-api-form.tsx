@@ -9,70 +9,19 @@ interface IProps {
 }
 
 export default ({ submitResult, getCurrentChart, form }: IProps) => {
-  const getFieldsList = () => [
-    {
-      label: 'API 配置',
-      name: 'data.aaa',
-      type: 'textArea',
-      required: true,
-      itemProps: {
-        placeholder: '请输入 API 的 JSON 配置',
-      },
-    },
-    {
-      label: 'API 配置',
-      name: 'data.aaa',
-      type: 'textArea',
-      required: true,
-      itemProps: {
-        placeholder: '请输入 API 的 JSON 配置',
-      },
-    },
-    {
-      label: 'API 配置',
-      name: 'data.aaa',
-      type: 'textArea',
-      required: true,
-      itemProps: {
-        placeholder: '请输入 API 的 JSON 配置',
-      },
-    },
-    {
-      label: 'API 配置',
-      name: 'data.aaa',
-      type: 'textArea',
-      required: true,
-      itemProps: {
-        placeholder: '请输入 API 的 JSON 配置',
-      },
-    },
-    {
-      label: 'API 配置',
-      name: 'data.aaa',
-      type: 'textArea',
-      required: true,
-      itemProps: {
-        placeholder: '请输入 API 的 JSON 配置',
-      },
-    },
-    {
-      label: 'API 配置',
-      name: 'data.aaa',
-      type: 'textArea',
-      required: true,
-      itemProps: {
-        placeholder: '请输入 API 的 JSON 配置',
-      },
-    },
-    {
-      label: 'API 配置',
-      name: 'data.aaa',
-      type: 'textArea',
-      required: true,
-      itemProps: {
-        placeholder: '请输入 API 的 JSON 配置',
-      },
-    },
-  ];
+  const getFieldsList = React.useCallback(() => {
+    const { api } = getCurrentChart();
+    return [
+      {
+        label: 'API 配置',
+        type: 'textArea',
+        required: true,
+        itemProps: {
+          defaultValue: api.url,
+          placeholder: '请输入 API 的 JSON 配置',
+          onBlur: (e: any) => { submitResult({ url: e.target.value }); },
+        },
+      }];
+  }, [getCurrentChart]);
   return <RenderPureForm form={form} layout="vertical" list={getFieldsList()} />;
 };

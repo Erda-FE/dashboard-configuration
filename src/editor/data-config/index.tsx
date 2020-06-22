@@ -49,8 +49,8 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
   );
 };
 
+const FormConfig = Form.create()(DataConfig);
 const Config = (p: any) => {
-  const FormConfig = Form.create()(DataConfig);
   const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId, s.isTouched]);
   const { setTouched, onEditorChange } = ChartEditorStore;
   const contextMap = DashboardStore.useStore(s => s.contextMap);

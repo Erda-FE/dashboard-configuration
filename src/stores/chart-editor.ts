@@ -4,6 +4,7 @@ import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 import dashBoardStore from './dash-board';
 import { NEW_CHART_VIEW_MAP } from '../constants';
+import { getChartData } from '../services/chart-editor';
 
 interface IState {
   pickChartModalVisible: boolean,
@@ -71,6 +72,10 @@ const chartEditorStore = createFlatStore({
     // 表单变化时自动保存
     async onEditorChange({ select }, payload) {
       const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
+      if (payload.api) {
+        const data = await getChartData(payload.api);
+        console.log(data);
+      }
       chartEditorStore.updateState({
         viewMap: {
           ...viewMap,

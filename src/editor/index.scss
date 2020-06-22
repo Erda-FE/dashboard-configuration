@@ -3,7 +3,7 @@ $light-black: #606060;
 :global {
   .chart-editor {
     position: fixed;
-    width: 300px;
+    width: 400px;
     .chart-editor-content {
       flex: 1;
       overflow-y: auto;
@@ -13,6 +13,7 @@ $light-black: #606060;
     }
     .chart-editor-header {
       display: flex;
+      flex-direction: row-reverse;
       justify-content: space-between;
       align-items: center;
       height: 40px;

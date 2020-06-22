@@ -38,23 +38,6 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
     }, 0);
   }, [formData]);
 
-  // const getFields = React.useCallback(() => {
-  //   const _fields = [
-  //     {
-  //       name: 'api',
-  //       label: '接口',
-  //       required: true,
-  //       getComp: () => (
-  //         <APIFormComponent
-  //           submitResult={(result: any) => form.setFieldsValue({ api: result })}
-  //           getCurrentChart={() => currentChart}
-  //         />
-  //       ),
-  //     },
-  //   ];
-  //   return _fields;
-  // }, [APIFormComponent, form, currentChart]);
-
   return (
     <section className="configurator-section">
       <APIFormComponent

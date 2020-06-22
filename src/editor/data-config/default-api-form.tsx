@@ -4,13 +4,13 @@ import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 interface IProps {
   form: WrappedFormUtils;
+  currentChart: any;
   submitResult(result: any): void;
-  getCurrentChart(): any;
 }
 
-export default ({ submitResult, getCurrentChart, form }: IProps) => {
+export default ({ submitResult, currentChart, form }: IProps) => {
   const getFieldsList = React.useCallback(() => {
-    const { api } = getCurrentChart();
+    const { api } = currentChart;
     return [
       {
         label: 'API 配置',
@@ -22,6 +22,6 @@ export default ({ submitResult, getCurrentChart, form }: IProps) => {
           onBlur: (e: any) => { submitResult({ url: e.target.value }); },
         },
       }];
-  }, [getCurrentChart]);
+  }, [currentChart]);
   return <RenderPureForm form={form} layout="vertical" list={getFieldsList()} />;
 };

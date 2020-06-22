@@ -42,10 +42,8 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
     <section className="configurator-section">
       <APIFormComponent
         form={form}
-        submitResult={(result: any) => {
-          onEditorChange({ api: result });
-        }}
-        getCurrentChart={() => currentChart}
+        submitResult={(result: any) => onEditorChange({ api: result })}
+        currentChart={currentChart}
       />
     </section>
   );

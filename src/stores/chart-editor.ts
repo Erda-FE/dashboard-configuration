@@ -72,9 +72,12 @@ const chartEditorStore = createFlatStore({
     // 表单变化时自动保存
     async onEditorChange({ select }, payload) {
       const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
-      if (payload.api) {
-        const data = await getChartData(payload.api);
-        console.log(data);
+      const _payload = { ...payload };
+      if (_payload.api) {
+        _payload.loadData = async () => {
+          const { data } = await getChartData(_payload.api);
+          return data;
+        };
       }
       chartEditorStore.updateState({
         viewMap: {

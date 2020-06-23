@@ -8,43 +8,43 @@ export const NEW_CHART_VIEW_MAP = {
     description: '',
     hideHeader: true,
     hideReload: true,
-    dataConvertor: 'line',
     config: {
       option: {
-        tooltip: {
-          trigger: 'axis',
-          transitionDuration: 0,
-          confine: true,
-          axisPointer: {
-            type: 'none',
-          },
-        },
-        legend: {
-          bottom: 0,
-          padding: [15, 5, 0, 5],
-          orient: 'horizontal',
-          align: 'left',
-          type: 'scroll',
-          tooltip: {
-            show: true,
-            formatter: (t: any) => cutStr(t.name, 100),
-          },
-        },
-        textStyle: {
-          fontFamily: 'arial',
-        },
-        yAxis: [
-          {
-            type: 'value',
-            name: 'Y-Axis: Left',
-            min: 0,
-            max: 1,
-            interval: 0.1,
-            axisLabel: {
-              formatter: '{value} unit',
-            },
-          },
-        ],
+        grid: { left: '5%' },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   transitionDuration: 0,
+        //   confine: true,
+        //   axisPointer: {
+        //     type: 'none',
+        //   },
+        // },
+        // legend: {
+        //   bottom: 0,
+        //   padding: [15, 5, 0, 5],
+        //   orient: 'horizontal',
+        //   align: 'left',
+        //   type: 'scroll',
+        //   tooltip: {
+        //     show: true,
+        //     formatter: (t: any) => cutStr(t.name, 100),
+        //   },
+        // },
+        // textStyle: {
+        //   fontFamily: 'arial',
+        // },
+        // yAxis: [
+        //   {
+        //     type: 'value',
+        //     name: 'Y-Axis: Left',
+        //     min: 0,
+        //     max: 1,
+        //     interval: 0.1,
+        //     axisLabel: {
+        //       formatter: '{value} unit',
+        //     },
+        //   },
+        // ],
       },
     },
     dataSourceType: 'api',
@@ -56,43 +56,43 @@ export const NEW_CHART_VIEW_MAP = {
     description: '',
     hideHeader: true,
     hideReload: true,
-    dataConvertor: 'line',
     config: {
       option: {
-        tooltip: {
-          trigger: 'axis',
-          transitionDuration: 0,
-          confine: true,
-          axisPointer: {
-            type: 'none',
-          },
-        },
-        legend: {
-          bottom: 0,
-          padding: [15, 5, 0, 5],
-          orient: 'horizontal',
-          align: 'left',
-          type: 'scroll',
-          tooltip: {
-            show: true,
-            formatter: (t: any) => cutStr(t.name, 100),
-          },
-        },
-        textStyle: {
-          fontFamily: 'arial',
-        },
-        yAxis: [
-          {
-            type: 'value',
-            name: 'Y-Axis: Left',
-            min: 0,
-            max: 1,
-            interval: 0.1,
-            axisLabel: {
-              formatter: '{value} unit',
-            },
-          },
-        ],
+        grid: { left: '5%' },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   transitionDuration: 0,
+        //   confine: true,
+        //   axisPointer: {
+        //     type: 'none',
+        //   },
+        // },
+        // legend: {
+        //   bottom: 0,
+        //   padding: [15, 5, 0, 5],
+        //   orient: 'horizontal',
+        //   align: 'left',
+        //   type: 'scroll',
+        //   tooltip: {
+        //     show: true,
+        //     formatter: (t: any) => cutStr(t.name, 100),
+        //   },
+        // },
+        // textStyle: {
+        //   fontFamily: 'arial',
+        // },
+        // yAxis: [
+        //   {
+        //     type: 'value',
+        //     name: 'Y-Axis: Left',
+        //     min: 0,
+        //     max: 1,
+        //     interval: 0.1,
+        //     axisLabel: {
+        //       formatter: '{value} unit',
+        //     },
+        //   },
+        // ],
       },
     },
     dataSourceType: 'api',
@@ -104,43 +104,43 @@ export const NEW_CHART_VIEW_MAP = {
     description: '',
     hideHeader: true,
     hideReload: true,
-    dataConvertor: 'line',
     config: {
       option: {
-        tooltip: {
-          trigger: 'axis',
-          transitionDuration: 0,
-          confine: true,
-          axisPointer: {
-            type: 'none',
-          },
-        },
-        legend: {
-          bottom: 0,
-          padding: [15, 5, 0, 5],
-          orient: 'horizontal',
-          align: 'left',
-          type: 'scroll',
-          tooltip: {
-            show: true,
-            formatter: (t: any) => cutStr(t.name, 100),
-          },
-        },
-        textStyle: {
-          fontFamily: 'arial',
-        },
-        yAxis: [
-          {
-            type: 'value',
-            name: 'Y-Axis: Left',
-            min: 0,
-            max: 1,
-            interval: 0.1,
-            axisLabel: {
-              formatter: '{value} unit',
-            },
-          },
-        ],
+        grid: { left: '5%' },
+        // tooltip: {
+        //   trigger: 'axis',
+        //   transitionDuration: 0,
+        //   confine: true,
+        //   axisPointer: {
+        //     type: 'none',
+        //   },
+        // },
+        // legend: {
+        //   bottom: 0,
+        //   padding: [15, 5, 0, 5],
+        //   orient: 'horizontal',
+        //   align: 'left',
+        //   type: 'scroll',
+        //   tooltip: {
+        //     show: true,
+        //     formatter: (t: any) => cutStr(t.name, 100),
+        //   },
+        // },
+        // textStyle: {
+        //   fontFamily: 'arial',
+        // },
+        // yAxis: [
+        //   {
+        //     type: 'value',
+        //     name: 'Y-Axis: Left',
+        //     min: 0,
+        //     max: 1,
+        //     interval: 0.1,
+        //     axisLabel: {
+        //       formatter: '{value} unit',
+        //     },
+        //   },
+        // ],
       },
     },
     dataSourceType: 'api',
@@ -150,9 +150,15 @@ export const NEW_CHART_VIEW_MAP = {
     chartType: 'chart:pie',
     title: 'pie chart',
     description: '',
+    hideHeader: true,
+    hideReload: true,
     dataSourceType: 'api',
     api: {},
-    config: {},
+    config: {
+      series: {
+        radius: ['30%', '50%'],
+      },
+    },
   },
   table: {
     chartType: 'table',

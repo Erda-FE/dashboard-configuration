@@ -1,5 +1,5 @@
 import { createFlatStore } from '../cube';
-import { cloneDeep, forEach, startsWith } from 'lodash';
+import { cloneDeep, forEach, startsWith, map, values } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 import dashBoardStore from './dash-board';
@@ -76,13 +76,36 @@ const chartEditorStore = createFlatStore({
       if (_payload.api) {
         _payload.loadData = async () => {
           const { data } = await getChartData(_payload.api);
+          const { chartType } = viewMap[editChartId];
+          if (['chart:line', 'chart:bar'].includes(chartType)) {
+            const { time, results } = data;
+            if (results[0].data.length > 1) {
+              return {
+                time,
+                metricData: map(results[0].data, item => values(item)[0]),
+              };
+            } else {
+              return {
+                time,
+                metricData: results[0].data[0],
+              };
+            }
+          }
+          if (chartType === 'chart:pie') {
+            return {
+              metricData: [{
+                name: data.title || '',
+                data: map(data.metricData, ({ title, value }) => ({ name: title, value })),
+              }],
+            };
+          }
           return data;
         };
       }
       chartEditorStore.updateState({
         viewMap: {
           ...viewMap,
-          [editChartId]: { ...viewMap[editChartId], ...payload },
+          [editChartId]: { ...viewMap[editChartId], ..._payload },
         },
       });
     },

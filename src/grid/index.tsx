@@ -24,6 +24,8 @@ interface IProps {
   readOnly?: boolean // 只读
   layout?: any // 配置信息，包含图表布局、各图表配置信息
   onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
+  onCancel?: () => void, // 取消编辑
+  onEdit?: () => void, // 触发编辑
   theme?: string, // 主题名
   themeObj?: {}, // 主题内容
   customCharts?: IChartsMap // 用户自定义图表（xx图）
@@ -74,6 +76,8 @@ const BoardGrid = ({
   urlItemLayout = formItemLayout,
   customCharts,
   layout,
+  onEdit,
+  onCancel,
   onSave,
   expandOption,
 }: IProps) => {
@@ -131,6 +135,13 @@ const BoardGrid = ({
     });
   };
 
+  const _onCancel = () => {
+    setEditMode(false);
+    if (onCancel) {
+      onCancel();
+    }
+  };
+
   const onSaveImg = () => {
     saveImage(ReactDOM.findDOMNode(boardGridRef.current), 'dashboard'); // eslint-disable-line
   };
@@ -164,6 +175,9 @@ const BoardGrid = ({
                     <Tooltip placement="bottom" title="保存">
                       <Icon type="save" onClick={_onSave} />
                     </Tooltip>
+                    <Tooltip placement="bottom" title="取消">
+                      <Icon type="close" onClick={_onCancel} />
+                    </Tooltip>
                   </React.Fragment>
                 </IF>
               )
@@ -176,7 +190,15 @@ const BoardGrid = ({
                     <Icon type="camera" onClick={onSaveImg} />
                   </Tooltip>
                   <Tooltip placement="bottom" title="编辑">
-                    <Icon type="edit" onClick={() => setEditMode(true)} />
+                    <Icon
+                      type="edit"
+                      onClick={() => {
+                        setEditMode(true);
+                        if (onEdit) {
+                          onEdit();
+                        }
+                      }}
+                    />
                   </Tooltip>
                 </React.Fragment>
               )

@@ -23,6 +23,7 @@ import './index.scss';
 interface IProps {
   readOnly?: boolean // 只读
   layout?: any // 配置信息，包含图表布局、各图表配置信息
+  beforeOnSave?: () => boolean, // 返回 false 来拦截 onSave
   onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
   onCancel?: () => void, // 取消编辑
   onEdit?: () => void, // 触发编辑
@@ -79,6 +80,7 @@ const BoardGrid = ({
   onEdit,
   onCancel,
   onSave,
+  beforeOnSave,
   expandOption,
 }: IProps) => {
   const boardGridRef = useRef(null);
@@ -122,7 +124,7 @@ const BoardGrid = ({
 
   const onDragStart = React.useCallback(() => isEditMode, [isEditMode]);
 
-  const _onSave = () => {
+  const doSave = () => {
     saveEdit().then((full: { layout: any[]; viewMap: { [k: string]: any } }) => {
       if (onSave) {
         const { layout: singleLayouts, viewMap: _viewMap } = full;
@@ -133,6 +135,17 @@ const BoardGrid = ({
         onSave(fullLayouts, { singleLayouts, viewMap });
       }
     });
+  };
+
+  const _onSave = () => {
+    if (beforeOnSave) {
+      const isContinue = beforeOnSave();
+      if (isContinue) {
+        doSave();
+      }
+    } else {
+      doSave();
+    }
   };
 
   const _onCancel = () => {

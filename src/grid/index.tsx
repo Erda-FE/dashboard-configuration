@@ -12,7 +12,7 @@ import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
 import { ChartOperation, defaultChartsMap } from '../components';
-import { EmptyHolder, IF, useForceUpdate, useComponentWidth, RenderPureForm } from '../components/common';
+import { EmptyHolder, IF, useForceUpdate, useComponentWidth } from '../components/common';
 import DefaultAPIFormComponent from '../editor/data-config/default-api-form';
 import ChartEditor from '../editor';
 import DashboardStore from '../stores/dash-board';
@@ -99,8 +99,6 @@ const BoardGrid = ({
     resetBoard();
     resetDrawer();
   });
-
-  React.useEffect(() => { console.log(viewMap); }, [viewMap]);
 
   React.useEffect(() => {
     setChartConfigMap(registCharts({ ...defaultChartsMap, ...customCharts }));
@@ -250,19 +248,21 @@ const BoardGrid = ({
                 if (isPlainObject(view)) {
                   const { chartType = '', customRender } = view;
                   const ChartNode = get(chartConfigMap, [chartType, 'Component']);
-                  ChildComp = (
-                    <React.Fragment>
-                      <ChartOperation viewId={i} view={view} expandOption={expandOption}>
-                        {
-                          customRender && (typeof customRender === 'function')
-                            ?
-                              <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
-                            :
-                              <ChartNode />
-                        }
-                      </ChartOperation>
-                    </React.Fragment>
-                  );
+                  if (ChartNode) {
+                    ChildComp = (
+                      <React.Fragment>
+                        <ChartOperation viewId={i} view={view} expandOption={expandOption}>
+                          {
+                            customRender && (typeof customRender === 'function')
+                              ?
+                                <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
+                              :
+                                <ChartNode />
+                          }
+                        </ChartOperation>
+                      </React.Fragment>
+                    );
+                  }
                 } else {
                   console.error('layout view should be object or function');
                 }

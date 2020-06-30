@@ -77,7 +77,7 @@ const chartEditorStore = createFlatStore({
         _payload.loadData = async () => {
           const { data } = await getChartData(_payload.api);
           const { chartType } = viewMap[editChartId];
-          if (['chart:line', 'chart:bar'].includes(chartType)) {
+          if (['chart:line', 'chart:area', 'chart:bar'].includes(chartType)) {
             const { time, results } = data;
             if (results[0].data.length > 1) {
               return {

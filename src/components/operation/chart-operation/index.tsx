@@ -94,7 +94,11 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   componentDidUpdate({ isEditView: prevIsEditView, view }: IProps) {
     this.hasLoadFn = typeof view.loadData === 'function';
     if (this.hasLoadFn) {
-      if (!isEqual(this.props.view.chartQuery, view.chartQuery) || (prevIsEditView !== this.props.isEditView && prevIsEditView)) {
+      if (
+        !isEqual(this.props.view.chartQuery, view.chartQuery) ||
+        (prevIsEditView !== this.props.isEditView && prevIsEditView) ||
+        !isEqual(this.props.view.loadData, view.loadData)
+      ) {
         this.loadData(this.props.view.chartQuery);
       }
     }

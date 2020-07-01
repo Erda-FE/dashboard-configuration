@@ -118,11 +118,12 @@ const chartEditorStore = createFlatStore({
       //   yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
       // } else { // 编辑时取消恢复原有数据
       // }
-      viewMap[editChartId] = viewCopy;
+      const _viewMap = { ...viewMap };
+      _viewMap[editChartId] = viewCopy;
 
       chartEditorStore.updateState({
         editChartId: '',
-        viewMap: { ...viewMap },
+        viewMap: _viewMap,
         viewCopy: {},
       });
       chartEditorStore.setTouched(false);

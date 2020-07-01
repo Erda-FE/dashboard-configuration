@@ -112,12 +112,6 @@ const chartEditorStore = createFlatStore({
     // 编辑时关闭，恢复数据并置空viewCopy
     async closeEditor({ select }) {
       const [editChartId, viewMap, viewCopy] = select(s => [s.editChartId, s.viewMap, s.viewCopy]);
-      // const isExist = find(layout, ({ i }) => i === editChartId);
-      // if (!isExist) { // 创建时取消就移除
-      //   yield put({ type: 'dashBoard/deleteView', viewId: editChartId });
-      //   yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
-      // } else { // 编辑时取消恢复原有数据
-      // }
       const _viewMap = { ...viewMap };
       _viewMap[editChartId] = viewCopy;
 

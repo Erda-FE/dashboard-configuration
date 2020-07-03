@@ -43,7 +43,6 @@
     "dom-to-image": "^2.6.0",
     "echarts": "^4.2.1",
     "echarts-for-react": "^2.0.15-beta.0",
-    "i18next": "^19.5.3",
     "js-object-pretty-print": "^0.3.0",
     "lodash": "^4.17.14",
     "react": "^16.8.6",

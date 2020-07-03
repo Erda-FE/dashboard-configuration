@@ -124,6 +124,7 @@ module.exports = () => {
         interface: resolve('interface'),
         common: resolve('./src/components/common'),
         theme: resolve('./src/theme/dice.ts'),
+        i18n: resolve('./src/utils/i18n.ts'),
       },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [resolve('example'), resolve('src'), 'node_modules'],

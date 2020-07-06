@@ -6,9 +6,9 @@ const SvgContainer = ({ children }: any) => (
   </svg>
 );
 
-export default [
+export const getPickTypes = (textMap: any) => [
   {
-    chartName: '线形图',
+    chartName: textMap.line,
     chartType: 'chart:line',
     chartImg: (
       <SvgContainer>
@@ -17,7 +17,7 @@ export default [
     ),
   },
   {
-    chartName: '面积图',
+    chartName: textMap.area,
     chartType: 'chart:area',
     chartImg: (
       <SvgContainer>
@@ -26,7 +26,7 @@ export default [
     ),
   },
   {
-    chartName: '柱状图',
+    chartName: textMap.bar,
     chartType: 'chart:bar',
     chartImg: (
       <SvgContainer>
@@ -35,7 +35,7 @@ export default [
     ),
   },
   {
-    chartName: '饼图',
+    chartName: textMap.pie,
     chartType: 'chart:pie',
     chartImg: (
       <SvgContainer>
@@ -44,7 +44,7 @@ export default [
     ),
   },
   {
-    chartName: '表格',
+    chartName: textMap.table,
     chartType: 'table',
     chartImg: (
       <SvgContainer>
@@ -53,7 +53,7 @@ export default [
     ),
   },
   {
-    chartName: '指标',
+    chartName: textMap.metric,
     chartType: 'card',
     chartImg: (
       <SvgContainer>

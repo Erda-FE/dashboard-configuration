@@ -200,6 +200,13 @@ export const TEXT_ZH_MAP = {
   'confirm to drop data': '确认丢弃数据',
   title: '标题',
   description: '描述',
+  'select chart type': '选择图表类型',
+  line: '线形图',
+  area: '面积图',
+  bar: '柱状图',
+  pie: '饼图',
+  table: '表格',
+  metric: '指标',
 };
 
 export const TEXT_EN_MAP = {
@@ -219,4 +226,11 @@ export const TEXT_EN_MAP = {
   'confirm to drop data': 'confirm to drop data',
   title: 'title',
   description: 'description',
+  'select chart type': 'select chart type',
+  line: 'line',
+  area: 'area',
+  bar: 'bar',
+  pie: 'pie',
+  table: 'table',
+  metric: 'metric',
 };

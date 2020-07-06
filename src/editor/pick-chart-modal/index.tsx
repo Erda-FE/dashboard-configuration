@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Modal, Row, Col } from 'antd';
 import { map } from 'lodash';
 import ChartEditorStore from '../../stores/chart-editor';
-import pickTypes from './pick-types';
+import DashboardStore from '../../stores/dash-board';
+import { getPickTypes } from './pick-types';
 import './index.scss';
 
 interface IProps {
@@ -11,6 +12,7 @@ interface IProps {
 
 export default ({ onPickChart }: IProps) => {
   const [pickChartModalVisible] = ChartEditorStore.useStore(s => [s.pickChartModalVisible]);
+  const textMap = DashboardStore.useStore(s => s.textMap);
   const { setPickChartModalVisible } = ChartEditorStore;
 
   const handlePickChart = (chartType: ChartType) => {
@@ -20,7 +22,7 @@ export default ({ onPickChart }: IProps) => {
 
   return (
     <Modal
-      title="选择图表类型"
+      title={textMap['select chart type']}
       visible={pickChartModalVisible}
       width={600}
       onCancel={() => setPickChartModalVisible(false)}
@@ -28,7 +30,7 @@ export default ({ onPickChart }: IProps) => {
     >
       <div className="pick-chart-wp">
         <Row>
-          {map(pickTypes, ({ chartName, chartImg, chartType }) => (
+          {map(getPickTypes(textMap), ({ chartName, chartImg, chartType }) => (
             <Col span={8} key={chartName}>
               <div className="chart-type-item" onClick={() => handlePickChart(chartType)}>
                 {chartImg}

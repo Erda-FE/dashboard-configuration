@@ -6,12 +6,14 @@ interface IState {
   isEditMode: boolean
   layout: any[]
   contextMap: any
+  textMap: { [k: string]: string }
 }
 
 const initState: IState = {
   isEditMode: false,
   layout: [],
   contextMap: {},
+  textMap: {},
 };
 
 const getNewChartYPosition = (layout: any[]) => {
@@ -61,6 +63,9 @@ const dashBoardStore = createFlatStore({
     },
     updateContextMap(state, contextMap: any) {
       state.contextMap = contextMap;
+    },
+    setTextMap(state, textMap: { [k: string]: string }) {
+      state.textMap = textMap;
     },
   },
 });

@@ -10,7 +10,7 @@ function App() {
     <Router history={history}>
       <Route
         path="*"
-        render={childProps => <BoardGrid {...childProps} layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} />}
+        render={childProps => <BoardGrid isEN {...childProps} layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} />}
       />
     </Router>
   );

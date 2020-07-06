@@ -8,6 +8,7 @@ import DataConfig from './data-config';
 import AxisConfig from './axis-config';
 import PanelCharts from './panel-views';
 import ChartEditorStore from '../stores/chart-editor';
+import DashboardStore from '../stores/dash-board';
 
 const { TabPane } = Tabs;
 const { Step } = Steps;
@@ -32,6 +33,7 @@ export default () => {
     s.isTouched,
     s.viewCopy,
   ]);
+  const textMap = DashboardStore.useStore(s => s.textMap);
   const currentChart = React.useMemo(() => get(viewMap, [editChartId]), [viewMap, editChartId]);
   if (!currentChart) {
     return null;
@@ -116,11 +118,11 @@ export default () => {
   const { Configurator = noop } = info;
 
   const tabPanes = [
-    <TabPane tab="参数配置" key="setting">
+    <TabPane tab={textMap['parameter configuration']} key="setting">
       {/* <PanelCharts /> */}
       <Configurator ref={baseConfigFormRef} />
     </TabPane>,
-    <TabPane tab="数据源配置" key="data">
+    <TabPane tab={textMap['datasource configuration']} key="data">
       <DataConfig ref={dataConfigFormRef} />
     </TabPane>,
     // <TabPane tab="轴配置" key="axes">
@@ -150,20 +152,18 @@ export default () => {
           isTouched ?
             (
               <Popconfirm
-                okText="确认"
-                cancelText="取消"
+                okText={textMap.ok}
+                cancelText={textMap.cancel}
                 placement="top"
-                title="确认丢弃数据?"
+                title={textMap['confirm to drop data']}
                 onConfirm={addMode ? deleteEditor : closeEditor}
               >
-                <Button size="small" style={{ marginRight: 8 }}>
-                  取消
-                </Button>
+                <Button size="small" style={{ marginRight: 8 }}>{textMap.cancel}</Button>
               </Popconfirm>
             ) :
-            (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>取消</Button>)
+            (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>)
         }
-          <Button size="small" onClick={saveChart} type="primary">完成</Button>
+          <Button size="small" onClick={saveChart} type="primary">{textMap.ok}</Button>
         </div>
       </div>
     </div>

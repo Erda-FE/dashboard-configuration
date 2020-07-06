@@ -182,3 +182,41 @@ export const NEW_CHART_VIEW_MAP = {
     api: {},
   },
 };
+
+export const TEXT_ZH_MAP = {
+  add: '新增',
+  save: '保存',
+  cancel: '取消',
+  edit: '编辑',
+  delete: '删除',
+  ok: '确认',
+  move: '移动',
+  'exit fullscreen': '退出全屏',
+  fullscreen: '全屏',
+  'export picture': '导出图片',
+  'confirm to delete': '确认删除',
+  'parameter configuration': '参数配置',
+  'datasource configuration': '数据源配置',
+  'confirm to drop data': '确认丢弃数据',
+  title: '标题',
+  description: '描述',
+};
+
+export const TEXT_EN_MAP = {
+  add: 'add',
+  save: 'save',
+  cancel: 'cancel',
+  edit: 'edit',
+  delete: 'delete',
+  ok: 'ok',
+  move: 'move',
+  'exit fullscreen': 'exit fullscreen',
+  fullscreen: 'fullscreen',
+  'export picture': 'export picture',
+  'confirm to delete': 'confirm to delete',
+  'parameter configuration': 'parameter configuration',
+  'datasource configuration': 'datasource configuration',
+  'confirm to drop data': 'confirm to drop data',
+  title: 'title',
+  description: 'description',
+};

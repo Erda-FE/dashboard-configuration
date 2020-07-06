@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { get, isPlainObject, isEmpty, map } from 'lodash';
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
-import { useUnmount } from 'react-use';
+import { useUnmount, useMount } from 'react-use';
 import ReactGridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
@@ -18,10 +18,12 @@ import ChartEditor from '../editor';
 import DashboardStore from '../stores/dash-board';
 import ChartEditorStore from '../stores/chart-editor';
 import PickChartModal from '../editor/pick-chart-modal';
+import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 import './index.scss';
 
 interface IProps {
   readOnly?: boolean // 只读
+  isEN?: boolean // 文案语言
   layout?: any // 配置信息，包含图表布局、各图表配置信息
   beforeOnSave?: () => boolean, // 返回 false 来拦截 onSave
   onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
@@ -72,6 +74,7 @@ const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<Chart
 
 const BoardGrid = ({
   readOnly = false,
+  isEN = false,
   UrlComponent = Input,
   APIFormComponent = DefaultAPIFormComponent,
   urlItemLayout = formItemLayout,
@@ -88,12 +91,16 @@ const BoardGrid = ({
   const forceUpdate = useForceUpdate();
   const [chartConfigMap, setChartConfigMap] = useState({});
 
-  const [dashboardLayout, isEditMode] = DashboardStore.useStore(s => [s.layout, s.isEditMode]);
+  const [dashboardLayout, isEditMode, textMap] = DashboardStore.useStore(s => [s.layout, s.isEditMode, s.textMap]);
   const [viewMap, editChartId] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId]);
-  const { updateLayout, setEditMode, saveEdit, reset: resetBoard, updateContextMap } = DashboardStore;
+  const { updateLayout, setEditMode, saveEdit, reset: resetBoard, updateContextMap, setTextMap } = DashboardStore;
   const { updateViewMap: updateChildMap, setPickChartModalVisible, reset: resetDrawer, addEditor } = ChartEditorStore;
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const [widthHolder, width] = useComponentWidth();
+
+  useMount(() => {
+    setTextMap(isEN ? TEXT_EN_MAP : TEXT_ZH_MAP);
+  });
 
   useUnmount(() => {
     resetBoard();
@@ -180,13 +187,13 @@ const BoardGrid = ({
               ? (
                 <IF check={!chartEditorVisible}>
                   <React.Fragment>
-                    <Tooltip placement="bottom" title="新增">
+                    <Tooltip placement="bottom" title={textMap.add}>
                       <Icon type="plus" onClick={() => setPickChartModalVisible(true)} />
                     </Tooltip>
-                    <Tooltip placement="bottom" title="保存">
+                    <Tooltip placement="bottom" title={textMap.save}>
                       <Icon type="save" onClick={_onSave} />
                     </Tooltip>
-                    <Tooltip placement="bottom" title="取消">
+                    <Tooltip placement="bottom" title={textMap.cancel}>
                       <Icon type="close" onClick={_onCancel} />
                     </Tooltip>
                   </React.Fragment>
@@ -194,13 +201,13 @@ const BoardGrid = ({
               )
               : (
                 <React.Fragment>
-                  <Tooltip placement="bottom" title={screenfull.isFullscreen ? '退出全屏' : '图表全屏'}>
+                  <Tooltip placement="bottom" title={screenfull.isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
                     <Icon type={screenfull.isFullscreen ? 'shrink' : 'arrows-alt'} onClick={onSetScreenFull} />
                   </Tooltip>
-                  <Tooltip placement="bottom" title="导出图片">
+                  <Tooltip placement="bottom" title={textMap['export picture']}>
                     <Icon type="camera" onClick={onSaveImg} />
                   </Tooltip>
-                  <Tooltip placement="bottom" title="编辑">
+                  <Tooltip placement="bottom" title={textMap.edit}>
                     <Icon
                       type="edit"
                       onClick={() => {

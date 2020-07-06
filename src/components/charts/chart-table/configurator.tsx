@@ -4,6 +4,7 @@ import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { RenderPureForm } from '../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
+import DashboardStore from '../../../stores/dash-board';
 
 // tslint:disable-next-line: no-use-before-declare
 interface IProps {
@@ -16,6 +17,7 @@ interface IProps {
 
 const TableConfigurator = (props: IProps) => {
   const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId, s.isTouched]);
+  const textMap = DashboardStore.useStore(s => s.textMap);
   const { setTouched, onEditorChange } = ChartEditorStore;
   const currentChart = get(viewMap, [editChartId]);
 
@@ -35,7 +37,7 @@ const TableConfigurator = (props: IProps) => {
 
   const fields = [
     {
-      label: '标题',
+      label: textMap.title,
       name: 'title',
       type: 'input',
       size: 'small',
@@ -46,7 +48,7 @@ const TableConfigurator = (props: IProps) => {
       },
     },
     {
-      label: '描述',
+      label: textMap.description,
       name: 'description',
       type: 'textArea',
       size: 'small',

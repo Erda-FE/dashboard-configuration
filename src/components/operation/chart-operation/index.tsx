@@ -17,6 +17,7 @@ import './index.scss';
 
 // tslint:disable-next-line: no-use-before-declare
 interface IProps {
+  textMap: { [k: string]: string }
   viewId: string
   view: any
   chartEditorVisible: boolean;
@@ -107,6 +108,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   loadData = (arg?: any) => {
     const { view } = this.props;
     const { loadData, dataConvertor } = view;
+    if (!isFunction(loadData)) return;
     this.setState({
       fetchStatus: Status.FETCH,
     });
@@ -147,7 +149,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const { view, children, isEditMode, isEditView, viewId, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
+    const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = getMessage({ fetchStatus });
@@ -188,24 +190,24 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           {
             isEditMode && !chartEditorVisible && (
               <div>
-                <Tooltip title="编辑">
+                <Tooltip title={textMap.edit}>
                   <Icon type="edit" onClick={() => editView(viewId)} />
                 </Tooltip>
-                <Tooltip title="删除">
+                <Tooltip title={textMap.delete}>
                   <Popconfirm
-                    okText="确认"
-                    cancelText="取消"
+                    okText={textMap.delete}
+                    cancelText={textMap.cancel}
                     placement="top"
-                    title="确认删除?"
+                    title={textMap['confirm to delete']}
                     onConfirm={() => deleteView(viewId)}
                   >
                     <Icon type="delete" />
                   </Popconfirm>
                 </Tooltip>
-                <Tooltip title="导出图片">
+                <Tooltip title={textMap['export picture']}>
                   <Icon type="camera" onClick={this.onSaveImg} />
                 </Tooltip>
-                <Tooltip title="图表全屏">
+                <Tooltip title={textMap.fullscreen}>
                   <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
                 </Tooltip>
               </div>
@@ -213,7 +215,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           }
           {
             isEditMode && (
-              <Tooltip title="移动">
+              <Tooltip title={textMap.move}>
                 <Icon className="dc-draggable-handle" type="drag" />
               </Tooltip>
             )
@@ -240,13 +242,14 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
 }
 
 export default (p: any) => {
-  const isEditMode = DashboardStore.useStore(s => s.isEditMode);
+  const [isEditMode, textMap] = DashboardStore.useStore(s => [s.isEditMode, s.textMap]);
   const [editChartId, viewMap] = ChartEditorStore.useStore(s => [s.editChartId, s.viewMap]);
   const { updateViewInfo: setViewInfo, editView } = ChartEditorStore;
   const { deleteView } = DashboardStore;
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const props = {
     isEditMode,
+    textMap,
     chartEditorVisible,
     isEditView: editChartId === p.viewId,
     setViewInfo,

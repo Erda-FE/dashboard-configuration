@@ -17,7 +17,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         type: 'textArea',
         required: true,
         itemProps: {
-          defaultValue: api.url,
+          defaultValue: api ? api.url : '',
           placeholder: '请输入 API 的 JSON 配置',
           onBlur: (e: any) => { submitResult({ url: e.target.value }); },
         },

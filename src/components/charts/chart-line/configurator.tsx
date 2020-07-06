@@ -7,6 +7,7 @@ import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { RenderPureForm } from '../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
+import DashboardStore from '../../../stores/dash-board';
 
 // tslint:disable-next-line: no-use-before-declare
 interface IProps {
@@ -23,6 +24,7 @@ interface IProps {
 
 const LineConfigurator = (props: IProps) => {
   const { form, forwardedRef, currentChart, setTouched, onEditorChange, isTouched } = props;
+  const textMap = DashboardStore.useStore(s => s.textMap);
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
@@ -44,7 +46,7 @@ const LineConfigurator = (props: IProps) => {
 
   const fields = [
     {
-      label: '标题',
+      label: textMap.title,
       name: 'title',
       type: 'input',
       size: 'small',
@@ -55,7 +57,7 @@ const LineConfigurator = (props: IProps) => {
       },
     },
     {
-      label: '描述',
+      label: textMap.description,
       name: 'description',
       type: 'textArea',
       size: 'small',

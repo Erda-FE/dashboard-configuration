@@ -44,18 +44,6 @@ const enum Status {
 interface IMessage {
   fetchStatus: string
 }
-const getMessage = ({ fetchStatus }: IMessage): string => {
-  if (fetchStatus === Status.MOCK) {
-    return '模拟数据展示';
-  }
-  if (fetchStatus === Status.FETCH) {
-    return '加载中';
-  }
-  if (fetchStatus === Status.FAIL) {
-    return '数据获取失败';
-  }
-  return '';
-};
 
 class ChartOperation extends React.PureComponent<IProps, IState> {
   private hasLoadFn: boolean;
@@ -141,18 +129,34 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
   }
 
   onSaveImg = () => {
-    saveImage(ReactDOM.findDOMNode(this.chartRef), this.props.viewId);  // eslint-disable-line
+    const { viewId, textMap } = this.props;
+    saveImage(ReactDOM.findDOMNode(this.chartRef), viewId, textMap);  // eslint-disable-line
   }
 
   onSetScreenFull = () => {
     setScreenFull(ReactDOM.findDOMNode(this.chartRef), screenfull.isFullscreen); // eslint-disable-line
   }
 
+  getMessage = ({ fetchStatus }: IMessage): string => {
+    const { textMap } = this.props;
+
+    if (fetchStatus === Status.MOCK) {
+      return textMap['show mock data'];
+    }
+    if (fetchStatus === Status.FETCH) {
+      return textMap.loading;
+    }
+    if (fetchStatus === Status.FAIL) {
+      return textMap['failed to get data'];
+    }
+    return '';
+  }
+
   render() {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
-    const message = getMessage({ fetchStatus });
+    const message = this.getMessage({ fetchStatus });
     const { title: _title, description: _description, hideHeader = true } = view;
     const title = isFunction(_title) ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;

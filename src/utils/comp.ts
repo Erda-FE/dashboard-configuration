@@ -60,15 +60,15 @@ interface IParams { [name: string]: any }
 
 let loadingMessage: any = null;
 
-export function saveImage(dom: Element | null | Text, name: string) {
+export function saveImage(dom: Element | null | Text, name: string, textMap: any) {
   if (loadingMessage) {
     return;
   }
   if (!dom) {
-    message.error('页面为空,没有图表数据');
+    message.error(textMap['no chart data']);
     return;
   }
-  loadingMessage = message.loading('正在导出图片...', 0);
+  loadingMessage = message.loading(textMap['exporting picture'], 0);
   domtoimage.toJpeg(dom, {
     quality: 1,
   }).then((url: string) => {

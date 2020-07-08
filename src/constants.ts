@@ -207,6 +207,11 @@ export const TEXT_ZH_MAP = {
   pie: '饼图',
   table: '表格',
   metric: '指标',
+  'failed to get data': '数据获取失败',
+  loading: '加载中',
+  'show mock data': '模拟数据展示',
+  'no chart data': '页面为空,没有图表数据',
+  'exporting picture': '正在导出图片...',
 };
 
 export const TEXT_EN_MAP = {
@@ -233,4 +238,9 @@ export const TEXT_EN_MAP = {
   pie: 'pie',
   table: 'table',
   metric: 'metric',
+  'failed to get data': 'failed to get data',
+  loading: 'loading',
+  'show mock data': 'show mock data',
+  'no chart data': 'no chart data',
+  'exporting picture': 'exporting picture...',
 };

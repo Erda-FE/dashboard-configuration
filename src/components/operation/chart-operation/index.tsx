@@ -163,7 +163,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const optionsMenu = (
       <Menu>
         <Menu.Item key="0">
-          <a className="dc-chart-title-dp-op" href="javascript:;" onClick={() => editView(viewId)}>
+          <a className="dc-chart-title-dp-op" onClick={() => editView(viewId)}>
             <Icon type="edit" />{textMap.edit}
           </a>
         </Menu.Item>
@@ -175,18 +175,18 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
             title={textMap['confirm to delete']}
             onConfirm={() => deleteView(viewId)}
           >
-            <a className="dc-chart-title-dp-op" href="javascript:;">
+            <a className="dc-chart-title-dp-op">
               <Icon type="delete" />{textMap.delete}
             </a>
           </Popconfirm>
         </Menu.Item>
         <Menu.Item key="2">
-          <a className="dc-chart-title-dp-op" href="javascript:;" onClick={this.onSaveImg}>
+          <a className="dc-chart-title-dp-op" onClick={this.onSaveImg}>
             <Icon type="camera" />{textMap.export}
           </a>
         </Menu.Item>
         <Menu.Item key="3">
-          <a className="dc-chart-title-dp-op" href="javascript:;" onClick={this.onSetScreenFull}>
+          <a className="dc-chart-title-dp-op" onClick={this.onSetScreenFull}>
             <Icon type="arrows-alt" />{textMap.fullscreen}
           </a>
         </Menu.Item>

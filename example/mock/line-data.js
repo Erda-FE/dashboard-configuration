@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 const staticData = {
   xData: [
     '13:39sasasasasas',
@@ -60,8 +58,6 @@ export default [
     view: {
       name: 'test',
       chartType: 'chart:line',
-      hideHeader: true,
-      hideReload: true,
       title: '线形图',
       // description: '这里配置图表的一些描述',
       // loadData() {
@@ -125,9 +121,8 @@ export default [
     view: {
       name: 'test',
       chartType: 'table',
-      hideHeader: true,
-      hideReload: true,
       title: '表格图',
+      description: 'sasasa',
       staticData: {
         metricData: [
           { id: 1, modelType: 'ods', score: 1 },
@@ -153,12 +148,12 @@ export default [
       hideHeader: true,
       hideReload: true,
       // title: '卡片图',
-      customRender: chartNode => (
-        <div>
-          <span>查看详情</span>
-          {chartNode}
-        </div>
-      ),
+      // customRender: chartNode => (
+      //   <div>
+      //     <span>查看详情</span>
+      //     {chartNode}
+      //   </div>
+      // ),
       staticData: {
         metricData: [
           { name: '数据1', value: 820, unit: 'MB', status: 'rise', color: 'error' },

@@ -1,4 +1,4 @@
-import { Icon, Popconfirm, Tooltip } from 'antd';
+import { Icon, Popconfirm, Tooltip, Dropdown, Menu } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction } from 'lodash';
 import React, { ReactElement } from 'react';
@@ -157,89 +157,83 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const message = this.getMessage({ fetchStatus });
-    const { title: _title, description: _description, hideHeader = true } = view;
+    const { title: _title, description: _description, hideHeader = false } = view;
     const title = isFunction(_title) ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;
+    const optionsMenu = (
+      <Menu>
+        <Menu.Item key="0">
+          <a className="dc-chart-title-dp-op" href="javascript:;" onClick={() => editView(viewId)}>
+            <Icon type="edit" />{textMap.edit}
+          </a>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <Popconfirm
+            okText={textMap.delete}
+            cancelText={textMap.cancel}
+            placement="top"
+            title={textMap['confirm to delete']}
+            onConfirm={() => deleteView(viewId)}
+          >
+            <a className="dc-chart-title-dp-op" href="javascript:;">
+              <Icon type="delete" />{textMap.delete}
+            </a>
+          </Popconfirm>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <a className="dc-chart-title-dp-op" href="javascript:;" onClick={this.onSaveImg}>
+            <Icon type="camera" />{textMap.export}
+          </a>
+        </Menu.Item>
+        <Menu.Item key="3">
+          <a className="dc-chart-title-dp-op" href="javascript:;" onClick={this.onSetScreenFull}>
+            <Icon type="arrows-alt" />{textMap.fullscreen}
+          </a>
+        </Menu.Item>
+      </Menu>
+    );
 
     return (
-      <div className={classnames({ 'bi-view-wrapper': true, active: isEditView })}>
-        <div className="header bi-chart-header">
-          <h2 className="bi-chart-title">{title}</h2>
-          <IF check={description}>
-            <Tooltip title={description}>
-              <Icon type="question-circle-o" />
-            </Tooltip>
+      <div className={classnames({ 'dc-view-wrapper': true, active: isEditView })}>
+        <IF check={!hideHeader || isEditMode}>
+          <div className="dc-chart-header">
+          <Dropdown
+            disabled={!isEditMode || chartEditorVisible}
+            overlay={optionsMenu}
+            trigger={['click']}
+          >
+            <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
+              <h2 className="dc-chart-title">{title}</h2>
+              <IF check={description}>
+                <Tooltip title={description} className="dc-chart-title-op">
+                  <Icon type="question-circle-o" />
+                </Tooltip>
+              </IF>
+              <IF check={isEditMode}><Icon type="down" className="dc-chart-title-op" /></IF>
+            </div>
+          </Dropdown>
+          </div>
+        </IF>
+        <ViewMask message={message} />
+        <div className="dc-draggable-handle">
+          <IF check={isEditMode}>
+            <Tooltip title={textMap.move}><Icon type="drag" /></Tooltip>
           </IF>
         </div>
-        {
-          !hideHeader &&
-          (
-            <div className="bi-view-header">
-              {/* <div className="bi-view-header-left">
+          {
+            (!resData || isEmpty(resData.metricData)) ?
+              <EmptyHolder />
+              :
+              <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
                 {
-                  isEditMode
-                    ? <Input defaultValue={view.name} onClick={e => e.stopPropagation()} onBlur={e => setViewInfo({ viewId, name: e.target.value })} />
-                    : <div className="bi-view-title">{view.name}</div>
+                  React.cloneElement(childNode, {
+                    ...childNode.props,
+                    data: resData,
+                    config: view.config,
+                  })
                 }
-              </div> */}
-              <div className="bi-view-header-right">
-                <ViewControl view={view} viewId={viewId} loadData={this.loadData} />
-                {this.hasLoadFn && !view.hideReload && <Icon className="reload-icon" type="reload" onClick={this.loadData} />}
               </div>
-            </div>
-          )
-        }
-        <ViewMask message={message} />
-        <div className="dc-view-edit-op">
-          {
-            isEditMode && !chartEditorVisible && (
-              <div>
-                <Tooltip title={textMap.edit}>
-                  <Icon type="edit" onClick={() => editView(viewId)} />
-                </Tooltip>
-                <Tooltip title={textMap.delete}>
-                  <Popconfirm
-                    okText={textMap.delete}
-                    cancelText={textMap.cancel}
-                    placement="top"
-                    title={textMap['confirm to delete']}
-                    onConfirm={() => deleteView(viewId)}
-                  >
-                    <Icon type="delete" />
-                  </Popconfirm>
-                </Tooltip>
-                <Tooltip title={textMap['export picture']}>
-                  <Icon type="camera" onClick={this.onSaveImg} />
-                </Tooltip>
-                <Tooltip title={textMap.fullscreen}>
-                  <Icon type="arrows-alt" onClick={this.onSetScreenFull} />
-                </Tooltip>
-              </div>
-            )
           }
-          {
-            isEditMode && (
-              <Tooltip title={textMap.move}>
-                <Icon className="dc-draggable-handle" type="drag" />
-              </Tooltip>
-            )
-          }
-        </div>
-        {
-          (!resData || isEmpty(resData.metricData)) ?
-            <EmptyHolder />
-            :
-            <div className="bi-chart" ref={(ref) => { this.chartRef = ref; }}>
-              {
-                React.cloneElement(childNode, {
-                  ...childNode.props,
-                  data: resData,
-                  config: view.config,
-                })
-              }
-            </div>
-        }
-
       </div>
     );
   }

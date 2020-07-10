@@ -1,12 +1,12 @@
 $color-border: #e8e8e8;
 :global {
-  .bi-view-wrapper {
+  .dc-view-wrapper {
     position: relative;
     display: flex;
     flex-direction: column;
     width: 100%;
     height: 100%;
-    padding: 12px 20px;
+    // padding: 12px 20px;
     background-color: #ffffff;
     border: 1px solid $color-border;
     border-radius: 6px;
@@ -39,22 +39,19 @@ $color-border: #e8e8e8;
       }
     }
   }
-  .dc-view-edit-op {
+  .dc-draggable-handle {
     position: absolute;
     top: 0;
     right: 0;
     z-index: 1;
     display: flex;
     font-size: 18px;
+    cursor: move;
     i {
-      padding: 10px;
+      padding: 4px;
       font-size: 18px;
-      cursor: pointer;
       &:hover {
         color: $color-primary;
-      }
-      &.dc-draggable-handle {
-        cursor: move;
       }
     }
   }
@@ -79,18 +76,37 @@ $color-border: #e8e8e8;
       }
     }
   }
-  .bi-chart {
+  .dc-chart {
     position: relative;
     flex: 1;
+    padding: 8px;
   }
-  .bi-chart-header {
-    display: flex;
+  .dc-chart-header {
+    text-align: center;
   }
-  .bi-chart-title {
-    margin-right: 4px;
-    margin-bottom: 10px;
-    color: rgba(0, 0, 0, 0.8);
+  .dc-chart-title-ct {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 28px;
+    padding: 0 8px;
+    line-height: 28px;
+    &.pointer {
+      cursor: pointer;
+    }
+  }
+  .dc-chart-title {
+    margin: 0;
+    color: rgba(0, 0, 0, .8);
     font-weight: 500;
     font-size: 14px;
+  }
+  .dc-chart-title-op {
+    margin-left: 4px;
+  }
+  .dc-chart-title-dp-op {
+    .anticon {
+      margin-right: 8px;
+    }
   }
 }

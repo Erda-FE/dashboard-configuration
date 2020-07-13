@@ -284,6 +284,7 @@ const BoardGrid = ({
           </IF>
         </div>
         <IF check={chartEditorVisible}>
+          {/* 编辑器和图表 2 列分布挤压图表控件 */}
           <div className="chart-editor-wp">
             <ChartEditor />
           </div>

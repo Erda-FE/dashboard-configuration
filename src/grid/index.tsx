@@ -161,7 +161,7 @@ const BoardGrid = ({
   };
 
   const onSaveImg = () => {
-    saveImage(ReactDOM.findDOMNode(boardGridRef.current), 'dashboard'); // eslint-disable-line
+    saveImage(ReactDOM.findDOMNode(boardGridRef.current), 'dashboard', textMap); // eslint-disable-line
   };
 
   const onSetScreenFull = () => {

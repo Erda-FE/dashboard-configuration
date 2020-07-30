@@ -176,8 +176,11 @@ const BoardGrid = ({
   return (
     <div
       style={{ flex: 2 }}
-      className={classnames({ 'bi-board': true, 'bi-off-edit': !isEditMode, isFullscreen: screenfull.isFullscreen })}
-      ref={boardRef}
+      className={classnames({
+        'bi-board': true,
+        'bi-off-edit': !isEditMode,
+        isFullscreen: screenfull.isFullscreen,
+      })}
     >
       {/* 在非readonly下顶部右上角的编辑菜单 */}
       {!readOnly && (
@@ -223,7 +226,7 @@ const BoardGrid = ({
           }
         </div>
       )}
-      <div className="dashboard-content">
+      <div className="dashboard-content" ref={boardRef}>
         <div className="chart-view">
           {widthHolder}
           <IF check={isEmpty(dashboardLayout)}>

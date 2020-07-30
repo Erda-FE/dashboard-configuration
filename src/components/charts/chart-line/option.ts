@@ -83,7 +83,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
         show: false,
       },
       nameLocation: 'center',
-      nameGap: 45,
+      nameGap: 40,
       unitType: curUnitType,
       unit: curUnit,
       axisLabel: {
@@ -166,7 +166,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
     grid: {
       top: 40,
-      left: 40,
+      left: 55,
       right: haveTwoYAxis ? 40 : 5,
       bottom: 40,
       containLabel: true,

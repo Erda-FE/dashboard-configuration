@@ -1,6 +1,6 @@
-import { Icon, Input, Tooltip } from 'antd';
+import { Icon, Input, Tooltip, Drawer } from 'antd';
 import classnames from 'classnames';
-import { get, isPlainObject, isEmpty, map } from 'lodash';
+import { get, isPlainObject, isEmpty, map, isFunction } from 'lodash';
 import React, { useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { useUnmount, useMount } from 'react-use';
@@ -29,6 +29,7 @@ interface IProps {
   onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
   onCancel?: () => void, // 取消编辑
   onEdit?: () => void, // 触发编辑
+  onEditorToggle?: (status: boolean) => void, // 图表编辑态改变
   theme?: string, // 主题名
   themeObj?: {}, // 主题内容
   customCharts?: IChartsMap // 用户自定义图表（xx图）
@@ -83,6 +84,7 @@ const BoardGrid = ({
   onEdit,
   onCancel,
   onSave,
+  onEditorToggle,
   beforeOnSave,
   expandOption,
 }: IProps) => {
@@ -116,6 +118,12 @@ const BoardGrid = ({
     updateLayout(pureLayout);
     updateChildMap(_viewMap);
   }, [layout]);
+
+  React.useEffect(() => {
+    if (isFunction(onEditorToggle)) {
+      onEditorToggle(chartEditorVisible);
+    }
+  }, [chartEditorVisible]);
 
   React.useEffect(() => {
     updateContextMap({

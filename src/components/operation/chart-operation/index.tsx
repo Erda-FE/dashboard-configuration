@@ -7,7 +7,6 @@ import screenfull from 'screenfull';
 import { getConfig } from '../../../config';
 import { saveImage, setScreenFull } from '../../../utils/comp';
 import { EmptyHolder, IF } from '../../common';
-import ViewControl from './control';
 import ViewMask from '../../charts/chart-mask';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
@@ -199,7 +198,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         <IF check={!hideHeader || isEditMode}>
           <div className="dc-chart-header">
             <IF check={isCustomTitle}>
-              {title}
+              <>{title}</>
               <IF.ELSE />
               <Dropdown
                 disabled={!isEditMode || chartEditorVisible}

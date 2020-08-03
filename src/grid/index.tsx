@@ -295,10 +295,20 @@ const BoardGrid = ({
           </IF>
         </div>
         <IF check={chartEditorVisible}>
-          {/* 编辑器和图表 2 列分布挤压图表控件 */}
-          <div className="chart-editor-wp">
-            <ChartEditor />
-          </div>
+          <Drawer
+            width="100%"
+            closable={false}
+            maskClosable={false}
+            bodyStyle={{ height: '100%' }}
+            visible
+          >
+            <div className="editor-mode">
+              <div className="editor-previewer">content</div>
+              <div className="chart-editor-wp">
+                <ChartEditor />
+              </div>
+            </div>
+          </Drawer>
         </IF>
       </div>
       <PickChartModal onPickChart={handlePickChart} />

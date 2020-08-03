@@ -2,8 +2,8 @@ $color-border: #e8e8e8;
 $light-black: #606060;
 :global {
   .chart-editor {
-    position: fixed;
-    width: 400px;
+    // position: fixed;
+    // width: 400px;
     .chart-editor-content {
       flex: 1;
       overflow-y: auto;

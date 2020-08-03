@@ -1,4 +1,4 @@
-import { Button, message, Tabs, Popconfirm, Steps } from 'antd';
+import { Button, message, Tabs, Popconfirm } from 'antd';
 import { get, isEmpty, set } from 'lodash';
 import React from 'react';
 import { getData } from '../utils/comp';
@@ -11,7 +11,6 @@ import ChartEditorStore from '../stores/chart-editor';
 import DashboardStore from '../stores/dash-board';
 
 const { TabPane } = Tabs;
-const { Step } = Steps;
 
 const noop = () => null;
 
@@ -144,7 +143,7 @@ export default () => {
         }}
       > */}
       <div className="chart-editor-content">
-        <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
+        <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
       </div>
       <div className="chart-editor-header">
         <div className="header-right">
@@ -158,12 +157,12 @@ export default () => {
                 title={textMap['confirm to drop data']}
                 onConfirm={addMode ? deleteEditor : closeEditor}
               >
-                <Button size="small" style={{ marginRight: 8 }}>{textMap.cancel}</Button>
+                <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
               </Popconfirm>
             ) :
-            (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>)
+            (<Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>)
         }
-          <Button size="small" onClick={saveChart} type="primary">{textMap.ok}</Button>
+          <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
         </div>
       </div>
     </div>

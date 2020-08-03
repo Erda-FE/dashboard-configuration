@@ -1,7 +1,3 @@
-import * as React from 'react';
-import { DatePicker } from 'antd';
-import './index.scss';
-
 const staticData = {
   xData: [
     '13:39sasasasasas',
@@ -62,26 +58,11 @@ export default [
     view: {
       name: 'test',
       chartType: 'chart:line',
-      title: () => (
-        <div className="chart-title flex-box full-width">
-          <DatePicker />
-          <div>stttt</div>
-        </div>
-      ),
-      // description: '这里配置图表的一些描述',
-      // loadData() {
-      //   return new Promise((resolve) => {
-      //     setTimeout(() => {
-      //       resolve(staticData);
-      //     }, 1000);
-      //   });
-      // },
+      title: 'sasa',
       staticData,
-      // dataConvertor: 'line',
       config: {
         option: {
           tooltip: {
-            // transitionDuration: 5,
           },
           legend: {
             bottom: 0,
@@ -156,13 +137,6 @@ export default [
       chartType: 'card',
       hideHeader: true,
       hideReload: true,
-      // title: '卡片图',
-      // customRender: chartNode => (
-      //   <div>
-      //     <span>查看详情</span>
-      //     {chartNode}
-      //   </div>
-      // ),
       staticData: {
         metricData: [
           { name: '数据1', value: 820, unit: 'MB', status: 'rise', color: 'error' },

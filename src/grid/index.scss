@@ -50,4 +50,11 @@ $full-background-color: rgba(55, 55, 55, .6);
   :not(:root):-o-full-screen::backdrop {
     background: $full-background-color;
   }
+  .editor-mode {
+    display: flex;
+    height: 100%;
+    .editor-previewer {
+      flex: 1;
+    }
+  }
 }

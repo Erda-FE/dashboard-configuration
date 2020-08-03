@@ -1,3 +1,7 @@
+import * as React from 'react';
+import { DatePicker } from 'antd';
+import './index.scss';
+
 const staticData = {
   xData: [
     '13:39sasasasasas',
@@ -58,7 +62,12 @@ export default [
     view: {
       name: 'test',
       chartType: 'chart:line',
-      title: '线形图',
+      title: () => (
+        <div className="chart-title flex-box full-width">
+          <DatePicker />
+          <div>stttt</div>
+        </div>
+      ),
       // description: '这里配置图表的一些描述',
       // loadData() {
       //   return new Promise((resolve) => {

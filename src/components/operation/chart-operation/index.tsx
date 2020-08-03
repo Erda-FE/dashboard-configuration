@@ -158,7 +158,8 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const { resData, fetchStatus } = this.state;
     const message = this.getMessage({ fetchStatus });
     const { title: _title, description: _description, hideHeader = false } = view;
-    const title = isFunction(_title) ? _title() : _title;
+    const isCustomTitle = isFunction(_title);
+    const title = isCustomTitle ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;
     const optionsMenu = (
       <Menu>
@@ -197,21 +198,25 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
       <div className={classnames({ 'dc-view-wrapper': true, active: isEditView })}>
         <IF check={!hideHeader || isEditMode}>
           <div className="dc-chart-header">
-          <Dropdown
-            disabled={!isEditMode || chartEditorVisible}
-            overlay={optionsMenu}
-            trigger={['click']}
-          >
-            <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
-              <h2 className="dc-chart-title">{title}</h2>
-              <IF check={description}>
-                <Tooltip title={description} className="dc-chart-title-op">
-                  <Icon type="question-circle-o" />
-                </Tooltip>
-              </IF>
-              <IF check={isEditMode}><Icon type="down" className="dc-chart-title-op" /></IF>
-            </div>
-          </Dropdown>
+            <IF check={isCustomTitle}>
+              {title}
+              <IF.ELSE />
+              <Dropdown
+                disabled={!isEditMode || chartEditorVisible}
+                overlay={optionsMenu}
+                trigger={['click']}
+              >
+                <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
+                  <h2 className="dc-chart-title">{title}</h2>
+                  <IF check={description}>
+                    <Tooltip title={description} className="dc-chart-title-op">
+                      <Icon type="question-circle-o" />
+                    </Tooltip>
+                  </IF>
+                  <IF check={isEditMode}><Icon type="down" className="dc-chart-title-op" /></IF>
+                </div>
+              </Dropdown>
+            </IF>
           </div>
         </IF>
         <ViewMask message={message} />
@@ -220,7 +225,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
             <Tooltip title={textMap.move}><Icon type="drag" /></Tooltip>
           </IF>
         </div>
-          {
+        {
             (!resData || isEmpty(resData.metricData)) ?
               <EmptyHolder />
               :

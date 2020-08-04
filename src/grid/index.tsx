@@ -185,8 +185,8 @@ const BoardGrid = ({
     <div
       style={{ flex: 2 }}
       className={classnames({
-        'bi-board': true,
-        'bi-off-edit': !isEditMode,
+        'dashboard-configurator': true,
+        'dashboard-configurator-off-edit': !isEditMode,
         isFullscreen: screenfull.isFullscreen,
       })}
     >
@@ -294,23 +294,16 @@ const BoardGrid = ({
             </ReactGridLayout>
           </IF>
         </div>
-        <IF check={chartEditorVisible}>
-          <Drawer
-            width="100%"
-            closable={false}
-            maskClosable={false}
-            bodyStyle={{ height: '100%' }}
-            visible
-          >
-            <div className="editor-mode">
-              <div className="editor-previewer">content</div>
-              <div className="chart-editor-wp">
-                <ChartEditor />
-              </div>
-            </div>
-          </Drawer>
-        </IF>
       </div>
+      <Drawer
+        width="90%"
+        closable={false}
+        maskClosable={false}
+        bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}
+        visible={chartEditorVisible}
+      >
+        <ChartEditor />
+      </Drawer>
       <PickChartModal onPickChart={handlePickChart} />
     </div>
   );

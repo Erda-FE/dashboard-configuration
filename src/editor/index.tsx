@@ -130,40 +130,42 @@ export default () => {
   ];
 
   return (
-    <div className="chart-editor">
-      {/* <EditorContainer
-        visible={visible}
-        onClose={addMode ? deleteEditor : closeEditor}
-        bodyStyle={{
-          padding: 0,
-          height: '350px',
-          overflow: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      > */}
-      <div className="chart-editor-content">
-        <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
-      </div>
-      <div className="chart-editor-header">
-        <div className="header-right">
-          {
-          isTouched ?
-            (
-              <Popconfirm
-                okText={textMap.ok}
-                cancelText={textMap.cancel}
-                placement="top"
-                title={textMap['confirm to drop data']}
-                onConfirm={addMode ? deleteEditor : closeEditor}
-              >
-                <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
-              </Popconfirm>
-            ) :
-            (<Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>)
-        }
-          <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
+    <div className="editor-mode">
+      <div className="editor-content">
+        <div className="editor-previewer">'///'</div>
+        <div className="chart-editor">
+          {/* <EditorContainer
+            visible={visible}
+            onClose={addMode ? deleteEditor : closeEditor}
+            bodyStyle={{
+              padding: 0,
+              height: '350px',
+              overflow: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
+          > */}
+          <div className="chart-editor-content">
+            <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
+          </div>
         </div>
+      </div>
+      <div className="editor-footer">
+        <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
+        {
+          isTouched ?
+            <Popconfirm
+              okText={textMap.ok}
+              cancelText={textMap.cancel}
+              placement="top"
+              title={textMap['confirm to drop data']}
+              onConfirm={addMode ? deleteEditor : closeEditor}
+            >
+              <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
+            </Popconfirm>
+          :
+            <Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>
+        }
       </div>
     </div>
   );

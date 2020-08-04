@@ -1,29 +1,42 @@
 $color-border: #e8e8e8;
+$color-white: #ffffff;
 $light-black: #606060;
 :global {
-  .chart-editor {
-    // position: fixed;
-    // width: 400px;
-    .chart-editor-content {
+  .editor-mode {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    .editor-content {
+      display: flex;
       flex: 1;
-      overflow-y: auto;
-      .ant-form-item {
-        margin-bottom: 12px;
+      padding: 12px;
+      .editor-previewer {
+        flex: 1;
+        margin-right: 12px;
+      }
+      .chart-editor {
+        width: 450px;
+        background: $color-white;
+        .chart-editor-content {
+          overflow-y: auto;
+          .ant-form-item {
+            margin-bottom: 12px;
+          }
+        }
+        .configurator-section {
+          padding: 0 12px;
+        }
       }
     }
-    .chart-editor-header {
+    .editor-footer {
       display: flex;
       flex-direction: row-reverse;
-      justify-content: space-between;
+      justify-content: start;
       align-items: center;
-      height: 40px;
-      padding: 0 4px;
-      .header-left {
-        color: #cccccc;
-      }
-    }
-    .configurator-section {
-      padding: 0 12px;
+      // height: 40px;
+      padding: 8px 12px;
+      background: $color-white;
     }
   }
 }

@@ -2,13 +2,9 @@ $color-text: #666666;
 $white: #ffffff;
 $full-background-color: rgba(55, 55, 55, .6);
 :global {
-  .bi-board {
+  .dashboard-configurator {
     width: 100%;
     height: 100%;
-  }
-  .screened {
-    overflow: auto;
-    background-color: $white;
   }
   .dashboard-header {
     padding: 16px 20px;
@@ -24,19 +20,11 @@ $full-background-color: rgba(55, 55, 55, .6);
     }
   }
   .dashboard-content {
-    display: flex;
     overflow-y: scroll;
-    .chart-view {
-      flex: 1;
-    }
-    .chart-editor-wp {
-      width: 400px;
-    }
   }
-  .bi-off-edit .react-resizable-handle {
+  .dashboard-configurator-off-edit .react-resizable-handle {
     display: none;
   }
-
   // 全屏样式，不能合并一起简写，否则不生效
   :not(:root):-webkit-full-screen::backdrop {
     background: $full-background-color;
@@ -49,12 +37,5 @@ $full-background-color: rgba(55, 55, 55, .6);
   }
   :not(:root):-o-full-screen::backdrop {
     background: $full-background-color;
-  }
-  .editor-mode {
-    display: flex;
-    height: 100%;
-    .editor-previewer {
-      flex: 1;
-    }
   }
 }

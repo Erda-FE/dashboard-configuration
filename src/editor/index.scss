@@ -14,10 +14,13 @@ $light-black: #606060;
       .editor-previewer {
         flex: 1;
         margin-right: 12px;
+        background: $color-white;
+        border-radius: 6px;
       }
       .chart-editor {
         width: 450px;
         background: $color-white;
+        border-radius: 6px;
         .chart-editor-content {
           overflow-y: auto;
           .ant-form-item {

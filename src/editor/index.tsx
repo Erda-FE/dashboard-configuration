@@ -132,19 +132,8 @@ export default () => {
   return (
     <div className="editor-mode">
       <div className="editor-content">
-        <div className="editor-previewer">'///'</div>
+        <div className="editor-previewer">render chart</div>
         <div className="chart-editor">
-          {/* <EditorContainer
-            visible={visible}
-            onClose={addMode ? deleteEditor : closeEditor}
-            bodyStyle={{
-              padding: 0,
-              height: '350px',
-              overflow: 'auto',
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          > */}
           <div className="chart-editor-content">
             <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
           </div>

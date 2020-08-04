@@ -1,6 +1,6 @@
 {
   "name": "@terminus/dashboard-configurator",
-  "version": "0.3.102-alpha.0",
+  "version": "0.3.101",
   "description": "Dashboard configurator with Echart",
   "main": "./index.js",
   "types": "./src/types/index.d.ts",
@@ -20,7 +20,9 @@
     "lint-fix": "eslint --fix example ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
     "tslint-fix": "tslint --fix 'src/**/*.tsx' ",
     "stylelint-fix": "stylelint 'example/**/*.scss' --config .stylelintrc.json --fix",
-    "pub": "npm version patch && npm publish && git push"
+    "pub": "npm version patch && npm publish && git push",
+    "pub-alpha": "npm version prerelease --preid alpha && npm publish --tag alpha && git push",
+    "pub-beta": "npm version prerelease --preid beta && npm publish --tag beta && git push"
   },
   "repository": {
     "type": "git",

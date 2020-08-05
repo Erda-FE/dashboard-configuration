@@ -19,17 +19,9 @@ $light-black: #606060;
       }
       .chart-editor {
         width: 450px;
+        padding: 0 12px;
         background: $color-white;
         border-radius: 6px;
-        .chart-editor-content {
-          overflow-y: auto;
-          .ant-form-item {
-            margin-bottom: 12px;
-          }
-        }
-        .configurator-section {
-          padding: 0 12px;
-        }
       }
     }
     .editor-footer {

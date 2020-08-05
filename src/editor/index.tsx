@@ -134,9 +134,7 @@ export default () => {
       <div className="editor-content">
         <div className="editor-previewer">render chart</div>
         <div className="chart-editor">
-          <div className="chart-editor-content">
-            <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
-          </div>
+          <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
         </div>
       </div>
       <div className="editor-footer">

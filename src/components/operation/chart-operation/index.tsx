@@ -212,7 +212,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                       <Icon type="question-circle-o" />
                     </Tooltip>
                   </IF>
-                  <IF check={isEditMode}><Icon type="down" className="dc-chart-title-op" /></IF>
+                  <IF check={isEditMode && !chartEditorVisible}><Icon type="setting" className="dc-chart-title-op" /></IF>
                 </div>
               </Dropdown>
             </IF>

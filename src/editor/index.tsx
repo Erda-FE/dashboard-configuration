@@ -7,6 +7,7 @@ import './index.scss';
 import DataConfig from './data-config';
 import AxisConfig from './axis-config';
 import PanelCharts from './panel-views';
+import { ChartOperation } from '../components';
 import ChartEditorStore from '../stores/chart-editor';
 import DashboardStore from '../stores/dash-board';
 
@@ -32,7 +33,7 @@ export default () => {
     s.isTouched,
     s.viewCopy,
   ]);
-  const textMap = DashboardStore.useStore(s => s.textMap);
+  const [textMap, chartConfigMap] = DashboardStore.useStore(s => [s.textMap, s.chartConfigMap]);
   const currentChart = React.useMemo(() => get(viewMap, [editChartId]), [viewMap, editChartId]);
   if (!currentChart) {
     return null;
@@ -129,10 +130,24 @@ export default () => {
     // </TabPane>,
   ];
 
+  const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);
+  const ChartNode = get(chartConfigMap, [currentChart.chartType, 'Component']);
+  const { customRender } = currentChart;
+
   return (
     <div className="editor-mode">
       <div className="editor-content">
-        <div className="editor-previewer">render chart</div>
+        <div className="editor-previewer">
+          <ChartOperation viewId={editChartId} view={currentChart}>
+            {
+              customRender && (typeof customRender === 'function')
+                ?
+                  <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
+                :
+                  <ChartNode />
+            }
+          </ChartOperation>
+        </div>
         <div className="chart-editor">
           <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
         </div>
@@ -150,7 +165,7 @@ export default () => {
             >
               <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
             </Popconfirm>
-          :
+            :
             <Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>
         }
       </div>

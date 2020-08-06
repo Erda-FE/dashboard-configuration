@@ -1,7 +1,7 @@
 import { Icon, Input, Tooltip, Drawer } from 'antd';
 import classnames from 'classnames';
 import { get, isPlainObject, isEmpty, map, isFunction } from 'lodash';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import ReactDOM from 'react-dom';
 import { useUnmount, useMount } from 'react-use';
 import ReactGridLayout from 'react-grid-layout';
@@ -22,8 +22,8 @@ import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 import './index.scss';
 
 interface IProps {
-  readOnly?: boolean // 只读
-  isEN?: boolean // 文案语言
+  readOnly?: boolean // 隐藏编辑入口
+  isEN?: boolean // 临时解决文案英文显示
   layout?: any // 配置信息，包含图表布局、各图表配置信息
   beforeOnSave?: () => boolean, // 返回 false 来拦截 onSave
   onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
@@ -91,11 +91,10 @@ const BoardGrid = ({
   const boardGridRef = useRef(null);
   const boardRef = useRef(null);
   const forceUpdate = useForceUpdate();
-  const [chartConfigMap, setChartConfigMap] = useState({});
 
-  const [dashboardLayout, isEditMode, textMap] = DashboardStore.useStore(s => [s.layout, s.isEditMode, s.textMap]);
+  const [dashboardLayout, isEditMode, textMap, chartConfigMap] = DashboardStore.useStore(s => [s.layout, s.isEditMode, s.textMap, s.chartConfigMap]);
   const [viewMap, editChartId] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId]);
-  const { updateLayout, setEditMode, saveEdit, reset: resetBoard, updateContextMap, setTextMap } = DashboardStore;
+  const { updateLayout, setEditMode, saveEdit, reset: resetBoard, updateContextMap, setTextMap, setChartConfigMap } = DashboardStore;
   const { updateViewMap: updateChildMap, setPickChartModalVisible, reset: resetDrawer, addEditor } = ChartEditorStore;
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const [widthHolder, width] = useComponentWidth();

@@ -203,7 +203,6 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
               <Dropdown
                 disabled={!isEditMode || chartEditorVisible}
                 overlay={optionsMenu}
-                trigger={['click']}
               >
                 <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
                   <h2 className="dc-chart-title">{title}</h2>

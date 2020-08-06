@@ -1,4 +1,4 @@
-import { Button, message, Tabs, Popconfirm, Steps } from 'antd';
+import { Button, message, Tabs, Popconfirm } from 'antd';
 import { get, isEmpty, set } from 'lodash';
 import React from 'react';
 import { getData } from '../utils/comp';
@@ -7,11 +7,11 @@ import './index.scss';
 import DataConfig from './data-config';
 import AxisConfig from './axis-config';
 import PanelCharts from './panel-views';
+import { ChartOperation } from '../components';
 import ChartEditorStore from '../stores/chart-editor';
 import DashboardStore from '../stores/dash-board';
 
 const { TabPane } = Tabs;
-const { Step } = Steps;
 
 const noop = () => null;
 
@@ -33,7 +33,7 @@ export default () => {
     s.isTouched,
     s.viewCopy,
   ]);
-  const textMap = DashboardStore.useStore(s => s.textMap);
+  const [textMap, chartConfigMap] = DashboardStore.useStore(s => [s.textMap, s.chartConfigMap]);
   const currentChart = React.useMemo(() => get(viewMap, [editChartId]), [viewMap, editChartId]);
   if (!currentChart) {
     return null;
@@ -130,41 +130,44 @@ export default () => {
     // </TabPane>,
   ];
 
+  const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);
+  const ChartNode = get(chartConfigMap, [currentChart.chartType, 'Component']);
+  const { customRender } = currentChart;
+
   return (
-    <div className="chart-editor">
-      {/* <EditorContainer
-        visible={visible}
-        onClose={addMode ? deleteEditor : closeEditor}
-        bodyStyle={{
-          padding: 0,
-          height: '350px',
-          overflow: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      > */}
-      <div className="chart-editor-content">
-        <Tabs defaultActiveKey="setting" size="small">{tabPanes}</Tabs>
-      </div>
-      <div className="chart-editor-header">
-        <div className="header-right">
-          {
-          isTouched ?
-            (
-              <Popconfirm
-                okText={textMap.ok}
-                cancelText={textMap.cancel}
-                placement="top"
-                title={textMap['confirm to drop data']}
-                onConfirm={addMode ? deleteEditor : closeEditor}
-              >
-                <Button size="small" style={{ marginRight: 8 }}>{textMap.cancel}</Button>
-              </Popconfirm>
-            ) :
-            (<Button size="small" style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>)
-        }
-          <Button size="small" onClick={saveChart} type="primary">{textMap.ok}</Button>
+    <div className="editor-mode">
+      <div className="editor-content">
+        <div className="editor-previewer">
+          <ChartOperation viewId={editChartId} view={currentChart}>
+            {
+              customRender && (typeof customRender === 'function')
+                ?
+                  <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
+                :
+                  <ChartNode />
+            }
+          </ChartOperation>
         </div>
+        <div className="chart-editor">
+          <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
+        </div>
+      </div>
+      <div className="editor-footer">
+        <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
+        {
+          isTouched ?
+            <Popconfirm
+              okText={textMap.ok}
+              cancelText={textMap.cancel}
+              placement="top"
+              title={textMap['confirm to drop data']}
+              onConfirm={addMode ? deleteEditor : closeEditor}
+            >
+              <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
+            </Popconfirm>
+            :
+            <Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>
+        }
       </div>
     </div>
   );

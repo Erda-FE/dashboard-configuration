@@ -7,7 +7,6 @@ import screenfull from 'screenfull';
 import { getConfig } from '../../../config';
 import { saveImage, setScreenFull } from '../../../utils/comp';
 import { EmptyHolder, IF } from '../../common';
-import ViewControl from './control';
 import ViewMask from '../../charts/chart-mask';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
@@ -199,12 +198,11 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         <IF check={!hideHeader || isEditMode}>
           <div className="dc-chart-header">
             <IF check={isCustomTitle}>
-              {title}
+              <>{title}</>
               <IF.ELSE />
               <Dropdown
                 disabled={!isEditMode || chartEditorVisible}
                 overlay={optionsMenu}
-                trigger={['click']}
               >
                 <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
                   <h2 className="dc-chart-title">{title}</h2>
@@ -213,7 +211,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                       <Icon type="question-circle-o" />
                     </Tooltip>
                   </IF>
-                  <IF check={isEditMode}><Icon type="down" className="dc-chart-title-op" /></IF>
+                  <IF check={isEditMode && !chartEditorVisible}><Icon type="setting" className="dc-chart-title-op" /></IF>
                 </div>
               </Dropdown>
             </IF>
@@ -221,7 +219,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         </IF>
         <ViewMask message={message} />
         <div className="dc-draggable-handle">
-          <IF check={isEditMode}>
+          <IF check={isEditMode && !chartEditorVisible}>
             <Tooltip title={textMap.move}><Icon type="drag" /></Tooltip>
           </IF>
         </div>

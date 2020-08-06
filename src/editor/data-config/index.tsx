@@ -6,8 +6,6 @@ import { collectFields } from '../../components/common/utils';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 
-import './index.scss';
-
 const dataSourceTypes = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据' }];
 
 interface IProps {

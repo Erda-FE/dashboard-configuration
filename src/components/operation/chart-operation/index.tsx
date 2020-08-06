@@ -219,7 +219,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         </IF>
         <ViewMask message={message} />
         <div className="dc-draggable-handle">
-          <IF check={isEditMode}>
+          <IF check={isEditMode && !chartEditorVisible}>
             <Tooltip title={textMap.move}><Icon type="drag" /></Tooltip>
           </IF>
         </div>

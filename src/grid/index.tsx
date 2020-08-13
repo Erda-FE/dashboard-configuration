@@ -274,7 +274,7 @@ const BoardGrid = ({
                               ?
                                 <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
                               :
-                                <ChartNode />
+                                <ChartNode {...view.chartProps} />
                           }
                         </ChartOperation>
                       </React.Fragment>

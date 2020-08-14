@@ -71,7 +71,7 @@ const splitLayoutAndView = (layout: ILayout): [any[], any] => {
   return [pureLayout, viewMap];
 };
 
-const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);
+const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(ChartNode, view);
 
 const BoardGrid = ({
   readOnly = false,

@@ -30,8 +30,8 @@ export default ({ onPickChart }: IProps) => {
     >
       <div className="pick-chart-wp">
         <Row>
-          {map(getPickTypes(textMap), ({ chartName, chartImg, chartType }) => (
-            <Col span={8} key={chartName}>
+          {map(getPickTypes(textMap), ({ chartName, chartImg, chartType }, i) => (
+            <Col span={8} key={chartName+i}>
               <div className="chart-type-item" onClick={() => handlePickChart(chartType)}>
                 {chartImg}
                 <div className="desc">{chartName}</div>

@@ -224,9 +224,9 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
           </IF>
         </div>
         {
-            (!resData || isEmpty(resData.metricData)) ?
-              <EmptyHolder />
-              :
+          (typeof view.customRender !== 'function' && (!resData || isEmpty(resData.metricData)))
+            ? <EmptyHolder />
+            : (
               <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
                 {
                   React.cloneElement(childNode, {
@@ -236,6 +236,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                   })
                 }
               </div>
+            )
           }
       </div>
     );

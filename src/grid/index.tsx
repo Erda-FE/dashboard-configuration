@@ -265,21 +265,17 @@ const BoardGrid = ({
                 if (isPlainObject(view)) {
                   const { chartType = '', customRender } = view;
                   const ChartNode = get(chartConfigMap, [chartType, 'Component']);
-                  if (ChartNode) {
-                    ChildComp = (
-                      <React.Fragment>
-                        <ChartOperation viewId={i} view={view} expandOption={expandOption}>
-                          {
-                            customRender && (typeof customRender === 'function')
-                              ?
-                                <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
-                              :
-                                <ChartNode {...view.chartProps} />
-                          }
-                        </ChartOperation>
-                      </React.Fragment>
-                    );
-                  }
+                  ChildComp = (
+                    <React.Fragment>
+                      <ChartOperation viewId={i} view={view} expandOption={expandOption}>
+                        {
+                          typeof customRender === 'function'
+                            ? <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
+                            : <ChartNode {...view.chartProps} />
+                        }
+                      </ChartOperation>
+                    </React.Fragment>
+                  );
                 } else {
                   console.error('layout view should be object or function');
                 }

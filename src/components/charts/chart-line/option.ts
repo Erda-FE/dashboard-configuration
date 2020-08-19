@@ -31,20 +31,15 @@ export function getOption(data: IStaticData, config: IChartConfig) {
   const moreThanOneDay = isMoreThanOneDay || (timeSpan ? timeSpan.seconds > (24 * 3600) : false);
 
   map(metricData, (value, i) => {
-    const { axisIndex, name, tag } = value;
+    const { axisIndex, name, tag, ...rest } = value;
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
     const yAxisIndex = axisIndex || 0;
     const areaColor = areaColors[i];
     series.push({
-      type: value.type || 'line',
       name: value.tag || seriesName || value.name || value.key,
       yAxisIndex,
-      data: !isBarChangeColor ? value.data : map(value.data, (item: any, j) => {
-        const sect = Math.ceil(value.data.length / changeColors.length);
-        return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
-      }),
       label: {
         normal: {
           show: isLabel,
@@ -62,6 +57,12 @@ export function getOption(data: IStaticData, config: IChartConfig) {
           color: noAreaColor ? 'transparent' : areaColor,
         },
       },
+      ...rest,
+      type: value.type || 'line',
+      data: !isBarChangeColor ? value.data : map(value.data, (item: any, j) => {
+        const sect = Math.ceil(value.data.length / changeColors.length);
+        return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
+      }),
     });
     // const curMax = value.data ? calMax([value.data]) : [];
     // maxArr[yAxisIndex] = maxArr[yAxisIndex] && maxArr[yAxisIndex] > curMax ? maxArr[yAxisIndex] : curMax;

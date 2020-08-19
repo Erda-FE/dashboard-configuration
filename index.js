@@ -5,6 +5,7 @@ import DataSettingsCommonCharts from './src/components/charts/data-settings';
 import DataSettingsCommonControls from './src/components/controls/data-settings';
 
 export * from './src/config';
+export { colorMap as diceColorMap } from './src/theme/dice';
 
 export {
   BoardGrid,

@@ -24,7 +24,7 @@ export const colorMap = {
   brown,
   purple,
   gray,
-}
+};
 
 const colorList = [
   darkPurple,
@@ -38,9 +38,9 @@ const colorList = [
   brown,
   purple,
   gray,
-]
+];
 
-export const areaColors = colorList.map(c => c.slice(0, -1) + ', 0.2)');
+export const areaColors = colorList.map(c => `${c.slice(0, -1)}, 0.2)`);
 
 export const themeObj = {
   color: colorList,
@@ -65,7 +65,7 @@ export const themeObj = {
         width: '2',
       },
     },
-    symbolSize: '6',
+    symbolSize: '1',
     symbol: 'emptyCircle',
     smooth: true,
     smoothMonotone: 'x',
@@ -81,7 +81,7 @@ export const themeObj = {
         width: '2',
       },
     },
-    symbolSize: '6',
+    symbolSize: '1',
     symbol: 'emptyCircle',
     smooth: true,
   },
@@ -205,7 +205,7 @@ export const themeObj = {
         color: '#aaa',
       },
     },
-    symbolSize: '6',
+    symbolSize: '1',
     symbol: 'emptyCircle',
     smooth: true,
     color: [

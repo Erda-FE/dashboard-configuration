@@ -55,6 +55,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
       // markLine: i === 0 ? markLine : {}, //TODO
       connectNulls: true,
       symbol: 'emptyCircle',
+      symbolSize: 2,
       barMaxWidth: 50,
       areaStyle: {
         normal: {

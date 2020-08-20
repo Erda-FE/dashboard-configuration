@@ -155,8 +155,8 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
-    const message = this.getMessage({ fetchStatus });
-    const { title: _title, description: _description, hideHeader = false } = view;
+    const { title: _title, description: _description, hideHeader = false, maskMsg } = view;
+    const message = this.getMessage({ fetchStatus }) || maskMsg;
     const isCustomTitle = isFunction(_title);
     const title = isCustomTitle ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;

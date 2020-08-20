@@ -74,6 +74,7 @@ webpack相关配置变更，因为当前没有转为es5，需要项目中转换
         dataSourceType: 'static | api',
         staticData: realTimeStaticData, // 使用的静态数据
         dataHandler: '', // 外部注册的数据处理方法名称
+        maskMsg: '', // 不为空时显示mask并以其作为提示内容
         // controls: [], // 外部注册的组件名称列表
         api: {
           url: '',

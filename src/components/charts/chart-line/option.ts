@@ -85,7 +85,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
         show: false,
       },
       nameLocation: 'center',
-      nameGap: 40,
+      nameGap: 30,
       unitType: curUnitType,
       unit: curUnit,
       axisLabel: {

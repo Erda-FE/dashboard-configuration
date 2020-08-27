@@ -168,16 +168,16 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched, o
   ];
 
   return (
-    <section className="configurator-section">
-      <div className="configurator-content">
-        <div className="configurator-left">
+    <section>
+      <div className="dc-config-axis-content">
+        <div className="dc-config-axis-left">
           <h3>左 Y 轴</h3>
           <RenderPureForm
             list={leftfields}
             form={form}
           />
         </div>
-        <div className="configurator-right">
+        <div className="dc-config-axis-right">
           <h3>右 Y 轴</h3>
           <RenderPureForm
             list={rightfields}

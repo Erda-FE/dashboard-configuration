@@ -1,7 +1,7 @@
-:global {
-  .bi-view-control {
-    input {
-      margin-right: 12px;
-    }
+$control-prefix-cls: #{$prefix}-view-control;
+
+.#{$control-prefix-cls} {
+  input {
+    margin-right: 12px;
   }
 }

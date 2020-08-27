@@ -27,11 +27,11 @@ const Metric = ({ results = [], viewId }: IProps) => (
     <section className="dc-metrics-panel">
       {
         map(results, ({ name, value, unit, status, color }) => (
-          <div className="metric-item" key={uniqueId(viewId)}>
-            <span className={`metric-value ${color ? `color-${color}` : ''}`}>
+          <div className="dc-metric-item" key={uniqueId(viewId)}>
+            <span className={`dc-metric-value ${color ? `color-${color}` : ''}`}>
               {`${isNumber(value) ? ceil(value, 2) : value || '--'}${unit || ''}`}
             </span>
-            <span className="metric-name">{name || ''}</span>
+            <span className="dc-metric-name">{name || ''}</span>
           </div>
         ))
       }

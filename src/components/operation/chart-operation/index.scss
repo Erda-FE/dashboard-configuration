@@ -1,114 +1,82 @@
-$color-border: #e8e8e8;
-:global {
-  .dc-view-wrapper {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    border: 1px solid $color-border;
+$wrapper-prefix-cls: #{$prefix}-view-wrapper;
+$chart-prefix-cls: #{$prefix}-chart;
+
+.#{$wrapper-prefix-cls} {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background-color: #ffffff;
+  border: 1px solid $color-border;
+  border-radius: 6px;
+
+  &.active {
+    border: 2px dashed $color-primary;
     border-radius: 6px;
-    &.active {
-      border: 2px dashed $color-primary;
-      border-radius: 6px;
-    }
   }
-  .bi-view-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 32px;
-    margin-bottom: 4px;
-  }
-  .bi-view-header-left {
-    display: inline-flex;
-    flex: 1;
-    align-items: center;
-  }
-  .bi-view-header-right {
-    display: inline-flex;
-    align-items: center;
-    .reload-icon {
-      margin-left: 6px;
-      font-size: 18px;
-      cursor: pointer;
-      &:hover {
-        color: $color-primary;
-      }
-    }
-  }
-  .dc-draggable-handle {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 1;
-    display: flex;
+}
+
+.#{$prefix}-draggable-handle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  display: flex;
+  font-size: 18px;
+  cursor: move;
+
+  i {
+    padding: 4px;
     font-size: 18px;
-    cursor: move;
-    i {
-      padding: 4px;
-      font-size: 18px;
-      &:hover {
-        color: $color-primary;
-      }
+
+    &:hover {
+      color: $color-primary;
     }
   }
-  .bi-view-edit-op {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    color: #ffffff;
-    background: rgba(64, 64, 64, .6);
-    border-top-left-radius: 6px;
-    border-bottom-left-radius: 6px;
-    transform: translateY(-50%);
-    i {
-      padding: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      &:hover {
-        color: $color-primary;
-      }
-    }
-  }
-  .dc-chart {
-    position: relative;
-    flex: 1;
-    padding: 8px;
-  }
-  .dc-chart-header {
+}
+
+.#{$chart-prefix-cls} {
+  position: relative;
+  flex: 1;
+  padding: 8px;
+
+  &-header {
     padding: 8px 8px 0 8px;
     text-align: center;
   }
-  .dc-chart-title-ct {
+
+  &-title {
+    margin: 0;
+    color: rgba(0, 0, 0, 0.8);
+    font-weight: 500;
+    font-size: 14px;
+  }
+
+  &-title-ct {
     display: inline-flex;
     justify-content: center;
     align-items: center;
     height: 28px;
     padding: 0 8px;
     line-height: 28px;
+
     &.pointer {
       cursor: pointer;
     }
   }
-  .dc-chart-title {
-    margin: 0;
-    color: rgba(0, 0, 0, .8);
-    font-weight: 500;
-    font-size: 14px;
-  }
-  .dc-chart-title-op {
+
+  &-title-op {
     margin-left: 4px;
   }
-  .ant-dropdown-menu-item .dc-chart-title-dp-op {
-    display: flex;
-    align-items: center;
-    .anticon {
-      margin-right: 8px;
-    }
+}
+
+// TODO: remove it
+.ant-dropdown-menu-item .dc-chart-title-dp-op {
+  display: flex;
+  align-items: center;
+
+  .anticon {
+    margin-right: 8px;
   }
 }

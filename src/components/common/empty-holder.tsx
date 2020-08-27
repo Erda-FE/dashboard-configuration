@@ -4,7 +4,7 @@ import { Empty } from 'antd';
 import './empty-holder.scss';
 
 const EmptyHolder = () => (
-  <div className="bi-empty-holder">
+  <div className="dc-empty">
     <Empty description=" " />
   </div>
 );

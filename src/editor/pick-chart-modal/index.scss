@@ -1,10 +1,7 @@
-$border: 1px solid rgba(0, 0, 0, .1);
-$gray-color: rgba(0, 0, 0, .04);
-:global {
-  .fz12 {
-    font-size: 12px;
-  }
-  .chart-type-item {
+$pick-chart-cls: #{$prefix}-pick-chart;
+
+.#{$pick-chart-cls} {
+  &-type {
     &:hover {
       background-color: $gray-color;
       cursor: pointer;
@@ -13,8 +10,9 @@ $gray-color: rgba(0, 0, 0, .04);
     text-align: center;
     border: $border;
     border-radius: 3px;
-    .desc {
-      margin-bottom: 8px;
-    }
+  }
+
+  &-desc {
+    margin-bottom: 8px;
   }
 }

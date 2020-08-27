@@ -184,8 +184,8 @@ const BoardGrid = ({
     <div
       style={{ flex: 2 }}
       className={classnames({
-        'dashboard-configurator': true,
-        'dashboard-configurator-off-edit': !isEditMode,
+        'dc-grid': true,
+        'dc-grid-off-edit': !isEditMode,
         isFullscreen: screenfull.isFullscreen,
       })}
     >

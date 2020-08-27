@@ -1,38 +1,41 @@
-$color-border: #e8e8e8;
-$color-white: #ffffff;
-$light-black: #606060;
-:global {
-  .editor-mode {
+$editor-prefix-cls: #{$prefix}-editor;
+
+.#{$editor-prefix-cls} {
+  &-mode {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
     overflow: auto;
-    .editor-content {
-      display: flex;
-      flex: 1;
-      padding: 12px;
-      .editor-previewer {
-        flex: 1;
-        margin-right: 12px;
-        background: $color-white;
-        border-radius: 6px;
-      }
-      .chart-editor {
-        width: 450px;
-        padding: 0 12px;
-        background: $color-white;
-        border-radius: 6px;
-      }
-    }
-    .editor-footer {
-      display: flex;
-      flex-direction: row-reverse;
-      justify-content: start;
-      align-items: center;
-      // height: 40px;
-      padding: 8px 12px;
-      background: $color-white;
-    }
+  }
+
+  &-content {
+    display: flex;
+    flex: 1;
+    padding: 12px;
+  }
+
+  &-previewer {
+    flex: 1;
+    margin-right: 12px;
+    background: $color-white;
+    border-radius: 6px;
+  }
+
+  &-setting {
+    width: 450px;
+    padding: 0 12px;
+    background: $color-white;
+    border-radius: 6px;
+  }
+
+  &-footer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    align-items: center;
+    // height: 40px;
+    padding: 8px 12px;
+    background: $color-white;
   }
 }

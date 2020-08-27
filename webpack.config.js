@@ -272,7 +272,6 @@ module.exports = () => {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
               sourceMap: false,
               localIdentName: '[name]_[local]-[hash:base64:7]',
             },
@@ -288,7 +287,7 @@ module.exports = () => {
             options: {
               sourceMap: false,
               resources: [
-                resolve('./src/styles/_color.scss'),
+                resolve('./src/styles/_variable.scss'),
               ],
             },
           },

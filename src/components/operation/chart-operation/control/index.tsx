@@ -41,7 +41,7 @@ class Control extends React.PureComponent<IProps> {
       return null;
     }
     return (
-      <div className="bi-view-control">
+      <div className="dc-view-control">
         {controlList.map((CtrComp: any, i) => {
           const ctrProps = controlProps[i] || {};
           return (<CtrComp key={i} viewId={viewId} query={this.state.query} onChange={this.onControlChange} loadData={loadData} {...ctrProps} />);

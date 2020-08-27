@@ -135,9 +135,9 @@ export default () => {
   const { customRender } = currentChart;
 
   return (
-    <div className="editor-mode">
-      <div className="editor-content">
-        <div className="editor-previewer">
+    <div className="dc-editor-mode">
+      <div className="dc-editor-content">
+        <div className="dc-editor-previewer">
           <ChartOperation viewId={editChartId} view={currentChart}>
             {
               customRender && (typeof customRender === 'function')
@@ -148,11 +148,11 @@ export default () => {
             }
           </ChartOperation>
         </div>
-        <div className="chart-editor">
+        <div className="dc-editor-setting">
           <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
         </div>
       </div>
-      <div className="editor-footer">
+      <div className="dc-editor-footer">
         <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
         {
           isTouched ?

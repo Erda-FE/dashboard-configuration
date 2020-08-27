@@ -111,7 +111,7 @@ export const RenderFormItem = ({
       break;
     case 'inputNumber':
       ItemComp = (
-        <InputNumber {...itemProps} size={size} className="bi-full-width" />
+        <InputNumber {...itemProps} size={size} className="dc-form-full-width" />
       );
       break;
     case 'textArea':
@@ -201,8 +201,8 @@ export const RenderFormItem = ({
     }
   }
   const labelComp = (
-    <span className="bi-item-label">
-      <span className="label-text">{label}</span>{tooltip ? <Tooltip className="label-tooltip" title={tooltip}><Icon type="question-circle" /></Tooltip> : undefined}
+    <span className="dc-form-item-label">
+      <span className="label-text">{label}</span>{tooltip ? <Tooltip className="dc-form-item-label-tooltip" title={tooltip}><Icon type="question-circle" /></Tooltip> : undefined}
     </span>);
   return (
     <FormItem label={labelComp} {...layout} className={itemProps.type === 'hidden' ? 'hide' : ''} {...extraProps}>

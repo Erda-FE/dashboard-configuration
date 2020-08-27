@@ -1,8 +1,8 @@
-:global {
-  .bi-empty-holder {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-  }
+$empty-prefix-cls: #{$prefix}-empty;
+
+.#{$empty-prefix-cls} {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

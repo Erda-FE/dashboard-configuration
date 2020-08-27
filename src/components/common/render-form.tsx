@@ -33,7 +33,7 @@ class RenderPureForm extends React.Component<IProps> {
             // eslint-disable-next-line react/no-array-index-key
             <Row key={`sub-row${i}`} gutter={{ xs: 8, sm: 16, md: 24 }}>
               {
-                <div className="bi-sub-title">{label}</div>
+                <div className="dc-form-sub-title">{label}</div>
               }
               {rowFields.map((subField, j) => {
                 const { itemProps: subItemProps = {} } = subField;

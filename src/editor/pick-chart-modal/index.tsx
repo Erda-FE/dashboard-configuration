@@ -28,18 +28,16 @@ export default ({ onPickChart }: IProps) => {
       onCancel={() => setPickChartModalVisible(false)}
       footer={null}
     >
-      <div className="pick-chart-wp">
-        <Row>
-          {map(getPickTypes(textMap), ({ chartName, chartImg, chartType }, i) => (
-            <Col span={8} key={chartName+i}>
-              <div className="chart-type-item" onClick={() => handlePickChart(chartType)}>
-                {chartImg}
-                <div className="desc">{chartName}</div>
-              </div>
-            </Col>
-          ))}
-        </Row>
-      </div>
+      <Row>
+        {map(getPickTypes(textMap), ({ chartName, chartImg, chartType }, i) => (
+          <Col span={8} key={chartName + i}>
+            <div className="dc-pick-chart-type" onClick={() => handlePickChart(chartType)}>
+              {chartImg}
+              <div className="dc-pick-chart-desc">{chartName}</div>
+            </div>
+          </Col>
+        ))}
+      </Row>
     </Modal>
   );
 };

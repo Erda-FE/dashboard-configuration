@@ -16,7 +16,7 @@ interface IProps {
 const PanelViews = ({ chartType, onChoose }: IProps) => {
   const chartConfigMap = getConfig('chartConfigMap');
   return (
-    <div className="chart-type-container">
+    <div className="dc-editor-view-list-wrapper">
       {map(
         pick(chartConfigMap, ['chart:line', 'chart:area', 'chart:bar']),
         ({ icon, name }, type) => (
@@ -24,7 +24,7 @@ const PanelViews = ({ chartType, onChoose }: IProps) => {
             key={type}
             className={
             classnames({
-              'bi-config-editor-views': true,
+              'dc-editor-view-list': true,
               active: type === chartType,
             })
           }

@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const cssnano = require('cssnano');
@@ -12,63 +13,33 @@ const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
 const resolve = pathname => path.resolve(__dirname, pathname);
 
 module.exports = () => {
-  const isBuild = process.env.NODE_ENV === 'production';
+  const isProd = process.env.NODE_ENV === 'production';
 
-  const plugins = [];
-
-  if (!isBuild) {
-    plugins.push(
-      new webpack.DllReferencePlugin({
-        context: __dirname,
-        manifest: require('./manifest.json'),
-      }),
-    );
-  }
   return {
-    devtool: isBuild ? '' : 'cheap-module-eval-source-map',
+    devtool: isProd ? '' : 'cheap-module-eval-source-map',
     node: {
       net: 'empty',
     },
     entry: {
-      app: ['./example/index.js'],
+      index: isProd ? './index.ts' : './example/index.js',
     },
-    // externals: [
-    //   {
-    //     lodash: {
-    //       commonjs: 'lodash',
-    //       amd: 'lodash',
-    //       root: '_', // indicates global variable
-    //     },
-    //     echarts: {
-    //       commonjs: 'echarts',
-    //       amd: 'echarts',
-    //       root: 'echarts',
-    //     },
-    //     antd: {
-    //       commonjs: 'antd',
-    //       amd: 'antd',
-    //       root: 'antd',
-    //     },
-    //     react: {
-    //       commonjs: 'react',
-    //       amd: 'react',
-    //       root: 'react',
-    //     },
-    //     'react-dom': {
-    //       commonjs: 'react-dom',
-    //       amd: 'react-dom',
-    //       root: 'react-dom',
-    //     },
-    //   },
-    // ],
+    externals: isProd ? {
+      lodash: 'lodash',
+      echarts: 'echarts',
+      antd: 'antd',
+      react: 'react',
+      'react-dom': 'react-dom',
+      'moment': 'moment',
+      "@antd-design": '@antd-design',
+    } : undefined,
     stats: {
       assets: false,
       children: false,
     },
     output: {
       path: path.join(__dirname, '/public'),
-      filename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[name].js',
-      chunkFilename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[id].chunk.js',
+      filename: '[name].js',
+      chunkFilename: '[id].chunk.js',
       publicPath: '/',
     },
     module: {
@@ -85,18 +56,17 @@ module.exports = () => {
             'happypack/loader?id=scss',
           ],
         },
-        {
-          test: /\.(less)$/,
-          loaders: [
-            MiniCssExtractPlugin.loader,
-            'happypack/loader?id=less',
-          ],
-          include: [
-            resolve('example'),
-            resolve('src'),
-            resolve('node_modules/antd'),
-          ],
-        },
+        // {
+        //   test: /\.(less)$/,
+        //   loaders: [
+        //     MiniCssExtractPlugin.loader,
+        //     'happypack/loader?id=less',
+        //   ],
+        //   include: [
+        //     resolve('src'),
+        //     resolve('node_modules/antd'),
+        //   ],
+        // },
         {
           test: /\.(css)$/,
           loaders: [
@@ -129,10 +99,10 @@ module.exports = () => {
       modules: [resolve('example'), resolve('src'), 'node_modules'],
     },
     optimization: {
-      minimize: isBuild,
-      runtimeChunk: true,
+      minimize: isProd,
+      // runtimeChunk: true,
       namedChunks: true,
-      moduleIds: 'hashed',
+      // moduleIds: 'hashed',
       splitChunks: {
         chunks: 'all', // 必须三选一：'initial' | 'all' | 'async'
         minSize: 30000,
@@ -140,72 +110,52 @@ module.exports = () => {
         maxAsyncRequests: 5,
         maxInitialRequests: 6,
         name: true,
-        cacheGroups: {
-          styles: {
-            name: 'styles',
-            test: /\.s?css$/,
-            chunks: 'all',
-            enforce: true,
-            priority: 1,
-          },
-          commons: {
-            name: 'chunk-commons',
-            test: resolve('example/common'),
-            minChunks: 2, // 最小公用次数
-            priority: 2,
-            chunks: 'all',
-            reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的
-          },
-          antdUI: {
-            name: 'chunk-antd', // 单独将 antd 拆包
-            priority: 3,
-            test: /[\\/]node_modules[\\/]antd[\\/]/,
-            chunks: 'all',
-          },
-          libs: {
-            name: 'chunk-libs',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 4,
-            chunks: 'all',
-          },
-          codeMirror: {
-            name: 'chunk-codeMirror',
-            priority: 5,
-            test: /[\\/]node_modules[\\/]codemirror[\\/]/,
-            chunks: 'all',
-          },
-        },
+        // cacheGroups: {
+        //   styles: {
+        //     name: 'styles',
+        //     test: /\.s?css$/,
+        //     chunks: 'all',
+        //     enforce: true,
+        //     priority: 1,
+        //   },
+        //   commons: {
+        //     name: 'chunk-commons',
+        //     test: resolve('example/common'),
+        //     minChunks: 2, // 最小公用次数
+        //     priority: 2,
+        //     chunks: 'all',
+        //     reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的
+        //   },
+        // },
       },
-      minimizer: isBuild ? [
-        new UglifyJsPlugin({
-          sourceMap: false,
-          cache: path.join(__dirname, '/.cache'),
-          parallel: true,
-          uglifyOptions: {
-            output: {
-              comments: false,
-              beautify: false,
+      minimizer: isProd
+        ? [
+          new UglifyJsPlugin({
+            sourceMap: false,
+            cache: path.join(__dirname, '/.cache'),
+            parallel: true,
+            uglifyOptions: {
+              output: {
+                comments: false,
+                beautify: false,
+              },
             },
-          },
-        }),
-        new OptimizeCSSAssetsPlugin({
-          assetNameRegExp: /\.css$/g,
-          cssProcessor: cssnano,
-          cssProcessorOptions: {
-            safe: true,
-            discardComments: { removeAll: true },
-            autoprefixer: {
-              remove: false,
+          }),
+          new OptimizeCSSAssetsPlugin({
+            assetNameRegExp: /\.css$/g,
+            cssProcessor: cssnano,
+            cssProcessorOptions: {
+              safe: true,
+              discardComments: { removeAll: true },
+              autoprefixer: {
+                remove: false,
+              },
             },
-          },
-        }),
-      ] : [
-        new webpack.HotModuleReplacementPlugin(),
-      ],
-    },
-    performance: { // 为了不报warning，设置一个大值
-      maxAssetSize: 414679040,
-      maxEntrypointSize: 414679040,
+          }),
+        ]
+        : [
+          new webpack.HotModuleReplacementPlugin(),
+        ],
     },
     plugins: [
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
@@ -214,21 +164,8 @@ module.exports = () => {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV), // because webpack just do a string replace, so a pair of quotes is needed
         },
       }),
-      new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: './example/views/index.ejs',
-        hash: false,
-        inject: true,
-        needDll: !isBuild,
-        minify: isBuild ? {
-          collapseWhitespace: true,
-          minifyJS: true,
-          minifyCSS: true,
-          removeEmptyAttributes: true,
-        } : false,
-      }),
       new MiniCssExtractPlugin({
-        filename: isBuild ? '[name].[contenthash:8].css' : 'static/[name].css',
+        filename: '[name].css',
       }),
       new HappyPack({
         id: 'ts',
@@ -293,7 +230,25 @@ module.exports = () => {
           },
         ],
       }),
-      ...plugins,
+      ...(
+        isProd
+          ? []
+          : [
+            new webpack.DllReferencePlugin({
+              context: __dirname,
+              manifest: require('./manifest.json'),
+            }),
+            // new CopyWebpackPlugin([
+            //   { from: './example/index.html', to: '' },
+            // ]),
+            new HtmlWebpackPlugin({
+              filename: 'index.html',
+              template: './example/views/index.ejs',
+              hash: false,
+              minify: false,
+            })
+          ]
+      )
     ],
   };
 };

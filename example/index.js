@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'antd/lib/style/v2-compatible-reset';
+import 'antd/lib/style/v2-compatible-reset.css';
 import { Input } from 'antd';
 import { registDataConvertor, registControl, registChartOption, registTheme } from '../src/config';
 import { ajaxConvertor } from './mock/ajax-data';

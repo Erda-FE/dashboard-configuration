@@ -288,7 +288,7 @@ module.exports = () => {
             options: {
               sourceMap: false,
               resources: [
-                resolve('./example/styles/_color.scss'),
+                resolve('./src/styles/_color.scss'),
               ],
             },
           },

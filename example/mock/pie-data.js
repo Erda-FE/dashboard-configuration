@@ -35,7 +35,7 @@ export default [
         });
       },
       // dataConvertor: 'ajax',
-      // controls: ['input'],
+      controls: ['input'],
       config: {
         option: {
           legend: {

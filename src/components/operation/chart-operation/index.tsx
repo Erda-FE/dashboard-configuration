@@ -10,6 +10,7 @@ import { EmptyHolder, IF } from '../../common';
 import ViewMask from '../../charts/chart-mask';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
+import Control from './control';
 
 import './index.scss';
 
@@ -223,6 +224,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
             <Tooltip title={textMap.move}><Icon type="drag" /></Tooltip>
           </IF>
         </div>
+        {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}
         {
           (typeof view.customRender !== 'function' && (!resData || isEmpty(resData.metricData)))
             ? <EmptyHolder />

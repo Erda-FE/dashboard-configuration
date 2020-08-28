@@ -15,6 +15,7 @@
     "preweb": "shell/check-dll.sh",
     "web": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development ",
     "dll": "webpack --config webpack_dll.config.js --mode development",
+    "icon": "node tools/gen-icon",
     "build": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --color",
     "analyze": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --config webpack.analyze.js",
     "commitmsg": "commitlint -e $GIT_PARAMS",

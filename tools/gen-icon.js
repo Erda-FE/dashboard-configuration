@@ -20,7 +20,8 @@ agent.get(`https:${iconUrl}`).then(res => {
   const matchList = Array.from(content.matchAll(reg)).map(m => m[1]);
   fs.writeFile(
     `./src/types/iconfont.d.ts`,
-    `type DcIconType = ${matchList.map(i => `'${i}'`).join(' | ')}`,
+    `type DcIconType = ${matchList.map(i => `'${i}'`).join(' | ')}
+`, // left new empty line
     errHandler('iconfont type')
   );
 })

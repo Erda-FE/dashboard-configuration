@@ -1,15 +1,15 @@
 import { Button, message, Tabs, Popconfirm } from 'antd';
 import { get, isEmpty, set } from 'lodash';
 import React from 'react';
-import { getData } from '../utils/comp';
-import { getConfig } from '../config';
+import { getData } from '../../utils/comp';
+import { getConfig } from '../../config';
 import './index.scss';
 import DataConfig from './data-config';
 import AxisConfig from './axis-config';
 import PanelCharts from './panel-views';
-import { ViewOperation } from '../components';
-import ChartEditorStore from '../stores/chart-editor';
-import DashboardStore from '../stores/dash-board';
+import { ViewOperation } from '..';
+import ChartEditorStore from '../../stores/chart-editor';
+import DashboardStore from '../../stores/dash-board';
 
 const { TabPane } = Tabs;
 

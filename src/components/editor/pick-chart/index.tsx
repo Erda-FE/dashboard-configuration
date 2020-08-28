@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Modal, Row, Col } from 'antd';
 import { map } from 'lodash';
-import ChartEditorStore from '../../stores/chart-editor';
-import DashboardStore from '../../stores/dash-board';
-import basicCharts from '../../components/views';
+import ChartEditorStore from '../../../stores/chart-editor';
+import DashboardStore from '../../../stores/dash-board';
+import basicCharts from '../../views';
 import './index.scss';
 
 interface IProps {

@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { get } from 'lodash';
-import { collectFields } from '../../common/utils';
-import ChartEditorStore from '../../stores/chart-editor';
-import DashboardStore from '../../stores/dash-board';
+import { collectFields } from '../../../common/utils';
+import ChartEditorStore from '../../../stores/chart-editor';
+import DashboardStore from '../../../stores/dash-board';
 
 const dataSourceTypes = [{ value: 'static', name: '静态数据' }, { value: 'api', name: '接口数据' }];
 

@@ -1,4 +1,4 @@
-import BoardGrid from './grid';
+import BoardGrid from './components/grid';
 import './static/iconfont.css';
 
 export * from './config';

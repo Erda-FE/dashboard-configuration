@@ -20,7 +20,6 @@
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
     "lint-fix": "eslint --fix example ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
-    "tslint-fix": "tslint --fix 'src/**/*.tsx' ",
     "stylelint-fix": "stylelint 'example/**/*.scss' --config .stylelintrc.json --fix",
     "pub": "npm version patch && npm publish && git push",
     "pub-alpha": "npm version prerelease --preid alpha && npm publish --tag alpha && git push",
@@ -120,12 +119,10 @@
     ],
     "example/**/*.ts": [
       "eslint --fix",
-      "tslint --fix",
       "git add"
     ],
     "example/**/*.tsx": [
       "eslint --fix",
-      "tslint --fix",
       "git add"
     ]
   },

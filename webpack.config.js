@@ -85,15 +85,6 @@ module.exports = () => {
       ],
     },
     resolve: {
-      alias: {
-        // 其他
-        agent: resolve('example/agent.js'),
-        app: resolve('example'),
-        ws: resolve('example/ws.js'),
-        interface: resolve('interface'),
-        common: resolve('./src/components/common'),
-        theme: resolve('./src/theme/dice.ts'),
-      },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [resolve('example'), resolve('src'), 'node_modules'],
     },

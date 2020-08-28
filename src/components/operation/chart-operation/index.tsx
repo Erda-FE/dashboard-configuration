@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
 import { getConfig } from '../../../config';
 import { saveImage, setScreenFull } from '../../../utils/comp';
-import { EmptyHolder, IF } from '../../common';
+import { EmptyHolder, IF } from '../../../common';
 import ViewMask from '../../charts/chart-mask';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';

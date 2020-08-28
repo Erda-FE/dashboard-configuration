@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Form, Input, Select, InputNumber, Switch, Radio, Checkbox, Tooltip } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { DcIcon } from '..';
+import { DcIcon } from '../components';
 
 const FormItem = Form.Item;
 const { Option } = Select;

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { RenderPureForm } from '../../components/common';
+import { RenderPureForm } from '../../common';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 
 interface IProps {

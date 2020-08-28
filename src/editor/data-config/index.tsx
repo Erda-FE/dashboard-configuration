@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Form } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { get } from 'lodash';
-import { collectFields } from '../../components/common/utils';
+import { collectFields } from '../../common/utils';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 

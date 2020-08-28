@@ -1,7 +1,7 @@
 import { map, merge } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
-import { cutStr, getFormatter } from '../../common/utils';
+import { cutStr, getFormatter } from '../../../common/utils';
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 

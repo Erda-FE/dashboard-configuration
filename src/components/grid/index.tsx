@@ -8,17 +8,17 @@ import ReactGridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import screenfull from 'screenfull';
-import { registCharts } from '../config';
-import { theme, themeObj } from '../theme/dice';
-import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
-import { ChartOperation, defaultChartsMap, DcIcon } from '../components';
-import { EmptyHolder, IF, useForceUpdate, useComponentWidth } from '../components/common';
-import DefaultAPIFormComponent from '../editor/data-config/default-api-form';
-import ChartEditor from '../editor';
-import DashboardStore from '../stores/dash-board';
-import ChartEditorStore from '../stores/chart-editor';
-import PickChartModal from '../editor/pick-chart-modal';
-import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
+import { registCharts } from '../../config';
+import { theme, themeObj } from '../../theme/dice';
+import { formItemLayout, saveImage, setScreenFull } from '../../utils/comp';
+import { ChartOperation, defaultChartsMap, DcIcon } from '..';
+import { EmptyHolder, IF, useForceUpdate, useComponentWidth } from '../../common';
+import DefaultAPIFormComponent from '../../editor/data-config/default-api-form';
+import ChartEditor from '../../editor';
+import DashboardStore from '../../stores/dash-board';
+import ChartEditorStore from '../../stores/chart-editor';
+import PickChartModal from '../../editor/pick-chart-modal';
+import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../../constants';
 import './index.scss';
 
 interface IProps {

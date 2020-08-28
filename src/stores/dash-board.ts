@@ -6,7 +6,6 @@ interface IState {
   isEditMode: boolean
   layout: any[]
   contextMap: any
-  chartConfigMap: any
   textMap: { [k: string]: string }
 }
 
@@ -15,7 +14,6 @@ const initState: IState = {
   layout: [],
   contextMap: {},
   textMap: {},
-  chartConfigMap: {},
 };
 
 const getNewChartYPosition = (layout: any[]) => {
@@ -51,9 +49,6 @@ const dashBoardStore = createFlatStore({
     },
   },
   reducers: {
-    setChartConfigMap(state, config) {
-      state.chartConfigMap = config;
-    },
     updateLayout(state, layout: any[]) {
       state.layout = layout;
     },

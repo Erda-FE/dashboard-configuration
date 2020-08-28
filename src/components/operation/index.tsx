@@ -4,14 +4,14 @@ import { isEmpty, isString, isEqual, get, isFunction } from 'lodash';
 import React, { ReactElement } from 'react';
 import ReactDOM from 'react-dom';
 import screenfull from 'screenfull';
-import { getConfig } from '../../../config';
-import { saveImage, setScreenFull } from '../../../utils/comp';
-import { EmptyHolder, IF } from '../../../common';
-import ViewMask from '../../charts/chart-mask';
-import ChartEditorStore from '../../../stores/chart-editor';
-import DashboardStore from '../../../stores/dash-board';
+import { getConfig } from '../../config';
+import { saveImage, setScreenFull } from '../../utils/comp';
+import { EmptyHolder, IF } from '../../common';
+import ViewMask from '../views/chart-mask';
+import ChartEditorStore from '../../stores/chart-editor';
+import DashboardStore from '../../stores/dash-board';
 import Control from './control';
-import { DcIcon } from '../../Icon';
+import { DcIcon } from '../Icon';
 
 import './index.scss';
 
@@ -46,7 +46,7 @@ interface IMessage {
   fetchStatus: string
 }
 
-class ChartOperation extends React.PureComponent<IProps, IState> {
+class Operation extends React.PureComponent<IProps, IState> {
   private hasLoadFn: boolean;
 
   private chartRef: React.ReactInstance;
@@ -261,5 +261,5 @@ export default (p: any) => {
     editView,
     deleteView,
   };
-  return <ChartOperation {...props} {...p} />;
+  return <Operation {...props} {...p} />;
 };

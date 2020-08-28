@@ -1,5 +1,5 @@
 import { set, get } from 'lodash';
-import defaultChartsMap from '../components/charts';
+import defaultChartsMap from '../components/views';
 import { theme, themeObj as defaultTheme } from '../theme/dice';
 
 const globalConfig = {

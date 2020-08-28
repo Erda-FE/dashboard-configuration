@@ -82,7 +82,7 @@ export function saveImage(dom: Element | null | Text, name: string, textMap: any
 }
 
 
-export function setScreenFull(dom: Element | null | Text, isFullscreen: boolean) {
+export function setScreenFull(dom: Element | null | Text, isFullscreen = screenfull.isFullscreen) {
   if (dom && !isFullscreen) {
     screenfull.request(dom);
   } else {

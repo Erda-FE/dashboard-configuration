@@ -3,7 +3,7 @@
  */
 import React from 'react';
 import { map, isString, isEmpty } from 'lodash';
-import { getConfig } from '../../../../config';
+import { getConfig } from '../../../config';
 import './index.scss';
 
 interface IProps {

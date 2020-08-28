@@ -48,10 +48,10 @@ const staticData = {
 
 export default [
   {
-    w: 9,
+    w: 8,
     h: 9,
-    x: 8,
-    y: 4,
+    x: 0,
+    y: 9,
     i: 'view-1',
     moved: false,
     static: false,
@@ -101,10 +101,10 @@ export default [
     },
   },
   {
-    w: 9,
+    w: 8,
     h: 9,
     x: 8,
-    y: 14,
+    y: 9,
     i: 'view-3',
     moved: false,
     static: false,
@@ -125,10 +125,10 @@ export default [
     },
   },
   {
-    w: 9,
+    w: 8,
     h: 4,
-    x: 8,
-    y: 0,
+    x: 16,
+    y: 9,
     i: 'view-2',
     moved: false,
     static: false,

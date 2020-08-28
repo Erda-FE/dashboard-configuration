@@ -3,7 +3,7 @@ import ajaxLayout from './ajax-data';
 import pieLayout from './pie-data';
 
 export default [
-  ...lineLayout,
   ...pieLayout,
+  ...lineLayout,
   ...ajaxLayout,
 ];

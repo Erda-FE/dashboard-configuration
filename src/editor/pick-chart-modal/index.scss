@@ -3,7 +3,7 @@ $pick-chart-cls: #{$prefix}-pick-chart;
 .#{$pick-chart-cls} {
   &-type {
     &:hover {
-      background-color: $gray-color;
+      background-color: rgba(0, 0, 0, .04);
       cursor: pointer;
     }
     margin: 8px;

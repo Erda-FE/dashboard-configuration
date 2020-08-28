@@ -2,8 +2,6 @@ import { Popconfirm, Tooltip, Dropdown, Menu } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction } from 'lodash';
 import React, { ReactElement } from 'react';
-import ReactDOM from 'react-dom';
-import screenfull from 'screenfull';
 import { getConfig } from '../../config';
 import { saveImage, setScreenFull } from '../../utils/comp';
 import { EmptyHolder, IF } from '../../common';
@@ -49,7 +47,7 @@ interface IMessage {
 class Operation extends React.PureComponent<IProps, IState> {
   private hasLoadFn: boolean;
 
-  private chartRef: Element;
+  private chartRef: HTMLDivElement | null;
 
   constructor(props: IProps) {
     super(props);
@@ -213,7 +211,9 @@ class Operation extends React.PureComponent<IProps, IState> {
                       <DcIcon type="info-circle" />
                     </Tooltip>
                   </IF>
-                  <IF check={isEditMode && !chartEditorVisible}><DcIcon type="setting" className="dc-chart-title-op" /></IF>
+                  <IF check={isEditMode && !chartEditorVisible}>
+                    <DcIcon type="setting" className="dc-chart-title-op" />
+                  </IF>
                 </div>
               </Dropdown>
             </IF>

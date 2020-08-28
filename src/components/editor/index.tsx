@@ -25,15 +25,13 @@ export default () => {
     viewMap,
     editChartId,
     isTouched,
-    viewCopy,
   ] = ChartEditorStore.useStore(s => [
     s.addMode,
     s.viewMap,
     s.editChartId,
     s.isTouched,
-    s.viewCopy,
   ]);
-  const [textMap, chartConfigMap] = DashboardStore.useStore(s => [s.textMap, s.chartConfigMap]);
+  const textMap = DashboardStore.useStore(s => s.textMap);
   const currentChart = React.useMemo(() => get(viewMap, [editChartId]), [viewMap, editChartId]);
   if (!currentChart) {
     return null;
@@ -131,7 +129,8 @@ export default () => {
   ];
 
   const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);
-  const ChartNode = get(chartConfigMap, [currentChart.chartType, 'Component']);
+  const chartConfigMap = getConfig('chartConfigMap');
+  const ChartNode = get(chartConfigMap, [currentChart.chartType, 'Component']) as any;
   const { customRender } = currentChart;
 
   return (
@@ -141,10 +140,8 @@ export default () => {
           <ViewOperation viewId={editChartId} view={currentChart}>
             {
               customRender && (typeof customRender === 'function')
-                ?
-                  <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
-                :
-                  <ChartNode />
+                ? <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
+                : <ChartNode />
             }
           </ViewOperation>
         </div>

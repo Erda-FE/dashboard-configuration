@@ -3,7 +3,7 @@ import { Modal, Row, Col } from 'antd';
 import { map } from 'lodash';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
-import { getPickTypes } from './pick-types';
+import basicCharts from '../../components/views';
 import './index.scss';
 
 interface IProps {
@@ -29,11 +29,11 @@ export default ({ onPickChart }: IProps) => {
       footer={null}
     >
       <Row>
-        {map(getPickTypes(textMap), ({ chartName, chartImg, chartType }, i) => (
-          <Col span={8} key={chartName + i}>
-            <div className="dc-pick-chart-type" onClick={() => handlePickChart(chartType)}>
-              {chartImg}
-              <div className="dc-pick-chart-desc">{chartName}</div>
+        {map(basicCharts, ({ name, image }, chartType) => (
+          <Col span={8} key={chartType}>
+            <div className="dc-pick-chart-type" onClick={() => handlePickChart(chartType as ChartType)}>
+              {image}
+              <div className="dc-pick-chart-desc">{name}</div>
             </div>
           </Col>
         ))}

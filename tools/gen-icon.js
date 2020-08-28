@@ -1,7 +1,7 @@
 const fs = require('fs');
 const agent = require('superagent');
 
-const iconUrl = '//at.alicdn.com/t/font_2032442_nvs2v32j1o.css';
+const iconUrl = '//at.alicdn.com/t/font_2032442_zym1o0sk8q8.css';
 const reg = /\.dc-icon-([a-zA-Z-_]+):before /g; // match dc-icon-(xxx)
 
 const errHandler = (msg) => (err) => {
@@ -20,7 +20,7 @@ agent.get(`https:${iconUrl}`).then(res => {
   const matchList = Array.from(content.matchAll(reg)).map(m => m[1]);
   fs.writeFile(
     `./src/types/iconfont.d.ts`,
-    `type IconType = ${matchList.map(i => `'${i}'`).join(' | ')}`,
+    `type DcIconType = ${matchList.map(i => `'${i}'`).join(' | ')}`,
     errHandler('iconfont type')
   );
 })

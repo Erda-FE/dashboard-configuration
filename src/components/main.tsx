@@ -10,7 +10,7 @@ import { IF, useForceUpdate, useComponentWidth } from '../common';
 import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 import ChartEditor from '../editor';
 import DefaultAPIFormComponent from '../editor/data-config/default-api-form';
-import PickChartModal from '../editor/pick-chart-modal';
+import PickChartModal from '../editor/pick-chart';
 import ChartEditorStore from '../stores/chart-editor';
 import DashboardStore from '../stores/dash-board';
 import { theme, themeObj } from '../theme/dice';
@@ -156,10 +156,10 @@ const DCMain = ({
           : (
             <React.Fragment>
               <Tooltip placement="bottom" title={isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
-                <DcIcon type={isFullscreen ? 'shrink' : 'full_screen'} onClick={onSetScreenFull} />
+                <DcIcon type={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} onClick={onSetScreenFull} />
               </Tooltip>
               <Tooltip placement="bottom" title={textMap['export picture']}>
-              <DcIcon type="capture" onClick={onSaveImg} />
+              <DcIcon type="camera" onClick={onSaveImg} />
             </Tooltip>
               <Tooltip placement="bottom" title={textMap.edit}>
                 <DcIcon

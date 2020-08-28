@@ -1,1 +1,1 @@
-type DcIconType = 'shrink' | 'add' | 'capture' | 'edit' | 'save' | 'config' | 'info' | 'outline' | 'drag' | 'full_screen' | 'close'
+type DcIconType = 'edit' | 'fullscreen' | 'fullscreen-exit' | 'close' | 'drag' | 'plus' | 'info-circle' | 'setting' | 'save' | 'delete' | 'camera'

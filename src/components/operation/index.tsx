@@ -135,7 +135,7 @@ class Operation extends React.PureComponent<IProps, IState> {
   }
 
   onSetScreenFull = () => {
-    setScreenFull(ReactDOM.findDOMNode(this.chartRef), screenfull.isFullscreen); // eslint-disable-line
+    setScreenFull(ReactDOM.findDOMNode(this.chartRef)); // eslint-disable-line
   }
 
   getMessage = ({ fetchStatus }: IMessage): string => {
@@ -184,12 +184,12 @@ class Operation extends React.PureComponent<IProps, IState> {
         </Menu.Item>
         <Menu.Item key="2">
           <a className="dc-chart-title-dp-op" onClick={this.onSaveImg}>
-            <DcIcon type="capture" />{textMap.export}
+            <DcIcon type="camera" />{textMap.export}
           </a>
         </Menu.Item>
         <Menu.Item key="3">
           <a className="dc-chart-title-dp-op" onClick={this.onSetScreenFull}>
-            <DcIcon type="full_screen" />{textMap.fullscreen}
+            <DcIcon type="fullscreen" />{textMap.fullscreen}
           </a>
         </Menu.Item>
       </Menu>
@@ -210,7 +210,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                   <h2 className="dc-chart-title">{title}</h2>
                   <IF check={description}>
                     <Tooltip title={description} className="dc-chart-title-op">
-                      <DcIcon type="info" />
+                      <DcIcon type="info-circle" />
                     </Tooltip>
                   </IF>
                   <IF check={isEditMode && !chartEditorVisible}><DcIcon type="setting" className="dc-chart-title-op" /></IF>

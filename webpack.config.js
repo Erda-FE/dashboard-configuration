@@ -21,7 +21,7 @@ module.exports = () => {
       net: 'empty',
     },
     entry: {
-      index: isProd ? './index.ts' : './example/index.js',
+      index: isProd ? './src/index.ts' : './example/index.js',
     },
     externals: isProd ? {
       lodash: 'lodash',
@@ -30,7 +30,6 @@ module.exports = () => {
       react: 'react',
       'react-dom': 'react-dom',
       'moment': 'moment',
-      "@antd-design": '@antd-design',
     } : undefined,
     stats: {
       assets: false,
@@ -238,9 +237,9 @@ module.exports = () => {
               context: __dirname,
               manifest: require('./manifest.json'),
             }),
-            // new CopyWebpackPlugin([
-            //   { from: './example/index.html', to: '' },
-            // ]),
+            new CopyWebpackPlugin([
+              { from: './src/static', to: 'static' },
+            ]),
             new HtmlWebpackPlugin({
               filename: 'index.html',
               template: './example/views/index.ejs',

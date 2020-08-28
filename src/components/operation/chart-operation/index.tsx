@@ -1,4 +1,4 @@
-import { Icon, Popconfirm, Tooltip, Dropdown, Menu } from 'antd';
+import { Popconfirm, Tooltip, Dropdown, Menu } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction } from 'lodash';
 import React, { ReactElement } from 'react';
@@ -11,6 +11,7 @@ import ViewMask from '../../charts/chart-mask';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 import Control from './control';
+import { DcIcon } from '../../Icon';
 
 import './index.scss';
 
@@ -165,7 +166,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
       <Menu>
         <Menu.Item key="0">
           <a className="dc-chart-title-dp-op" onClick={() => editView(viewId)}>
-            <Icon type="edit" />{textMap.edit}
+            <DcIcon type="edit" />{textMap.edit}
           </a>
         </Menu.Item>
         <Menu.Item key="1">
@@ -177,18 +178,18 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
             onConfirm={() => deleteView(viewId)}
           >
             <a className="dc-chart-title-dp-op">
-              <Icon type="delete" />{textMap.delete}
+              <DcIcon type="delete" />{textMap.delete}
             </a>
           </Popconfirm>
         </Menu.Item>
         <Menu.Item key="2">
           <a className="dc-chart-title-dp-op" onClick={this.onSaveImg}>
-            <Icon type="camera" />{textMap.export}
+            <DcIcon type="capture" />{textMap.export}
           </a>
         </Menu.Item>
         <Menu.Item key="3">
           <a className="dc-chart-title-dp-op" onClick={this.onSetScreenFull}>
-            <Icon type="arrows-alt" />{textMap.fullscreen}
+            <DcIcon type="full_screen" />{textMap.fullscreen}
           </a>
         </Menu.Item>
       </Menu>
@@ -209,10 +210,10 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
                   <h2 className="dc-chart-title">{title}</h2>
                   <IF check={description}>
                     <Tooltip title={description} className="dc-chart-title-op">
-                      <Icon type="question-circle-o" />
+                      <DcIcon type="info" />
                     </Tooltip>
                   </IF>
-                  <IF check={isEditMode && !chartEditorVisible}><Icon type="setting" className="dc-chart-title-op" /></IF>
+                  <IF check={isEditMode && !chartEditorVisible}><DcIcon type="setting" className="dc-chart-title-op" /></IF>
                 </div>
               </Dropdown>
             </IF>
@@ -221,7 +222,7 @@ class ChartOperation extends React.PureComponent<IProps, IState> {
         <ViewMask message={message} />
         <div className="dc-draggable-handle">
           <IF check={isEditMode && !chartEditorVisible}>
-            <Tooltip title={textMap.move}><Icon type="drag" /></Tooltip>
+            <Tooltip title={textMap.move}><DcIcon type="drag" /></Tooltip>
           </IF>
         </div>
         {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}

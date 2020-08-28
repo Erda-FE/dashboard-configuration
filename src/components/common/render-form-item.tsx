@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { isFunction } from 'lodash';
-import { Form, Input, Select, InputNumber, Switch, Radio, Checkbox, Icon, Tooltip } from 'antd';
+import { Form, Input, Select, InputNumber, Switch, Radio, Checkbox, Tooltip } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { DcIcon } from '..';
 
 const FormItem = Form.Item;
 const { Option } = Select;
@@ -202,7 +202,7 @@ export const RenderFormItem = ({
   }
   const labelComp = (
     <span className="dc-form-item-label">
-      <span className="label-text">{label}</span>{tooltip ? <Tooltip className="dc-form-item-label-tooltip" title={tooltip}><Icon type="question-circle" /></Tooltip> : undefined}
+      <span className="label-text">{label}</span>{tooltip ? <Tooltip className="dc-form-item-label-tooltip" title={tooltip}><DcIcon type="info" /></Tooltip> : undefined}
     </span>);
   return (
     <FormItem label={labelComp} {...layout} className={itemProps.type === 'hidden' ? 'hide' : ''} {...extraProps}>

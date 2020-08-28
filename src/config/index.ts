@@ -1,13 +1,11 @@
 import { set, get } from 'lodash';
 import defaultChartsMap from '../components/charts';
-import { EditorContainer } from './editor-container';
 import { theme, themeObj as defaultTheme } from '../theme/dice';
 
 const globalConfig = {
   chartConfigMap: defaultChartsMap,
   chartOption: {},
   chartOptionFn: {},
-  EditorContainer,
   dataConvertor: {},
   ControlMap: {},
   theme: {

@@ -8,7 +8,7 @@ const getCustomTransformers = () => ({
     {
       libraryName: 'antd',
       libraryDirectory: 'es',
-      style: false,
+      style: 'css',
     },
     {
       style: false,

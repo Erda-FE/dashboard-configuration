@@ -1,4 +1,4 @@
-import { Icon, Input, Tooltip, Drawer } from 'antd';
+import { Input, Tooltip, Drawer } from 'antd';
 import classnames from 'classnames';
 import { get, isPlainObject, isEmpty, map, isFunction } from 'lodash';
 import React, { useRef } from 'react';
@@ -11,7 +11,7 @@ import screenfull from 'screenfull';
 import { registCharts } from '../config';
 import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, saveImage, setScreenFull } from '../utils/comp';
-import { ChartOperation, defaultChartsMap } from '../components';
+import { ChartOperation, defaultChartsMap, DcIcon } from '../components';
 import { EmptyHolder, IF, useForceUpdate, useComponentWidth } from '../components/common';
 import DefaultAPIFormComponent from '../editor/data-config/default-api-form';
 import ChartEditor from '../editor';
@@ -71,7 +71,7 @@ const splitLayoutAndView = (layout: ILayout): [any[], any] => {
   return [pureLayout, viewMap];
 };
 
-const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(ChartNode, view);
+const CustomNode = ({ ChartNode, render, view }: any) => render(ChartNode, view);
 
 const BoardGrid = ({
   readOnly = false,
@@ -168,7 +168,9 @@ const BoardGrid = ({
   };
 
   const onSaveImg = () => {
-    saveImage(ReactDOM.findDOMNode(boardGridRef.current), 'dashboard', textMap); // eslint-disable-line
+    if (boardGridRef.current) {
+      saveImage(ReactDOM.findDOMNode(boardGridRef.current), 'dashboard', textMap); // eslint-disable-line
+    }
   };
 
   const onSetScreenFull = () => {
@@ -198,13 +200,14 @@ const BoardGrid = ({
                 <IF check={!chartEditorVisible}>
                   <React.Fragment>
                     <Tooltip placement="bottom" title={textMap.add}>
-                      <Icon type="plus" onClick={() => setPickChartModalVisible(true)} />
+                      <DcIcon type="add" onClick={() => setPickChartModalVisible(true)} />
                     </Tooltip>
                     <Tooltip placement="bottom" title={textMap.save}>
-                      <Icon type="save" onClick={_onSave} />
+                      <DcIcon type="save" onClick={_onSave} />
+                      <span className="dc-iconfont dc-icon-save"></span>
                     </Tooltip>
                     <Tooltip placement="bottom" title={textMap.cancel}>
-                      <Icon type="close" onClick={_onCancel} />
+                      <DcIcon type="close" onClick={_onCancel} />
                     </Tooltip>
                   </React.Fragment>
                 </IF>
@@ -212,13 +215,13 @@ const BoardGrid = ({
               : (
                 <React.Fragment>
                   <Tooltip placement="bottom" title={screenfull.isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
-                    <Icon type={screenfull.isFullscreen ? 'shrink' : 'arrows-alt'} onClick={onSetScreenFull} />
+                    <DcIcon type={screenfull.isFullscreen ? 'shrink' : 'full_screen'} onClick={onSetScreenFull} />
                   </Tooltip>
                   <Tooltip placement="bottom" title={textMap['export picture']}>
-                    <Icon type="camera" onClick={onSaveImg} />
+                    <DcIcon type="capture" onClick={onSaveImg} />
                   </Tooltip>
                   <Tooltip placement="bottom" title={textMap.edit}>
-                    <Icon
+                    <DcIcon
                       type="edit"
                       onClick={() => {
                         setEditMode(true);

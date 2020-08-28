@@ -136,45 +136,37 @@ const DCMain = ({
   const isFullscreen = (screenfull as any).isFullscreen;
   const header = (
     <div className="dc-header">
-      {
-        isEditMode
-          ? (
-            <IF check={!chartEditorVisible}>
-              <React.Fragment>
-                <Tooltip placement="bottom" title={textMap.add}>
-                  <DcIcon type="add" onClick={() => setPickChartModalVisible(true)} />
-                </Tooltip>
-                <Tooltip placement="bottom" title={textMap.save}>
-                  <DcIcon type="save" onClick={_onSave} />
-                </Tooltip>
-                <Tooltip placement="bottom" title={textMap.cancel}>
-                  <DcIcon type="close" onClick={_onCancel} />
-                </Tooltip>
-              </React.Fragment>
-            </IF>
-          )
-          : (
-            <React.Fragment>
-              <Tooltip placement="bottom" title={isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
-                <DcIcon type={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} onClick={onSetScreenFull} />
-              </Tooltip>
-              <Tooltip placement="bottom" title={textMap['export picture']}>
-              <DcIcon type="camera" onClick={onSaveImg} />
-            </Tooltip>
-              <Tooltip placement="bottom" title={textMap.edit}>
-                <DcIcon
-                  type="edit"
-                  onClick={() => {
-                    setEditMode(true);
-                    if (onEdit) {
-                      onEdit();
-                    }
-                  }}
-                />
-              </Tooltip>
-            </React.Fragment>
-          )
-      }
+      <IF check={isEditMode}>
+        <IF check={!chartEditorVisible}>
+          <Tooltip placement="bottom" title={textMap.add}>
+            <DcIcon type="plus" onClick={() => setPickChartModalVisible(true)} />
+          </Tooltip>
+          <Tooltip placement="bottom" title={textMap.save}>
+            <DcIcon type="save" onClick={_onSave} />
+          </Tooltip>
+          <Tooltip placement="bottom" title={textMap.cancel}>
+            <DcIcon type="close" onClick={_onCancel} />
+          </Tooltip>
+        </IF>
+        <IF.ELSE />
+        <Tooltip placement="bottom" title={isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
+          <DcIcon type={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} onClick={onSetScreenFull} />
+        </Tooltip>
+        <Tooltip placement="bottom" title={textMap['export picture']}>
+          <DcIcon type="camera" onClick={onSaveImg} />
+        </Tooltip>
+        <Tooltip placement="bottom" title={textMap.edit}>
+          <DcIcon
+            type="edit"
+            onClick={() => {
+              setEditMode(true);
+              if (onEdit) {
+                onEdit();
+              }
+            }}
+          />
+        </Tooltip>
+      </IF>
     </div>
   )
 

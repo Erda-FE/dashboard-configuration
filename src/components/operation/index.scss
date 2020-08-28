@@ -20,19 +20,13 @@ $chart-prefix-cls: #{$prefix}-chart;
 .#{$prefix}-draggable-handle {
   position: absolute;
   top: 0;
-  right: 0;
+  right: 4px;
   z-index: 1;
-  display: flex;
-  font-size: 18px;
+  font-size: 20px;
   cursor: move;
 
-  i {
-    padding: 4px;
-    font-size: 18px;
-
-    &:hover {
-      color: $color-primary;
-    }
+  &:hover {
+    color: $color-primary;
   }
 }
 

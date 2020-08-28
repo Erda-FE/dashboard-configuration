@@ -22,11 +22,11 @@ const IF = ({ children, check }: any) => {
   });
   if (bool) {
     return (
-      <>{...ifSection}</>
+      <React.Fragment>{...ifSection}</React.Fragment>
     );
   } else if (hasElse) {
     return (
-      <>{...elseSection}</>
+      <React.Fragment>{...elseSection}</React.Fragment>
     );
   }
   return null;

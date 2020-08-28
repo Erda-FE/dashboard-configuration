@@ -49,7 +49,7 @@ interface IMessage {
 class Operation extends React.PureComponent<IProps, IState> {
   private hasLoadFn: boolean;
 
-  private chartRef: React.ReactInstance;
+  private chartRef: Element;
 
   constructor(props: IProps) {
     super(props);
@@ -131,11 +131,11 @@ class Operation extends React.PureComponent<IProps, IState> {
 
   onSaveImg = () => {
     const { viewId, textMap } = this.props;
-    saveImage(ReactDOM.findDOMNode(this.chartRef), viewId, textMap);  // eslint-disable-line
+    saveImage(this.chartRef, viewId, textMap);
   }
 
   onSetScreenFull = () => {
-    setScreenFull(ReactDOM.findDOMNode(this.chartRef)); // eslint-disable-line
+    setScreenFull(this.chartRef);
   }
 
   getMessage = ({ fetchStatus }: IMessage): string => {
@@ -154,7 +154,7 @@ class Operation extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, setViewInfo, chartEditorVisible } = this.props;
+    const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const { title: _title, description: _description, hideHeader = false, maskMsg } = view;
@@ -200,7 +200,7 @@ class Operation extends React.PureComponent<IProps, IState> {
         <IF check={!hideHeader || isEditMode}>
           <div className="dc-chart-header">
             <IF check={isCustomTitle}>
-              <>{title}</>
+              <React.Fragment>{title}</React.Fragment>
               <IF.ELSE />
               <Dropdown
                 disabled={!isEditMode || chartEditorVisible}
@@ -219,12 +219,10 @@ class Operation extends React.PureComponent<IProps, IState> {
             </IF>
           </div>
         </IF>
+        <IF check={isEditMode && !chartEditorVisible}>
+          <Tooltip title={textMap.move}><DcIcon type="drag" className="dc-draggable-handle" /></Tooltip>
+        </IF>
         <ViewMask message={message} />
-        <div className="dc-draggable-handle">
-          <IF check={isEditMode && !chartEditorVisible}>
-            <Tooltip title={textMap.move}><DcIcon type="drag" /></Tooltip>
-          </IF>
-        </div>
         {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}
         {
           (typeof view.customRender !== 'function' && (!resData || isEmpty(resData.metricData)))
@@ -240,7 +238,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                 }
               </div>
             )
-          }
+        }
       </div>
     );
   }

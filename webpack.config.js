@@ -29,7 +29,7 @@ module.exports = () => {
       antd: 'antd',
       react: 'react',
       'react-dom': 'react-dom',
-      'moment': 'moment',
+      moment: 'moment',
     } : undefined,
     stats: {
       assets: false,
@@ -236,9 +236,9 @@ module.exports = () => {
               template: './example/views/index.ejs',
               hash: false,
               minify: false,
-            })
+            }),
           ]
-      )
+      ),
     ],
   };
 };

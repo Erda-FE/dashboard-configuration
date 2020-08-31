@@ -27,6 +27,7 @@ $grid-prefix-cls: #{$prefix}-grid;
 
 
 .#{$prefix}-header {
+  padding: 16px 20px;
   text-align: right;
 
   .#{$prefix}-iconfont {

@@ -1,21 +1,21 @@
 import { maxBy, remove } from 'lodash';
 import { createFlatStore } from '../cube';
 import chartEditorStore from './chart-editor';
+import { TEXT_EN_MAP, TEXT_ZH_MAP } from 'src/constants';
 
+type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
 interface IState {
   isEditMode: boolean
   layout: any[]
   contextMap: any
-  chartConfigMap: any
-  textMap: { [k: string]: string }
+  textMap: TextType
 }
 
 const initState: IState = {
   isEditMode: false,
   layout: [],
   contextMap: {},
-  textMap: {},
-  chartConfigMap: {},
+  textMap: {} as TextType,
 };
 
 const getNewChartYPosition = (layout: any[]) => {
@@ -51,9 +51,6 @@ const dashBoardStore = createFlatStore({
     },
   },
   reducers: {
-    setChartConfigMap(state, config) {
-      state.chartConfigMap = config;
-    },
     updateLayout(state, layout: any[]) {
       state.layout = layout;
     },
@@ -69,7 +66,7 @@ const dashBoardStore = createFlatStore({
     updateContextMap(state, contextMap: any) {
       state.contextMap = contextMap;
     },
-    setTextMap(state, textMap: { [k: string]: string }) {
+    setTextMap(state, textMap: TextType) {
       state.textMap = textMap;
     },
   },

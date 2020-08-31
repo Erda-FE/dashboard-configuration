@@ -29,9 +29,9 @@ export default [
   {
     w: 12,
     h: 9,
-    x: 0,
+    x: 12,
     y: 0,
-    i: 'view-2',
+    i: 'view-22',
     moved: false,
     static: false,
     view: {

@@ -25,8 +25,8 @@
     "paths": {
       "example/*": ["./example/*"],
       "agent": ["./example/agent.js"],
-      "common": ["./src/components/common"],
-      "common/*": ["./src/components/common/*"],
+      "common": ["src/common"],
+      "common/*": ["src/common/*"],
       "theme": ["./src/theme/dice/dice.ts"],
       "interface": ["./interface"],
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */

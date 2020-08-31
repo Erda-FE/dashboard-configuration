@@ -1,0 +1,18 @@
+$pick-chart-cls: #{$prefix}-pick-chart;
+
+.#{$pick-chart-cls} {
+  &-type {
+    &:hover {
+      background-color: rgba(0, 0, 0, .04);
+      cursor: pointer;
+    }
+    margin: 8px;
+    text-align: center;
+    border: $border;
+    border-radius: 3px;
+  }
+
+  &-desc {
+    margin-bottom: 8px;
+  }
+}

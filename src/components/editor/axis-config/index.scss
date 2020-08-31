@@ -1,0 +1,21 @@
+$axis-prefix-cls: #{$prefix}-config-axis;
+
+.#{$axis-prefix-cls} {
+  &-content {
+    display: flex;
+  }
+
+  &-left,
+  &-right {
+    flex: 1;
+  }
+
+  &-left {
+    padding-right: 10px;
+    border-right: 1px solid $color-border;
+  }
+
+  &-right {
+    padding-left: 10px;
+  }
+}

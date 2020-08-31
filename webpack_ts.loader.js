@@ -7,8 +7,8 @@ const getCustomTransformers = () => ({
   before: [tsImportPluginFactory([
     {
       libraryName: 'antd',
-      libraryDirectory: 'lib',
-      style: true,
+      libraryDirectory: 'es',
+      style: 'css',
     },
     {
       style: false,

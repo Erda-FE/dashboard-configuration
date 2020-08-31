@@ -1,0 +1,30 @@
+$editor-prefix-cls: #{$prefix}-editor;
+
+.#{$editor-prefix-cls} {
+  &-view-list-wrapper {
+    margin-bottom: 12px;
+    padding: 0 16px;
+  }
+
+  &-view-list {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 4px;
+    border: 1px solid transparent;
+
+    &:hover {
+      border: 1px dotted transparentize($color-primary, 0.1);
+    }
+
+    &.active {
+      border: 1px solid transparentize($color-primary, 0.1);
+    }
+
+    i {
+      color: $color-primary;
+      font-size: 24px;
+      cursor: pointer;
+    }
+  }
+}

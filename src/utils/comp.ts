@@ -81,12 +81,12 @@ export function saveImage(dom: Element | null | Text, name: string, textMap: any
   });
 }
 
-
-export function setScreenFull(dom: Element | null | Text, isFullscreen: boolean) {
+const sf = screenfull as any; // prevent type warn
+export function setScreenFull(dom: Element | null | Text, isFullscreen = sf.isFullscreen) {
   if (dom && !isFullscreen) {
-    screenfull.request(dom);
+    sf.request(dom);
   } else {
-    screenfull.exit();
+    sf.exit();
   }
 }
 

@@ -1,0 +1,8 @@
+$empty-prefix-cls: #{$prefix}-empty;
+
+.#{$empty-prefix-cls} {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

@@ -8,7 +8,7 @@ import { EmptyHolder, IF } from '../../common';
 import ViewMask from '../views/chart-mask';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
-import Control from './control';
+// import Control from './control';
 import { DcIcon } from '../Icon';
 
 import './index.scss';
@@ -207,8 +207,8 @@ class Operation extends React.PureComponent<IProps, IState> {
                 <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
                   <h2 className="dc-chart-title">{title}</h2>
                   <IF check={description}>
-                    <Tooltip title={description} className="dc-chart-title-op">
-                      <DcIcon type="info-circle" />
+                    <Tooltip title={description}>
+                      <DcIcon type="info-circle" className="dc-chart-title-op" />
                     </Tooltip>
                   </IF>
                   <IF check={isEditMode && !chartEditorVisible}>

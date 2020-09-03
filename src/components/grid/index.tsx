@@ -48,9 +48,7 @@ export const BoardGrid = ({ width, layout }: any) => {
   const { updateLayout, reset: resetBoard } = DashboardStore;
   const { updateViewMap: updateChildMap } = ChartEditorStore;
   console.log('dashboardLayout:', dashboardLayout);
-  React.useEffect(() => {
-    return () => resetBoard();
-  }, []);
+  React.useEffect(() => () => resetBoard(), []);
 
   React.useEffect(() => {
     const [pureLayout, _viewMap] = splitLayoutAndView(layout);

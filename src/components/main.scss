@@ -1,4 +1,4 @@
-@import '../styles/variable.scss';
+@import '../styles/variable';
 $grid-prefix-cls: #{$prefix}-grid;
 
 .#{$grid-prefix-cls} {

@@ -24,7 +24,7 @@ interface IProps {
 
 const Metric = ({ results = [], viewId }: IProps) => (
   <React.Fragment>
-    <section className="dc-metrics-panel">
+    <section className="dc-metric-panel">
       {
         map(results, ({ name, value, unit, status, color }) => (
           <div className="dc-metric-item" key={uniqueId(viewId)}>

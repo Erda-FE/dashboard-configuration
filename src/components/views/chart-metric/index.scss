@@ -4,7 +4,7 @@ $metric-prefix-cls: #{$prefix}-metric;
   display: flex;
   height: 100%;
 
-  &-item {
+  .#{$metric-prefix-cls}-item {
     position: relative;
     display: flex;
     flex: 1;
@@ -18,17 +18,17 @@ $metric-prefix-cls: #{$prefix}-metric;
       right: 0;
       width: 1px;
       height: 40px;
-      background: rgba(0, 0, 0, 0.1);
+      background: rgba(0, 0, 0, .1);
       content: "";
     }
 
-    &-value {
+    .#{$metric-prefix-cls}-value {
       margin-bottom: 8px;
       font-size: 20px;
     }
 
-    &-name {
-      color: rgba(0, 0, 0, 0.4);
+    .#{$metric-prefix-cls}-name {
+      color: rgba(0, 0, 0, .4);
       font-size: 14px;
     }
   }

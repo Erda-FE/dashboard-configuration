@@ -17,10 +17,10 @@ const ChartTable = ({ results = [], cols }: IProps) => {
       ...col,
       key: col.dataIndex,
     };
-    if (index === 0) {
+    if (index === 0 && cols.length > 5) {
       r = {
         ...r,
-        width: 100,
+        width: 150,
         fixed: 'left',
       };
     }
@@ -39,7 +39,7 @@ const ChartTable = ({ results = [], cols }: IProps) => {
           rowKey={'id'}
           columns={_cols}
           dataSource={results}
-          scroll={{ x: 1300 }}
+          scroll={cols.length > 5 ? { x: 150 + cols.length * 200 } : undefined}
           pagination={{
             hideOnSinglePage: true,
           }}

@@ -1,5 +1,5 @@
 import React from 'react';
-import BoardGrid from '../src/components/main';
+import { BoardGrid } from '../src/index';
 import layout from './mock/data';
 
 function App() {

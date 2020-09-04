@@ -204,7 +204,6 @@ module.exports = () => {
               sourceMap: false,
               resources: [
                 resolve('./src/styles/_variable.scss'),
-                resolve('./src/static/iconfont.css'),
               ],
             },
           },

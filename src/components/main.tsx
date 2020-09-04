@@ -18,6 +18,7 @@ import { formItemLayout, setScreenFull, saveImage } from '../utils/comp';
 import { BoardGrid } from './grid';
 import { DcIcon } from './index';
 import './main.scss';
+import '../static/iconfont.css';
 
 interface IProps {
   readOnly?: boolean // 隐藏编辑入口

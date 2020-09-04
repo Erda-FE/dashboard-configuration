@@ -12,11 +12,18 @@ interface IProps {
 }
 
 const ChartTable = ({ results = [], cols }: IProps) => {
-  const _cols = map(cols, (col) => {
+  const _cols = map(cols, (col, index) => {
     let r = {
       ...col,
       key: col.dataIndex,
     };
+    if (index === 0) {
+      r = {
+        ...r,
+        width: 100,
+        fixed: 'left',
+      };
+    }
     if (col.unit) {
       r = {
         ...r,
@@ -32,7 +39,10 @@ const ChartTable = ({ results = [], cols }: IProps) => {
           rowKey={'id'}
           columns={_cols}
           dataSource={results}
-          pagination={false}
+          scroll={{ x: 1300 }}
+          pagination={{
+            hideOnSinglePage: true,
+          }}
         />
       </section>
     </React.Fragment>

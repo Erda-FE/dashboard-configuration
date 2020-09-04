@@ -55,17 +55,6 @@ module.exports = () => {
             'happypack/loader?id=scss',
           ],
         },
-        // {
-        //   test: /\.(less)$/,
-        //   loaders: [
-        //     MiniCssExtractPlugin.loader,
-        //     'happypack/loader?id=less',
-        //   ],
-        //   include: [
-        //     resolve('src'),
-        //     resolve('node_modules/antd'),
-        //   ],
-        // },
         {
           test: /\.(css)$/,
           loaders: [
@@ -215,6 +204,7 @@ module.exports = () => {
               sourceMap: false,
               resources: [
                 resolve('./src/styles/_variable.scss'),
+                resolve('./src/static/iconfont.css'),
               ],
             },
           },

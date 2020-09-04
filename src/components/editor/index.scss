@@ -14,11 +14,13 @@ $editor-prefix-cls: #{$prefix}-editor;
     display: flex;
     flex: 1;
     padding: 12px;
+    overflow: auto;
   }
 
   &-previewer {
     flex: 1;
     margin-right: 12px;
+    overflow: auto;
     background: $color-white;
     border-radius: 6px;
   }

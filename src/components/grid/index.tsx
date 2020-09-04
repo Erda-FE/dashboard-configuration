@@ -28,8 +28,6 @@ const getGridBackground = (width: number) => {
   return `${front}${colsStr}${back}`;
 };
 
-const CustomNode = ({ ChartNode, render, view }: any) => render(ChartNode, view);
-
 const splitLayoutAndView = (layout: ILayout): [any[], any] => {
   const viewMap = {};
   const pureLayout = map(layout, (item) => {
@@ -92,13 +90,14 @@ export const BoardGrid = ({ width, layout }: any) => {
         if (isPlainObject(view)) {
           const { chartType = '', customRender } = view;
           const ChartNode = get(chartConfigMap, [chartType, 'Component']) as any;
+          const node = ChartNode ? <ChartNode {...view.chartProps} /> : null;
           ChildComp = (
             <React.Fragment>
               <ViewOperation viewId={i} view={view}>
                 {
                   typeof customRender === 'function'
-                    ? <CustomNode render={customRender} ChartNode={ChartNode} view={view} />
-                    : <ChartNode {...view.chartProps} />
+                    ? customRender(node, view)
+                    : node
                 }
               </ViewOperation>
             </React.Fragment>

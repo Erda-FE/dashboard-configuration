@@ -75,7 +75,7 @@ export const BoardGrid = ({ width, layout }: any) => {
       width={width}
       onLayoutChange={updateLayout}
       isDraggable
-      isResizable
+      isResizable={isEditMode}
       style={isEditMode ? { backgroundImage: getGridBackground(width) } : {}}
       onDragStart={onDragStart}
       draggableHandle=".dc-draggable-handle"

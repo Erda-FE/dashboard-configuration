@@ -133,7 +133,7 @@ const DCMain = ({
     addEditor(chartType);
   };
 
-  const isFullscreen = (screenfull as any).isFullscreen;
+  const { isFullscreen } = screenfull as any;
   const header = (
     <div className="dc-header">
       <IF check={isEditMode}>
@@ -168,13 +168,12 @@ const DCMain = ({
         </Tooltip>
       </IF>
     </div>
-  )
+  );
 
   return (
     <div
       className={classnames({
         'dc-grid': true,
-        'dc-grid-off-edit': !isEditMode,
         isFullscreen,
       })}
     >

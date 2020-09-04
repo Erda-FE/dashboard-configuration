@@ -35,6 +35,7 @@ $chart-prefix-cls: #{$prefix}-chart;
   position: relative;
   flex: 1;
   padding: 8px;
+  overflow: auto;
 
   &-header {
     padding: 8px 8px 0 8px;

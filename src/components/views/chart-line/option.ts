@@ -147,8 +147,7 @@ export function getOption(data: IStaticData, config: IChartConfig) {
     },
     xAxis: [
       {
-        type: 'category',
-        data: xData || time || [], /* X轴数据 */
+        data: xData || time || [], /* 类目轴数据 */
         axisTick: {
           show: false, /* 坐标刻度 */
         },

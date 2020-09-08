@@ -1,4 +1,4 @@
-@import '../../../styles/variable';
+@import "../../../styles/variable";
 $editor-prefix-cls: #{$prefix}-editor;
 
 .#{$editor-prefix-cls} {
@@ -15,11 +15,11 @@ $editor-prefix-cls: #{$prefix}-editor;
     border: 1px solid transparent;
 
     &:hover {
-      border: 1px dotted transparentize($color-primary, 0.1);
+      border: 1px dotted transparentize($color-primary, .1);
     }
 
     &.active {
-      border: 1px solid transparentize($color-primary, 0.1);
+      border: 1px solid transparentize($color-primary, .1);
     }
 
     i {

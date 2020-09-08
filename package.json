@@ -20,8 +20,8 @@
     "analyze": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --config webpack.analyze.js",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
-    "lint-fix": "eslint --fix example ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
-    "stylelint-fix": "stylelint 'example/**/*.scss' --config .stylelintrc.json --fix",
+    "lint-fix": "eslint --fix src ./webpack.config.js --ext '.js,.jsx,.tsx,.ts'",
+    "stylelint-fix": "stylelint 'src/**/*.scss' --config .stylelintrc.json --fix",
     "pub": "npm version patch && npm publish && git push",
     "pub-alpha": "npm version prerelease --preid alpha && npm publish --tag alpha && git push",
     "pub-beta": "npm version prerelease --preid beta && npm publish --tag beta && git push"

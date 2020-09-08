@@ -1,28 +1,28 @@
 const staticData = {
   xData: [
-    '13:39sasasasasas',
-    '13:40fdfdfdfdfdf',
-    '13:41fdfdsdsdsdsdsdsd',
-    '13:42dfdfdfdf',
-    '13:4fdfdfd3',
-    '13:44fdfdfdfdfdfd',
+    '满意',
+    '不满意',
+    '满不满意',
+    '可容忍',
+    '不可忍',
+    '13:哈哈',
   ],
   metricData: [
     {
       name: 'tset1',
-      // type: 'bar',
+      stack: 'a',
       data: [
-        '0.03',
-        '0.03',
-        '0.03',
-        '0.03',
-        '0.03',
-        '0.03',
+        '0.33',
+        '0.33',
+        '0.33',
+        '0.33',
+        '0.33',
+        '0.33',
       ],
     },
     {
       name: 'tset2',
-      // type: 'bar',
+      stack: 'a',
       data: [
         '0.78',
         '0.78',
@@ -33,7 +33,6 @@ const staticData = {
       ],
     }, {
       name: 'tset3',
-      // type: 'bar',
       data: [
         '0.03',
         '0.03',
@@ -57,7 +56,7 @@ export default [
     static: false,
     view: {
       name: 'test',
-      chartType: 'chart:line',
+      chartType: 'chart:bar',
       title: 'sasa',
       staticData,
       config: {

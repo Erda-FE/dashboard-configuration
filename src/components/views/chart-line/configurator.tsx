@@ -5,7 +5,8 @@ import { set, get, cloneDeep } from 'lodash';
 import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { RenderPureForm } from '../../../common';
+import { insertWhen } from '../../../common/utils';
+import { RenderPureForm, KVTable, IKVTableValue } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
@@ -49,7 +50,6 @@ const LineConfigurator = (props: IProps) => {
       label: textMap.title,
       name: 'title',
       type: 'input',
-      size: 'small',
       itemProps: {
         onBlur(e: any) {
           onEditorChange({ title: e.target.value });
@@ -60,13 +60,39 @@ const LineConfigurator = (props: IProps) => {
       label: textMap.description,
       name: 'description',
       type: 'textArea',
-      size: 'small',
       itemProps: {
         onBlur(e: any) {
           onEditorChange({ description: e.target.value });
         },
       },
     },
+    {
+      label: textMap.controls,
+      name: 'control.type',
+      type: 'select',
+      options: [{ name: textMap.select, value: 'select' }],
+      itemProps: {
+        allowClear: true,
+        onSelect(v: any) {
+          onEditorChange({ control: v });
+        },
+      },
+    },
+    ...insertWhen(true, [
+      {
+        label: textMap['control data'],
+        name: 'control.options',
+        type: 'custom',
+        getComp: () => (
+          <KVTable
+            form={form}
+            onChange={(values: IKVTableValue[]) => {
+              console.log(values);
+            }}
+          />
+        ),
+      },
+    ]),
     // {
     //   label: '提示',
     //   subList: [

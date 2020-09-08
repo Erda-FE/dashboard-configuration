@@ -18,6 +18,7 @@ const noop = () => null;
 export default () => {
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
+  const controlsConfigRef = React.useRef(null as any);
   const axesConfigFormRef = React.useRef(null as any);
 
   const [

@@ -9,6 +9,7 @@ interface IState {
   isEditMode: boolean
   layout: any[]
   contextMap: any
+  theme: string
   locale: 'en' | 'zh'
   textMap: TextType
 }
@@ -17,6 +18,7 @@ const initState: IState = {
   isEditMode: false,
   layout: [],
   contextMap: {},
+  theme: 'dice',
   locale: 'zh',
   textMap: TEXT_ZH_MAP,
 };
@@ -73,10 +75,16 @@ const dashBoardStore = createFlatStore({
       state.locale = key;
       state.textMap = key === 'en' ? TEXT_EN_MAP : TEXT_ZH_MAP;
     },
+    setTheme(state, theme?: string) {
+      state.theme = theme || 'dice';
+    },
   },
 });
 
 export const getLocale = () => dashBoardStore.getState(s => s.locale);
 export const setLocale = dashBoardStore.setLocale;
+
+export const getTheme = () => dashBoardStore.getState(s => s.theme);
+export const setTheme = dashBoardStore.setTheme;
 
 export default dashBoardStore;

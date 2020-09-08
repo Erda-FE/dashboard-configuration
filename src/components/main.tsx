@@ -12,7 +12,6 @@ import DefaultAPIFormComponent from './editor/data-config/default-api-form';
 import PickChartModal from './editor/pick-chart';
 import ChartEditorStore from '../stores/chart-editor';
 import DashboardStore from '../stores/dash-board';
-import { theme, themeObj } from '../theme/dice';
 import { formItemLayout, setScreenFull, saveImage } from '../utils/comp';
 import { BoardGrid } from './grid';
 import { DcIcon } from './index';
@@ -28,10 +27,8 @@ interface IProps {
   onCancel?: () => void, // 取消编辑
   onEdit?: () => void, // 触发编辑
   onEditorToggle?: (status: boolean) => void, // 图表编辑态改变
-  theme?: string, // 主题名
-  themeObj?: {}, // 主题内容
-  customCharts?: DC.ViewDefMap // 用户自定义图表（xx图）
-  controlsMap?: DC.ViewDefMap // 控件
+  // customCharts?: DC.ViewDefMap // 用户自定义图表（xx图）
+  // controlsMap?: DC.ViewDefMap // 控件
   UrlComponent?: React.ReactNode | React.SFC // 第三方系统的url配置器
   APIFormComponent?: React.ReactNode | React.SFC // 外部 API 表单配置器
   urlParamsMap?: { [name: string]: any } // 外部url参数映射
@@ -73,8 +70,6 @@ const DCMain = ({
 
   React.useEffect(() => {
     updateContextMap({
-      theme,
-      themeObj,
       getUrlComponent: () => UrlComponent,
       getAPIFormComponent: () => APIFormComponent,
       urlItemLayout,

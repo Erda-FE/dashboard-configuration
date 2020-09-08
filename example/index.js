@@ -4,6 +4,7 @@ import 'antd/lib/style/v2-compatible-reset.css';
 import { Input } from 'antd';
 import { registDataConvertor, registControl, registChartOption, registTheme } from '../src/config';
 import { ajaxConvertor } from './mock/ajax-data';
+import { darkTheme } from './theme';
 import App from './app';
 
 
@@ -32,9 +33,7 @@ const prepare = () => {
     return <Input value={`所有控件数据：${Object.values(query).join(',')}`} onChange={handleChange} style={{ width: '300px' }} />;
   });
 
-  const fullTheme = registTheme('test', {
-    color: 'red',
-  });
+  const fullTheme = registTheme('dark', darkTheme);
   console.log('fullTheme:', fullTheme);
 
 

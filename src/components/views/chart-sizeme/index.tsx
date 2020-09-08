@@ -2,6 +2,7 @@ import ReactEcharts, { Func } from 'echarts-for-react';
 import { isEqual } from 'lodash';
 import React from 'react';
 import DashboardStore from '../../../stores/dash-board';
+import { getConfig } from '../../../config';
 
 interface IProps {
   viewId: string
@@ -10,7 +11,7 @@ interface IProps {
     option: object
   }
   style?: object
-  contextMap: any
+  theme: string
   getOption(data: object, customOption: object): object
 }
 
@@ -19,13 +20,25 @@ const oldComponentDidMount = ReactEcharts.prototype.componentDidMount as Func;
 const oldComponentDidUpdate = ReactEcharts.prototype.componentDidUpdate as Func;
 
 ReactEcharts.prototype.componentDidMount = function (...arg) {
-  const { theme, themeObj } = this.props;
+  const { theme } = this.props;
+  const themeMap = getConfig('theme');
+  let themeObj = themeMap[theme];
+  if (!themeObj) {
+    console.info(`theme ${theme} not registered yet`)
+    themeObj = themeMap.dice;
+  }
   this.echartsLib.registerTheme(theme, themeObj);
   oldComponentDidMount.call(this, ...arg);
 };
 
 ReactEcharts.prototype.componentDidUpdate = function (...arg) {
-  const { theme, themeObj } = this.props;
+  const { theme } = this.props;
+  const themeMap = getConfig('theme');
+  let themeObj = themeMap[theme];
+  if (!themeObj) {
+    console.info(`theme ${theme} not registered yet`)
+    themeObj = themeMap.dice;
+  }
   this.echartsLib.registerTheme(theme, themeObj);
   oldComponentDidUpdate.call(this, ...arg);
 };
@@ -40,14 +53,12 @@ class Chart extends React.Component<IProps> {
   }
 
   render() {
-    const { data, config = {}, getOption, style, contextMap, ...others } = this.props;
-    const { theme, themeObj } = contextMap;
+    const { data, config = {}, getOption, style, theme, ...others } = this.props;
     return (
       <ReactEcharts
         {...others}
         option={getOption(data, config)}
         theme={theme}
-        themeObj={themeObj}
         style={{ ...style, height: '100%' }}
       />
     );
@@ -55,9 +66,6 @@ class Chart extends React.Component<IProps> {
 }
 
 export default (p: any) => {
-  const contextMap = DashboardStore.useStore(s => s.contextMap);
-  const storeProps = {
-    contextMap,
-  };
-  return <Chart {...p} {...storeProps} />;
+  const theme = DashboardStore.useStore(s => s.theme);
+  return <Chart {...p} theme={theme} />;
 };

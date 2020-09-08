@@ -202,7 +202,7 @@ export const RenderFormItem = ({
   }
   const labelComp = (
     <span className="dc-form-item-label">
-      <span className="label-text">{label}</span>{tooltip ? <Tooltip className="dc-form-item-label-tooltip" title={tooltip}><DcIcon type="info" /></Tooltip> : undefined}
+      <span className="label-text">{label}</span>{tooltip ? <Tooltip className="dc-form-item-label-tooltip" title={tooltip}><DcIcon type="info-circle" /></Tooltip> : undefined}
     </span>);
   return (
     <FormItem label={labelComp} {...layout} className={itemProps.type === 'hidden' ? 'hide' : ''} {...extraProps}>

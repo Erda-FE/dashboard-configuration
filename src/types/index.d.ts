@@ -60,9 +60,6 @@ declare module DC {
   interface ChartConfig {
     option?: Option;// 图表配置（完全匹配echarts配置），会作为最高优先级合并
     optionProps?: {// 一些用于调整option的参数
-      noAreaColor: boolean, // 不展示区域颜色
-      isMoreThanOneDay: boolean,
-      moreThanOneDayFormat: string, // M/D
       [k: string]: any
     };
     optionFn?: OptionFn;

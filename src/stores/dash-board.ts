@@ -2,13 +2,14 @@
 import { maxBy, remove } from 'lodash';
 import { createFlatStore } from '../cube';
 import chartEditorStore from './chart-editor';
-import { TEXT_EN_MAP, TEXT_ZH_MAP } from 'src/constants';
+import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 
 type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
 interface IState {
   isEditMode: boolean
   layout: any[]
   contextMap: any
+  locale: 'en' | 'zh'
   textMap: TextType
 }
 
@@ -16,7 +17,8 @@ const initState: IState = {
   isEditMode: false,
   layout: [],
   contextMap: {},
-  textMap: {} as TextType,
+  locale: 'zh',
+  textMap: TEXT_ZH_MAP,
 };
 
 const getNewChartYPosition = (layout: any[]) => {
@@ -67,10 +69,14 @@ const dashBoardStore = createFlatStore({
     updateContextMap(state, contextMap: any) {
       state.contextMap = contextMap;
     },
-    setTextMap(state, textMap: TextType) {
-      state.textMap = textMap;
+    setLocale(state, key: 'en' | 'zh') {
+      state.locale = key;
+      state.textMap = key === 'en' ? TEXT_EN_MAP : TEXT_ZH_MAP;
     },
   },
 });
+
+export const getLocale = () => dashBoardStore.getState(s => s.locale);
+export const setLocale = dashBoardStore.setLocale;
 
 export default dashBoardStore;

@@ -15,6 +15,7 @@ declare module DC {
 
   interface ViewDefItem {
     name: string
+    enName: string
     image: React.ReactNode
     Component: React.ReactNode | React.FunctionComponent // props由viewId，以及接口的返回结果组成
     Configurator: React.ReactNode | React.FunctionComponent // 配置器

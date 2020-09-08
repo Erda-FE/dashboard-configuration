@@ -12,7 +12,7 @@ interface IProps {
 
 export default ({ onPickChart }: IProps) => {
   const [pickChartModalVisible] = ChartEditorStore.useStore(s => [s.pickChartModalVisible]);
-  const textMap = DashboardStore.useStore(s => s.textMap);
+  const [locale, textMap] = DashboardStore.useStore(s => [s.locale, s.textMap]);
   const { setPickChartModalVisible } = ChartEditorStore;
 
   const handlePickChart = (chartType: DC.ViewType) => {
@@ -29,11 +29,11 @@ export default ({ onPickChart }: IProps) => {
       footer={null}
     >
       <Row>
-        {map(basicCharts, ({ name, image }, chartType) => (
+        {map(basicCharts, ({ name, enName, image }, chartType) => (
           <Col span={8} key={chartType}>
             <div className="dc-pick-chart-type" onClick={() => handlePickChart(chartType as DC.ViewType)}>
               {image}
-              <div className="dc-pick-chart-desc">{name}</div>
+              <div className="dc-pick-chart-desc">{locale === 'en' ? enName : name}</div>
             </div>
           </Col>
         ))}

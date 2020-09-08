@@ -4,10 +4,9 @@ import { isEmpty, isFunction, map } from 'lodash';
 import React, { useRef } from 'react';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { useMount, useUnmount } from 'react-use';
+import { useUnmount } from 'react-use';
 import screenfull from 'screenfull';
 import { IF, useForceUpdate, useComponentWidth } from '../common';
-import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 import ChartEditor from './editor';
 import DefaultAPIFormComponent from './editor/data-config/default-api-form';
 import PickChartModal from './editor/pick-chart';
@@ -42,7 +41,6 @@ interface IProps {
 
 const DCMain = ({
   readOnly = false,
-  isEN = false,
   UrlComponent = Input,
   APIFormComponent = DefaultAPIFormComponent,
   urlItemLayout = formItemLayout,
@@ -58,14 +56,10 @@ const DCMain = ({
 
   const [isEditMode, textMap] = DashboardStore.useStore(s => [s.isEditMode, s.textMap]);
   const [viewMap, editChartId] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId]);
-  const { setEditMode, saveEdit, updateContextMap, setTextMap } = DashboardStore;
+  const { setEditMode, saveEdit, updateContextMap } = DashboardStore;
   const { setPickChartModalVisible, reset: resetDrawer, addEditor } = ChartEditorStore;
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const [widthHolder, width] = useComponentWidth();
-
-  useMount(() => {
-    setTextMap(isEN ? TEXT_EN_MAP : TEXT_ZH_MAP);
-  });
 
   useUnmount(() => {
     resetDrawer();

@@ -14,7 +14,7 @@ interface IProps {
   contextMap: any;
   forwardedRef: { current: any };
   isTouched: boolean;
-  currentChart: IChart;
+  currentChart: DC.View;
   setTouched(v: boolean): void;
   onEditorChange(payload: object): void;
 }

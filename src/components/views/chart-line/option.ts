@@ -5,7 +5,7 @@ import { cutStr, getFormatter } from '../../../common/utils';
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
-export function getOption(data: IStaticData, config: IChartConfig) {
+export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
   const { metricData = [], xData, time } = data;
   const { option: inputOption = {}, optionProps = {} } = config;
   const {

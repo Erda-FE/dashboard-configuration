@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { maxBy, remove } from 'lodash';
 import { createFlatStore } from '../cube';
 import chartEditorStore from './chart-editor';

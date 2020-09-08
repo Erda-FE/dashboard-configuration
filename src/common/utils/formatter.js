@@ -120,9 +120,7 @@ const MonitorChartFormatterMap = (unitType, unit) => {
   return formatterMap[(unitType || '').toLocaleUpperCase()];
 };
 
-export const getFormatter = (unitType, unit) => {
-  return MonitorChartFormatterMap(unitType, unit) || new NumberFormatter(unit);
-};
+export const getFormatter = (unitType, unit) => MonitorChartFormatterMap(unitType, unit) || new NumberFormatter(unit);
 
 export const getPrettyFixed = (value, fixed = 2) => {
   const fixValue = Number(value).toFixed(fixed);

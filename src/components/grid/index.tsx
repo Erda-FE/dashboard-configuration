@@ -28,7 +28,7 @@ const getGridBackground = (width: number) => {
   return `${front}${colsStr}${back}`;
 };
 
-const splitLayoutAndView = (layout: ILayout): [any[], any] => {
+const splitLayoutAndView = (layout: DC.Layout): [any[], any] => {
   const viewMap = {};
   const pureLayout = map(layout, (item) => {
     const { view, ...rest } = item;

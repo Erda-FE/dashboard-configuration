@@ -9,7 +9,7 @@ import './index.scss';
 
 interface IProps {
   form: WrappedFormUtils;
-  currentChart: IChart;
+  currentChart: DC.View;
   forwardedRef: { current: any };
   isTouched: boolean;
   setTouched(v: boolean): void;

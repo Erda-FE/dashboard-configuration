@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createFlatStore } from '../cube';
 import { cloneDeep, forEach, startsWith, map, values } from 'lodash';
 import { generateUUID } from '../utils';
@@ -34,7 +35,7 @@ const chartEditorStore = createFlatStore({
   name: 'chartEditor',
   state: initState,
   effects: {
-    async addEditor({ select }, chartType: ChartType) {
+    async addEditor({ select }, chartType: DC.ViewType) {
       const viewId = `view-${generateUUID()}`;
       const viewMap = select(s => s.viewMap);
 

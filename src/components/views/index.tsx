@@ -1,5 +1,5 @@
 import React from 'react';
-import { get, map, set, cloneDeep } from 'lodash';
+import { get, map, set } from 'lodash';
 // 图表
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
@@ -17,7 +17,7 @@ const SvgContainer = ({ children }: any) => (
   </svg>
 );
 
-const basicCharts: IChartsMap = {
+const basicCharts: DC.ViewDefMap = {
   'chart:line': {
     name: '折线图',
     image: (

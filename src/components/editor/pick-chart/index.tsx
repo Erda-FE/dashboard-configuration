@@ -7,7 +7,7 @@ import basicCharts from '../../views';
 import './index.scss';
 
 interface IProps {
-  onPickChart: (chartType: ChartType) => void
+  onPickChart: (chartType: DC.ViewType) => void
 }
 
 export default ({ onPickChart }: IProps) => {
@@ -15,7 +15,7 @@ export default ({ onPickChart }: IProps) => {
   const textMap = DashboardStore.useStore(s => s.textMap);
   const { setPickChartModalVisible } = ChartEditorStore;
 
-  const handlePickChart = (chartType: ChartType) => {
+  const handlePickChart = (chartType: DC.ViewType) => {
     onPickChart(chartType);
     setPickChartModalVisible(false);
   };
@@ -31,7 +31,7 @@ export default ({ onPickChart }: IProps) => {
       <Row>
         {map(basicCharts, ({ name, image }, chartType) => (
           <Col span={8} key={chartType}>
-            <div className="dc-pick-chart-type" onClick={() => handlePickChart(chartType as ChartType)}>
+            <div className="dc-pick-chart-type" onClick={() => handlePickChart(chartType as DC.ViewType)}>
               {image}
               <div className="dc-pick-chart-desc">{name}</div>
             </div>

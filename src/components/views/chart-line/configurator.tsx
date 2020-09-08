@@ -14,7 +14,7 @@ interface IProps {
   viewId: string;
   isMock: boolean;
   defaultOption: object;
-  currentChart: IChart;
+  currentChart: DC.View;
   form: WrappedFormUtils;
   forwardedRef: { current: any };
   setTouched: any;

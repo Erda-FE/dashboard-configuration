@@ -1,9 +1,8 @@
 import { merge, set, cloneDeep, isString } from 'lodash';
 import { getConfig } from '../../../config';
-import { IViewConfig, IOptionFn, IStaticData } from '../../../types';
 
 
-export function getOption(data: IStaticData, config: IViewConfig) {
+export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
   const defaultOption = {
     tooltip: {
       trigger: 'item',
@@ -28,7 +27,7 @@ export function getOption(data: IStaticData, config: IViewConfig) {
   let customOptionFn = config.optionFn;
   if (customOptionFn) {
     if (isString(customOptionFn)) {
-      customOptionFn = getConfig(['chartOptionFn', customOptionFn]) as IOptionFn;
+      customOptionFn = getConfig(['chartOptionFn', customOptionFn]) as DC.OptionFn;
       if (!customOptionFn) {
         customOptionFn = (d: any) => d;
         console.warn(`optionFn \`${customOptionFn}\` not registered yet`);

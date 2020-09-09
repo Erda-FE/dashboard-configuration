@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Table, Input, Button } from 'antd';
 import { uniqueId, isEmpty, map, filter, fill, cloneDeep, find, findIndex, reduce, omit } from 'lodash';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { useUpdate } from '../common';
 import DashboardStore from '../stores/dash-board';
 import './kv-table.scss';
@@ -13,32 +12,27 @@ export interface IValue {
 }
 
 interface IProps {
+  forwardedRef: React.Ref<any>
   value?: IValue[]
-  form?: WrappedFormUtils
   onChange(values: Array<IValue>): void
 }
 
 const KVTable = (props: IProps) => {
-  const { value, onChange, form } = props;
+  const { value, onChange } = props;
   const textMap = DashboardStore.useStore(s => s.textMap);
-  const triggerChange = React.useCallback(onChange, []);
 
   const [{ editingValues }, updater] = useUpdate({
     editingValues: [],
   });
 
   React.useEffect(() => {
-    let v = [] as IValue[];
-    if (!isEmpty(value)) {
-      v = map(value, item => ({ ...item, uniKey: uniqueId() }));
-    }
-    updater.editingValues(v);
-  }, [value]);
+    updater.editingValues(map(value, item => ({ ...item, uniKey: uniqueId() })));
+  }, [value, updater]);
 
   React.useEffect(() => {
-    const validVal = map(editingValues, item => item.key && item.value);
-    !isEmpty(validVal) && triggerChange(map(validVal, item => omit(item, 'unikey')));
-  }, [editingValues, triggerChange]);
+    const validVal = filter(editingValues, item => item.name && item.value);
+    !isEmpty(validVal) && onChange(map(validVal, item => omit(item, 'uniKey')));
+  }, [editingValues, onChange]);
 
   const handleAddEditingValues = () => {
     updater.editingValues([
@@ -119,10 +113,15 @@ const KVTable = (props: IProps) => {
         rowKey="uniKey"
         dataSource={editingValues}
         columns={columns}
-        pagination={{ hideOnSinglePage: true }}
+        pagination={{
+          pageSize: 5,
+          hideOnSinglePage: true,
+        }}
       />
     </div>
   );
 };
 
-export { KVTable };
+export default React.forwardRef((props: IProps, forwardedRef: React.Ref<any>) => (
+  <KVTable forwardedRef={forwardedRef} {...props} />
+));

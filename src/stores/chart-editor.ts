@@ -79,15 +79,15 @@ const chartEditorStore = createFlatStore({
           const { data } = await getChartData(_payload.api);
           const { chartType } = viewMap[editChartId];
           if (['chart:line', 'chart:area', 'chart:bar'].includes(chartType)) {
-            const { time, results } = data;
+            const { results, ...rest } = data;
             if (results[0].data.length > 1) {
               return {
-                time,
+                ...rest,
                 metricData: map(results[0].data, item => values(item)[0]),
               };
             } else {
               return {
-                time,
+                ...rest,
                 metricData: results[0].data[0],
               };
             }

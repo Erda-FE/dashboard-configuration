@@ -224,8 +224,8 @@ class Operation extends React.PureComponent<IProps, IState> {
                         <Select
                           className="my12"
                           style={{ width: 150 }}
-                          onChange={(v: any) => {
-                            // this.loadData();
+                          onSelect={(v: any) => {
+                            this.loadData({ [controls[0].key]: v });
                           }}
                         >
                           { map(controls[0].options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }

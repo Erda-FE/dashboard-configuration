@@ -218,10 +218,11 @@ class Operation extends React.PureComponent<IProps, IState> {
               </Dropdown>
               <React.Fragment>
                 {
-                  !isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'
+                  controls && !isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'
                     ?
                       <div className="dc-chart-controls-ct">
                         <Select
+                          allowClear
                           className="my12"
                           style={{ width: 150 }}
                           onSelect={(v: any) => {

@@ -45,6 +45,8 @@ const LineConfigurator = (props: IProps) => {
     onEditorChange({ config: _config });
   };
 
+  const { controls } = form.getFieldsValue();
+
   const fields = React.useMemo(() => [
     {
       label: textMap.title,
@@ -76,21 +78,43 @@ const LineConfigurator = (props: IProps) => {
         onSelect(v: any) {
           onEditorChange({ controls: [{
             type: v,
+            key: undefined,
             options: [],
           }] });
         },
       },
     },
-    ...insertWhen(true, [
+    ...insertWhen(controls && controls[0].type, [
+      {
+        label: textMap['control key'],
+        name: 'controls[0].key',
+        required: true,
+        type: 'input',
+        itemProps: {
+          onBlur(e: any) {
+            onEditorChange({ controls: [{
+              type: controls[0].type,
+              key: e.target.value,
+              options: [],
+            }] });
+          },
+        },
+      },
       {
         label: textMap['control data'],
         name: 'controls[0].options',
+        required: true,
         type: 'custom',
         getComp: () => (
           <KVTable
             forwardedRef={forwardedRef}
             onChange={(values: IKVTableValue[]) => {
               console.log(values);
+              onEditorChange({ controls: [{
+                type: controls[0].type,
+                key: controls[0].key,
+                options: values,
+              }] });
             }}
           />
         ),
@@ -206,7 +230,7 @@ const LineConfigurator = (props: IProps) => {
     //     ],
     //   ],
     // },
-  ], [textMap, forwardedRef, onEditorChange]);
+  ], [textMap, forwardedRef, controls, onEditorChange]);
 
   return (
     <section className="configurator-section">

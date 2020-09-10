@@ -1,6 +1,6 @@
-import { Popconfirm, Tooltip, Dropdown, Menu } from 'antd';
+import { Popconfirm, Tooltip, Dropdown, Menu, Select } from 'antd';
 import classnames from 'classnames';
-import { isEmpty, isString, isEqual, get, isFunction } from 'lodash';
+import { isEmpty, isString, isEqual, get, isFunction, map } from 'lodash';
 import React, { ReactElement } from 'react';
 import { getConfig } from '../../config';
 import { saveImage, setScreenFull } from '../../utils/comp';
@@ -155,7 +155,7 @@ class Operation extends React.PureComponent<IProps, IState> {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
-    const { title: _title, description: _description, hideHeader = false, maskMsg } = view;
+    const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [] } = view;
     const message = this.getMessage({ fetchStatus }) || maskMsg;
     const isCustomTitle = isFunction(_title);
     const title = isCustomTitle ? _title() : _title;
@@ -216,6 +216,25 @@ class Operation extends React.PureComponent<IProps, IState> {
                   </IF>
                 </div>
               </Dropdown>
+              <React.Fragment>
+                {
+                  !isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'
+                    ?
+                      <div className="dc-chart-controls-ct">
+                        <Select
+                          className="my12"
+                          style={{ width: 150 }}
+                          onChange={(v: any) => {
+                            // this.loadData();
+                          }}
+                        >
+                          { map(controls[0].options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                        </Select>
+                      </div>
+                    :
+                    null
+                }
+              </React.Fragment>
             </IF>
           </div>
         </IF>

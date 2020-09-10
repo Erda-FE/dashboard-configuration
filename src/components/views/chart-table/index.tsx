@@ -13,7 +13,7 @@ interface IProps {
 
 const fixedLimit = 5;
 const fixedWidth = 150;
-const ChartTable = ({ results = [], cols }: IProps) => {
+const ChartTable = ({ results = [], cols = [] }: IProps) => {
   const isOverLimit = cols.length > fixedLimit;
   const _cols = map(cols, (col, index) => {
     let r = {

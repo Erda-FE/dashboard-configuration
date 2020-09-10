@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Table, Input, Button } from 'antd';
+import { useMount } from 'react-use';
 import { uniqueId, isEmpty, map, filter, fill, cloneDeep, find, findIndex, reduce, omit } from 'lodash';
 import { useUpdate } from '../common';
 import DashboardStore from '../stores/dash-board';
@@ -25,9 +26,13 @@ const KVTable = (props: IProps) => {
     editingValues: [],
   });
 
-  React.useEffect(() => {
+  // React.useEffect(() => {
+  //   updater.editingValues(map(value, item => ({ ...item, uniKey: uniqueId() })));
+  // }, [value, updater]);
+
+  useMount(() => {
     updater.editingValues(map(value, item => ({ ...item, uniKey: uniqueId() })));
-  }, [value, updater]);
+  });
 
   React.useEffect(() => {
     const validVal = filter(editingValues, item => item.name && item.value);
@@ -94,6 +99,7 @@ const KVTable = (props: IProps) => {
     },
     {
       title: textMap.action,
+      width: 80,
       render: ({ uniKey }: IValue) => <a href="#" onClick={() => handleRemoveEditingValues(uniKey)}>{textMap.delete}</a>,
     },
   ];

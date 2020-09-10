@@ -18,6 +18,13 @@ $chart-prefix-cls: #{$prefix}-chart;
   }
 }
 
+.#{$prefix}-chart-controls-ct {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
 .#{$prefix}-draggable-handle {
   position: absolute;
   top: 4px;

@@ -6,16 +6,10 @@ import { useUpdate } from '../common';
 import DashboardStore from '../stores/dash-board';
 import './kv-table.scss';
 
-export interface IValue {
-  value: string
-  name: string
-  uniKey?: string
-}
-
 interface IProps {
   forwardedRef: React.Ref<any>
-  value?: IValue[]
-  onChange(values: Array<IValue>): void
+  value?: DC.IKVTableValue[]
+  onChange(values: Array<DC.IKVTableValue>): void
 }
 
 const KVTable = (props: IProps) => {
@@ -80,7 +74,7 @@ const KVTable = (props: IProps) => {
     {
       title: textMap.name,
       dataIndex: 'name',
-      render: (v: string, { uniKey }: IValue) => (
+      render: (v: string, { uniKey }: DC.IKVTableValue) => (
         <Input
           defaultValue={v}
           onBlur={e => handleUpdateEditingValues(uniKey, [{ k: 'name', v: e.target.value }])}
@@ -90,7 +84,7 @@ const KVTable = (props: IProps) => {
     {
       title: textMap.value,
       dataIndex: 'value',
-      render: (v: string, { uniKey }: IValue) => (
+      render: (v: string, { uniKey }: DC.IKVTableValue) => (
         <Input
           defaultValue={v}
           onBlur={e => handleUpdateEditingValues(uniKey, [{ k: 'value', v: e.target.value }])}
@@ -100,7 +94,7 @@ const KVTable = (props: IProps) => {
     {
       title: textMap.action,
       width: 80,
-      render: ({ uniKey }: IValue) => <a href="#" onClick={() => handleRemoveEditingValues(uniKey)}>{textMap.delete}</a>,
+      render: ({ uniKey }: DC.IKVTableValue) => <a href="#" onClick={() => handleRemoveEditingValues(uniKey)}>{textMap.delete}</a>,
     },
   ];
 

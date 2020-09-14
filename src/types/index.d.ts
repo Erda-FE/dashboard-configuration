@@ -99,5 +99,10 @@ declare module DC {
     [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
   }
 
+  interface IKVTableValue {
+    value: string
+    name: string
+    uniKey?: string
+  }
 }
 

@@ -225,7 +225,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                           allowClear
                           className="my12"
                           style={{ width: 150 }}
-                          onSelect={(v: any) => {
+                          onChange={(v: any) => {
                             this.loadData({ [controls[0].key]: v });
                           }}
                         >

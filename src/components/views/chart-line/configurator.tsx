@@ -6,7 +6,7 @@ import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { insertWhen } from '../../../common/utils';
-import { RenderPureForm, KVTable, IKVTableValue } from '../../../common';
+import { RenderPureForm, KVTable } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
@@ -108,8 +108,7 @@ const LineConfigurator = (props: IProps) => {
         getComp: () => (
           <KVTable
             forwardedRef={forwardedRef}
-            onChange={(values: IKVTableValue[]) => {
-              console.log(values);
+            onChange={(values: DC.IKVTableValue[]) => {
               onEditorChange({ controls: [{
                 type: controls[0].type,
                 key: controls[0].key,

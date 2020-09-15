@@ -22,6 +22,7 @@ interface IProps {
   readOnly?: boolean // 隐藏编辑入口
   isEN?: boolean // 临时解决文案英文显示
   layout?: any // 配置信息，包含图表布局、各图表配置信息
+  showOptions?: boolean
   beforeOnSave?: () => boolean, // 返回 false 来拦截 onSave
   onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any; }) => void, // 保存
   onCancel?: () => void, // 取消编辑
@@ -38,6 +39,7 @@ interface IProps {
 
 const DCMain = ({
   readOnly = false,
+  showOptions = false,
   UrlComponent = Input,
   APIFormComponent = DefaultAPIFormComponent,
   urlItemLayout = formItemLayout,
@@ -123,6 +125,14 @@ const DCMain = ({
   };
 
   const { isFullscreen } = screenfull as any;
+  const commonOptions = [
+    <Tooltip placement="bottom" title={isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
+      <DcIcon type={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} onClick={onSetScreenFull} />
+    </Tooltip>,
+    <Tooltip placement="bottom" title={textMap['export picture']}>
+      <DcIcon type="camera" onClick={onSaveImg} />
+    </Tooltip>,
+  ];
   const header = (
     <div className="dc-header">
       <IF check={isEditMode}>
@@ -138,12 +148,7 @@ const DCMain = ({
           </Tooltip>
         </IF>
         <IF.ELSE />
-        <Tooltip placement="bottom" title={isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
-          <DcIcon type={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} onClick={onSetScreenFull} />
-        </Tooltip>
-        <Tooltip placement="bottom" title={textMap['export picture']}>
-          <DcIcon type="camera" onClick={onSaveImg} />
-        </Tooltip>
+        {commonOptions}
         <Tooltip placement="bottom" title={textMap.edit}>
           <DcIcon
             type="edit"
@@ -168,6 +173,7 @@ const DCMain = ({
     >
       {widthHolder}
       {!readOnly && header}
+      {showOptions && <div className="dc-header">{commonOptions}</div>}
       <div className="dc-content" ref={boardRef}>
         <BoardGrid width={width} layout={layout} />
       </div>

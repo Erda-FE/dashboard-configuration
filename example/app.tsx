@@ -21,7 +21,7 @@ function App() {
         <button onClick={() => setTheme('dice')}>Dice</button>
         <button onClick={() => setTheme('dark')}>Dark</button>
       </div>
-      <BoardGrid layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} />
+      <BoardGrid readOnly showOptions layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} />
     </div>
   );
 }

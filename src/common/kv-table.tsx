@@ -1,46 +1,34 @@
 import * as React from 'react';
 import { Table, Input, Button } from 'antd';
-import { useMount } from 'react-use';
 import { uniqueId, isEmpty, map, filter, fill, cloneDeep, find, findIndex, reduce, omit } from 'lodash';
-import { useUpdate } from '../common';
 import DashboardStore from '../stores/dash-board';
 import './kv-table.scss';
 
 interface IProps {
   forwardedRef: React.Ref<any>
   value?: DC.IKVTableValue[]
+  customValue?: DC.IKVTableValue[]
   onChange(values: Array<DC.IKVTableValue>): void
 }
 
 const KVTable = (props: IProps) => {
-  const { value, onChange } = props;
+  const { value = [], customValue = [], onChange } = props;
   const textMap = DashboardStore.useStore(s => s.textMap);
 
-  const [{ editingValues }, updater] = useUpdate({
-    editingValues: [],
-  });
+  const _value = React.useMemo(() => map(customValue, item => ({ ...item, uniKey: uniqueId() })), [customValue]);
 
-  // React.useEffect(() => {
-  //   updater.editingValues(map(value, item => ({ ...item, uniKey: uniqueId() })));
-  // }, [value, updater]);
-
-  useMount(() => {
-    updater.editingValues(map(value, item => ({ ...item, uniKey: uniqueId() })));
-  });
-
-  React.useEffect(() => {
-    const validVal = filter(editingValues, item => item.name && item.value);
-    !isEmpty(validVal) && onChange(map(validVal, item => omit(item, 'uniKey')));
-  }, [editingValues, onChange]);
+  const handleChange = React.useCallback((data: DC.IKVTableValue[]) => {
+    !isEmpty(data) && onChange(map(data, item => omit(item, 'uniKey')));
+  }, [onChange]);
 
   const handleAddEditingValues = () => {
-    updater.editingValues([
+    handleChange([
       {
         value: undefined,
         name: undefined,
         uniKey: uniqueId(),
       },
-      ...editingValues,
+      ..._value,
     ]);
   };
 
@@ -63,11 +51,11 @@ const KVTable = (props: IProps) => {
 
 
   const handleRemoveEditingValues = (uniKey?: string) => {
-    uniKey && updater.editingValues(filter(editingValues, item => item.uniKey !== uniKey));
+    uniKey && handleChange(filter(_value, item => item.uniKey !== uniKey));
   };
 
   const handleUpdateEditingValues = (uniKey: any, items: Array<{ k: string; v: any; }>) => {
-    uniKey && updater.editingValues(editRule(editingValues, uniKey, items));
+    uniKey && handleChange(editRule(_value, uniKey, items));
   };
 
   const columns = [
@@ -111,7 +99,7 @@ const KVTable = (props: IProps) => {
       <Table
         bordered
         rowKey="uniKey"
-        dataSource={editingValues}
+        dataSource={_value}
         columns={columns}
         pagination={{
           pageSize: 5,

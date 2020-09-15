@@ -6,7 +6,7 @@ import { Form } from 'antd';
 import React from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { insertWhen } from '../../../common/utils';
-import { RenderPureForm, KVTable } from '../../../common';
+import { RenderPureForm, KVTable, useUpdate } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
@@ -26,26 +26,27 @@ interface IProps {
 const LineConfigurator = (props: IProps) => {
   const { form, forwardedRef, currentChart, setTouched, onEditorChange, isTouched } = props;
   const textMap = DashboardStore.useStore(s => s.textMap);
+  const [{ controls }, updater] = useUpdate({ controls: form.getFieldValue('controls') });
   React.useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
       setTouched(true);
     }
-  }, [form]);
+    updater.controls(form.getFieldValue('controls'));
+  }, [form, updater]);
 
   React.useEffect(() => {
     setTimeout(() => {
       form.setFieldsValue(currentChart);
+      currentChart.controls && updater.controls(currentChart.controls);
     }, 0);
-  }, [currentChart]);
+  }, [currentChart, updater]);
 
   const onConfigChange = (key: string, value: any) => {
     const _config = cloneDeep(currentChart.config);
     set(_config, key, value);
     onEditorChange({ config: _config });
   };
-
-  const { controls } = form.getFieldsValue();
 
   const fields = React.useMemo(() => [
     {
@@ -90,6 +91,7 @@ const LineConfigurator = (props: IProps) => {
         name: 'controls[0].key',
         required: true,
         type: 'input',
+        initialValue: controls && controls[0] && controls[0].key,
         itemProps: {
           onBlur(e: any) {
             onEditorChange({ controls: [{
@@ -107,13 +109,16 @@ const LineConfigurator = (props: IProps) => {
         type: 'custom',
         getComp: () => (
           <KVTable
+            customValue={controls && controls[0] && controls[0].options}
             forwardedRef={forwardedRef}
             onChange={(values: DC.IKVTableValue[]) => {
-              onEditorChange({ controls: [{
-                type: controls[0].type,
-                key: controls[0].key,
-                options: values,
-              }] });
+              onEditorChange({
+                controls: [{
+                  type: controls[0].type,
+                  key: controls[0].key,
+                  options: values,
+                }],
+              });
             }}
           />
         ),

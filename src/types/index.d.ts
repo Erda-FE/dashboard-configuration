@@ -100,8 +100,8 @@ declare module DC {
   }
 
   interface IKVTableValue {
-    value: string
-    name: string
+    value?: string
+    name?: string
     uniKey?: string
   }
 }

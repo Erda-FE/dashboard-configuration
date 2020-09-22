@@ -155,11 +155,18 @@ class Operation extends React.PureComponent<IProps, IState> {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
-    const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [] } = view;
+    const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config } = view;
     const message = this.getMessage({ fetchStatus }) || maskMsg;
     const isCustomTitle = isFunction(_title);
     const title = isCustomTitle ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;
+    const isCustomRender = typeof customRender === 'function';
+    const _childNode = React.cloneElement(childNode, {
+      ...childNode.props,
+      data: resData,
+      config,
+    });
+
     const optionsMenu = (
       <Menu>
         <Menu.Item key="0">
@@ -245,17 +252,11 @@ class Operation extends React.PureComponent<IProps, IState> {
         <ViewMask message={message} />
         {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}
         {
-          (typeof view.customRender !== 'function' && (!resData || isEmpty(resData.metricData)))
+          (!isCustomRender && (!resData || isEmpty(resData.metricData)))
             ? <EmptyHolder />
             : (
               <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
-                {
-                  React.cloneElement(childNode, {
-                    ...childNode.props,
-                    data: resData,
-                    config: view.config,
-                  })
-                }
+                {isCustomRender ? customRender(_childNode, view) : _childNode}
               </div>
             )
         }

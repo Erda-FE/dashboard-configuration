@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 const staticData = {
   xData: [
     '满意',
@@ -57,7 +59,8 @@ export default [
     view: {
       name: 'test',
       chartType: 'chart:bar',
-      title: 'sasa',
+      hideReload: true,
+      title: () => <div>tti</div>,
       staticData,
       config: {
         option: {
@@ -97,6 +100,7 @@ export default [
           }],
         },
       },
+      customRender: chartNode => <div className="SASA" style={{ display: 'flex', 'flex-direction': 'column', height: '100%' }}>{chartNode}</div>,
     },
   },
   {

@@ -23,12 +23,12 @@ const KVTable = (props: IProps) => {
 
   const handleAddEditingValues = () => {
     handleChange([
+      ..._value,
       {
         value: undefined,
         name: undefined,
         uniKey: uniqueId(),
       },
-      ..._value,
     ]);
   };
 

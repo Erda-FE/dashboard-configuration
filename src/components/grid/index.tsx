@@ -28,7 +28,7 @@ const getGridBackground = (width: number) => {
   return `${front}${colsStr}${back}`;
 };
 
-const splitLayoutAndView = (layout: DC.Layout): [any[], any] => {
+const splitLayoutAndView = (layout: DC.ILayout): [any[], any] => {
   const viewMap = {};
   const pureLayout = map(layout, (item) => {
     const { view, ...rest } = item;
@@ -89,7 +89,7 @@ export const BoardGrid = ({ width, layout }: any) => {
         if (isPlainObject(view)) {
           const { chartType = '' } = view;
           const ChartNode = get(chartConfigMap, [chartType, 'Component']) as any;
-          const node = ChartNode ? <ChartNode {...view.chartProps} /> : null;
+          const node = ChartNode ? <ChartNode {...view.chartProps} /> : <></>;
           ChildComp = <ViewOperation viewId={i} view={view}>{node}</ViewOperation>;
         } else {
           console.error('layout view should be object or function');

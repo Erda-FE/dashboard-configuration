@@ -58,7 +58,7 @@ export default [
     static: false,
     view: {
       name: 'test',
-      chartType: 'chart:bar',
+      // chartType: 'chart:bar',
       hideReload: true,
       title: () => <div>tti</div>,
       staticData,
@@ -100,7 +100,7 @@ export default [
           }],
         },
       },
-      customRender: chartNode => <div className="SASA" style={{ display: 'flex', 'flex-direction': 'column', height: '100%' }}>{chartNode}</div>,
+      customRender: chartNode => <div className="SASA" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>{chartNode}</div>,
     },
   },
   {

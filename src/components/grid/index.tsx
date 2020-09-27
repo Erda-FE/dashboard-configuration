@@ -104,4 +104,3 @@ export const BoardGrid = ({ width, layout }: any) => {
     </ReactGridLayout>
   );
 };
-

@@ -126,10 +126,21 @@ const DCMain = ({
 
   const { isFullscreen } = screenfull as any;
   const commonOptions = [
-    <Tooltip placement="bottom" title={isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}>
-      <DcIcon type={isFullscreen ? 'fullscreen-exit' : 'fullscreen'} onClick={onSetScreenFull} />
+    <Tooltip
+      placement="bottom"
+      title={isFullscreen ? textMap['exit fullscreen'] : textMap.fullscreen}
+      key="fullscreen"
+    >
+      <DcIcon
+        type={isFullscreen ? 'fullscreen-exit' : 'fullscreen'}
+        onClick={onSetScreenFull}
+      />
     </Tooltip>,
-    <Tooltip placement="bottom" title={textMap['export picture']}>
+    <Tooltip
+      placement="bottom"
+      title={textMap['export picture']}
+      key="saveImg"
+    >
       <DcIcon type="camera" onClick={onSaveImg} />
     </Tooltip>,
   ];

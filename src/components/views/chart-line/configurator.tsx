@@ -87,7 +87,7 @@ const LineConfigurator = (props: IProps) => {
     },
     ...insertWhen(controls && controls[0].type, [
       {
-        label: textMap['control key'],
+        label: textMap['field name'],
         name: 'controls[0].key',
         required: true,
         type: 'input',

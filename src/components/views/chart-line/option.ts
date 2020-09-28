@@ -1,4 +1,4 @@
-import { map, merge } from 'lodash';
+import { map, merge, find } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
@@ -155,6 +155,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
           show: false,
         },
         axisLabel: {
+          interval: find(metricData, { type: 'bar' }) ? 0 : undefined,
           formatter: xData
             ? (value: string) => value
             : (value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm'),
@@ -165,6 +166,13 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
       },
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
+    dataZoom: (find(metricData, { type: 'bar' }) && xData.length > 10) ?
+      {
+        height: 15,
+        start: 0,
+        end: 35,
+      }
+      : false,
     grid: {
       top: 40,
       left: 55,

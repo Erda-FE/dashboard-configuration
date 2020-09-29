@@ -166,7 +166,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
       },
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
-    dataZoom: (find(metricData, { type: 'bar' }) && xData.length > 10) ?
+    dataZoom: (find(metricData, { type: 'bar' }) && xData && xData.length > 10) ?
       {
         height: 15,
         start: 0,

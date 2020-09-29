@@ -70,6 +70,16 @@ const LineConfigurator = (props: IProps) => {
       },
     },
     {
+      label: textMap.label,
+      name: 'config.optionProps.isLabel',
+      type: 'switch',
+      itemProps: {
+        onChange(isLabel: boolean) {
+          onEditorChange({ config: { optionProps: { isLabel } } });
+        },
+      },
+    },
+    {
       label: textMap.controls,
       name: 'controls[0].type',
       type: 'select',

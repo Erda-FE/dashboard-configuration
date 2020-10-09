@@ -69,11 +69,11 @@ export function saveImage(dom: Element | null | Text, name: string, textMap: any
     return;
   }
   loadingMessage = message.loading(textMap['exporting picture'], 0);
-  domtoimage.toJpeg(dom, {
+  domtoimage.toPng(dom, {
     quality: 1,
   }).then((url: string) => {
     const link = document.createElement('a');
-    link.download = `${name}.jpeg`;
+    link.download = `${name}.png`;
     link.href = url;
     loadingMessage();
     loadingMessage = null;

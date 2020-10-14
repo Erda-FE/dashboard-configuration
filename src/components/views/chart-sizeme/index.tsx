@@ -24,7 +24,7 @@ ReactEcharts.prototype.componentDidMount = function (...arg) {
   const themeMap = getConfig('theme');
   let themeObj = themeMap[theme];
   if (!themeObj) {
-    console.info(`theme ${theme} not registered yet`)
+    console.info(`theme ${theme} not registered yet`);
     themeObj = themeMap.dice;
   }
   this.echartsLib.registerTheme(theme, themeObj);
@@ -36,7 +36,7 @@ ReactEcharts.prototype.componentDidUpdate = function (...arg) {
   const themeMap = getConfig('theme');
   let themeObj = themeMap[theme];
   if (!themeObj) {
-    console.info(`theme ${theme} not registered yet`)
+    console.info(`theme ${theme} not registered yet`);
     themeObj = themeMap.dice;
   }
   this.echartsLib.registerTheme(theme, themeObj);

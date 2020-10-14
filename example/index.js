@@ -7,7 +7,6 @@ import { ajaxConvertor } from './mock/ajax-data';
 import { darkTheme } from './theme';
 import App from './app';
 
-
 const prepare = () => {
   registDataConvertor('line', (data) => {
     console.log('line convertor:', data);
@@ -49,4 +48,3 @@ const prepare = () => {
 prepare().then(() => {
   ReactDOM.render(<App />, document.getElementById('root'));
 });
-

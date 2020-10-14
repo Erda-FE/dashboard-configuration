@@ -5,17 +5,27 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const cssnano = require('cssnano');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HappyPack = require('happypack');
 const os = require('os');
 
+// const smp = new SpeedMeasurePlugin();
+
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+const createHappyPackPlugin = (id, loaders) => new HappyPack({
+  id,
+  loaders,
+  threadPool: happyThreadPool,
+});
 const resolve = pathname => path.resolve(__dirname, pathname);
 
 module.exports = () => {
   const isProd = process.env.NODE_ENV === 'production';
 
-  return {
+  /** @type { import('webpack').Configuration } */
+  const config = {
     devtool: isProd ? '' : 'cheap-module-eval-source-map',
     node: {
       net: 'empty',
@@ -66,10 +76,6 @@ module.exports = () => {
           test: /\.(tsx?|jsx?)$/,
           loader: 'happypack/loader?id=ts',
           exclude: /node_modules/,
-        },
-        {
-          test: /\.svg$/,
-          loader: 'svg-inline-loader',
         },
       ],
     },
@@ -122,7 +128,6 @@ module.exports = () => {
           }),
           new OptimizeCSSAssetsPlugin({
             assetNameRegExp: /\.css$/g,
-            cssProcessor: cssnano,
             cssProcessorOptions: {
               safe: true,
               discardComments: { removeAll: true },
@@ -137,6 +142,7 @@ module.exports = () => {
         ],
     },
     plugins: [
+      // new BundleAnalyzerPlugin(),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.DefinePlugin({
         'process.env': {
@@ -146,69 +152,85 @@ module.exports = () => {
       new MiniCssExtractPlugin({
         filename: '[name].css',
       }),
-      new HappyPack({
-        id: 'ts',
-        threadPool: happyThreadPool,
-        loaders: [
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              happyPackMode: true,
-              getCustomTransformers: path.join(__dirname, 'webpack_ts.loader.js'),
-            },
+      createHappyPackPlugin('ts', [
+        {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+            happyPackMode: true,
+            getCustomTransformers: path.join(__dirname, 'webpack_ts.loader.js'),
           },
-        ],
+        },
+      ]),
+      createHappyPackPlugin('css', [
+        'css-loader',
+      ]),
+      createHappyPackPlugin('less', [
+        'css-loader',
+        {
+          loader: 'less-loader',
+          options: {
+            sourceMap: false,
+            javascriptEnabled: true,
+          },
+        },
+      ]),
+      createHappyPackPlugin('scss', [
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: false,
+            localIdentName: '[name]_[local]-[hash:base64:7]',
+          },
+        },
+        {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: false,
+          },
+        },
+        {
+          loader: 'sass-resources-loader',
+          options: {
+            sourceMap: false,
+            resources: [
+              resolve('./src/styles/_variable.scss'),
+            ],
+          },
+        },
+      ]),
+      new HardSourceWebpackPlugin({
+        cachePrune: {
+          // Caches younger than `maxAge` are not considered for deletion. They must
+          // be at least this (default: 2 days) old in milliseconds.
+          maxAge: 2 * 24 * 60 * 60 * 1000,
+          // All caches together must be larger than `sizeThreshold` before any
+          // caches will be deleted. Together they must be at least this
+          // (default: 50 MB) big in bytes.
+          sizeThreshold: 50 * 1024 * 1024,
+          // How to launch the extra processes. Default:
+        },
+        fork: (fork, compiler, webpackBin) => fork(
+          webpackBin(),
+          ['--config', __filename], {
+            silent: true,
+          }
+        ),
+        // Number of workers to spawn. Default:
+        numWorkers: () => os.cpus().length,
+        // Number of modules built before launching parallel building. Default:
+        minModules: 10,
       }),
-      new HappyPack({
-        id: 'css',
-        threadPool: happyThreadPool,
-        loaders: [
-          'css-loader',
-        ],
-      }),
-      new HappyPack({
-        id: 'less',
-        threadPool: happyThreadPool,
-        loaders: [
-          'css-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              sourceMap: false,
-              javascriptEnabled: true,
-            },
-          },
-        ],
-      }),
-      new HappyPack({
-        id: 'scss',
-        threadPool: happyThreadPool,
-        loaders: [
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: false,
-              localIdentName: '[name]_[local]-[hash:base64:7]',
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: false,
-            },
-          },
-          {
-            loader: 'sass-resources-loader',
-            options: {
-              sourceMap: false,
-              resources: [
-                resolve('./src/styles/_variable.scss'),
-              ],
-            },
-          },
-        ],
-      }),
+      new HardSourceWebpackPlugin.ExcludeModulePlugin([
+        {
+          // HardSource works with mini-css-extract-plugin but due to how
+          // mini-css emits assets, assets are not emitted on repeated builds with
+          // mini-css and hard-source together. Ignoring the mini-css loader
+          // modules, but not the other css loader modules, excludes the modules
+          // that mini-css needs rebuilt to output assets every time.
+          test: /mini-css-extract-plugin[\\/]dist[\\/]loader/,
+        },
+      ]),
       ...(
         isProd
           ? []
@@ -230,5 +252,7 @@ module.exports = () => {
       ),
     ],
   };
-};
 
+  // return smp.wrap(config);
+  return config;
+};

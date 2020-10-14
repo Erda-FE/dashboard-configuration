@@ -1,6 +1,5 @@
 export const theme = 'dice';
 
-
 const darkPurple = 'rgb(78, 96, 151)';
 const darkGreen = 'rgb(73, 142, 158)';
 const pink = 'rgb(222, 111, 87)';
@@ -12,6 +11,7 @@ const green = 'rgb(108, 179, 139)';
 const brown = 'rgb(169, 140, 114)';
 const purple = 'rgb(151, 95, 160)';
 const gray = 'rgb(205, 206, 209)';
+
 export const colorMap = {
   darkPurple,
   darkGreen,

@@ -7,8 +7,8 @@ function App() {
   console.log('current locale:', getLocale());
   console.log('current theme:', getTheme());
   useMount(() => {
-    console.log('change locale to en');
-    setLocale('en');
+    // console.log('change locale to en');
+    // setLocale('en');
   });
 
   return (

@@ -82,9 +82,9 @@ const dashBoardStore = createFlatStore({
 });
 
 export const getLocale = () => dashBoardStore.getState(s => s.locale);
-export const setLocale = dashBoardStore.setLocale;
+export const { setLocale } = dashBoardStore;
 
 export const getTheme = () => dashBoardStore.getState(s => s.theme);
-export const setTheme = dashBoardStore.setTheme;
+export const { setTheme } = dashBoardStore;
 
 export default dashBoardStore;

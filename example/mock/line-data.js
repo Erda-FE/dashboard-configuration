@@ -36,7 +36,7 @@ const staticData = {
       name: 'tset2',
       stack: 'a',
       data: [
-        '0.78',
+        '0.12',
         '0.78',
         '0.78',
         '0.78',
@@ -51,7 +51,7 @@ const staticData = {
     }, {
       name: 'tset3',
       data: [
-        '0.03',
+        '0',
         '0.03',
         '0.03',
         '0.03',
@@ -112,6 +112,16 @@ export default [
               },
             },
           ],
+          xAxis: [{
+            triggerEvent: true,
+          }],
+        },
+      },
+      chartProps: {
+        onEvents: {
+          click: (params) => {
+            console.log(1, params);
+          },
         },
       },
       // customRender: chartNode => <div className="SASA" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>{chartNode}</div>,

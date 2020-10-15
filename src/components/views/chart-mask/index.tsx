@@ -1,5 +1,5 @@
 import './index.scss';
-
+import { Spin } from 'antd';
 import React from 'react';
 
 interface IProps {
@@ -13,9 +13,11 @@ const ChartMask = ({ message }: IProps) => {
 
   return (
     <div className="dc-chart-mask">
-      <div className="dc-mask-message">{message}</div>
+      <div className="dc-chart-mask-message">{message}</div>
     </div>
   );
 };
+
+export const ChartSpinMask = ({ message }: IProps) => <div className="dc-chart-mask"><Spin tip={message} /></div>;
 
 export default ChartMask;

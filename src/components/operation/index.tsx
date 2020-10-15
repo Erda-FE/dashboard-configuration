@@ -1,18 +1,17 @@
-import { Popconfirm, Tooltip, Dropdown, Menu, Select } from 'antd';
+import { Popconfirm, Tooltip, Dropdown, Menu, Select, Spin } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction, map } from 'lodash';
 import React, { ReactElement } from 'react';
 import { getConfig } from '../../config';
 import { saveImage, setScreenFull } from '../../utils/comp';
 import { EmptyHolder, IF } from '../../common';
-import ViewMask from '../views/chart-mask';
+import ChartMask, { ChartSpinMask } from '../views/chart-mask';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 // import Control from './control';
 import { DcIcon } from '../Icon';
 
 import './index.scss';
-
 
 // tslint:disable-next-line: no-use-before-declare
 interface IProps {
@@ -39,9 +38,7 @@ const enum Status {
   MOCK = 'mock',
   SUCCESS = 'success',
   FAIL = 'fail',
-}
-interface IMessage {
-  fetchStatus: string
+  NONE = '',
 }
 
 class Operation extends React.PureComponent<IProps, IState> {
@@ -57,7 +54,7 @@ class Operation extends React.PureComponent<IProps, IState> {
     const initData = this.hasLoadFn ? {} : staticData;
     this.state = {
       resData: initData,
-      fetchStatus: Status.SUCCESS,
+      fetchStatus: Status.NONE,
       prevStaticData: {},
     };
   }
@@ -136,19 +133,31 @@ class Operation extends React.PureComponent<IProps, IState> {
     setScreenFull(this.chartRef);
   }
 
-  getMessage = ({ fetchStatus }: IMessage): string => {
+  getViewMask = (msg?: string): JSX.Element => {
+    let _msg = msg;
+    let viewMask;
     const { textMap } = this.props;
 
-    if (fetchStatus === Status.MOCK) {
-      return textMap['show mock data'];
+    if (_msg === Status.FETCH) {
+      viewMask = <ChartSpinMask message={`${textMap.loading}...`} />;
+    } else {
+      switch (_msg) {
+        case Status.MOCK:
+          _msg = textMap['show mock data'];
+          break;
+        case Status.FAIL:
+          _msg = textMap['failed to get data'];
+          break;
+        case Status.SUCCESS:
+          _msg = '';
+          break;
+        default:
+          break;
+      }
+      viewMask = <ChartMask message={_msg} />;
     }
-    if (fetchStatus === Status.FETCH) {
-      return textMap.loading;
-    }
-    if (fetchStatus === Status.FAIL) {
-      return textMap['failed to get data'];
-    }
-    return '';
+
+    return viewMask;
   }
 
   render() {
@@ -156,7 +165,6 @@ class Operation extends React.PureComponent<IProps, IState> {
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
     const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config } = view;
-    const message = this.getMessage({ fetchStatus }) || maskMsg;
     const isCustomTitle = isFunction(_title);
     const title = isCustomTitle ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;
@@ -249,7 +257,7 @@ class Operation extends React.PureComponent<IProps, IState> {
         <IF check={isEditMode && !chartEditorVisible}>
           <Tooltip title={textMap.move}><DcIcon type="drag" className="dc-draggable-handle" /></Tooltip>
         </IF>
-        <ViewMask message={message} />
+        {this.getViewMask(fetchStatus || maskMsg)}
         {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}
         {
           (!isCustomRender && (!resData || isEmpty(resData.metricData)))

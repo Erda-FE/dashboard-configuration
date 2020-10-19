@@ -170,7 +170,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
       {
         height: 15,
         start: 0,
-        end: 500 / xData.length,
+        end: 500 / (xData || time).length,
       }
       : false,
     grid: {

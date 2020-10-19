@@ -155,7 +155,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
           show: false,
         },
         axisLabel: {
-          interval: find(metricData, { type: 'bar' }) ? 0 : undefined,
+          // interval: find(metricData, { type: 'bar' }) ? 0 : undefined,
           formatter: xData
             ? (value: string) => value
             : (value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm'),
@@ -170,7 +170,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
       {
         height: 15,
         start: 0,
-        end: 35,
+        end: 500 / xData.length,
       }
       : false,
     grid: {

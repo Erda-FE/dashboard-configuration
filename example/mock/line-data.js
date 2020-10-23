@@ -1,5 +1,7 @@
 import * as React from 'react';
 
+const randomValue = () => Math.round(Math.random() * 1000);
+
 const staticData = {
   xData: [
     '满意',
@@ -171,6 +173,47 @@ export default [
           { name: '数据3', value: 24, unit: 'KB', status: 'fall', color: 'cancel' },
         ],
         proportion: [[1, 1, 1, 1], [1, 1]],
+      },
+    },
+  },
+  {
+    w: 12,
+    h: 12,
+    x: 0,
+    y: 16,
+    i: 'view-map',
+    moved: false,
+    static: false,
+    view: {
+      name: 'test',
+      chartType: 'chart:map',
+      title: 'map',
+      staticData: {
+        metricData: [
+          {
+            name: 'test',
+            type: 'map',
+            mapType: 'china',
+            // 关闭拖拽
+            roam: false,
+            data: [
+              // {name: '杭州市', value: randomValue()},
+              { name: '天津', value: randomValue() },
+              // {name: '上海', value: randomValue()},
+              // {name: '重庆', value: randomValue()},
+              // {name: '河北', value: randomValue()},
+              // {name: '河南', value: randomValue()},
+              // {name: '云南', value: randomValue()},
+              // {name: '辽宁', value: randomValue()},
+              // {name: '黑龙江', value: randomValue()},
+              // {name: '湖南', value: randomValue()},
+              // {name: '安徽', value: randomValue()},
+              // {name: '山东', value: randomValue()},
+              // {name: '新疆', value: randomValue()},
+              // {name: '江苏', value: randomValue()}
+            ],
+          },
+        ],
       },
     },
   },

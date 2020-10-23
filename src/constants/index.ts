@@ -1,4 +1,4 @@
-import { cutStr } from './common/utils';
+import { cutStr } from '../common/utils';
 
 // 初始化数据默认 mock 一份，或根据结构随机生成一份
 export const NEW_CHART_VIEW_MAP = {

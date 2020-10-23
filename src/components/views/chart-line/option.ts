@@ -2,12 +2,14 @@ import { map, merge, find } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
+import { getCustomOption } from '../common/custom-option';
+import defaultOption from './default-option';
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
   const { metricData = [], xData, time } = data;
-  const { option: inputOption = {}, optionProps = {} } = config;
+  const { optionProps = {} } = config;
   const {
     seriesName,
     isBarChangeColor,
@@ -99,17 +101,15 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     const defaultName = legendFormatter ? legendFormatter(name) : name;
     return cutStr(defaultName, 20);
   };
-
+  const haveTwoYAxis = yAxis.length > 1;
   const getTTUnitType = (i: number) => {
     const curYAxis = yAxis[i] || yAxis[yAxis.length - 1];
     return [curYAxis.unitType, curYAxis.unit];
   };
-
   const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${preciseTooltip ? unit.value : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
-
   const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
-
   let defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
+
   if (time) {
     defaultTTFormatter = (param) => {
       const endTime = time[param[0].dataIndex + 1];
@@ -120,100 +120,38 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     };
   }
 
-  const haveTwoYAxis = yAxis.length > 1;
-
-  const defaultOption = {
+  const computedOption = {
     tooltip: {
-      trigger: 'axis',
-      transitionDuration: 0,
-      confine: true,
-      axisPointer: {
-        type: 'none',
-      },
       formatter: tooltipFormatter || defaultTTFormatter,
     },
     legend: {
-      bottom: 10,
-      padding: [15, 5, 0, 5],
-      orient: 'horizontal',
-      align: 'left',
       data: legendData,
       formatter: lgFormatter,
-      type: 'scroll',
-      tooltip: {
-        show: true,
-        formatter: (t: any) => cutStr(t.name, 100),
-      },
     },
     xAxis: [
       {
         data: xData || time || [], /* 类目轴数据 */
-        axisTick: {
-          show: false, /* 坐标刻度 */
-        },
-        axisLine: {
-          show: false,
-        },
         axisLabel: {
           // interval: find(metricData, { type: 'bar' }) ? 0 : undefined,
           formatter: xData
             ? (value: string) => value
             : (value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm'),
         },
-        splitLine: {
-          show: false,
-        },
       },
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
-    dataZoom: (find(metricData, { type: 'bar' }) && (xData && xData.length > 10 || time && time.length > 10)) ?
-      {
+    dataZoom: find(metricData, { type: 'bar' }) && ((xData && xData.length > 10) || (time && time.length > 10))
+      ? {
         height: 15,
         start: 0,
         end: 500 / (xData || time).length,
       }
       : false,
     grid: {
-      top: 40,
-      left: 55,
       right: haveTwoYAxis ? 40 : 5,
-      bottom: 40,
-      containLabel: true,
-    },
-    textStyle: {
-      fontFamily: 'arial',
     },
     series,
   };
 
-  const options = merge(defaultOption, inputOption);
-  return options;
+  return merge(defaultOption, computedOption, getCustomOption(data, config));
 }
-
-export const getDefaultOption = () => ({
-  tooltip: {
-    trigger: 'axis',
-    transitionDuration: 0,
-    confine: true,
-    axisPointer: {
-      type: 'none',
-    },
-    // formatter: tooltipFormatter || defaultTTFormatter,
-  },
-  legend: {
-    bottom: 10,
-    padding: [15, 5, 0, 5],
-    orient: 'horizontal',
-    align: 'left',
-    // data: legendData,
-    // formatter: lgFormatter,
-    type: 'scroll',
-    tooltip: {
-      show: true,
-      formatter: (t: any) => cutStr(t.name, 100),
-    },
-  },
-  textStyle: {
-    fontFamily: 'arial',
-  },
-});

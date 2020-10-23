@@ -3,6 +3,8 @@ import { isEqual } from 'lodash';
 import React from 'react';
 import DashboardStore from '../../../stores/dash-board';
 import { getConfig } from '../../../config';
+// import 'echarts/map/js/china';
+// import 'echarts/map/js/province/zhejiang';
 
 interface IProps {
   viewId: string
@@ -12,7 +14,8 @@ interface IProps {
   }
   style?: object
   theme: string
-  getOption(data: object, customOption: object): object
+  option: any
+  // getOption(data: object, customOption: object): object
 }
 
 // 重写相关生命周期，用于注册theme
@@ -53,11 +56,11 @@ class Chart extends React.Component<IProps> {
   }
 
   render() {
-    const { data, config = {}, getOption, style, theme, ...others } = this.props;
+    const { data, config = {}, style, option, theme, ...others } = this.props;
     return (
       <ReactEcharts
         {...others}
-        option={getOption(data, config)}
+        option={option}
         theme={theme}
         style={{ ...style, height: '100%' }}
       />

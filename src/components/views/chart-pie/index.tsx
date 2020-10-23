@@ -15,7 +15,7 @@ interface IProps {
 
 // TODO: 几个图都一样，可以合并一下
 const ChartPie = React.forwardRef((props: IProps, ref: React.Ref<any>) => (
-  <ChartSizeMe {...props} getOption={getOption} ref={ref} />
+  <ChartSizeMe {...props} option={getOption(props.data, props.config)} ref={ref} />
 ));
 
 export default ChartPie;

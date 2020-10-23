@@ -23,7 +23,7 @@ declare module DC {
     dataSettings?: any[] // props由form相关属性构成
   }
 
-  type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'table' | 'card';
+  type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'table' | 'card' | 'chart:scatter' | 'chart:map';
 
   type ViewDefMap = Record<ViewType, ViewDefItem>;
 
@@ -58,10 +58,12 @@ declare module DC {
   type OptionFn = (data: object, optionExtra?: object) => object;
 
   interface ChartConfig {
-    option?: Option;// 图表配置（完全匹配echarts配置），会作为最高优先级合并
+    // 配置优先级：optionFn > option
+    option?: Option;// 图表配置（完全匹配echarts配置）
     optionProps?: {// 一些用于调整option的参数
       [k: string]: any
     };
+
     optionFn?: OptionFn;
     optionExtra?: object;
   }
@@ -95,7 +97,7 @@ declare module DC {
     yData?: TData | TData[];
     metricData: MetricData[];
     legendData: TData[];
-    extraOption: object; // 可能需要根据返回数据调整option
+    extraOption: object; // 可能需要根据返回数据调整 option
     [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
   }
 

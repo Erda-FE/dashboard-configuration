@@ -4,7 +4,6 @@ const randomValue = () => Math.round(Math.random() * 1000);
 
 const staticData = {
   xData: [
-    '满意',
     '不满意',
     '满不满意',
     '可容忍',
@@ -14,7 +13,6 @@ const staticData = {
     '13rr:哈哈',
     '1r32:哈哈',
     '13:哈ew哈',
-    '1r:哈e哈',
   ],
   metricData: [
     {
@@ -30,21 +28,17 @@ const staticData = {
         '0.33',
         '0.33',
         '0.33',
-        '0.33',
-        '0.33',
       ],
     },
     {
       name: 'tset2',
       stack: 'a',
       data: [
-        '0.12',
         '0.78',
         '0.78',
         '0.78',
         '0.78',
         '0.77',
-        '0.33',
         '0.33',
         '0.33',
         '0.33',
@@ -58,8 +52,6 @@ const staticData = {
         '0.03',
         '0.03',
         '0.03',
-        '0.03',
-        '0.33',
         '0.33',
         '0.33',
         '0.33',
@@ -190,29 +182,20 @@ export default [
       title: 'map',
       staticData: {
         metricData: [
-          {
-            name: 'test',
-            type: 'map',
-            mapType: 'china',
-            // 关闭拖拽
-            roam: false,
-            data: [
-              // {name: '杭州市', value: randomValue()},
-              { name: '天津', value: randomValue() },
-              // {name: '上海', value: randomValue()},
-              // {name: '重庆', value: randomValue()},
-              // {name: '河北', value: randomValue()},
-              // {name: '河南', value: randomValue()},
-              // {name: '云南', value: randomValue()},
-              // {name: '辽宁', value: randomValue()},
-              // {name: '黑龙江', value: randomValue()},
-              // {name: '湖南', value: randomValue()},
-              // {name: '安徽', value: randomValue()},
-              // {name: '山东', value: randomValue()},
-              // {name: '新疆', value: randomValue()},
-              // {name: '江苏', value: randomValue()}
-            ],
-          },
+          { name: '杭州市', value: randomValue() },
+          { name: '天津', value: randomValue() },
+          { name: '上海', value: randomValue() },
+          { name: '重庆', value: randomValue() },
+          { name: '河北', value: randomValue() },
+          { name: '河南', value: randomValue() },
+          { name: '云南', value: randomValue() },
+          { name: '辽宁', value: randomValue() },
+          { name: '黑龙江', value: randomValue() },
+          { name: '湖南', value: randomValue() },
+          { name: '安徽', value: randomValue() },
+          { name: '山东', value: randomValue() },
+          { name: '新疆', value: randomValue() },
+          { name: '江苏', value: randomValue() },
         ],
       },
     },

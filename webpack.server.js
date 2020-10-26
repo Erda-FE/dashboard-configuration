@@ -5,7 +5,7 @@ const frontUrl = '127.0.0.1';
 
 const devServer = {
   port: 8010,
-  // host: frontUrl,
+  host: frontUrl,
   compress: true,
   contentBase: path.join(__dirname, 'public'),
   index: 'index.html',

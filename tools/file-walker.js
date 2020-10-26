@@ -1,3 +1,9 @@
+/* 读取文件夹文件
+ * @Author: licao
+ * @Date: 2020-10-26 11:04:49
+ * @Last Modified by:   licao
+ * @Last Modified time: 2020-10-26 11:04:49
+ */
 const fs = require('fs');
 const path = require('path');
 

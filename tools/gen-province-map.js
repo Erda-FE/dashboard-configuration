@@ -1,3 +1,10 @@
+/* 生成 echarts 导出的省级地图文件名和注册地图所用名的 Map
+ * @Author: licao
+ * @Date: 2020-10-26 10:57:42
+ * @Last Modified by: licao
+ * @Last Modified time: 2020-10-26 11:36:00
+ */
+
 const { walker } = require('./file-walker');
 const path = require('path');
 const fs = require('fs');
@@ -33,7 +40,7 @@ const genProvinceMap = async () => {
 genProvinceMap().then((data) => {
   let initMapString = '';
   // eslint-disable-next-line no-return-assign
-  data.forEach((v, k) => initMapString += `['${v}', '${k}'],`);
+  data.forEach((v, k) => initMapString += `['${v}', '${k}'], `);
 
   fs.writeFile(
     pathResolve('../src/constants/province-name.ts'),

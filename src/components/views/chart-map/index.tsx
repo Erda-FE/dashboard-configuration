@@ -1,8 +1,16 @@
-import React, { useCallback, useEffect } from 'react';
+/* 地图
+ * @Author: licao
+ * @Date: 2020-10-26 17:38:44
+ * @Last Modified by: licao
+ * @Last Modified time: 2020-10-26 17:40:53
+ */
+import React, { useCallback } from 'react';
 import { useMount } from 'react-use';
+import echarts from 'echarts';
+import agent from '../../../utils/agent';
 import { useUpdate } from '../../../common/use-hooks';
 import ChartSizeMe from '../chart-sizeme';
-import { provinceNameMap } from '../../../constants/province-name';
+import { adcodeMap } from '../../../constants/adcode-map';
 import { getOption } from './option';
 
 interface IProps {
@@ -15,27 +23,32 @@ interface IProps {
 
 const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   const [{ mapType, requiredMapType }, updater] = useUpdate({
-    mapType: 'china',
+    mapType: '',
     requiredMapType: [],
   });
 
-  // 加载地图数据
-  useMount(() => require('echarts/map/js/china'));
+  useMount(() => {
+    // 初始化全国地图
+    agent.get('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json')
+      .then((_data: any) => registerMap('china', JSON.parse(_data.text)));
+  });
 
-  useEffect(() => {
-    if (provinceNameMap.has(mapType) && !requiredMapType.includes(mapType)) {
-      require(`echarts/map/js/province/${provinceNameMap.get(mapType)}`);
-      updater.requiredMapType([...requiredMapType, mapType]);
-    }
-  }, [mapType, requiredMapType, updater]);
+  const registerMap = (_mapType: string, _data: any) => {
+    echarts.registerMap(_mapType, _data);
+    updater.mapType(_mapType);
+    updater.requiredMapType([...requiredMapType, mapType]);
+  };
 
   const _getOption = useCallback(
-    (data: DC.StaticData, config: DC.ChartConfig) => getOption(data, config, mapType),
+    (_data: DC.StaticData, config: DC.ChartConfig) => getOption(_data, config, mapType),
     [mapType]
   );
 
   const changeMapType = (_mapType: string) => {
-    updater.mapType(provinceNameMap.has(_mapType) ? _mapType : 'china');
+    if (!adcodeMap.has(_mapType)) return;
+    const adcode = adcodeMap.get(_mapType);
+    agent.get(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`)
+      .then((_data: any) => registerMap(_mapType, JSON.parse(_data.text)));
   };
 
   return (

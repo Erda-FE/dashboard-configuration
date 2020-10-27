@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-10-26 17:40:53
+ * @Last Modified time: 2020-10-27 14:57:53
  */
 import React, { useCallback } from 'react';
 import { useMount } from 'react-use';
@@ -22,9 +22,9 @@ interface IProps {
 }
 
 const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
-  const [{ mapType, requiredMapType }, updater] = useUpdate({
+  const [{ mapType, registeredMapType }, updater] = useUpdate({
     mapType: '',
-    requiredMapType: [],
+    registeredMapType: [],
   });
 
   useMount(() => {
@@ -36,7 +36,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   const registerMap = (_mapType: string, _data: any) => {
     echarts.registerMap(_mapType, _data);
     updater.mapType(_mapType);
-    updater.requiredMapType([...requiredMapType, mapType]);
+    updater.registeredMapType([...registeredMapType, _mapType]);
   };
 
   const _getOption = useCallback(
@@ -45,7 +45,17 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   );
 
   const changeMapType = (_mapType: string) => {
-    if (!adcodeMap.has(_mapType)) return;
+    // 点击最下级无效，目前返回全国
+    if (!adcodeMap.has(_mapType)) {
+      updater.mapType('china');
+      return;
+    }
+
+    if (registeredMapType.includes(_mapType)) {
+      updater.mapType(_mapType);
+      return;
+    }
+
     const adcode = adcodeMap.get(_mapType);
     agent.get(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`)
       .then((_data: any) => registerMap(_mapType, JSON.parse(_data.text)));
@@ -53,7 +63,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   return (
     <ChartSizeMe
-      option={_getOption(props.data, props.config)}
+      option={_getOption(props.data || {}, props.config)}
       onEvents={{ click: (params: any) => changeMapType(params.name) }}
       ref={ref}
       {...props}

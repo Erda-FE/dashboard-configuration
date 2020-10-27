@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 11:03:42
  * @Last Modified by: licao
- * @Last Modified time: 2020-10-26 11:46:53
+ * @Last Modified time: 2020-10-26 17:49:53
  */
 
 const agent = require('superagent');
@@ -46,8 +46,10 @@ const genADCodeMap = (districts) => {
 
 const errHandler = msg => (err) => {
   if (err) {
+    // eslint-disable-next-line no-console
     console.log(`>>>>>> ${msg} generated fail! <<<<<< \n\n`, err);
   } else {
+    // eslint-disable-next-line no-console
     console.log(`>>>>>> ${msg} generated ok. <<<<<<`);
   }
 };

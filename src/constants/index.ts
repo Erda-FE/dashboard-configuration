@@ -1,5 +1,3 @@
-import { cutStr } from '../common/utils';
-
 // 初始化数据默认 mock 一份，或根据结构随机生成一份
 export const NEW_CHART_VIEW_MAP = {
   'chart:line': {
@@ -8,45 +6,6 @@ export const NEW_CHART_VIEW_MAP = {
     description: '',
     hideHeader: true,
     hideReload: true,
-    config: {
-      option: {
-        grid: { left: '5%' },
-        // tooltip: {
-        //   trigger: 'axis',
-        //   transitionDuration: 0,
-        //   confine: true,
-        //   axisPointer: {
-        //     type: 'none',
-        //   },
-        // },
-        // legend: {
-        //   bottom: 0,
-        //   padding: [15, 5, 0, 5],
-        //   orient: 'horizontal',
-        //   align: 'left',
-        //   type: 'scroll',
-        //   tooltip: {
-        //     show: true,
-        //     formatter: (t: any) => cutStr(t.name, 100),
-        //   },
-        // },
-        // textStyle: {
-        //   fontFamily: 'arial',
-        // },
-        // yAxis: [
-        //   {
-        //     type: 'value',
-        //     name: 'Y-Axis: Left',
-        //     min: 0,
-        //     max: 1,
-        //     interval: 0.1,
-        //     axisLabel: {
-        //       formatter: '{value} unit',
-        //     },
-        //   },
-        // ],
-      },
-    },
     dataSourceType: 'api',
     api: {},
   },
@@ -56,45 +15,6 @@ export const NEW_CHART_VIEW_MAP = {
     description: '',
     hideHeader: true,
     hideReload: true,
-    config: {
-      option: {
-        grid: { left: '5%' },
-        // tooltip: {
-        //   trigger: 'axis',
-        //   transitionDuration: 0,
-        //   confine: true,
-        //   axisPointer: {
-        //     type: 'none',
-        //   },
-        // },
-        // legend: {
-        //   bottom: 0,
-        //   padding: [15, 5, 0, 5],
-        //   orient: 'horizontal',
-        //   align: 'left',
-        //   type: 'scroll',
-        //   tooltip: {
-        //     show: true,
-        //     formatter: (t: any) => cutStr(t.name, 100),
-        //   },
-        // },
-        // textStyle: {
-        //   fontFamily: 'arial',
-        // },
-        // yAxis: [
-        //   {
-        //     type: 'value',
-        //     name: 'Y-Axis: Left',
-        //     min: 0,
-        //     max: 1,
-        //     interval: 0.1,
-        //     axisLabel: {
-        //       formatter: '{value} unit',
-        //     },
-        //   },
-        // ],
-      },
-    },
     dataSourceType: 'api',
     api: {},
   },
@@ -104,45 +24,6 @@ export const NEW_CHART_VIEW_MAP = {
     description: '',
     hideHeader: true,
     hideReload: true,
-    config: {
-      option: {
-        grid: { left: '5%' },
-        // tooltip: {
-        //   trigger: 'axis',
-        //   transitionDuration: 0,
-        //   confine: true,
-        //   axisPointer: {
-        //     type: 'none',
-        //   },
-        // },
-        // legend: {
-        //   bottom: 0,
-        //   padding: [15, 5, 0, 5],
-        //   orient: 'horizontal',
-        //   align: 'left',
-        //   type: 'scroll',
-        //   tooltip: {
-        //     show: true,
-        //     formatter: (t: any) => cutStr(t.name, 100),
-        //   },
-        // },
-        // textStyle: {
-        //   fontFamily: 'arial',
-        // },
-        // yAxis: [
-        //   {
-        //     type: 'value',
-        //     name: 'Y-Axis: Left',
-        //     min: 0,
-        //     max: 1,
-        //     interval: 0.1,
-        //     axisLabel: {
-        //       formatter: '{value} unit',
-        //     },
-        //   },
-        // ],
-      },
-    },
     dataSourceType: 'api',
     api: {},
   },
@@ -154,11 +35,27 @@ export const NEW_CHART_VIEW_MAP = {
     hideReload: true,
     dataSourceType: 'api',
     api: {},
-    config: {
-      series: {
-        radius: ['30%', '50%'],
-      },
+  },
+  'chart:map': {
+    chartType: 'chart:map',
+    title: 'map111',
+    description: '',
+    hideHeader: true,
+    hideReload: true,
+    dataSourceType: 'api',
+    api: {},
+    staticData: {
+      metricData: [],
     },
+  },
+  'chart:scatter': {
+    chartType: 'chart:scatter',
+    title: 'scatter chart',
+    description: '',
+    hideHeader: true,
+    hideReload: true,
+    dataSourceType: 'api',
+    api: {},
   },
   table: {
     chartType: 'table',

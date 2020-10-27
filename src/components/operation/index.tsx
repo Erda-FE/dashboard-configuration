@@ -1,4 +1,4 @@
-import { Popconfirm, Tooltip, Dropdown, Menu, Select, Spin } from 'antd';
+import { Popconfirm, Tooltip, Dropdown, Menu, Select } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction, map } from 'lodash';
 import React, { ReactElement } from 'react';
@@ -164,11 +164,12 @@ class Operation extends React.PureComponent<IProps, IState> {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
-    const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config } = view;
+    const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config, chartType } = view;
     const isCustomTitle = isFunction(_title);
     const title = isCustomTitle ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;
     const isCustomRender = typeof customRender === 'function';
+    const excludeEmptyType = ['chart:map'];
     const _childNode = React.cloneElement(childNode, {
       ...childNode.props,
       data: resData,
@@ -260,7 +261,7 @@ class Operation extends React.PureComponent<IProps, IState> {
         {this.getViewMask(fetchStatus || maskMsg)}
         {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}
         {
-          (!isCustomRender && (!resData || isEmpty(resData.metricData)))
+          (!isCustomRender && !excludeEmptyType.includes(chartType) && (!resData || isEmpty(resData.metricData)))
             ? <EmptyHolder />
             : (
               <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
@@ -278,6 +279,7 @@ export default (p: any) => {
   const [editChartId, viewMap] = ChartEditorStore.useStore(s => [s.editChartId, s.viewMap]);
   const { updateViewInfo: setViewInfo, editView } = ChartEditorStore;
   const { deleteView } = DashboardStore;
+
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const props = {
     isEditMode,

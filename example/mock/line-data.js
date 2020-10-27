@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const randomValue = () => Math.round(Math.random() * 1000);
+// const randomValue = () => Math.round(Math.random() * 1000);
 
 const staticData = {
   xData: [
@@ -180,29 +180,29 @@ export default [
       name: 'test',
       chartType: 'chart:map',
       title: 'map',
-      staticData: {
-        metricData: [
-          {
-            name: 'iphone12',
-            data: [
-              { name: '哈密市', value: randomValue() },
-              { name: '天津', value: randomValue() },
-              { name: '上海', value: randomValue() },
-              { name: '重庆', value: randomValue() },
-              { name: '河北', value: randomValue() },
-              { name: '河南', value: randomValue() },
-              { name: '云南', value: randomValue() },
-              { name: '辽宁', value: randomValue() },
-              { name: '黑龙江', value: randomValue() },
-              { name: '湖南', value: randomValue() },
-              { name: '安徽', value: randomValue() },
-              { name: '山东', value: randomValue() },
-              { name: '新疆维吾尔自治区', value: randomValue() },
-              { name: '江苏', value: randomValue() },
-            ],
-          },
-        ],
-      },
+      // staticData: {
+      //   metricData: [
+      //     {
+      //       name: 'iphone12',
+      //       data: [
+      //         { name: '哈密市', value: randomValue() },
+      //         { name: '天津', value: randomValue() },
+      //         { name: '上海', value: randomValue() },
+      //         { name: '重庆', value: randomValue() },
+      //         { name: '河北', value: randomValue() },
+      //         { name: '河南', value: randomValue() },
+      //         { name: '云南', value: randomValue() },
+      //         { name: '辽宁', value: randomValue() },
+      //         { name: '黑龙江', value: randomValue() },
+      //         { name: '湖南', value: randomValue() },
+      //         { name: '安徽', value: randomValue() },
+      //         { name: '山东', value: randomValue() },
+      //         { name: '新疆维吾尔自治区', value: randomValue() },
+      //         { name: '江苏', value: randomValue() },
+      //       ],
+      //     },
+      //   ],
+      // },
     },
   },
 ];

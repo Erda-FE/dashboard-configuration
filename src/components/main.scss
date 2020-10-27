@@ -41,5 +41,6 @@ $grid-prefix-cls: #{$prefix}-grid;
 }
 
 .#{$prefix}-content {
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 }

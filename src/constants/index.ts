@@ -45,7 +45,7 @@ export const NEW_CHART_VIEW_MAP = {
     dataSourceType: 'api',
     api: {},
     staticData: {
-      metricData: [],
+      metricData: [{}],
     },
   },
   'chart:scatter': {

@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-10-27 14:57:53
+ * @Last Modified time: 2020-10-27 16:55:15
  */
 import React, { useCallback } from 'react';
 import { useMount } from 'react-use';
@@ -63,7 +63,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   return (
     <ChartSizeMe
-      option={_getOption(props.data || {}, props.config)}
+      option={_getOption(props.data, props.config)}
       onEvents={{ click: (params: any) => changeMapType(params.name) }}
       ref={ref}
       {...props}

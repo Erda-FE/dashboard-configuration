@@ -1,7 +1,8 @@
 import agent from '../utils/agent';
 
-export const getChartData = ({ url, query }: { url: string; query?: any }) => (
-  agent.get(url)
+export const getChartData = ({ url, query, method, body }: DC.API) => {
+  agent[method.toLowerCase()](url)
     .query(query)
-    .then((response: any) => response.body)
-);
+    .send(body)
+    .then((response: any) => response.body);
+};

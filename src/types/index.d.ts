@@ -27,6 +27,20 @@ declare module DC {
 
   type ViewDefMap = Record<ViewType, ViewDefItem>;
 
+  interface API {
+    url: string,
+    method: 'GET' | 'POST',
+    query?: {
+      [k: string]: any
+    },
+    body?: {
+      [k: string]: any
+    },
+    header?: {
+      [k: string]: any
+    },
+  }
+
   interface View {
     name: string;
     // 展示类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择
@@ -36,18 +50,7 @@ declare module DC {
     description?: string;
     hideHeader?: boolean; // 是否隐藏Header
     staticData?: StaticData; // 静态数据
-    api?: {
-      url: string,
-      query: {
-        [k: string]: any
-      },
-      body: {
-        [k: string]: any
-      },
-      header: {
-        [k: string]: any
-      },
-    };
+    api?: API;
     loadData?(query?: object): Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
     dataConvertor?: string | DataConvertor; // 数据转换，为string时表示使用已注册的方法
     config: ChartConfig// 所有页面上的配置项

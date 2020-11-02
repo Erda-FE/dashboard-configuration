@@ -1,0 +1,14 @@
+@import "../../../styles//variable";
+
+.#{$prefix}-chart-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.#{$prefix}-hover-active {
+  &:hover {
+    color: $color-primary !important;
+    cursor: pointer;
+  }
+}

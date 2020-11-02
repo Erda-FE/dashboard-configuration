@@ -41,6 +41,7 @@ const DataConfig = ({ form, formData, forwardedRef, isTouched, setTouched, conte
       <APIFormComponent
         form={form}
         currentChart={currentChart}
+        // 覆盖 API 配置 => 合并
         submitResult={(result: any) => onEditorChange({ api: result })}
       />
     </section>

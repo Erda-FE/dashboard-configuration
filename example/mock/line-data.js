@@ -203,6 +203,9 @@ export default [
           },
         ],
       },
+      config: {
+        onChange: (curMapTypes) => { console.log(curMapTypes); },
+      },
     },
   },
 ];

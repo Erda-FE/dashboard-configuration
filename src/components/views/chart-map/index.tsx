@@ -1,12 +1,12 @@
-/* 地图
+/* 下钻地图
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-11-02 20:30:16
+ * @Last Modified time: 2020-11-03 10:09:55
  */
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
-import { map, slice, findIndex } from 'lodash';
+import { map, slice, findIndex, get } from 'lodash';
 import { Breadcrumb } from 'antd';
 import echarts from 'echarts';
 import agent from '../../../utils/agent';
@@ -23,10 +23,14 @@ interface IProps {
   viewId: string
   config: {
     option: object
+    onChange(curMapTypes: string[]): void
   }
 }
 
+const noop = () => {};
+
 const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
+  const handleChange = useMemo(() => get(props, ['config', 'onChange']) || noop, [props.config.onChange]);
   const [{ mapType, registeredMapType }, updater] = useUpdate({
     mapType: [],
     registeredMapType: [],
@@ -38,7 +42,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
       .then((_data: any) => registerMap('中华人民共和国', JSON.parse(_data.text)));
   });
 
-  useEffect(() => { console.log(mapType); }, [mapType]);
+  useEffect(() => { handleChange(mapType); }, [mapType]);
 
   const registerMap = (_mapType: string, _data: any) => {
     echarts.registerMap(_mapType, _data);
@@ -79,7 +83,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
       />
       <Breadcrumb>
         {map(mapType, (_type, _k) => (
-          <Breadcrumb.Item>
+          <Breadcrumb.Item key={_type}>
             <IF check={_k < mapType.length - 1}>
               <span className="dc-hover-active" onClick={() => changeMapType(_type)}>{_type}</span>
               <IF.ELSE />

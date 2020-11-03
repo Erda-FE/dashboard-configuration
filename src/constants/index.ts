@@ -38,7 +38,7 @@ export const NEW_CHART_VIEW_MAP = {
   },
   'chart:map': {
     chartType: 'chart:map',
-    title: 'map111',
+    title: 'map chart',
     description: '',
     hideHeader: true,
     hideReload: true,

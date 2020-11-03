@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-11-03 10:54:41
+ * @Last Modified time: 2020-11-03 20:03:21
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
@@ -24,13 +24,14 @@ interface IProps {
   config: {
     option: object
     onChange?(curMapTypes: string[]): void
-  }
+  },
+  loadData(arg?: any): void,
 }
 
 const noop = () => {};
 
 const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
-  const handleChange = useMemo(() => get(props, ['config', 'onChange']) || noop, [props.config]);
+  const loadData = useMemo(() => props.loadData || noop, [props.loadData]);
   const [{ mapType, registeredMapType }, updater] = useUpdate({
     mapType: [],
     registeredMapType: [],
@@ -42,7 +43,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
       .then((_data: any) => registerMap('中华人民共和国', JSON.parse(_data.text)));
   });
 
-  useEffect(() => { handleChange(mapType); }, [mapType]);
+  useEffect(() => { loadData(mapType); }, [mapType]);
 
   const registerMap = (_mapType: string, _data: any) => {
     echarts.registerMap(_mapType, _data);

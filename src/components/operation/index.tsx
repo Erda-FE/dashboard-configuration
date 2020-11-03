@@ -96,6 +96,7 @@ class Operation extends React.PureComponent<IProps, IState> {
     this.setState({
       fetchStatus: Status.FETCH,
     });
+    // 调用外部传入的函数
     loadData(arg)
       .then((res: any) => {
         let resData = res;
@@ -174,6 +175,7 @@ class Operation extends React.PureComponent<IProps, IState> {
       ...childNode.props,
       data: resData,
       config,
+      loadData: this.loadData,
     });
 
     const optionsMenu = (

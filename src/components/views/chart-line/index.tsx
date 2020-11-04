@@ -14,7 +14,7 @@ interface IProps {
 }
 
 const ChartLine = React.forwardRef((props: IProps, ref: React.Ref<any>) => (
-  <ChartSizeMe {...props} option={getOption(props.data, props.data)} ref={ref} />
+  <ChartSizeMe {...props} option={getOption(props.data, props.config)} ref={ref} />
 ));
 
 export default ChartLine;

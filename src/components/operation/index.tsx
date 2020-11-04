@@ -76,16 +76,14 @@ class Operation extends React.PureComponent<IProps, IState> {
     }
   }
 
-  componentDidUpdate({ isEditView: prevIsEditView, view }: IProps) {
+  componentDidUpdate({ isEditView, view }: IProps) {
     this.hasLoadFn = typeof view.loadData === 'function';
-    if (this.hasLoadFn) {
-      if (
-        !isEqual(this.props.view.chartQuery, view.chartQuery) ||
-        (prevIsEditView !== this.props.isEditView && prevIsEditView) ||
-        !isEqual(this.props.view.loadData, view.loadData)
-      ) {
-        this.loadData(this.props.view.chartQuery);
-      }
+    const isChartQueryUpdated = !isEqual(this.props.view.chartQuery, view.chartQuery);
+    const isEditViewUpdated = isEditView !== this.props.isEditView && isEditView;
+    const isLoadDataUpdated = !isEqual(this.props.view.loadData, view.loadData);
+
+    if (this.hasLoadFn && (isChartQueryUpdated || isEditViewUpdated || isLoadDataUpdated)) {
+      this.loadData(this.props.view.chartQuery);
     }
   }
 

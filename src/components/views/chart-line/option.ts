@@ -3,11 +3,11 @@ import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
 import { getCustomOption } from '../common/custom-option';
-import defaultOption from './default-option';
+import getDefaultOption from './default-option';
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
-export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
+export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { metricData = [], xData, time } = data;
   const { optionProps = {} } = config;
   const {
@@ -153,5 +153,5 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     series,
   };
 
-  return merge(defaultOption, computedOption, getCustomOption(data, config));
+  return merge(getDefaultOption(), computedOption, getCustomOption(data, config));
 }

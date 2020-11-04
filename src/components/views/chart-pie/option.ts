@@ -1,9 +1,9 @@
 import { merge, set } from 'lodash';
 import { getCustomOption } from '../common/custom-option';
-import defaultOption from './default-option';
+import getDefaultOption from './default-option';
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
-  const option = merge(defaultOption, getCustomOption(data, config));
+  const option = merge(getDefaultOption(), getCustomOption(data, config));
   const { metricData = [], legendData = [] } = data || {};
 
   if (legendData.length) {

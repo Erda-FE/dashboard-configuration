@@ -1,4 +1,4 @@
-export default {
+export default () => ({
   tooltip: {
     trigger: 'item',
     formatter: '{a} <br/>{b} : {c} ({d}%)',
@@ -15,4 +15,4 @@ export default {
       type: 'pie',
     },
   ],
-};
+});

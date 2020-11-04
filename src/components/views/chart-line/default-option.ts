@@ -1,6 +1,6 @@
 import { cutStr } from '../../../common/utils';
 
-export default {
+export default () => ({
   tooltip: {
     trigger: 'axis',
     transitionDuration: 0,
@@ -42,4 +42,4 @@ export default {
   textStyle: {
     fontFamily: 'arial',
   },
-};
+});

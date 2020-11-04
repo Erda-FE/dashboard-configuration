@@ -48,6 +48,7 @@ export default ({ style, option, ...rest }: IProps) => {
   return (
     <ReactEcharts
       {...rest}
+      notMerge
       option={option}
       theme={theme}
       style={{ ...style, height: '100%' }}

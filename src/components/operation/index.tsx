@@ -234,19 +234,44 @@ class Operation extends React.PureComponent<IProps, IState> {
               </Dropdown>
               <React.Fragment>
                 {
-                  controls && !isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'
+                  !isEmpty(controls[0]) || !isEmpty(dataConfigSelectors)
                     ?
                       <div className="dc-chart-controls-ct">
-                        <Select
-                          allowClear
-                          className="my12"
-                          style={{ width: 150 }}
-                          onChange={(v: any) => {
-                            this.loadData({ [controls[0].key]: v });
-                          }}
-                        >
-                          { map(controls[0].options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                        </Select>
+                        {
+                          !isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'
+                            ?
+                              <Select
+                                allowClear
+                                className="my12 ml8"
+                                style={{ width: 150 }}
+                                onChange={(v: any) => {
+                                  this.loadData({ [controls[0].key]: v });
+                                }}
+                              >
+                                { map(controls[0].options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                              </Select>
+                            :
+                            null
+                        }
+                        {
+                          !isEmpty(dataConfigSelectors)
+                            ?
+                            map(config.dataConfigSelectors, ({ key, options, componentProps }) => (
+                              <Select
+                                key={key}
+                                className="my12 ml8"
+                                style={{ width: 150 }}
+                                onChange={(v: any) => {
+                                  this.loadData(v);
+                                }}
+                                {...componentProps}
+                              >
+                                { map(options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                              </Select>
+                            ))
+                            :
+                            null
+                        }
                       </div>
                     :
                     null

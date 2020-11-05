@@ -70,6 +70,7 @@ export const BoardGrid = ({ width, layout }: any) => {
       cols={cols}
       rowHeight={rowHeight}
       width={width}
+      containerPadding={[0, 0]}
       onLayoutChange={updateLayout}
       isDraggable
       isResizable={isEditMode}

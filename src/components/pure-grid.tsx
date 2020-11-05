@@ -56,6 +56,7 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
       cols={cols}
       rowHeight={rowHeight}
       width={width}
+      containerPadding={[0, 0]}
       isResizable={false}
     >
       {map(pureLayout, ({ i, ...others }: any) => {

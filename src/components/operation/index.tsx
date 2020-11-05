@@ -163,7 +163,8 @@ class Operation extends React.PureComponent<IProps, IState> {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus } = this.state;
-    const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config, chartType } = view;
+    const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config, chartType, api } = view;
+    const dataConfigSelectors = get(api, ['extraData', 'dataConfigSelectors']);
     const isCustomTitle = isFunction(_title);
     const title = isCustomTitle ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;
@@ -256,7 +257,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                         {
                           !isEmpty(dataConfigSelectors)
                             ?
-                            map(config.dataConfigSelectors, ({ key, options, componentProps }) => (
+                            map(dataConfigSelectors, ({ key, options, componentProps }) => (
                               <Select
                                 key={key}
                                 className="my12 ml8"

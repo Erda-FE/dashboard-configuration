@@ -235,7 +235,7 @@ class Operation extends React.PureComponent<IProps, IState> {
               </Dropdown>
               <React.Fragment>
                 {
-                  !isEmpty(controls[0]) || !isEmpty(dataConfigSelectors)
+                  (controls && !isEmpty(controls[0])) || !isEmpty(dataConfigSelectors)
                     ?
                       <div className="dc-chart-controls-ct">
                         {

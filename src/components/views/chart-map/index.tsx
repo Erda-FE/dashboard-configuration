@@ -2,11 +2,11 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-11-03 20:03:21
+ * @Last Modified time: 2020-11-06 17:23:33
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
-import { map, slice, findIndex, get } from 'lodash';
+import { map, slice, findIndex } from 'lodash';
 import { Breadcrumb } from 'antd';
 import echarts from 'echarts';
 import agent from '../../../utils/agent';
@@ -15,12 +15,13 @@ import { useUpdate } from '../../../common/use-hooks';
 import ChartSizeMe from '../chart-sizeme';
 import { adcodeMap } from '../../../constants/adcode-map';
 import { getOption } from './option';
+import ChartEditorStore from '../../../stores/chart-editor';
 
 import './index.scss';
 
 interface IProps {
   data: any
-  viewId: string
+  isEditView: boolean
   config: {
     option: object
     onChange?(curMapTypes: string[]): void
@@ -32,6 +33,8 @@ const noop = () => {};
 
 const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   const loadData = useMemo(() => props.loadData || noop, [props.loadData]);
+  const { onEditorChange } = ChartEditorStore;
+
   const [{ mapType, registeredMapType }, updater] = useUpdate({
     mapType: [],
     registeredMapType: [],
@@ -43,7 +46,11 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
       .then((_data: any) => registerMap('中华人民共和国', JSON.parse(_data.text)));
   });
 
-  useEffect(() => { loadData(mapType); }, [mapType]);
+  useEffect(() => {
+    // 编辑状态下存储当前地图层级到 store
+    props.isEditView && onEditorChange({ curMapType: mapType });
+    loadData(mapType);
+  }, [mapType, props.isEditView, onEditorChange]);
 
   const registerMap = (_mapType: string, _data: any) => {
     echarts.registerMap(_mapType, _data);

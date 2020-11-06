@@ -74,35 +74,7 @@ const chartEditorStore = createFlatStore({
     async onEditorChange({ select }, payload) {
       const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
       const _payload = { ...payload };
-      if (_payload.api) {
-        _payload.loadData = async () => {
-          const { data } = await getChartData(_payload.api);
-          const { chartType } = viewMap[editChartId];
-          if (['chart:line', 'chart:area', 'chart:bar'].includes(chartType)) {
-            const { results, ...rest } = data;
-            if (results[0].data.length > 1) {
-              return {
-                ...rest,
-                metricData: map(results[0].data, item => values(item)[0]),
-              };
-            } else {
-              return {
-                ...rest,
-                metricData: results[0].data[0],
-              };
-            }
-          }
-          if (chartType === 'chart:pie') {
-            return {
-              metricData: [{
-                name: data.title || '',
-                data: map(data.metricData, ({ title, value }) => ({ name: title, value })),
-              }],
-            };
-          }
-          return data;
-        };
-      }
+
       chartEditorStore.updateState({
         viewMap: {
           ...viewMap,

@@ -8,7 +8,7 @@ export /**
  * @param {DC.ChartConfig} config
  * @returns {object}
  */
-const getCustomOption = (data: DC.StaticData, config: DC.ChartConfig = {}): object => {
+const getCustomOption = (data: DC.StaticData = {}, config: DC.ChartConfig = {}): object => {
   // 优先级：customOptionFn > option
   let customOption;
   let { optionFn: customOptionFn } = config;

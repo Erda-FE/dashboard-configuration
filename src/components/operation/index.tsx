@@ -174,6 +174,7 @@ class Operation extends React.PureComponent<IProps, IState> {
       ...childNode.props,
       data: resData,
       config,
+      isEditView,
       loadData: this.loadData,
     });
 

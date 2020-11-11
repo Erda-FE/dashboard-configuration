@@ -53,6 +53,7 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
       autoSize
       ref={boardGridRef}
       layout={pureLayout}
+      isDraggable={false}
       cols={cols}
       rowHeight={rowHeight}
       width={width}

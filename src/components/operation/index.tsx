@@ -328,7 +328,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                                 style={{ width: 150 }}
                                 onChange={(v: any) => {
                                   this.setState({
-                                    dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, 'dynamic-data': { [dynamicFilterKey]: v } },
+                                    dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, 'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v } },
                                   }, () => {
                                     this.loadData();
                                   });

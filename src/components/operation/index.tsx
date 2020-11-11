@@ -357,7 +357,7 @@ class Operation extends React.PureComponent<IProps, IState> {
             ? <EmptyHolder />
             : (
               <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
-                {isCustomRender ? customRender(_childNode, view) : _childNode}
+                {isCustomRender ? customRender((!resData || isEmpty(resData.metricData)) ? <EmptyHolder /> : _childNode, view) : _childNode}
               </div>
             )
         }

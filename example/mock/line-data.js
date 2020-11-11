@@ -1,4 +1,5 @@
 // import { map } from 'lodash';
+import * as React from 'react';
 
 const randomValue = () => Math.round(Math.random() * 1000);
 
@@ -79,65 +80,65 @@ const data = {
 // };
 
 export default [
-  // {
-  //   w: 8,
-  //   h: 9,
-  //   x: 0,
-  //   y: 9,
-  //   i: 'view-1',
-  //   moved: false,
-  //   static: false,
-  //   view: {
-  //     name: 'test',
-  //     chartType: 'chart:bar',
-  //     hideReload: true,
-  //     title: () => <div>tti</div>,
-  //     staticData,
-  //     config: {
-  //       option: {
-  //         tooltip: {
-  //         },
-  //         legend: {
-  //           bottom: 0,
-  //           align: 'left',
-  //         },
-  //         yAxis: [
-  //           {
-  //             type: 'value',
-  //             name: '水量',
-  //             min: 0,
-  //             max: 1,
-  //             interval: 0.1,
-  //             axisLabel: {
-  //               formatter: '{value} ml',
-  //             },
-  //           },
-  //           {
-  //             type: 'value',
-  //             name: '温度',
-  //             min: 0,
-  //             max: 2,
-  //             interval: 0.2,
-  //             axisLabel: {
-  //               formatter: '{value} °C',
-  //             },
-  //           },
-  //         ],
-  //         xAxis: [{
-  //           triggerEvent: true,
-  //         }],
-  //       },
-  //     },
-  //     chartProps: {
-  //       onEvents: {
-  //         click: (params) => {
-  //           console.log(1, params);
-  //         },
-  //       },
-  //     },
-  //     // customRender: chartNode => <div className="SASA" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>{chartNode}</div>,
-  //   },
-  // },
+  {
+    w: 8,
+    h: 9,
+    x: 0,
+    y: 9,
+    i: 'view-1',
+    moved: false,
+    static: false,
+    view: {
+      name: 'test',
+      chartType: 'chart:bar',
+      hideReload: true,
+      title: () => <div>tti</div>,
+      staticData: { metricData: [] },
+      config: {
+        option: {
+          tooltip: {
+          },
+          legend: {
+            bottom: 0,
+            align: 'left',
+          },
+          // yAxis: [
+          //   {
+          //     type: 'value',
+          //     name: '水量',
+          //     min: 0,
+          //     max: 1,
+          //     interval: 0.1,
+          //     axisLabel: {
+          //       formatter: '{value} ml',
+          //     },
+          //   },
+          //   {
+          //     type: 'value',
+          //     name: '温度',
+          //     min: 0,
+          //     max: 2,
+          //     interval: 0.2,
+          //     axisLabel: {
+          //       formatter: '{value} °C',
+          //     },
+          //   },
+          // ],
+          xAxis: [{
+            triggerEvent: true,
+          }],
+        },
+      },
+      chartProps: {
+        onEvents: {
+          click: (params) => {
+            console.log(1, params);
+          },
+        },
+      },
+      customRender: chartNode => <div className="SASA" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>{chartNode}</div>,
+    },
+  },
   // {
   //   w: 8,
   //   h: 9,

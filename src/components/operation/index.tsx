@@ -1,6 +1,6 @@
 import { Popconfirm, Tooltip, Dropdown, Menu, Select } from 'antd';
 import classnames from 'classnames';
-import { isEmpty, isString, isEqual, get, isFunction, map } from 'lodash';
+import { isEmpty, isString, isEqual, get, isFunction, map, reduce, merge } from 'lodash';
 import React, { ReactElement } from 'react';
 import { getConfig } from '../../config';
 import { saveImage, setScreenFull } from '../../utils/comp';
@@ -10,6 +10,7 @@ import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 // import Control from './control';
 import { DcIcon } from '../Icon';
+import { getChartData } from '../../services/chart-editor';
 
 import './index.scss';
 
@@ -31,6 +32,10 @@ interface IState {
   resData: any
   fetchStatus: Status;
   prevStaticData: any;
+  // 传给loadData的参数
+  staticLoadFnPayload: any
+  dynamicLoadFnPayloadMap: any
+  dynamicFilterData: any[]
 }
 
 const enum Status {
@@ -56,6 +61,9 @@ class Operation extends React.PureComponent<IProps, IState> {
       resData: initData,
       fetchStatus: Status.NONE,
       prevStaticData: {},
+      staticLoadFnPayload: {},
+      dynamicLoadFnPayloadMap: {},
+      dynamicFilterData: [],
     };
   }
 
@@ -73,6 +81,7 @@ class Operation extends React.PureComponent<IProps, IState> {
   componentDidMount() {
     if (this.hasLoadFn) {
       this.loadData(this.props.view.chartQuery);
+      this.loadDynamicFilterData();
     }
   }
 
@@ -84,40 +93,64 @@ class Operation extends React.PureComponent<IProps, IState> {
 
     if (this.hasLoadFn && (isChartQueryUpdated || isEditViewUpdated || isLoadDataUpdated)) {
       this.loadData(this.props.view.chartQuery);
+      this.loadDynamicFilterData();
+    }
+  }
+
+  loadDynamicFilterData() {
+    const dynamicFilterDataAPI = get(this.props.view, ['api', 'extraData', 'dynamicFilterDataAPI']);
+    if (!isEmpty(dynamicFilterDataAPI)) {
+      const { start, end } = get(this.props.view, ['api', 'query']);
+      const _this = this;
+      getChartData(merge({}, dynamicFilterDataAPI, { query: { start, end } })).then(({ data }: any) => {
+        if (isEmpty(data)) return;
+        const { cols, data: _data } = data;
+        if (cols[0] && !isEmpty(_data)) {
+          const dynamicFilterData = map(_data, item => ({
+            value: item[cols[0].key],
+            name: item[cols[0].key],
+          }));
+          _this.setState({ dynamicFilterData });
+        }
+      });
     }
   }
 
   loadData = (arg?: any) => {
     const { view } = this.props;
     const { loadData, dataConvertor } = view;
+    const { staticLoadFnPayload, dynamicLoadFnPayloadMap } = this.state;
     if (!isFunction(loadData)) return;
     this.setState({
       fetchStatus: Status.FETCH,
     });
     // 调用外部传入的函数
-    loadData(arg)
-      .then((res: any) => {
-        let resData = res;
-        if (dataConvertor) {
-          let convertor = dataConvertor;
-          if (isString(dataConvertor)) {
-            convertor = getConfig(['dataConvertor', dataConvertor]);
-            if (!convertor) {
-              console.error(`dataConvertor \`${dataConvertor}\` not registered yet`);
-              return;
-            }
-          }
-          try {
-            resData = convertor(res);
-          } catch (error) {
-            console.error('catch error in dataConvertor', error); // eslint-disable-line
+    loadData({
+      ...reduce(dynamicLoadFnPayloadMap, (result, v) => ({ ...result, ...v }), {}),
+      ...staticLoadFnPayload,
+      ...arg,
+    }).then((res: any) => {
+      let resData = res;
+      if (dataConvertor) {
+        let convertor = dataConvertor;
+        if (isString(dataConvertor)) {
+          convertor = getConfig(['dataConvertor', dataConvertor]);
+          if (!convertor) {
+            console.error(`dataConvertor \`${dataConvertor}\` not registered yet`);
+            return;
           }
         }
-        this.setState({
-          fetchStatus: Status.SUCCESS,
-          resData,
-        });
-      })
+        try {
+          resData = convertor(res);
+        } catch (error) {
+          console.error('catch error in dataConvertor', error); // eslint-disable-line
+        }
+      }
+      this.setState({
+        fetchStatus: Status.SUCCESS,
+        resData,
+      });
+    })
       .catch(() => {
         this.setState({ resData: {}, fetchStatus: Status.FAIL });
       });
@@ -162,9 +195,11 @@ class Operation extends React.PureComponent<IProps, IState> {
   render() {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
-    const { resData, fetchStatus } = this.state;
+    const { resData, fetchStatus, staticLoadFnPayload, dynamicLoadFnPayloadMap, dynamicFilterData } = this.state;
     const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config, chartType, api } = view;
     const dataConfigSelectors = get(api, ['extraData', 'dataConfigSelectors']);
+    const dynamicFilterKey = get(api, ['extraData', 'dynamicFilterKey']);
+    const dynamicFilterDataAPI = get(api, ['extraData', 'dynamicFilterDataAPI']);
     const isCustomTitle = isFunction(_title);
     const title = isCustomTitle ? _title() : _title;
     const description = isFunction(_description) ? _description() : _description;
@@ -236,7 +271,7 @@ class Operation extends React.PureComponent<IProps, IState> {
               </Dropdown>
               <React.Fragment>
                 {
-                  (controls && !isEmpty(controls[0])) || !isEmpty(dataConfigSelectors)
+                  (controls && !isEmpty(controls[0])) || !isEmpty(dataConfigSelectors) || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
                     ?
                       <div className="dc-chart-controls-ct">
                         {
@@ -247,7 +282,13 @@ class Operation extends React.PureComponent<IProps, IState> {
                                 className="my12 ml8"
                                 style={{ width: 150 }}
                                 onChange={(v: any) => {
-                                  this.loadData({ [controls[0].key]: v });
+                                  this.setState({
+                                    staticLoadFnPayload: {
+                                      [controls[0].key]: v,
+                                    },
+                                  }, () => {
+                                    this.loadData();
+                                  });
                                 }}
                               >
                                 { map(controls[0].options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
@@ -264,13 +305,37 @@ class Operation extends React.PureComponent<IProps, IState> {
                                 className="my12 ml8"
                                 style={{ width: 150 }}
                                 onChange={(v: any) => {
-                                  this.loadData(v);
+                                  this.setState({
+                                    dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, [key]: JSON.parse(v) },
+                                  }, () => {
+                                    this.loadData();
+                                  });
                                 }}
                                 {...componentProps}
                               >
                                 { map(options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
                               </Select>
                             ))
+                            :
+                            null
+                        }
+                        {
+                          dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)
+                            ?
+                              <Select
+                                allowClear
+                                className="my12 ml8"
+                                style={{ width: 150 }}
+                                onChange={(v: any) => {
+                                  this.setState({
+                                    dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, 'dynamic-data': { [dynamicFilterKey]: v } },
+                                  }, () => {
+                                    this.loadData();
+                                  });
+                                }}
+                              >
+                                { map(dynamicFilterData, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                              </Select>
                             :
                             null
                         }

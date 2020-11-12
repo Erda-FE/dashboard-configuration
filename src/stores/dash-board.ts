@@ -1,17 +1,17 @@
-/* eslint-disable no-param-reassign */
 import { maxBy, remove } from 'lodash';
 import { createFlatStore } from '../cube';
+// eslint-disable-next-line import/no-cycle
 import chartEditorStore from './chart-editor';
 import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 
 type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
 interface IState {
-  isEditMode: boolean
-  layout: any[]
-  contextMap: any
-  theme: string
-  locale: 'en' | 'zh'
-  textMap: TextType
+  isEditMode: boolean;
+  layout: any[];
+  contextMap: any;
+  theme: string;
+  locale: 'en' | 'zh';
+  textMap: TextType;
 }
 
 const initState: IState = {
@@ -33,8 +33,8 @@ const dashBoardStore = createFlatStore({
   state: initState,
   effects: {
     async generateChart({ select }, viewId: string) {
-      const layout = select(s => s.layout);
-      const viewMap = chartEditorStore.getState(s => s.viewMap);
+      const layout = select((s) => s.layout);
+      const viewMap = chartEditorStore.getState((s) => s.viewMap);
       const { chartType, controlType } = viewMap[viewId];
       let size;
       if (chartType) {
@@ -46,8 +46,8 @@ const dashBoardStore = createFlatStore({
     },
     async saveEdit({ select }) {
       dashBoardStore.setEditMode(false);
-      const layout = select(s => s.layout);
-      const viewMap = chartEditorStore.getState(s => s.viewMap);
+      const layout = select((s) => s.layout);
+      const viewMap = chartEditorStore.getState((s) => s.viewMap);
       return { layout, viewMap }; // 只输出外部需要的
     },
     async deleteView(_, viewId: string) {
@@ -81,10 +81,10 @@ const dashBoardStore = createFlatStore({
   },
 });
 
-export const getLocale = () => dashBoardStore.getState(s => s.locale);
+export const getLocale = () => dashBoardStore.getState((s) => s.locale);
 export const { setLocale } = dashBoardStore;
 
-export const getTheme = () => dashBoardStore.getState(s => s.theme);
+export const getTheme = () => dashBoardStore.getState((s) => s.theme);
 export const { setTheme } = dashBoardStore;
 
 export default dashBoardStore;

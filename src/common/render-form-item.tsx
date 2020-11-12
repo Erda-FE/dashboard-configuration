@@ -52,7 +52,7 @@ export interface IFormItem {
   extraProps?: object;
   rules?: any[];
   config?: object;
-  options?: {name: string, value: string, disabled?: boolean}[] | Function;
+  options?: Array<{name: string; value: string; disabled?: boolean}> | Function;
   suffix?: string | null;
   formItemLayout?: object;
   tailFormItemLayout?: object;
@@ -60,7 +60,7 @@ export interface IFormItem {
   noColon?: boolean;
   isTailLayout?: boolean ; // no label, put some offset to align right part
   onChange?: any;
-  getComp?({ form }: {form: WrappedFormUtils}): React.ReactElement<any> | string;
+  getComp?: ({ form }: {form: WrappedFormUtils}) => React.ReactElement<any> | string;
 }
 export const RenderFormItem = ({
   form,
@@ -103,7 +103,7 @@ export const RenderFormItem = ({
           {
             typeof options === 'function'
               ? options()
-              : options.map(single => <Option key={`${single.value}`} value={single.value}>{single.name}</Option>)
+              : options.map((single) => <Option key={`${single.value}`} value={single.value}>{single.name}</Option>)
           }
         </Select>
       );
@@ -133,7 +133,7 @@ export const RenderFormItem = ({
           {
             typeof options === 'function'
               ? options()
-              : options.map(single => <Radio.Button disabled={single.disabled || false} key={single.value} value={`${single.value}`}>{single.name}</Radio.Button>)
+              : options.map((single) => <Radio.Button disabled={single.disabled || false} key={single.value} value={`${single.value}`}>{single.name}</Radio.Button>)
           }
         </Radio.Group>
       );
@@ -173,13 +173,13 @@ export const RenderFormItem = ({
 
 
   // generate rules
-  if (required && !rules.some(r => r.required === true)) {
+  if (required && !rules.some((r) => r.required === true)) {
     if (typeof label === 'string' && label.length) {
       const hasColon = !noColon && (label.endsWith(':') || label.endsWith('：'));
       rules.push({ required, message: `请${action}${hasColon ? label.slice(0, label.length - 1) : label}` });
     }
   }
-  if (pattern && !rules.some(r => r.pattern && r.pattern.source === pattern.source)) {
+  if (pattern && !rules.some((r) => r.pattern && r.pattern.source === pattern.source)) {
     rules.push({ pattern, message });
   }
   // generate config

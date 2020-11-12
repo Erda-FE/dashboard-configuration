@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import React from 'react';
 import { BoardGrid, PureBoardGrid, setLocale, getLocale, getTheme, setTheme } from '../src/index';
 import layout from './mock/data';
-import layout2 from './mock/data2';
+// import layout2 from './mock/data2';
 import { useMount } from 'react-use';
 
 function App() {
@@ -22,7 +23,7 @@ function App() {
         <button onClick={() => setTheme('dice')}>Dice</button>
         <button onClick={() => setTheme('dark')}>Dark</button>
       </div>
-      {/* <BoardGrid layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} /> */}
+      <BoardGrid layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} />
       <PureBoardGrid layout={layout} showOptions />
       {/* {'>>>>>>>>>>>>>>>>>>>>>>>>>>>sasasa'}
       <PureBoardGrid layout={layout2} showOptions /> */}

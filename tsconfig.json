@@ -27,7 +27,7 @@
       "agent": ["./example/agent.js"],
       "common": ["src/common"],
       "common/*": ["src/common/*"],
-      "theme": ["./src/theme/dice/dice.ts"],
+      "theme": ["./src/theme/dice.ts"],
       "interface": ["./interface"],
     },                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
     "typeRoots": [],                       /* List of folders to include type definitions from. */

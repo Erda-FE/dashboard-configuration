@@ -12,17 +12,18 @@ interface IProps {
   currentChart: DC.View;
   forwardedRef: { current: any };
   isTouched: boolean;
-  setTouched(v: boolean): void;
-  onEditorChange(payload: object): void;
+  setTouched: (v: boolean) => void;
+  onEditorChange: (payload: object) => void;
 }
 
 const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched, onEditorChange }: IProps) => {
   React.useEffect(() => {
+    // eslint-disable-next-line no-param-reassign
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
       setTouched(true);
     }
-  }, [form]);
+  }, [form, forwardedRef, isTouched, setTouched]);
 
   React.useEffect(() => {
     const [leftAxisData, rightAxisData] = get(currentChart, 'config.option.yAxis');
@@ -54,7 +55,7 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched, o
     setTimeout(() => {
       form.setFieldsValue(formData);
     }, 0);
-  }, [currentChart]);
+  }, [currentChart, form]);
 
   const onAxisConfigChange = (key: string, value: any) => {
     const [yType, ...rest] = key.split('.');
@@ -191,7 +192,7 @@ const AxisConfig = ({ form, currentChart, forwardedRef, isTouched, setTouched, o
 
 const Config = (p: any) => {
   const FormConfig = Form.create()(AxisConfig);
-  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId, s.isTouched]);
+  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId, s.isTouched]);
   const { setTouched, onEditorChange } = ChartEditorStore;
   const props = {
     isTouched,

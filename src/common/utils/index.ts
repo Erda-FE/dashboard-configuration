@@ -49,6 +49,6 @@ export const collectFields = (ObjData: any) => {
  * @param list 插入项数组
  * @return condition ? list : []
  */
-export const insertWhen = <T=any>(condition: boolean, list: T[]):T[] => {
+export const insertWhen = <T=any>(condition: boolean, list: T[]): T[] => {
   return condition ? list : [];
 };

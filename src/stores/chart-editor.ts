@@ -1,20 +1,19 @@
-/* eslint-disable no-param-reassign */
 import { createFlatStore } from '../cube';
-import { cloneDeep, forEach, startsWith, map, values } from 'lodash';
+import { cloneDeep, forEach, startsWith } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
+// eslint-disable-next-line import/no-cycle
 import dashBoardStore from './dash-board';
 import { NEW_CHART_VIEW_MAP } from '../constants';
-import { getChartData } from '../services/chart-editor';
 
 interface IState {
-  pickChartModalVisible: boolean,
-  editChartId: string,
-  addMode: false,
-  viewMap: any, // 所有图表配置信息
-  codeVisible: boolean, // 代码编辑
-  viewCopy: any, // 修改时用于恢复的复制对象
-  isTouched: boolean,
+  pickChartModalVisible: boolean;
+  editChartId: string;
+  addMode: false;
+  viewMap: any; // 所有图表配置信息
+  codeVisible: boolean; // 代码编辑
+  viewCopy: any; // 修改时用于恢复的复制对象
+  isTouched: boolean;
   dataConfigForm: any;
   baseConfigForm: any;
 }
@@ -37,7 +36,7 @@ const chartEditorStore = createFlatStore({
   effects: {
     async addEditor({ select }, chartType: DC.ViewType) {
       const viewId = `view-${generateUUID()}`;
-      const viewMap = select(s => s.viewMap);
+      const viewMap = select((s) => s.viewMap);
 
       chartEditorStore.updateState({
         editChartId: viewId,
@@ -51,7 +50,7 @@ const chartEditorStore = createFlatStore({
     },
     // 添加时关闭直接移除新建的图表
     async deleteEditor({ select }) {
-      const editChartId = select(s => s.editChartId);
+      const editChartId = select((s) => s.editChartId);
 
       dashBoardStore.deleteView(editChartId);
       chartEditorStore.updateState({ editChartId: '' });
@@ -59,7 +58,7 @@ const chartEditorStore = createFlatStore({
     },
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
     async saveEditor({ select }, payload) {
-      const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
+      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
       const editChart = cloneDeep(viewMap[editChartId]);
 
       chartEditorStore.updateState({
@@ -72,7 +71,7 @@ const chartEditorStore = createFlatStore({
     },
     // 表单变化时自动保存
     async onEditorChange({ select }, payload) {
-      const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
+      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
       const _payload = { ...payload };
 
       chartEditorStore.updateState({
@@ -84,7 +83,7 @@ const chartEditorStore = createFlatStore({
     },
     // 编辑时关闭，恢复数据并置空viewCopy
     async closeEditor({ select }) {
-      const [editChartId, viewMap, viewCopy] = select(s => [s.editChartId, s.viewMap, s.viewCopy]);
+      const [editChartId, viewMap, viewCopy] = select((s) => [s.editChartId, s.viewMap, s.viewCopy]);
       const _viewMap = { ...viewMap };
       _viewMap[editChartId] = viewCopy;
 
@@ -96,7 +95,7 @@ const chartEditorStore = createFlatStore({
       chartEditorStore.setTouched(false);
     },
     async chooseChartType({ select }, chartType) { // 编辑时移除
-      const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
+      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
       const drawerInfo = viewMap[editChartId];
       let tempPayload = {};
       if (chartType !== drawerInfo.chartType) {
@@ -132,7 +131,7 @@ const chartEditorStore = createFlatStore({
       const { viewMap, editChartId } = state;
       const drawerInfo = viewMap[editChartId];
       if (controlType === drawerInfo.controlType) {
-        forEach(drawerInfo, (value, key) => { // 移除填写的控件配置
+        forEach(drawerInfo, (_, key) => { // 移除填写的控件配置
           if (startsWith(key, panelControlPrefix)) {
             delete drawerInfo[key];
           }
@@ -153,7 +152,7 @@ const chartEditorStore = createFlatStore({
     submitCode(state, settingInfo) {
       const { viewMap, editChartId } = state;
       const drawerInfo = viewMap[editChartId];
-      forEach(drawerInfo, (value, key) => { // 移除过去设置的的Echarts配置信息
+      forEach(drawerInfo, (_, key) => { // 移除过去设置的的Echarts配置信息
         if (startsWith(key, panelSettingPrefix)) {
           delete drawerInfo[key];
         }

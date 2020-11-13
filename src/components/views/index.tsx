@@ -30,7 +30,7 @@ const basicCharts: DC.ViewDefMap = {
     ),
     Component(props) {
       const metricData = get(props, 'data.metricData');
-      const _metricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
+      const _metricData = map(metricData, ((metric) => ({ ...metric, type: 'line' })));
       set(props, 'data.metricData', _metricData);
       set(props, 'config.optionProps.noAreaColor', true);
       return <ChartLine {...props} />;
@@ -47,7 +47,7 @@ const basicCharts: DC.ViewDefMap = {
     ),
     Component(props) {
       const metricData = get(props, 'data.metricData');
-      const _metricData = map(metricData, (metric => ({ ...metric, type: 'line' })));
+      const _metricData = map(metricData, ((metric) => ({ ...metric, type: 'line' })));
       set(props, 'data.metricData', _metricData);
       set(props, 'config.optionProps.noAreaColor', false);
       return <ChartLine {...props} />;
@@ -65,7 +65,7 @@ const basicCharts: DC.ViewDefMap = {
     Component(props) {
       const data = get(props, 'data');
       const metricData = get(props, 'data.metricData');
-      const _metricData = map(metricData, (metric => ({ ...metric, type: 'bar' })));
+      const _metricData = map(metricData, ((metric) => ({ ...metric, type: 'bar' })));
       const _props = { ...props, data: { ...data, metricData: _metricData } };
       return <ChartLine {..._props} />;
     },

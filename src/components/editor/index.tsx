@@ -1,12 +1,12 @@
 import { Button, message, Tabs, Popconfirm } from 'antd';
-import { get, isEmpty, set } from 'lodash';
+import { get } from 'lodash';
 import React from 'react';
-import { getData } from '../../utils/comp';
+// import { getData } from '../../utils/comp';
 import { getConfig } from '../../config';
 import './index.scss';
 import DataConfig from './data-config';
-import AxisConfig from './axis-config';
-import PanelCharts from './panel-views';
+// import AxisConfig from './axis-config';
+// import PanelCharts from './panel-views';
 import { ViewOperation } from '..';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
@@ -18,21 +18,21 @@ const noop = () => null;
 export default () => {
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
-  const controlsConfigRef = React.useRef(null as any);
-  const axesConfigFormRef = React.useRef(null as any);
+  // const controlsConfigRef = React.useRef(null as any);
+  // const axesConfigFormRef = React.useRef(null as any);
 
   const [
     addMode,
     viewMap,
     editChartId,
     isTouched,
-  ] = ChartEditorStore.useStore(s => [
+  ] = ChartEditorStore.useStore((s) => [
     s.addMode,
     s.viewMap,
     s.editChartId,
     s.isTouched,
   ]);
-  const textMap = DashboardStore.useStore(s => s.textMap);
+  const textMap = DashboardStore.useStore((s) => s.textMap);
   const currentChart = React.useMemo(() => get(viewMap, [editChartId]), [viewMap, editChartId]);
   if (!currentChart) {
     return null;
@@ -71,36 +71,36 @@ export default () => {
       });
     };
 
-    const valiAxisConfig = () => {
-      axesConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
-        if (errors) return;
-        const { lyName, lyMax, lyMin, lyInterval, lyUnit = '', ryName, ryMax, ryMin, ryInterval, ryUnit = '' } = options;
-        const yAxis = [
-          {
-            type: 'value',
-            name: lyName,
-            max: lyMax,
-            min: lyMin,
-            interval: lyInterval,
-            axisLabel: {
-              formatter: `{value} ${lyUnit}`,
-            },
-          },
-          {
-            type: 'value',
-            name: ryName,
-            max: ryMax,
-            min: ryMin,
-            interval: ryInterval,
-            axisLabel: {
-              formatter: `{value} ${ryUnit}`,
-            },
-          },
-        ];
-        set(amalgamatedOptions, 'config.option.yAxis', yAxis);
-        saveEditor(amalgamatedOptions);
-      });
-    };
+    // const valiAxisConfig = () => {
+    //   axesConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
+    //     if (errors) return;
+    //     const { lyName, lyMax, lyMin, lyInterval, lyUnit = '', ryName, ryMax, ryMin, ryInterval, ryUnit = '' } = options;
+    //     const yAxis = [
+    //       {
+    //         type: 'value',
+    //         name: lyName,
+    //         max: lyMax,
+    //         min: lyMin,
+    //         interval: lyInterval,
+    //         axisLabel: {
+    //           formatter: `{value} ${lyUnit}`,
+    //         },
+    //       },
+    //       {
+    //         type: 'value',
+    //         name: ryName,
+    //         max: ryMax,
+    //         min: ryMin,
+    //         interval: ryInterval,
+    //         axisLabel: {
+    //           formatter: `{value} ${ryUnit}`,
+    //         },
+    //       },
+    //     ];
+    //     set(amalgamatedOptions, 'config.option.yAxis', yAxis);
+    //     saveEditor(amalgamatedOptions);
+    //   });
+    // };
 
     baseConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
       if (errors) return;

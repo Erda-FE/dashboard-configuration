@@ -7,12 +7,12 @@ import { getConfig } from '../../../config';
 import './index.scss';
 
 interface IProps {
-  viewId: string
+  viewId: string;
   view: {
-    controls: any[]
+    controls: any[];
     controlProps: any;
-  }
-  loadData(): void
+  };
+  loadData: () => void;
 }
 
 class Control extends React.PureComponent<IProps> {
@@ -27,11 +27,12 @@ class Control extends React.PureComponent<IProps> {
   onControlChange = (query: any) => {
     this.setState({
       query: {
+        // eslint-disable-next-line react/no-access-state-in-setstate
         ...this.state.query,
         ...query,
       },
     });
-  }
+  };
 
   render() {
     const { view, viewId, loadData } = this.props;
@@ -44,6 +45,7 @@ class Control extends React.PureComponent<IProps> {
       <div className="dc-view-control">
         {controlList.map((CtrComp: any, i) => {
           const ctrProps = controlProps[i] || {};
+          // eslint-disable-next-line react/no-array-index-key
           return (<CtrComp key={i} viewId={viewId} query={this.state.query} onChange={this.onControlChange} loadData={loadData} {...ctrProps} />);
         })}
       </div>

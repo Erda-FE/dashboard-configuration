@@ -7,12 +7,12 @@ import basicCharts from '../../views';
 import './index.scss';
 
 interface IProps {
-  onPickChart: (chartType: DC.ViewType) => void
+  onPickChart: (chartType: DC.ViewType) => void;
 }
 
 export default ({ onPickChart }: IProps) => {
-  const [pickChartModalVisible] = ChartEditorStore.useStore(s => [s.pickChartModalVisible]);
-  const [locale, textMap] = DashboardStore.useStore(s => [s.locale, s.textMap]);
+  const [pickChartModalVisible] = ChartEditorStore.useStore((s) => [s.pickChartModalVisible]);
+  const [locale, textMap] = DashboardStore.useStore((s) => [s.locale, s.textMap]);
   const { setPickChartModalVisible } = ChartEditorStore;
 
   const handlePickChart = (chartType: DC.ViewType) => {

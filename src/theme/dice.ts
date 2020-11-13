@@ -40,7 +40,7 @@ const colorList = [
   gray,
 ];
 
-export const areaColors = colorList.map(c => `${c.slice(0, -1)}, 0.2)`);
+export const areaColors = colorList.map((c) => `${c.slice(0, -1)}, 0.2)`);
 
 export const themeObj = {
   color: colorList,

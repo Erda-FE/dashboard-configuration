@@ -29,7 +29,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
 
   const yAxis: any[] = [];
   const series: any[] = [];
-  const legendData: {name: string}[] = [];
+  const legendData: Array<{name: string}> = [];
   const moreThanOneDay = isMoreThanOneDay || (timeSpan ? timeSpan.seconds > (24 * 3600) : false);
 
   map(metricData, (value, i) => {
@@ -112,6 +112,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
 
   if (time) {
     defaultTTFormatter = (param) => {
+      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
       const endTime = time[param[0].dataIndex + 1];
       if (!endTime) {
         return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;

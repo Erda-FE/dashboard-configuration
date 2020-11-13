@@ -6,9 +6,8 @@ import { Table } from 'antd';
 import { map } from 'lodash';
 
 interface IProps {
-  viewId: string;
-  results: { [k: string]: any }[];
-  cols: { title: string; dataIndex: string; unit?: string; render?: any }[];
+  results: Array<{ [k: string]: any }>;
+  cols: Array<{ title: string; dataIndex: string; unit?: string; render?: any }>;
 }
 
 const fixedLimit = 5;

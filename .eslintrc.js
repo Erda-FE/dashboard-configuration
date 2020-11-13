@@ -16,23 +16,25 @@ module.exports = {
     'compat',
     'jsx-a11y'
   ],
-  overrides: [{
-    files: ['**/*.tsx', '**/*.ts'],
-    parser: '@typescript-eslint/parser',
-    plugins: [
-      '@typescript-eslint'
-    ],
-    rules: {
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-unused-vars': [1, {
-        argsIgnorePattern: '^_',
-        varsIgnorePattern: '^ignored?$'
-      }],
-      '@typescript-eslint/interface-name-prefix': 'off',
-      indent: 0,
+  overrides: [
+    {
+      files: ['**/*.tsx', '**/*.ts'],
+      parser: '@typescript-eslint/parser',
+      plugins: [
+        '@typescript-eslint'
+      ],
+      rules: {
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unused-vars': [1, {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^ignored?$'
+        }],
+        '@typescript-eslint/interface-name-prefix': 'off',
+        indent: 0,
+      }
     }
-  }],
+  ],
   parserOptions: {
     ecmaVersion: 2015,
     sourceType: 'module',

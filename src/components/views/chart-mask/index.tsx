@@ -3,7 +3,7 @@ import { Spin } from 'antd';
 import React from 'react';
 
 interface IProps {
-  message?: string
+  message?: string;
 }
 
 const ChartMask = ({ message }: IProps) => {

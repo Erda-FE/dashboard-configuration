@@ -41,17 +41,17 @@ const splitLayoutAndView = (layout: DC.ILayout): [any[], any] => {
 export const BoardGrid = ({ width, layout }: any) => {
   const boardGridRef = useRef(null);
 
-  const [dashboardLayout, isEditMode] = DashboardStore.useStore(s => [s.layout, s.isEditMode, s.textMap]);
-  const viewMap = ChartEditorStore.useStore(s => s.viewMap);
+  const [dashboardLayout, isEditMode] = DashboardStore.useStore((s) => [s.layout, s.isEditMode, s.textMap]);
+  const viewMap = ChartEditorStore.useStore((s) => s.viewMap);
   const { updateLayout, reset: resetBoard } = DashboardStore;
   const { updateViewMap: updateChildMap } = ChartEditorStore;
-  React.useEffect(() => () => resetBoard(), []);
+  React.useEffect(() => () => resetBoard(), [resetBoard]);
 
   React.useEffect(() => {
     const [pureLayout, _viewMap] = splitLayoutAndView(layout);
     updateLayout(pureLayout);
     updateChildMap(_viewMap);
-  }, [layout]);
+  }, [layout, updateChildMap, updateLayout]);
 
 
   const onDragStart = React.useCallback(() => isEditMode, [isEditMode]);
@@ -60,7 +60,7 @@ export const BoardGrid = ({ width, layout }: any) => {
     return null;
   }
   // grid 组件内部会修改layout，而cube里的是不可直接更改的，所以重新生成一个对象
-  const pure = dashboardLayout.map(p => ({ ...p }));
+  const pure = dashboardLayout.map((p) => ({ ...p }));
   const chartConfigMap = getConfig('chartConfigMap');
   return (
     <ReactGridLayout
@@ -93,6 +93,7 @@ export const BoardGrid = ({ width, layout }: any) => {
           const node = ChartNode ? <ChartNode {...view.chartProps} /> : <></>;
           ChildComp = <ViewOperation viewId={i} view={view}>{node}</ViewOperation>;
         } else {
+          // eslint-disable-next-line no-console
           console.error('layout view should be object or function');
         }
         return (

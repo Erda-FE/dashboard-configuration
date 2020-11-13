@@ -5,7 +5,7 @@ import { WrappedFormUtils } from 'antd/lib/form/Form';
 interface IProps {
   form: WrappedFormUtils;
   currentChart: any;
-  submitResult(result: any): void;
+  submitResult: (result: any) => void;
 }
 
 export default ({ submitResult, currentChart, form }: IProps) => {
@@ -22,6 +22,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
           onBlur: (e: any) => { submitResult({ url: e.target.value }); },
         },
       }];
-  }, [currentChart]);
+  }, [currentChart, submitResult]);
+
   return <RenderPureForm form={form} layout="vertical" list={getFieldsList()} />;
 };

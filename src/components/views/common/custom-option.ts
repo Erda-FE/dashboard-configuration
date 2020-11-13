@@ -8,7 +8,8 @@ export /**
  * @param {DC.ChartConfig} config
  * @returns {object}
  */
-const getCustomOption = (data: DC.StaticData = {}, config: DC.ChartConfig = {}): object => {
+// eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+const getCustomOption = (data: DC.StaticData = {} as DC.StaticData, config: DC.ChartConfig = {}): object => {
   // 优先级：customOptionFn > option
   let customOption;
   let { optionFn: customOptionFn } = config;
@@ -21,6 +22,7 @@ const getCustomOption = (data: DC.StaticData = {}, config: DC.ChartConfig = {}):
       // 未注册
       if (!customOptionFn) {
         customOptionFn = (d: any) => d;
+        // eslint-disable-next-line no-console
         console.warn(`optionFn \`${customOptionFn}\` not registered yet`);
       }
     }
@@ -31,6 +33,7 @@ const getCustomOption = (data: DC.StaticData = {}, config: DC.ChartConfig = {}):
       customOption = getConfig(['chartOption', customOption]);
       if (!customOption) {
         customOption = {};
+        // eslint-disable-next-line no-console
         console.warn(`customOption \`${customOption}\` not registered yet`);
       }
     }

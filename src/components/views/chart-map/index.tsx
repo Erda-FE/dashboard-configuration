@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-11-06 17:23:33
+ * @Last Modified time: 2020-11-12 17:52:24
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
@@ -20,13 +20,13 @@ import ChartEditorStore from '../../../stores/chart-editor';
 import './index.scss';
 
 interface IProps {
-  data: any
-  isEditView: boolean
+  data: any;
+  isEditView: boolean;
   config: {
-    option: object
-    onChange?(curMapTypes: string[]): void
-  },
-  loadData(arg?: any): void,
+    option: object;
+    onChange?: (curMapTypes: string[]) => void;
+  };
+  loadData: (arg?: any) => void;
 }
 
 const noop = () => {};
@@ -50,7 +50,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     // 编辑状态下存储当前地图层级到 store
     props.isEditView && onEditorChange({ curMapType: mapType });
     loadData(mapType);
-  }, [mapType, props.isEditView, onEditorChange]);
+  }, [mapType, props.isEditView, onEditorChange, loadData]);
 
   const registerMap = (_mapType: string, _data: any) => {
     echarts.registerMap(_mapType, _data);
@@ -69,7 +69,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
     if (registeredMapType.includes(_mapType)) {
       if (mapType.includes(_mapType)) {
-        updater.mapType(slice(mapType, 0, findIndex(mapType, _type => _type === _mapType) + 1));
+        updater.mapType(slice(mapType, 0, findIndex(mapType, (_type) => _type === _mapType) + 1));
       } else {
         updater.mapType([...mapType, _mapType]);
       }

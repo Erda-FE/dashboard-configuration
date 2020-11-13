@@ -6,11 +6,10 @@ import * as React from 'react';
 import { getOption } from './option';
 
 interface IProps {
-  data: any
-  viewId: string
+  data: any;
   config: {
-    option: object
-  }
+    option: object;
+  };
 }
 
 const ChartLine = React.forwardRef((props: IProps, ref: React.Ref<any>) => (

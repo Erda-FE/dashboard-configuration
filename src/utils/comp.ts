@@ -1,5 +1,6 @@
-import { forEach, replace } from 'lodash';
-import agent from './agent';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+// import { forEach, replace } from 'lodash';
 import domtoimage from 'dom-to-image';
 import { message } from 'antd';
 import screenfull from 'screenfull';
@@ -28,20 +29,20 @@ class ParamsManage {
 
 export const paramsManage = new ParamsManage();
 
-function convertUrl(url: string) {
-  let newUrl = url || '';
-  forEach(paramsManage.get(), (value, key) => {
-    const pattern = new RegExp(`{${key}}`, 'g');
-    newUrl = replace(newUrl, pattern, value);
-  });
-  return newUrl;
-}
+// function convertUrl(url: string) {
+//   let newUrl = url || '';
+//   forEach(paramsManage.get(), (value, key) => {
+//     const pattern = new RegExp(`{${key}}`, 'g');
+//     newUrl = replace(newUrl, pattern, value);
+//   });
+//   return newUrl;
+// }
 
 let urlDataHandle: any;
 export function registerUrlDataHandle(handle: any) {
   urlDataHandle = handle;
 }
-export function getData(url: string, query?: any) {
+export function getData(_url: string, _query?: any) {
   return {};
   // if (!url) return {};
   // const newUrl = convertUrl(url);
@@ -97,7 +98,7 @@ export function plainArrayValidator(_rule: any, text: string, callback: any): vo
   }
   try {
     const arrayData = strToObject(text);
-    if (Array.isArray(arrayData) && arrayData.every(x => typeof x === 'string')) {
+    if (Array.isArray(arrayData) && arrayData.every((x) => typeof x === 'string')) {
       callback();
       return;
     }

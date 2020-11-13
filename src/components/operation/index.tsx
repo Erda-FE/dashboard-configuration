@@ -14,36 +14,36 @@ import { getChartData } from '../../services/chart-editor';
 
 import './index.scss';
 
-// tslint:disable-next-line: no-use-before-declare
 interface IProps {
-  textMap: { [k: string]: string }
-  viewId: string
-  view: any
+  textMap: { [k: string]: string };
+  viewId: string;
+  view: any;
   chartEditorVisible: boolean;
   isEditMode: boolean;
   isEditView: boolean;
-  children: ReactElement<any>
-  setViewInfo(data: object): void;
-  editView(viewId: string): void;
-  deleteView(viewId: string): void;
+  children: ReactElement<any>;
+  setViewInfo: (data: object) => void;
+  editView: (viewId: string) => void;
+  deleteView: (viewId: string) => void;
 }
 
-interface IState {
-  resData: any
-  fetchStatus: Status;
-  prevStaticData: any;
-  // 传给loadData的参数
-  staticLoadFnPayload: any
-  dynamicLoadFnPayloadMap: any
-  dynamicFilterData: any[]
-}
-
-const enum Status {
+// eslint-disable-next-line no-shadow
+enum Status {
   FETCH = 'fetch',
   MOCK = 'mock',
   SUCCESS = 'success',
   FAIL = 'fail',
   NONE = '',
+}
+
+interface IState {
+  resData: any;
+  fetchStatus: Status;
+  prevStaticData: any;
+  // 传给loadData的参数
+  staticLoadFnPayload: any;
+  dynamicLoadFnPayloadMap: any;
+  dynamicFilterData: any[];
 }
 
 class Operation extends React.PureComponent<IProps, IState> {
@@ -67,6 +67,7 @@ class Operation extends React.PureComponent<IProps, IState> {
     };
   }
 
+  // eslint-disable-next-line @typescript-eslint/member-ordering
   static getDerivedStateFromProps(nextProps: IProps, prevState: any) {
     const staticData = get(nextProps, 'view.staticData');
     if (!isEqual(prevState.prevStaticData, staticData) && staticData) {
@@ -106,7 +107,7 @@ class Operation extends React.PureComponent<IProps, IState> {
         if (isEmpty(data)) return;
         const { cols, data: _data } = data;
         if (cols[0] && !isEmpty(_data)) {
-          const dynamicFilterData = map(_data, item => ({
+          const dynamicFilterData = map(_data, (item) => ({
             value: item[cols[0].key],
             name: item[cols[0].key],
           }));
@@ -136,6 +137,7 @@ class Operation extends React.PureComponent<IProps, IState> {
         if (isString(dataConvertor)) {
           convertor = getConfig(['dataConvertor', dataConvertor]);
           if (!convertor) {
+            // eslint-disable-next-line no-console
             console.error(`dataConvertor \`${dataConvertor}\` not registered yet`);
             return;
           }
@@ -154,16 +156,16 @@ class Operation extends React.PureComponent<IProps, IState> {
       .catch(() => {
         this.setState({ resData: {}, fetchStatus: Status.FAIL });
       });
-  }
+  };
 
   onSaveImg = () => {
     const { viewId, textMap } = this.props;
     saveImage(this.chartRef, viewId, textMap);
-  }
+  };
 
   onSetScreenFull = () => {
     setScreenFull(this.chartRef);
-  }
+  };
 
   getViewMask = (msg?: string): JSX.Element => {
     let _msg = msg;
@@ -190,12 +192,12 @@ class Operation extends React.PureComponent<IProps, IState> {
     }
 
     return viewMask;
-  }
+  };
 
   render() {
     const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
     const childNode = React.Children.only(children);
-    const { resData, fetchStatus, staticLoadFnPayload, dynamicLoadFnPayloadMap, dynamicFilterData } = this.state;
+    const { resData, fetchStatus, dynamicLoadFnPayloadMap, dynamicFilterData } = this.state;
     const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config, chartType, api } = view;
     const dataConfigSelectors = get(api, ['extraData', 'dataConfigSelectors']);
     const dynamicFilterKey = get(api, ['extraData', 'dynamicFilterKey']);
@@ -291,7 +293,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                                   });
                                 }}
                               >
-                                { map(controls[0].options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                                { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
                               </Select>
                             :
                             null
@@ -313,7 +315,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                                 }}
                                 {...componentProps}
                               >
-                                { map(options, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                                { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
                               </Select>
                             ))
                             :
@@ -334,7 +336,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                                   });
                                 }}
                               >
-                                { map(dynamicFilterData, item => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                                { map(dynamicFilterData, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
                               </Select>
                             :
                             null
@@ -367,8 +369,8 @@ class Operation extends React.PureComponent<IProps, IState> {
 }
 
 export default (p: any) => {
-  const [isEditMode, textMap] = DashboardStore.useStore(s => [s.isEditMode, s.textMap]);
-  const [editChartId, viewMap] = ChartEditorStore.useStore(s => [s.editChartId, s.viewMap]);
+  const [isEditMode, textMap] = DashboardStore.useStore((s) => [s.isEditMode, s.textMap]);
+  const [editChartId, viewMap] = ChartEditorStore.useStore((s) => [s.editChartId, s.viewMap]);
   const { updateViewInfo: setViewInfo, editView } = ChartEditorStore;
   const { deleteView } = DashboardStore;
 

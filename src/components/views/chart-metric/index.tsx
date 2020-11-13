@@ -18,15 +18,13 @@ interface IResult {
 interface IProps {
   viewId: string;
   results: IResult[];
-  chartType: string;
-  option: any;
 }
 
 const Metric = ({ results = [], viewId }: IProps) => (
   <React.Fragment>
     <section className="dc-metric-panel">
       {
-        map(results, ({ name, value, unit, status, color }) => (
+        map(results, ({ name, value, unit, color }) => (
           <div className="dc-metric-item" key={uniqueId(viewId)}>
             <span className={`dc-metric-value ${color ? `color-${color}` : ''}`}>
               {`${isNumber(value) ? ceil(value, 2) : value || '--'}${unit || ''}`}
@@ -40,7 +38,7 @@ const Metric = ({ results = [], viewId }: IProps) => (
 );
 
 export default ({ data: { metricData: results, proportion }, option, ...rest }: any) => {
-  const viewMap = ChartEditorStore.useStore(s => s.viewMap);
+  const viewMap = ChartEditorStore.useStore((s) => s.viewMap);
   const drawerInfo = viewMap[rest.viewId] || {};
   const props = {
     chartType: drawerInfo.chartType as string,

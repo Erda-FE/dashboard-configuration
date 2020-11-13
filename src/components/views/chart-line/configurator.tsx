@@ -1,20 +1,16 @@
 /**
  * 2D 线形图：折线、柱状、曲线
  */
-import { set, get, cloneDeep } from 'lodash';
+import { get } from 'lodash';
 import { Form } from 'antd';
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { insertWhen } from '../../../common/utils';
 import { RenderPureForm, KVTable, useUpdate } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
-// tslint:disable-next-line: no-use-before-declare
 interface IProps {
-  viewId: string;
-  isMock: boolean;
-  defaultOption: object;
   currentChart: DC.View;
   form: WrappedFormUtils;
   forwardedRef: { current: any };
@@ -25,30 +21,33 @@ interface IProps {
 
 const LineConfigurator = (props: IProps) => {
   const { form, forwardedRef, currentChart, setTouched, onEditorChange, isTouched } = props;
-  const textMap = DashboardStore.useStore(s => s.textMap);
+  const textMap = DashboardStore.useStore((s) => s.textMap);
   const [{ controls }, updater] = useUpdate({ controls: form.getFieldValue('controls') });
-  React.useEffect(() => {
+
+  const setFieldsValue = useMemo(() => form.setFieldsValue, [form.setFieldsValue]);
+
+  useEffect(() => {
     forwardedRef.current = form;
     if (!isTouched && form.isFieldsTouched()) {
       setTouched(true);
     }
     updater.controls(form.getFieldValue('controls'));
-  }, [form, updater]);
+  }, [form, forwardedRef, isTouched, setTouched, updater]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
-      form.setFieldsValue(currentChart);
+      setFieldsValue(currentChart);
       currentChart.controls && updater.controls(currentChart.controls);
     }, 0);
-  }, [currentChart, updater]);
+  }, [currentChart, setFieldsValue, updater]);
 
-  const onConfigChange = (key: string, value: any) => {
-    const _config = cloneDeep(currentChart.config);
-    set(_config, key, value);
-    onEditorChange({ config: _config });
-  };
+  // const onConfigChange = (key: string, value: any) => {
+  //   const _config = cloneDeep(currentChart.config);
+  //   set(_config, key, value);
+  //   onEditorChange({ config: _config });
+  // };
 
-  const fields = React.useMemo(() => [
+  const fields = useMemo(() => [
     {
       label: textMap.title,
       name: 'title',
@@ -259,7 +258,7 @@ const LineConfigurator = (props: IProps) => {
 const LineForm = Form.create()(LineConfigurator);
 
 const Configurator = (p: any) => {
-  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId, s.isTouched]);
+  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId, s.isTouched]);
 
   const { setTouched, onEditorChange } = ChartEditorStore;
   const storeProps = {

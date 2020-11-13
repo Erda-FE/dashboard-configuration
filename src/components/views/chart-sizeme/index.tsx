@@ -4,14 +4,15 @@ import DashboardStore from '../../../stores/dash-board';
 import { getConfig } from '../../../config';
 
 interface IProps {
-  viewId: string
-  data: object
+  viewId?: string;
+  data: object;
   config: {
-    option: object
-  }
-  style?: object
-  theme: string
-  option: any
+    option: object;
+  };
+  style?: object;
+  theme?: string;
+  option: any;
+  [k: string]: any;
 }
 
 // 重写相关生命周期，用于注册theme
@@ -23,6 +24,7 @@ ReactEcharts.prototype.componentDidMount = function (...arg) {
   const themeMap = getConfig('theme');
   let themeObj = themeMap[theme];
   if (!themeObj) {
+    // eslint-disable-next-line no-console
     console.info(`theme ${theme} not registered yet`);
     themeObj = themeMap.dice;
   }
@@ -35,6 +37,7 @@ ReactEcharts.prototype.componentDidUpdate = function (...arg) {
   const themeMap = getConfig('theme');
   let themeObj = themeMap[theme];
   if (!themeObj) {
+    // eslint-disable-next-line no-console
     console.info(`theme ${theme} not registered yet`);
     themeObj = themeMap.dice;
   }
@@ -43,7 +46,7 @@ ReactEcharts.prototype.componentDidUpdate = function (...arg) {
 };
 
 export default ({ style, option, ...rest }: IProps) => {
-  const theme = DashboardStore.useStore(s => s.theme);
+  const theme = DashboardStore.useStore((s) => s.theme);
 
   return (
     <ReactEcharts

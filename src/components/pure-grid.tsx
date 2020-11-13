@@ -85,8 +85,8 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
 };
 
 interface IPureProps {
-  layout: any
-  showOptions?: boolean
+  layout: any;
+  showOptions?: boolean;
 }
 
 // 只作渲染器使用
@@ -95,7 +95,7 @@ export default ({ layout, showOptions = false }: IPureProps) => {
   const boardRef = useRef(null);
   const forceUpdate = useForceUpdate();
   const [widthHolder, width] = useComponentWidth();
-  const textMap = DashboardStore.useStore(s => s.textMap);
+  const textMap = DashboardStore.useStore((s) => s.textMap);
 
   const onSetScreenFull = () => {
     setScreenFull(boardRef.current);

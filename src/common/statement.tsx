@@ -10,7 +10,7 @@ const IF = ({ children, check }: any) => {
   const ifSection = [] as any;
   const elseSection = [] as any;
   let hasElse = false;
-  React.Children.forEach(children, (child) => {
+  React.Children.forEach(children, (child: any) => {
     if (child.type && child.type.displayName === 'ELSE') {
       hasElse = true;
     }

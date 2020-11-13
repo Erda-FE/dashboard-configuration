@@ -5,20 +5,20 @@ import DashboardStore from '../stores/dash-board';
 import './kv-table.scss';
 
 interface IProps {
-  forwardedRef: React.Ref<any>
-  value?: DC.IKVTableValue[]
-  customValue?: DC.IKVTableValue[]
-  onChange(values: Array<DC.IKVTableValue>): void
+  // eslint-disable-next-line react/no-unused-prop-types
+  forwardedRef: React.Ref<any>;
+  customValue?: DC.IKVTableValue[];
+  onChange: (values: DC.IKVTableValue[]) => void;
 }
 
 const KVTable = (props: IProps) => {
-  const { value = [], customValue = [], onChange } = props;
-  const textMap = DashboardStore.useStore(s => s.textMap);
+  const { customValue = [], onChange } = props;
+  const textMap = DashboardStore.useStore((s) => s.textMap);
 
-  const _value = React.useMemo(() => map(customValue, item => ({ ...item, uniKey: uniqueId() })), [customValue]);
+  const _value = React.useMemo(() => map(customValue, (item) => ({ ...item, uniKey: uniqueId() })), [customValue]);
 
   const handleChange = React.useCallback((data: DC.IKVTableValue[]) => {
-    !isEmpty(data) && onChange(map(data, item => omit(item, 'uniKey')));
+    !isEmpty(data) && onChange(map(data, (item) => omit(item, 'uniKey')));
   }, [onChange]);
 
   const handleAddEditingValues = () => {
@@ -32,7 +32,7 @@ const KVTable = (props: IProps) => {
     ]);
   };
 
-  const editRule = (rules: any, uniKey: any, items: Array<{ k: string; v: any; }>) => {
+  const editRule = (rules: any, uniKey: any, items: Array<{ k: string; v: any }>) => {
     if (!uniKey) return;
     const _rules = cloneDeep(rules);
     const rule = find(_rules, { uniKey });
@@ -51,10 +51,10 @@ const KVTable = (props: IProps) => {
 
 
   const handleRemoveEditingValues = (uniKey?: string) => {
-    uniKey && handleChange(filter(_value, item => item.uniKey !== uniKey));
+    uniKey && handleChange(filter(_value, (item) => item.uniKey !== uniKey));
   };
 
-  const handleUpdateEditingValues = (uniKey: any, items: Array<{ k: string; v: any; }>) => {
+  const handleUpdateEditingValues = (uniKey: any, items: Array<{ k: string; v: any }>) => {
     uniKey && handleChange(editRule(_value, uniKey, items));
   };
 
@@ -65,7 +65,7 @@ const KVTable = (props: IProps) => {
       render: (v: string, { uniKey }: DC.IKVTableValue) => (
         <Input
           defaultValue={v}
-          onBlur={e => handleUpdateEditingValues(uniKey, [{ k: 'name', v: e.target.value }])}
+          onBlur={(e) => handleUpdateEditingValues(uniKey, [{ k: 'name', v: e.target.value }])}
         />
       ),
     },
@@ -75,7 +75,7 @@ const KVTable = (props: IProps) => {
       render: (v: string, { uniKey }: DC.IKVTableValue) => (
         <Input
           defaultValue={v}
-          onBlur={e => handleUpdateEditingValues(uniKey, [{ k: 'value', v: e.target.value }])}
+          onBlur={(e) => handleUpdateEditingValues(uniKey, [{ k: 'value', v: e.target.value }])}
         />
       ),
     },

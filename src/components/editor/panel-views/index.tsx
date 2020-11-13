@@ -9,8 +9,8 @@ import ChartEditorStore from '../../../stores/chart-editor';
 import './index.scss';
 
 interface IProps {
-  chartType: string
-  onChoose(type: string): void
+  chartType: string;
+  onChoose: (type: string) => void;
 }
 
 const PanelViews = ({ chartType, onChoose }: IProps) => {
@@ -41,7 +41,7 @@ const PanelViews = ({ chartType, onChoose }: IProps) => {
 };
 
 export default (p: any) => {
-  const [viewMap, editChartId] = ChartEditorStore.useStore(s => [s.viewMap, s.editChartId]);
+  const [viewMap, editChartId] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId]);
   const { chooseChartType } = ChartEditorStore;
   const props = {
     chartType: get(viewMap, [editChartId, 'chartType'], ''),

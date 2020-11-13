@@ -10,12 +10,12 @@ export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: 
     set(option, ['legend', 'data'], legendData);
   }
 
-  const series = map(metricData, _data => ({
+  const series = map(metricData, (_data) => ({
+    ..._data,
     type: 'map',
     mapType,
     // 关闭拖拽
     roam: false,
-    ..._data,
   }));
 
   return merge(option, { series });

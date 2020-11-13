@@ -3,7 +3,7 @@ import { useSize, useSetState, useUnmount } from 'react-use';
 
 export const useForceUpdate = () => {
   const forceUpdate = useState(0)[1];
-  return useRef(() => forceUpdate(v => v + 1)).current;
+  return useRef(() => forceUpdate((v) => v + 1)).current;
 };
 
 export const useForceUpdateWithCallback = (cb: () => void): () => void => {
@@ -17,7 +17,7 @@ export const useForceUpdateWithCallback = (cb: () => void): () => void => {
   }, [cb, value]);
   return useRef(() => {
     isUpdating.current = 1;
-    setValue(v => v + 1);
+    setValue((v) => v + 1);
   }).current;
 };
 
@@ -67,7 +67,7 @@ export const useUpdate = <T extends object>(
       result[k] = (patch: Function | any) => {
         const newPart = patch instanceof Function ? patch(ref.current[k], ref.current) : patch;
         ref.current[k] = newPart;
-        // tslint:disable-next-line:no-object-literal-type-assertion
+        // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
         return updateRef.current({ [k]: newPart } as Partial<NullableValue<T>>);
       };
     });

@@ -1,5 +1,7 @@
 # 图表配置器
 
+>[Document](https://yuque.antfin-inc.com/terminus_paas_dev/front/zmcodh)
+
 ## 背景
 前端在对接图表可视化需求时，对于差不多的数据结构，每次都需要搭建差别不大的页面，同时要花时间去调整一些图表展示的细节，为了解放前端的重复劳动，并赋能业务方或数据提供方快速产出图表，所以需要一套开箱即用的图表库，标准化、简化从图表数据获取处理到图表展示的全流程。
 
@@ -90,5 +92,3 @@ webpack相关配置变更，因为当前没有转为es5，需要项目中转换
 
 ## 其他文档
 [如何开发](./Debug.md)
-
-[功能规划](https://yuque.antfin-inc.com/terminus_paas_dev/front/rgziz6)

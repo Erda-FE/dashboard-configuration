@@ -6,11 +6,11 @@ import * as React from 'react';
 import { getOption } from './option';
 
 interface IProps {
-  data: any
-  viewId: string
+  data: any;
+  viewId: string;
   config: {
-    option: object
-  }
+    option: object;
+  };
 }
 
 // TODO: 几个图都一样，可以合并一下

@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import ReactGridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { ViewOperation } from '..';
+import { DcContainer } from '..';
 import { getConfig } from '../../config';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
@@ -91,7 +91,7 @@ export const BoardGrid = ({ width, layout }: any) => {
           const { chartType = '' } = view;
           const ChartNode = get(chartConfigMap, [chartType, 'Component']) as any;
           const node = ChartNode ? <ChartNode {...view.chartProps} /> : <></>;
-          ChildComp = <ViewOperation viewId={i} view={view}>{node}</ViewOperation>;
+          ChildComp = <DcContainer viewId={i} view={view}>{node}</DcContainer>;
         } else {
           // eslint-disable-next-line no-console
           console.error('layout view should be object or function');

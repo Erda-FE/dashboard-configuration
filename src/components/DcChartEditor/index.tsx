@@ -7,7 +7,7 @@ import './index.scss';
 import DataConfig from './data-config';
 // import AxisConfig from './axis-config';
 // import PanelCharts from './panel-views';
-import { ViewOperation } from '..';
+import { DcContainer } from '..';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 
@@ -138,13 +138,13 @@ export default () => {
     <div className="dc-editor-mode">
       <div className="dc-editor-content">
         <div className="dc-editor-previewer">
-          <ViewOperation viewId={editChartId} view={currentChart}>
+          <DcContainer viewId={editChartId} view={currentChart}>
             {
               customRender && (typeof customRender === 'function')
                 ? <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
                 : <ChartNode />
             }
-          </ViewOperation>
+          </DcContainer>
         </div>
         <div className="dc-editor-setting">
           <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>

@@ -5,11 +5,11 @@ import React, { ReactElement } from 'react';
 import { getConfig } from '../../config';
 import { saveImage, setScreenFull } from '../../utils/comp';
 import { EmptyHolder, IF } from '../../common';
-import ChartMask, { ChartSpinMask } from '../views/chart-mask';
+import ChartMask, { ChartSpinMask } from '../DcCharts/chart-mask';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 // import Control from './control';
-import { DcIcon } from '../Icon';
+import { DcIcon } from '../DcIcon';
 import { getChartData } from '../../services/chart-editor';
 
 import './index.scss';

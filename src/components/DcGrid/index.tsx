@@ -6,18 +6,18 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useUnmount } from 'react-use';
 import screenfull from 'screenfull';
-import { IF, useForceUpdate, useComponentWidth } from '../common';
-import ChartEditor from './editor';
-import DefaultAPIFormComponent from './editor/data-config/default-api-form';
-import PickChartModal from './editor/pick-chart';
-import ChartEditorStore from '../stores/chart-editor';
-import DashboardStore from '../stores/dash-board';
-import { formItemLayout, setScreenFull, saveImage } from '../utils/comp';
+import { IF, useForceUpdate, useComponentWidth } from '../../common';
+import DcChartEditor from '../DcChartEditor';
+import DefaultAPIFormComponent from '../DcChartEditor/data-config/default-api-form';
+import PickChartModal from '../DcChartEditor/pick-chart';
+import ChartEditorStore from '../../stores/chart-editor';
+import DashboardStore from '../../stores/dash-board';
+import { formItemLayout, setScreenFull, saveImage } from '../../utils/comp';
 import { BoardGrid } from './grid';
-import { DcIcon } from './index';
+import { DcIcon } from '../index';
 
-import './main.scss';
-import '../static/iconfont.css';
+import './index.scss';
+import '../../static/iconfont.css';
 
 interface IProps {
   readOnly?: boolean; // 隐藏编辑入口
@@ -184,9 +184,7 @@ const DCMain = ({
       {widthHolder}
       {!readOnly && header}
       {showOptions && <div className="dc-header">{commonOptions}</div>}
-      <div className="dc-content" ref={boardRef}>
-        <BoardGrid width={width} layout={layout} />
-      </div>
+      <div className="dc-content" ref={boardRef}><BoardGrid width={width} layout={layout} /></div>
       <Drawer
         width="90%"
         closable={false}
@@ -194,7 +192,7 @@ const DCMain = ({
         bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}
         visible={chartEditorVisible}
       >
-        <ChartEditor />
+        <DcChartEditor />
       </Drawer>
       <PickChartModal onPickChart={handlePickChart} />
     </div>

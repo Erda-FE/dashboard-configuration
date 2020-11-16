@@ -44,7 +44,6 @@ type NullableValue<T> = {
 
 type ResetFn = () => void;
 
-/* eslint-disable arrow-parens */
 /**
  * 状态更新
  * @param initState 初始状态
@@ -82,4 +81,3 @@ export const useUpdate = <T extends object>(
 
   return [state, updater, update, reset];
 };
-/* eslint-disable arrow-parens */

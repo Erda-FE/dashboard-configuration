@@ -3,7 +3,7 @@ import { Modal, Row, Col } from 'antd';
 import { map } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
-import basicCharts from '../../views';
+import basicCharts from '../../DcCharts';
 import './index.scss';
 
 interface IProps {

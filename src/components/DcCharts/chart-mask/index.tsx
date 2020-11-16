@@ -1,6 +1,7 @@
-import './index.scss';
 import { Spin } from 'antd';
 import React from 'react';
+
+import './index.scss';
 
 interface IProps {
   message?: string;

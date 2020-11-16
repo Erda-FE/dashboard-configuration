@@ -2,18 +2,18 @@ import React, { useRef, useEffect } from 'react';
 import { Tooltip } from 'antd';
 import classnames from 'classnames';
 import screenfull from 'screenfull';
-import { useComponentWidth, useForceUpdate, useUpdate } from '../common';
-import { setScreenFull, saveImage } from '../utils/comp';
-import { DcIcon, ViewOperation } from './index';
-import DashboardStore from '../stores/dash-board';
+import { useComponentWidth, useForceUpdate, useUpdate } from '../../common';
+import { setScreenFull, saveImage } from '../../utils/comp';
+import { DcIcon, DcContainer } from '../index';
+import DashboardStore from '../../stores/dash-board';
 
-import './main.scss';
+import './index.scss';
 
 import { get, isEmpty, isPlainObject, map } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
-import { getConfig } from '../config';
+import { getConfig } from '../../config';
 
 const cols = 24;
 const rowHeight = 30;
@@ -67,7 +67,7 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
           const { chartType = '' } = view;
           const ChartNode = get(chartConfigMap, [chartType, 'Component']) as any;
           const node = ChartNode ? <ChartNode {...view.chartProps} /> : <></>;
-          ChildComp = <ViewOperation viewId={i} view={view}>{node}</ViewOperation>;
+          ChildComp = <DcContainer viewId={i} view={view}>{node}</DcContainer>;
         } else {
           // eslint-disable-next-line no-console
           console.error('layout view should be object');

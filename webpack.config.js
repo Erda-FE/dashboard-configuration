@@ -40,6 +40,7 @@ module.exports = () => {
       react: 'react',
       'react-dom': 'react-dom',
       moment: 'moment',
+      'tsx-control-statements': 'tsx-control-statements',
     } : undefined,
     stats: {
       assets: false,

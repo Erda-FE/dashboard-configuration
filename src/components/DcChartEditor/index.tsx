@@ -25,6 +25,7 @@ export default () => {
     addMode,
     viewMap,
     editChartId,
+    // 配置是否有修改
     isTouched,
   ] = ChartEditorStore.useStore((s) => [
     s.addMode,

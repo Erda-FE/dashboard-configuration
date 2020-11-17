@@ -19,7 +19,7 @@ $metric-prefix-cls: #{$prefix}-metric;
       right: 0;
       width: 1px;
       height: 40px;
-      background: rgba(0, 0, 0, .1);
+      background: rgba(0, 0, 0, 0.1);
       content: "";
     }
 
@@ -29,7 +29,7 @@ $metric-prefix-cls: #{$prefix}-metric;
     }
 
     .#{$metric-prefix-cls}-name {
-      color: rgba(0, 0, 0, .4);
+      color: rgba(0, 0, 0, 0.4);
       font-size: 14px;
     }
   }

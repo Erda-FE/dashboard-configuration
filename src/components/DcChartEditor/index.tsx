@@ -1,6 +1,7 @@
 import { Button, message, Tabs, Popconfirm } from 'antd';
 import { get } from 'lodash';
 import React from 'react';
+import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 // import { getData } from '../../utils/comp';
 import { getConfig } from '../../config';
 import './index.scss';
@@ -119,6 +120,7 @@ export default () => {
 
   const tabPanes = [
     <TabPane tab={textMap['parameter configuration']} key="setting">
+      {/* 切换图表类型 */}
       {/* <PanelCharts /> */}
       <Configurator ref={baseConfigFormRef} />
     </TabPane>,
@@ -140,11 +142,12 @@ export default () => {
       <div className="dc-editor-content">
         <div className="dc-editor-previewer">
           <DcContainer viewId={editChartId} view={currentChart}>
-            {
-              customRender && (typeof customRender === 'function')
-                ? <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
-                : <ChartNode />
-            }
+            <Choose>
+              <When condition={customRender && (typeof customRender === 'function')}>
+                <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
+              </When>
+              <Otherwise><ChartNode /></Otherwise>
+            </Choose>
           </DcContainer>
         </div>
         <div className="dc-editor-setting">
@@ -153,8 +156,8 @@ export default () => {
       </div>
       <div className="dc-editor-footer">
         <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
-        {
-          isTouched ?
+        <Choose>
+          <When condition={isTouched}>
             <Popconfirm
               okText={textMap.ok}
               cancelText={textMap.cancel}
@@ -164,9 +167,11 @@ export default () => {
             >
               <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
             </Popconfirm>
-            :
+          </When>
+          <Otherwise>
             <Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>
-        }
+          </Otherwise>
+        </Choose>
       </div>
     </div>
   );

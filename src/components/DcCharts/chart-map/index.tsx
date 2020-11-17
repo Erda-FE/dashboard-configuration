@@ -2,15 +2,15 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-11-12 17:52:24
+ * @Last Modified time: 2020-11-17 17:40:41
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
 import { map, slice, findIndex } from 'lodash';
 import { Breadcrumb } from 'antd';
 import echarts from 'echarts';
+import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import agent from '../../../utils/agent';
-import { IF } from '../../../common';
 import { useUpdate } from '../../../common/use-hooks';
 import ChartSizeMe from '../chart-sizeme';
 import { adcodeMap } from '../../../constants/adcode-map';
@@ -92,11 +92,14 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
       <Breadcrumb>
         {map(mapType, (_type, _k) => (
           <Breadcrumb.Item key={_type}>
-            <IF check={_k < mapType.length - 1}>
-              <span className="dc-hover-active" onClick={() => changeMapType(_type)}>{_type}</span>
-              <IF.ELSE />
-              {_type}
-            </IF>
+            <Choose>
+              <When condition={_k < mapType.length - 1}>
+                <span className="dc-hover-active" onClick={() => changeMapType(_type)}>{_type}</span>
+              </When>
+              <Otherwise>
+                {_type}
+              </Otherwise>
+            </Choose>
           </Breadcrumb.Item>
         ))}
       </Breadcrumb>

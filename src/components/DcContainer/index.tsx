@@ -2,9 +2,10 @@ import { Popconfirm, Tooltip, Dropdown, Menu, Select } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction, map, reduce, merge } from 'lodash';
 import React, { ReactElement } from 'react';
+import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { getConfig } from '../../config';
 import { saveImage, setScreenFull } from '../../utils/comp';
-import { EmptyHolder, IF } from '../../common';
+import { EmptyHolder } from '../../common';
 import ChartMask, { ChartSpinMask } from '../DcCharts/chart-mask';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
@@ -250,119 +251,112 @@ class Operation extends React.PureComponent<IProps, IState> {
 
     return (
       <div className={classnames({ 'dc-view-wrapper': true, active: isEditView })}>
-        <IF check={!hideHeader || isEditMode}>
+        <If condition={!hideHeader || isEditMode}>
           <div className="dc-chart-header">
-            <IF check={isCustomTitle}>
-              <React.Fragment>{title}</React.Fragment>
-              <IF.ELSE />
-              <Dropdown
-                disabled={!isEditMode || chartEditorVisible}
-                overlay={optionsMenu}
-              >
-                <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
-                  <h2 className="dc-chart-title">{title}</h2>
-                  <IF check={description}>
-                    <Tooltip title={description}>
-                      <DcIcon type="info-circle" className="dc-chart-title-op" />
-                    </Tooltip>
-                  </IF>
-                  <IF check={isEditMode && !chartEditorVisible}>
-                    <DcIcon type="setting" className="dc-chart-title-op" />
-                  </IF>
-                </div>
-              </Dropdown>
-              <React.Fragment>
-                {
-                  (controls && !isEmpty(controls[0])) || !isEmpty(dataConfigSelectors) || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
-                    ?
-                      <div className="dc-chart-controls-ct">
+            <Choose>
+              <When condition={isCustomTitle}><React.Fragment>{title}</React.Fragment></When>
+              <Otherwise>
+                <Dropdown
+                  disabled={!isEditMode || chartEditorVisible}
+                  overlay={optionsMenu}
+                >
+                  <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
+                    <h2 className="dc-chart-title">{title}</h2>
+                    <If condition={description}>
+                      <Tooltip title={description}>
+                        <DcIcon type="info-circle" className="dc-chart-title-op" />
+                      </Tooltip>
+                    </If>
+                    <If condition={isEditMode && !chartEditorVisible}>
+                      <DcIcon type="setting" className="dc-chart-title-op" />
+                    </If>
+                  </div>
+                </Dropdown>
+                <React.Fragment>
+                  <If condition={(controls && !isEmpty(controls[0])) || !isEmpty(dataConfigSelectors) || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))}>
+                    <div className="dc-chart-controls-ct">
+                      <If condition={!isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'}>
+                        <Select
+                          allowClear
+                          className="my12 ml8"
+                          style={{ width: 150 }}
+                          onChange={(v: any) => {
+                            this.setState({
+                              staticLoadFnPayload: {
+                                [controls[0].key]: v,
+                              },
+                            }, () => {
+                              this.loadData();
+                            });
+                          }}
+                        >
+                          { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                        </Select>
+                      </If>
+                      <If condition={!isEmpty(dataConfigSelectors)}>
                         {
-                          !isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'
-                            ?
-                              <Select
-                                allowClear
-                                className="my12 ml8"
-                                style={{ width: 150 }}
-                                onChange={(v: any) => {
-                                  this.setState({
-                                    staticLoadFnPayload: {
-                                      [controls[0].key]: v,
-                                    },
-                                  }, () => {
-                                    this.loadData();
-                                  });
-                                }}
-                              >
-                                { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                              </Select>
-                            :
-                            null
+                          map(dataConfigSelectors, ({ key, options, componentProps }) => (
+                            <Select
+                              key={key}
+                              className="my12 ml8"
+                              style={{ width: 150 }}
+                              onChange={(v: any) => {
+                                this.setState({
+                                  dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, [key]: JSON.parse(v) },
+                                }, () => {
+                                  this.loadData();
+                                });
+                              }}
+                              {...componentProps}
+                            >
+                              { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                            </Select>
+                          ))
                         }
-                        {
-                          !isEmpty(dataConfigSelectors)
-                            ?
-                            map(dataConfigSelectors, ({ key, options, componentProps }) => (
-                              <Select
-                                key={key}
-                                className="my12 ml8"
-                                style={{ width: 150 }}
-                                onChange={(v: any) => {
-                                  this.setState({
-                                    dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, [key]: JSON.parse(v) },
-                                  }, () => {
-                                    this.loadData();
-                                  });
-                                }}
-                                {...componentProps}
-                              >
-                                { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                              </Select>
-                            ))
-                            :
-                            null
-                        }
-                        {
-                          dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)
-                            ?
-                              <Select
-                                allowClear
-                                className="my12 ml8"
-                                style={{ width: 150 }}
-                                onChange={(v: any) => {
-                                  this.setState({
-                                    dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, 'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v } },
-                                  }, () => {
-                                    this.loadData();
-                                  });
-                                }}
-                              >
-                                { map(dynamicFilterData, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                              </Select>
-                            :
-                            null
-                        }
-                      </div>
-                    :
-                    null
-                }
-              </React.Fragment>
-            </IF>
+                      </If>
+                      <If condition={dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)}>
+                        <Select
+                          allowClear
+                          className="my12 ml8"
+                          style={{ width: 150 }}
+                          onChange={(v: any) => {
+                            this.setState({
+                              dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, 'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v } },
+                            }, () => {
+                              this.loadData();
+                            });
+                          }}
+                        >
+                          { map(dynamicFilterData, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                        </Select>
+                      </If>
+                    </div>
+                  </If>
+                </React.Fragment>
+              </Otherwise>
+            </Choose>
           </div>
-        </IF>
-        <IF check={isEditMode && !chartEditorVisible}>
+        </If>
+        <If condition={isEditMode && !chartEditorVisible}>
           <Tooltip title={textMap.move}><DcIcon type="drag" className="dc-draggable-handle" /></Tooltip>
-        </IF>
+        </If>
         {this.getViewMask(fetchStatus || maskMsg)}
         {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}
-        {
-          (!isCustomRender && !excludeEmptyType.includes(chartType) && (!resData || isEmpty(resData.metricData)))
-            ? <EmptyHolder />
-            : (
-              <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
-                {isCustomRender ? customRender((!resData || isEmpty(resData.metricData)) ? <EmptyHolder /> : _childNode, view) : _childNode}
-              </div>
-            )
-        }
+        <Choose>
+          <When condition={(!isCustomRender && !excludeEmptyType.includes(chartType) && (!resData || isEmpty(resData.metricData)))}>
+            <EmptyHolder />
+          </When>
+          <Otherwise>
+            <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
+              <Choose>
+                <When condition={isCustomRender}>
+                  {customRender((!resData || isEmpty(resData.metricData)) ? <EmptyHolder /> : _childNode, view)}
+                </When>
+                <Otherwise>{_childNode}</Otherwise>
+              </Choose>
+            </div>
+          </Otherwise>
+        </Choose>
       </div>
     );
   }

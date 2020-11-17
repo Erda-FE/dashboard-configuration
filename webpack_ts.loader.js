@@ -2,21 +2,25 @@
 // https://github.com/Igorbek/typescript-plugin-styled-components
 
 const tsImportPluginFactory = require('ts-import-plugin');
+const statements = require('tsx-control-statements').default;
 
 const getCustomTransformers = () => ({
-  before: [tsImportPluginFactory([
-    {
-      libraryName: 'antd',
-      libraryDirectory: 'es',
-      style: 'css',
-    },
-    {
-      style: false,
-      libraryName: 'lodash',
-      libraryDirectory: null,
-      camel2DashComponentName: false,
-    },
-  ])],
+  before: [
+    statements(),
+    tsImportPluginFactory([
+      {
+        libraryName: 'antd',
+        libraryDirectory: 'es',
+        style: 'css',
+      },
+      {
+        style: false,
+        libraryName: 'lodash',
+        libraryDirectory: null,
+        camel2DashComponentName: false,
+      }
+    ]),
+  ],
 });
 
 module.exports = getCustomTransformers;

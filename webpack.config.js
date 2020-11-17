@@ -75,7 +75,10 @@ module.exports = () => {
         {
           test: /\.(tsx?|jsx?)$/,
           loader: 'happypack/loader?id=ts',
-          exclude: /node_modules/,
+          include: [
+            resolve('example'),
+            resolve('src'),
+          ],
         },
       ],
     },

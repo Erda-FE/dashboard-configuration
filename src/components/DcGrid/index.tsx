@@ -6,7 +6,8 @@ import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useUnmount } from 'react-use';
 import screenfull from 'screenfull';
-import { IF, useForceUpdate, useComponentWidth } from '../../common';
+import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
+import { useForceUpdate, useComponentWidth } from '../../common';
 import DcChartEditor from '../DcChartEditor';
 import DefaultAPIFormComponent from '../DcChartEditor/data-config/default-api-form';
 import PickChartModal from '../DcChartEditor/pick-chart';
@@ -145,32 +146,35 @@ const DCMain = ({
   ];
   const header = (
     <div className="dc-header">
-      <IF check={isEditMode}>
-        <IF check={!chartEditorVisible}>
-          <Tooltip placement="bottom" title={textMap.add}>
-            <DcIcon type="plus" onClick={() => setPickChartModalVisible(true)} />
+      <Choose>
+        <When condition={isEditMode}>
+          <If condition={!chartEditorVisible}>
+            <Tooltip placement="bottom" title={textMap.add}>
+              <DcIcon type="plus" onClick={() => setPickChartModalVisible(true)} />
+            </Tooltip>
+            <Tooltip placement="bottom" title={textMap.save}>
+              <DcIcon type="save" onClick={_onSave} />
+            </Tooltip>
+            <Tooltip placement="bottom" title={textMap.cancel}>
+              <DcIcon type="close" onClick={_onCancel} />
+            </Tooltip>
+          </If>
+        </When>
+        <Otherwise>
+          {commonOptions}
+          <Tooltip placement="bottom" title={textMap.edit}>
+            <DcIcon
+              type="edit"
+              onClick={() => {
+                setEditMode(true);
+                if (onEdit) {
+                  onEdit();
+                }
+              }}
+            />
           </Tooltip>
-          <Tooltip placement="bottom" title={textMap.save}>
-            <DcIcon type="save" onClick={_onSave} />
-          </Tooltip>
-          <Tooltip placement="bottom" title={textMap.cancel}>
-            <DcIcon type="close" onClick={_onCancel} />
-          </Tooltip>
-        </IF>
-        <IF.ELSE />
-        {commonOptions}
-        <Tooltip placement="bottom" title={textMap.edit}>
-          <DcIcon
-            type="edit"
-            onClick={() => {
-              setEditMode(true);
-              if (onEdit) {
-                onEdit();
-              }
-            }}
-          />
-        </Tooltip>
-      </IF>
+        </Otherwise>
+      </Choose>
     </div>
   );
 

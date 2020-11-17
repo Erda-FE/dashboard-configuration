@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div>
-      <div style={{ float: 'right' }}>
+      <div>
         语言：
         <button onClick={() => setLocale('zh')}>中文</button>
         <button onClick={() => setLocale('en')}>English</button>

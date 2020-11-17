@@ -1,9 +1,18 @@
 {
   "name": "@terminus/dashboard-configurator",
   "version": "0.4.19-beta.4",
-  "description": "Dashboard configurator with Echart",
-  "main": "./src/index.ts",
-  "types": "./src/types/index.d.ts",
+  "description": "Dice Charts with Echart",
+  "main": "./dist/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://gittar.app.terminus.io/terminus-dice/dashboard-configurator"
+  },
+  "keywords": [
+    "dice",
+    "charts",
+    "react",
+    "Echarts"
+  ],
   "sideEffects": [
     "*.scss",
     "*.css",
@@ -11,15 +20,15 @@
   ],
   "scripts": {
     "prewatch": "shell/check-dll.sh",
-    "watch": "rm -rf public/scripts && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d",
+    "watch": "rm -rf dist && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d",
     "preweb": "shell/check-dll.sh",
-    "web": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development",
+    "web": "rm -rf dist && webpack-dev-server --config webpack.server.js --mode=development",
     "dll": "webpack --config webpack_dll.config.js --mode development",
     "icon": "node tools/gen-icon",
     "province-map": "node tools/gen-province-map",
     "adcode-map": "node tools/gen-adcode-map",
-    "build": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --color",
-    "analyze": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --config webpack.analyze.js",
+    "build": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --color",
+    "analyze": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --config webpack.analyze.js",
     "commit": "./node_modules/cz-customizable/standalone.js",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
@@ -29,17 +38,6 @@
     "pub-alpha": "npm version prerelease --preid alpha && npm publish --tag alpha && git push",
     "pub-beta": "npm version prerelease --preid beta && npm publish --tag beta && git push"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://gittar.app.terminus.io/terminus-dice/dashboard-configurator"
-  },
-  "keywords": [
-    "dashboard",
-    "configurator",
-    "antd",
-    "cube-state",
-    "Echart"
-  ],
   "author": "terminus",
   "license": "ISC",
   "dependencies": {
@@ -139,8 +137,10 @@
     ]
   },
   "files": [
+    "dist",
     "src",
     "index.js",
-    "README.md"
+    "README.md",
+    "package.json"
   ]
 }

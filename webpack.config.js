@@ -30,6 +30,7 @@ module.exports = () => {
     node: {
       net: 'empty',
     },
+    mode: isProd ? 'production' : 'development',
     entry: {
       index: isProd ? './src/index.ts' : './example/index.js',
     },
@@ -47,7 +48,7 @@ module.exports = () => {
       children: false,
     },
     output: {
-      path: path.join(__dirname, '/public'),
+      path: path.join(__dirname, '/dist'),
       filename: '[name].js',
       chunkFilename: '[id].chunk.js',
       publicPath: '/',
@@ -91,7 +92,7 @@ module.exports = () => {
       minimize: isProd,
       // runtimeChunk: true,
       namedChunks: true,
-      // moduleIds: 'hashed',
+      moduleIds: 'named',
       splitChunks: {
         chunks: 'all', // 必须三选一：'initial' | 'all' | 'async'
         minSize: 30000,

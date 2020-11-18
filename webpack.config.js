@@ -41,7 +41,6 @@ module.exports = () => {
       react: 'react',
       'react-dom': 'react-dom',
       moment: 'moment',
-      'tsx-control-statements': 'tsx-control-statements',
     } : undefined,
     stats: {
       assets: false,
@@ -50,7 +49,7 @@ module.exports = () => {
     output: {
       path: path.join(__dirname, '/dist'),
       filename: '[name].js',
-      chunkFilename: '[id].chunk.js',
+      chunkFilename: '[chunkhash].chunk.js',
       publicPath: '/',
     },
     module: {
@@ -88,35 +87,29 @@ module.exports = () => {
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [resolve('example'), resolve('src'), 'node_modules'],
     },
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
+    },
     optimization: {
       minimize: isProd,
-      // runtimeChunk: true,
       namedChunks: true,
       moduleIds: 'named',
       splitChunks: {
-        chunks: 'all', // 必须三选一：'initial' | 'all' | 'async'
+        chunks: 'all',
         minSize: 30000,
         minChunks: 1,
         maxAsyncRequests: 5,
-        maxInitialRequests: 6,
+        maxInitialRequests: 5,
         name: true,
-        // cacheGroups: {
-        //   styles: {
-        //     name: 'styles',
-        //     test: /\.s?css$/,
-        //     chunks: 'all',
-        //     enforce: true,
-        //     priority: 1,
-        //   },
-        //   commons: {
-        //     name: 'chunk-commons',
-        //     test: resolve('example/common'),
-        //     minChunks: 2, // 最小公用次数
-        //     priority: 2,
-        //     chunks: 'all',
-        //     reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的
-        //   },
-        // },
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            reuseExistingChunk: true,
+            priority: -10,
+          },
+        },
       },
       minimizer: isProd
         ? [

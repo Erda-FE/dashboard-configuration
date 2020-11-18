@@ -263,7 +263,6 @@ export default [
       // },
       loadData: (curMapTypes = []) => {
         const level = ['province', 'city', 'district'];
-        console.log(level[curMapTypes.length - 1]);
         return Promise.resolve({
           metricData: [
             {

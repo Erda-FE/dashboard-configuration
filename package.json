@@ -22,10 +22,9 @@
     "prewatch": "shell/check-dll.sh",
     "watch": "rm -rf dist && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d",
     "preweb": "shell/check-dll.sh",
-    "web": "rm -rf dist && webpack-dev-server --config webpack.server.js --mode=development",
-    "dll": "webpack --config webpack_dll.config.js --mode development",
+    "web": "webpack-dev-server --config webpack.server.js",
+    "dll": "webpack --config webpack_dll.config.js",
     "icon": "node tools/gen-icon",
-    "province-map": "node tools/gen-province-map",
     "adcode-map": "node tools/gen-adcode-map",
     "build": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --color",
     "analyze": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --config webpack.analyze.js",
@@ -123,10 +122,6 @@
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "lint-staged": {
-    "example/**/*.js": [
-      "eslint --fix",
-      "git add"
-    ],
     "example/**/*.ts": [
       "eslint --fix",
       "git add"

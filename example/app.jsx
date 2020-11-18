@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { BoardGrid, PureBoardGrid, setLocale, getLocale, getTheme, setTheme } from '../src/index';
+import { BoardGrid, PureBoardGrid, setLocale, getLocale, getTheme, setTheme } from '../src';
 import layout from './mock/data';
 // import layout2 from './mock/data2';
 import { useMount } from 'react-use';

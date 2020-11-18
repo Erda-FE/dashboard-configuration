@@ -4,10 +4,5 @@ import PureBoardGrid from './components/DcGrid/pure-grid';
 
 export * from './config';
 export { colorMap as diceColorMap } from './theme/dice';
-
 export { getLocale, setLocale, getTheme, setTheme };
-
-export {
-  PureBoardGrid,
-  BoardGrid,
-};
+export { PureBoardGrid, BoardGrid };

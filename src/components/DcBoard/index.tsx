@@ -144,6 +144,7 @@ const DCMain = ({
       <DcIcon type="camera" onClick={onSaveImg} />
     </Tooltip>,
   ];
+  const boardOperations = [];
   const header = (
     <div className="dc-header">
       <Choose>

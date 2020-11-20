@@ -11,6 +11,11 @@ const globalConfig = {
   theme: {
     [theme]: defaultTheme,
   },
+  diceDataConfigProps: {
+    dataConfigMetaDataStore: {},
+    scope: '',
+    scopeId: '',
+  },
 };
 
 const regist = (path: string | string[] | number | number[], data: any) => {
@@ -102,4 +107,14 @@ export const registControl = (name: string, Comp: any) => {
 export const registTheme = (name: string, themeObj: object) => {
   regist(`theme.${name}`, themeObj);
   return getConfig('theme');
+};
+
+export /**
+ * 注册 Dice 数据源配置依赖的数据
+ * @param {object} diceDataConfigProps
+ * @returns 已注册的 Dice 数据源配置依赖的数据
+ */
+const registDiceDataConfigProps = (diceDataConfigProps: object) => {
+  regist('diceDataConfigProps', diceDataConfigProps);
+  return getConfig('diceDataConfigProps');
 };

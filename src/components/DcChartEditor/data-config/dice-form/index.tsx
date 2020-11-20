@@ -1,14 +1,12 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
-import { map, uniqueId, remove, find, findIndex, reduce, filter, isEmpty, keyBy, debounce, isNumber, merge } from 'lodash';
 import { useMount } from 'react-use';
-import { parse } from 'query-string';
+import { map, uniqueId, remove, find, findIndex, reduce, filter, isEmpty, keyBy, debounce, isNumber, merge } from 'lodash';
 import { Button, Table, Select, Input, Tooltip, Switch, InputNumber } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { RenderPureForm, useUpdate, IF } from '../common';
-import dataConfigMetaDataStore from '../stores/data-config-metadata';
-import customDashboardStore from '../stores/custom-dashboard';
-import { insertWhen } from '../common/utils';
-import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, TIME_FORMATS } from '../constants';
+import { If } from 'tsx-control-statements/components';
+import { RenderPureForm, useUpdate } from '../../../../common';
+import { insertWhen } from '../../../../common/utils';
+import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, TIME_FORMATS } from './constants';
 import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn } from './data-loader';
 
@@ -26,7 +24,11 @@ interface IProps {
 }
 
 export default ({ submitResult, currentChart, form }: IProps) => {
+  // 宿主额外的 property
   const { scope = 'bigData', scopeId = 'default' } = parse(window.location.search);
+  const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
+  // 配置所需的数据，宿主注入
+  const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;
   const [
     metaGroups,
     metaConstantMap,
@@ -36,8 +38,8 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     s.metaConstantMap,
     s.metaMetrics,
   ]);
-  const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
-  // 展开所有分类指标，给大盘配置用
+
+  // 配置所需的数据计算
   const fieldsMap = useMemo(() => reduce(metaMetrics, (result, value) => {
     const { fields, tags, metric, filters } = value;
     const singleFieldsMap = reduce(fields, (acc, field) => ({ ...acc, [`${metric}-${field.key}`]: { ...field, tags, metric, filters } }), {});
@@ -46,16 +48,14 @@ export default ({ submitResult, currentChart, form }: IProps) => {
   const defaultMetric = useMemo(() => metaMetrics[0] || {}, [metaMetrics]);
   const { types: typeMap } = metaConstantMap;
   const aggregationMap = useMemo(() => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}), [typeMap]);
-
-  const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;
+  // 图表信息
   const { chartType, api, curMapType = [], config: currentChartConfig = {} } = currentChart;
-
   const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [currentChart.curMapType]);
   const apiExtraData = api.extraData;
   const isLineType = ['chart:line', 'chart:bar', 'chart:area'].includes(chartType);
   const isTableType = chartType === 'table';
   const isMapType = chartType === 'chart:map';
-  // 请求数据接口
+  // 请求数据接口，宿主注入
   const initialUrl = isLineType ? '/api/metrics/{{metricName}}/histogram' : '/api/metrics/{{metricName}}';
   // 新增的散点图、地图采用新的拼接规则和返回结构
   const isV2Type = ['chart:map', 'chart:scatter'].includes(chartType);
@@ -98,7 +98,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     q: apiExtraData ? apiExtraData.q : undefined,
     isSqlMode: apiExtraData ? apiExtraData.isSqlMode : false,
   });
-
+  // 选中的 field
   const fieldInfo = fieldsMap[(activedMetrics[0] || {}).metric] || {};
 
   useMount(() => {
@@ -125,7 +125,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       q: _metric.sql,
     });
   }, [update]);
-
+  //
   const _submitResult = useCallback(debounce(submitResult, 500), []);
 
   const getFilterMap = (data: any, key: string) => {
@@ -704,7 +704,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
 
   return (
     <div className="monitor-metrics-form">
-      <IF check={isTableType}>
+      <If check={isTableType}>
         <div className="text-right mb16">
           <Switch
             checkedChildren="SQL"
@@ -713,7 +713,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
             onChange={(checked) => updater.isSqlMode(checked)}
           />
         </div>
-      </IF>
+      </If>
       <RenderPureForm form={form} layout="vertical" list={fieldsList} />
       <DynamicFilterDataModal
         title="动态过滤数据源配置"

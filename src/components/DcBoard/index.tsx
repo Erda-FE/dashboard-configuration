@@ -9,7 +9,7 @@ import screenfull from 'screenfull';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { useForceUpdate, useComponentWidth } from '../../common';
 import DcChartEditor from '../DcChartEditor';
-import DefaultAPIFormComponent from '../DcChartEditor/data-config/default-form';
+import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
 import PickChartModal from '../DcChartEditor/pick-chart';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
@@ -40,7 +40,7 @@ const DCMain = ({
   readOnly = false,
   showOptions = false,
   UrlComponent = Input,
-  APIFormComponent = DefaultAPIFormComponent,
+  APIFormComponent = DiceDataConfigFormComponent,
   urlItemLayout = formItemLayout,
   layout,
   onEdit,

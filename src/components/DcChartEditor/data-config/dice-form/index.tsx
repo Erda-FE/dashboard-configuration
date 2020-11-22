@@ -4,13 +4,18 @@ import { map, uniqueId, remove, find, findIndex, reduce, filter, isEmpty, keyBy,
 import { Button, Table, Select, Input, Tooltip, Switch, InputNumber } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { If } from 'tsx-control-statements/components';
+import { getConfig } from '../../../../config';
 import { RenderPureForm, useUpdate } from '../../../../common';
 import { insertWhen } from '../../../../common/utils';
 import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, TIME_FORMATS } from './constants';
 import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn } from './data-loader';
 
-import './monitor-metrics-form.scss';
+import './index.scss';
+
+const { dataConfigMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
+// mock timeSpan
+const timeSpan = { startTimeMs: 1605830400000, endTimeMs: 1605876677944 };
 
 interface IProps {
   currentChart: {
@@ -24,16 +29,14 @@ interface IProps {
 }
 
 export default ({ submitResult, currentChart, form }: IProps) => {
-  // 宿主额外的 property
-  const { scope = 'bigData', scopeId = 'default' } = parse(window.location.search);
-  const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
+  // const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
   // 配置所需的数据，宿主注入
   const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;
   const [
     metaGroups,
     metaConstantMap,
     metaMetrics,
-  ] = dataConfigMetaDataStore.useStore((s) => [
+  ] = dataConfigMetaDataStore.useStore((s: any) => [
     s.metaGroups,
     s.metaConstantMap,
     s.metaMetrics,
@@ -49,8 +52,8 @@ export default ({ submitResult, currentChart, form }: IProps) => {
   const { types: typeMap } = metaConstantMap;
   const aggregationMap = useMemo(() => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}), [typeMap]);
   // 图表信息
-  const { chartType, api, curMapType = [], config: currentChartConfig = {} } = currentChart;
-  const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [currentChart.curMapType]);
+  const { chartType, api = {}, curMapType = [], config: currentChartConfig = {} } = currentChart;
+  const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
   const apiExtraData = api.extraData;
   const isLineType = ['chart:line', 'chart:bar', 'chart:area'].includes(chartType);
   const isTableType = chartType === 'table';
@@ -125,7 +128,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       q: _metric.sql,
     });
   }, [update]);
-  //
+
   const _submitResult = useCallback(debounce(submitResult, 500), []);
 
   const getFilterMap = (data: any, key: string) => {
@@ -141,10 +144,10 @@ export default ({ submitResult, currentChart, form }: IProps) => {
 
   // 表达式拼接规则：https://yuque.antfin-inc.com/docs/share/f9069b1a-5110-4954-b427-9bed97afd593#WmfAm
   const getFilterExpressions = (_filters: any[]) => {
-    let filterExpressions = map(_filters, ({ tag, method, value }) => `${tag}${method}${isNumber(value) ? value : `\'${value}\'`}`);
+    let filterExpressions = map(_filters, ({ tag, method, value }) => `${tag}${method}${isNumber(value) ? value : `'${value}'`}`);
     filterExpressions = [
       ...filterExpressions,
-      ...insertWhen(isMapType && !!preLevel, [`${preLevel}=\'${curMapType[curMapType.length - 1]}\'`]),
+      ...insertWhen(isMapType && !!preLevel, [`${preLevel}='${curMapType[curMapType.length - 1]}'`]),
     ];
     return isEmpty(filterExpressions) ? undefined : filterExpressions;
   };
@@ -167,14 +170,14 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       start: timeSpan.startTimeMs,
       end: timeSpan.endTimeMs,
     };
-  }, [timeSpan, customTime]);
+  }, [customTime]);
 
   // Sql 模式只在表格图中出现
   useEffect(() => {
     if (isSqlMode) {
       if (!q) return;
 
-      const api = {
+      const _api = {
         url: initialUrl.replace(/{{metricName}}/g, defaultMetric.metric),
         method: 'GET',
         query: {
@@ -197,9 +200,9 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         },
       };
 
-      _submitResult(api, { loadData: createLoadDataFn({ api, chartType }) });
+      _submitResult(_api, { loadData: createLoadDataFn({ api: _api, chartType }) });
     }
-  }, [isSqlMode, q, _submitResult, customTime, time_field, initialUrl, defaultMetric, timeSpan, activedMetricGroups]);
+  }, [isSqlMode, q, _submitResult, customTime, time_field, initialUrl, defaultMetric, activedMetricGroups, getTimeRange, dynamicFilterKey, dynamicFilterDataAPI, chartType]);
 
   // 动态配置 api query，旧版拼接规则
   useEffect(() => {
@@ -208,7 +211,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
 
     const filters = map(
       map(
-        reduce(typeMap, (result, { filters }) => [...result, ...(filters || [])], [] as MONITOR_COMMON_METADATA.Filter[]),
+        reduce(typeMap, (result, { filters: _filters }) => [...result, ...(_filters || [])], [] as MONITOR_COMMON_METADATA.Filter[]),
         ({ operation }) => operation
       ),
       (k) => getFilterMap(activedFilters, k)
@@ -276,7 +279,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         placeholder: '请选择指标',
       },
     };
-    const api = {
+    const _api = {
       url: initialUrl.replace(/{{metricName}}/g, fieldInfo.metric),
       method: 'GET',
       query: result,
@@ -297,8 +300,8 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     };
 
     // 旧的拼接方式
-    _submitResult(api, {
-      loadData: createLoadDataFn({ api, chartType }),
+    _submitResult(_api, {
+      loadData: createLoadDataFn({ api: _api, chartType }),
       config: merge({}, currentChartConfig, { optionProps: { isMoreThanOneDay: !!timeFormat, moreThanOneDayFormat: timeFormat } }),
     });
   }, [activedFilters, activedGroup, activedMetricGroups, limit, timeFormat, dynamicFilterKey, customTime, time_field, isLineType, initialUrl, activedMetrics, isTableType, activedMetricGroups, _submitResult, metaConstantMap.filters, aggregationMap, fieldsMap, fieldInfo]);
@@ -391,7 +394,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
             });
           }}
         >
-          {map(fieldsMap, ({ key, name }) => <Select.Option key={key}><Tooltip title={name}>{name}</Tooltip></Select.Option>)}
+          {map(fieldsMap, ({ key: _key, name }) => <Select.Option key={_key}><Tooltip title={name}>{name}</Tooltip></Select.Option>)}
         </Select>
       ),
     },
@@ -704,7 +707,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
 
   return (
     <div className="monitor-metrics-form">
-      <If check={isTableType}>
+      <If condition={isTableType}>
         <div className="text-right mb16">
           <Switch
             checkedChildren="SQL"
@@ -722,7 +725,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         defaultValue={(dynamicFilterDataAPI || {}).extraData}
         onCancel={() => update({ dynamicFilterDataModalVisible: false })}
         getTimeRange={getTimeRange}
-        onOk={(dynamicFilterDataAPI) => { update({ dynamicFilterDataAPI }); }}
+        onOk={(apis) => { update({ dynamicFilterDataAPI: apis }); }}
       />
     </div>
   );

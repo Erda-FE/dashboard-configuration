@@ -1,10 +1,10 @@
 import React, { useMemo, useEffect, useCallback } from 'react';
 import { Modal, Button, Table, Select, Tooltip, Input, InputNumber, message } from 'antd';
 import { uniqueId, findIndex, find, reduce, map, remove, isEmpty, isNumber } from 'lodash';
-
 import { RenderPureForm, useUpdate } from '../../../../common';
+import { getConfig } from '../../../../config';
 
-import monitorMetaDataStore from '../stores/dynamic-filter-data-modal';
+const { dynamicFilterMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
 
 interface IProps {
   visible: boolean;
@@ -17,13 +17,12 @@ interface IProps {
 }
 
 export default ({ visible, title, onOk, onCancel, getTimeRange, defaultValue, ...rest }: IProps) => {
-  const { scope = 'bigData', scopeId = 'default' } = parse(window.location.search);
-  const { getMetaGroups, getMetaData } = monitorMetaDataStore.effects;
+  const { getMetaGroups, getMetaData } = dynamicFilterMetaDataStore.effects;
   const [
     metaGroups,
     metaMetrics,
     metaConstantMap,
-  ] = monitorMetaDataStore.useStore((s) => [
+  ] = dynamicFilterMetaDataStore.useStore((s: any) => [
     s.metaGroups,
     s.metaMetrics,
     s.metaConstantMap,
@@ -59,7 +58,7 @@ export default ({ visible, title, onOk, onCancel, getTimeRange, defaultValue, ..
   }, {}), [metaMetrics]);
   const fieldInfo = useMemo(() => (activedMetric ? fieldsMap[activedMetric!] || {} : {}), [activedMetric]);
   const getFilterExpressions = (_filters: any[]) => {
-    const filterExpressions = map(_filters, ({ tag, method, value }) => `${tag}${method}${isNumber(value) ? value : `\'${value}\'`}`);
+    const filterExpressions = map(_filters, ({ tag, method, value }) => `${tag}${method}${isNumber(value) ? value : `'${value}'`}`);
     return isEmpty(filterExpressions) ? undefined : filterExpressions;
   };
 
@@ -145,7 +144,7 @@ export default ({ visible, title, onOk, onCancel, getTimeRange, defaultValue, ..
             ]));
           }}
         >
-          {map(fieldsMap, ({ key, name }) => <Select.Option key={key}><Tooltip title={name}>{name}</Tooltip></Select.Option>)}
+          {map(fieldsMap, ({ key: _key, name }) => <Select.Option key={_key}><Tooltip title={name}>{name}</Tooltip></Select.Option>)}
         </Select>
       ),
     },

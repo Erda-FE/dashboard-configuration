@@ -1,6 +1,7 @@
 import { set, get } from 'lodash';
 import defaultChartsMap from '../components/DcCharts';
 import { theme, themeObj as defaultTheme } from '../theme/dice';
+import { dynamicFilterMetaDataStore, dataConfigMetaDataStore } from './getDefaultStores';
 
 const globalConfig = {
   chartConfigMap: defaultChartsMap,
@@ -12,7 +13,8 @@ const globalConfig = {
     [theme]: defaultTheme,
   },
   diceDataConfigProps: {
-    dataConfigMetaDataStore: {},
+    dataConfigMetaDataStore,
+    dynamicFilterMetaDataStore,
     scope: '',
     scopeId: '',
   },

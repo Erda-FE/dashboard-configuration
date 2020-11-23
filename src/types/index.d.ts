@@ -23,7 +23,7 @@ declare namespace DC {
     dataSettings?: any[]; // props由form相关属性构成
   }
 
-  type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'table' | 'card' | 'chart:scatter' | 'chart:map';
+  type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'chart:funnel' | 'table' | 'card' | 'chart:scatter' | 'chart:map';
 
   type ViewDefMap = Record<ViewType, ViewDefItem>;
 

@@ -6,12 +6,14 @@ import ChartPie from './chart-pie';
 import ChartMetric from './chart-metric';
 import ChartTable from './chart-table';
 import ChartMap from './chart-map';
+import ChartFunnel from './chart-funnel';
 // 图表配置器
 import LineConfigurator from './chart-line/configurator';
 import PieConfigurator from './chart-pie/configurator';
 import MetricConfigurator from './chart-metric/configurator';
 import TableConfigurator from './chart-table/configurator';
 import MapConfigurator from './chart-map/configurator';
+import FunnelConfigurator from './chart-funnel/configurator';
 
 const SvgContainer = ({ children }: any) => (
   <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="90" height="90">
@@ -81,6 +83,17 @@ const basicCharts: DC.ViewDefMap = {
     ),
     Component: ChartPie,
     Configurator: PieConfigurator,
+  },
+  'chart:funnel': {
+    name: '漏斗图',
+    enName: 'Funnel',
+    image: (
+      <SvgContainer>
+        <path d="M50.102857 168.594286h923.794286l-104.594286 189.44H157.257143L50.102857 168.594286z" fill="#5e48df" p-id="2979" data-spm-anchor-id="a313x.7781069.0.i0" className="selected" /><path d="M190.902857 417.28h645.485714l-104.228571 188.708571H297.691429l-106.788572-188.708571z" fill="#25ca64" p-id="2980" data-spm-anchor-id="a313x.7781069.0.i4" className="" /><path d="M330.971429 665.234286h368.64l-105.325715 190.171428H438.857143l-107.885714-190.171428z" fill="#5e48df" p-id="2981" data-spm-anchor-id="a313x.7781069.0.i5" className="selected" />
+      </SvgContainer>
+    ),
+    Component: ChartFunnel,
+    Configurator: FunnelConfigurator,
   },
   card: {
     name: '卡片图',

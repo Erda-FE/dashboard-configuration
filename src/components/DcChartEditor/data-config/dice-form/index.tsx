@@ -13,7 +13,6 @@ import { createLoadDataFn } from './data-loader';
 
 import './index.scss';
 
-const { dataConfigMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
 // mock timeSpan
 const timeSpan = { startTimeMs: 1605830400000, endTimeMs: 1605876677944 };
 
@@ -29,6 +28,7 @@ interface IProps {
 }
 
 export default ({ submitResult, currentChart, form }: IProps) => {
+  const { dataConfigMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
   // const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
   // 配置所需的数据，宿主注入
   const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;

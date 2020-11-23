@@ -2,12 +2,9 @@ import { Button, message, Tabs, Popconfirm } from 'antd';
 import { get } from 'lodash';
 import React from 'react';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
-// import { getData } from '../../utils/comp';
 import { getConfig } from '../../config';
 import './index.scss';
 import DataConfig from './data-config';
-// import AxisConfig from './axis-config';
-// import PanelCharts from './panel-views';
 import { DcContainer } from '..';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
@@ -19,9 +16,6 @@ const noop = () => null;
 export default () => {
   const baseConfigFormRef = React.useRef(null as any);
   const dataConfigFormRef = React.useRef(null as any);
-  // const controlsConfigRef = React.useRef(null as any);
-  // const axesConfigFormRef = React.useRef(null as any);
-
   const [
     addMode,
     viewMap,
@@ -42,16 +36,8 @@ export default () => {
 
   const { deleteEditor, closeEditor, saveEditor } = ChartEditorStore;
 
-  const saveChart = () => { // 可以提交图表或控件
-    // if (isEmpty(currentChart)) {
-    //   return;
-    // } else if (!currentChart.chartType && !currentChart.controlType) {
-    //   message.error('请选择图表或者控件');
-    //   return;
-    // }
-    // TODO add validation for each tab
+  const saveChart = () => {
     let amalgamatedOptions = {};
-
     const valiDataConfig = () => {
       dataConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
         if (errors) return;
@@ -62,47 +48,13 @@ export default () => {
             staticData: JSON.parse(options.staticData),
           };
         }
-        // if (options.chartQuery) {
-        // }
         amalgamatedOptions = {
           ...amalgamatedOptions,
           ...options,
-          // loadData: getData,
         };
         saveEditor(amalgamatedOptions);
       });
     };
-
-    // const valiAxisConfig = () => {
-    //   axesConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
-    //     if (errors) return;
-    //     const { lyName, lyMax, lyMin, lyInterval, lyUnit = '', ryName, ryMax, ryMin, ryInterval, ryUnit = '' } = options;
-    //     const yAxis = [
-    //       {
-    //         type: 'value',
-    //         name: lyName,
-    //         max: lyMax,
-    //         min: lyMin,
-    //         interval: lyInterval,
-    //         axisLabel: {
-    //           formatter: `{value} ${lyUnit}`,
-    //         },
-    //       },
-    //       {
-    //         type: 'value',
-    //         name: ryName,
-    //         max: ryMax,
-    //         min: ryMin,
-    //         interval: ryInterval,
-    //         axisLabel: {
-    //           formatter: `{value} ${ryUnit}`,
-    //         },
-    //       },
-    //     ];
-    //     set(amalgamatedOptions, 'config.option.yAxis', yAxis);
-    //     saveEditor(amalgamatedOptions);
-    //   });
-    // };
 
     baseConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
       if (errors) return;
@@ -117,19 +69,13 @@ export default () => {
 
   const info = getConfig('chartConfigMap')[currentChart.chartType];
   const { Configurator = noop } = info;
-
   const tabPanes = [
     <TabPane tab={textMap['parameter configuration']} key="setting">
-      {/* 切换图表类型 */}
-      {/* <PanelCharts /> */}
       <Configurator ref={baseConfigFormRef} />
     </TabPane>,
     <TabPane tab={textMap['datasource configuration']} key="data">
       <DataConfig ref={dataConfigFormRef} />
     </TabPane>,
-    // <TabPane tab="轴配置" key="axes">
-    //   <AxisConfig ref={axesConfigFormRef} />
-    // </TabPane>,
   ];
 
   const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);

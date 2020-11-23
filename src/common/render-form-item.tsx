@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Form, Input, Select, InputNumber, Switch, Radio, Checkbox, Tooltip } from 'antd';
+import { Form, Input, Select, InputNumber, Switch, Radio, Checkbox, Tooltip, Cascader } from 'antd';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { DcIcon } from '../components';
 
@@ -153,6 +153,12 @@ export const RenderFormItem = ({
         );
       }
       action = '选择';
+      break;
+    case 'cascader':
+      specialConfig.valuePropType = 'array';
+      ItemComp = (
+        <Cascader {...itemProps} options={options} />
+      );
       break;
     case 'custom':
       ItemComp = (getComp as Function)({ form });

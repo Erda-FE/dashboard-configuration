@@ -4,7 +4,7 @@ import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 // eslint-disable-next-line import/no-cycle
 import dashBoardStore from './dash-board';
-import { NEW_CHART_VIEW_MAP } from '../constants';
+import { CHARTS_INIT_CONFIG } from '../constants';
 
 interface IState {
   pickChartModalVisible: boolean;
@@ -43,7 +43,7 @@ const chartEditorStore = createFlatStore({
         addMode: true,
         viewMap: {
           ...viewMap,
-          [viewId]: NEW_CHART_VIEW_MAP[chartType],
+          [viewId]: CHARTS_INIT_CONFIG[chartType],
         },
       });
       dashBoardStore.generateChart(viewId); // 在布局中生成一个占位

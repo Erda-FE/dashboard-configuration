@@ -68,7 +68,7 @@ export default () => {
   };
 
   const info = getConfig('chartConfigMap')[currentChart.chartType];
-  const { Configurator = noop } = info;
+  const { Configurator = noop, Component: ChartComponent } = info;
   const tabPanes = [
     <TabPane tab={textMap['parameter configuration']} key="setting">
       <Configurator ref={baseConfigFormRef} />
@@ -79,8 +79,6 @@ export default () => {
   ];
 
   const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);
-  const chartConfigMap = getConfig('chartConfigMap');
-  const ChartNode = get(chartConfigMap, [currentChart.chartType, 'Component']) as any;
   const { customRender } = currentChart;
 
   return (
@@ -90,9 +88,9 @@ export default () => {
           <DcContainer viewId={editChartId} view={currentChart}>
             <Choose>
               <When condition={customRender && (typeof customRender === 'function')}>
-                <CustomNode render={customRender} ChartNode={ChartNode} view={currentChart} />
+                <CustomNode render={customRender} ChartNode={ChartComponent} view={currentChart} />
               </When>
-              <Otherwise><ChartNode /></Otherwise>
+              <Otherwise><ChartComponent /></Otherwise>
             </Choose>
           </DcContainer>
         </div>

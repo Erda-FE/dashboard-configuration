@@ -61,7 +61,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
   // 请求数据接口，宿主注入
   const initialUrl = isLineType ? '/api/metrics/{{metricName}}/histogram' : '/api/metrics/{{metricName}}';
   // 新增的散点图、地图采用新的拼接规则和返回结构
-  const isV2Type = ['chart:map', 'chart:scatter'].includes(chartType);
+  const isV2Type = ['chart:map', 'chart:scatter', 'chart:funnel'].includes(chartType);
   const v2SubmitUrl = '/api/query';
 
   const [{

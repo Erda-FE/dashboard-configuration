@@ -1,85 +1,3 @@
-// 初始化数据默认 mock 一份，或根据结构随机生成一份
-export const NEW_CHART_VIEW_MAP = {
-  'chart:line': {
-    chartType: 'chart:line',
-    title: 'line chart',
-    description: '',
-    hideHeader: true,
-    hideReload: true,
-    dataSourceType: 'api',
-    api: {},
-  },
-  'chart:area': {
-    chartType: 'chart:area',
-    title: 'area chart',
-    description: '',
-    hideHeader: true,
-    hideReload: true,
-    dataSourceType: 'api',
-    api: {},
-  },
-  'chart:bar': {
-    chartType: 'chart:bar',
-    title: 'bar chart',
-    description: '',
-    hideHeader: true,
-    hideReload: true,
-    dataSourceType: 'api',
-    api: {},
-  },
-  'chart:pie': {
-    chartType: 'chart:pie',
-    title: 'pie chart',
-    description: '',
-    hideHeader: true,
-    hideReload: true,
-    dataSourceType: 'api',
-    api: {},
-  },
-  'chart:map': {
-    chartType: 'chart:map',
-    title: 'map chart',
-    description: '',
-    hideHeader: true,
-    hideReload: true,
-    dataSourceType: 'api',
-    api: {},
-    staticData: {
-      metricData: [{}],
-    },
-  },
-  'chart:scatter': {
-    chartType: 'chart:scatter',
-    title: 'scatter chart',
-    description: '',
-    hideHeader: true,
-    hideReload: true,
-    dataSourceType: 'api',
-    api: {},
-  },
-  table: {
-    chartType: 'table',
-    title: 'table chart',
-    description: '',
-    dataSourceType: 'api',
-    api: {},
-    config: {
-      optionProps: {
-        isMoreThanOneDay: true,
-        moreThanOneDayFormat: 'M/D',
-      },
-    },
-  },
-  card: {
-    title: 'card chart',
-    description: '',
-    chartType: 'card',
-    dataSourceType: 'api',
-    config: {},
-    api: {},
-  },
-};
-
 export const TEXT_ZH_MAP = {
   add: '新增',
   save: '保存',
@@ -158,4 +76,70 @@ export const TEXT_EN_MAP = {
   'show mock data': 'show mock data',
   'no chart data': 'no chart data',
   'exporting picture': 'exporting picture...',
+};
+
+const defaultConfig = {
+  description: '',
+  hideHeader: true,
+  hideReload: true,
+  dataSourceType: 'api',
+  api: {},
+};
+
+export const CHARTS_INIT_CONFIG = {
+  'chart:line': {
+    ...defaultConfig,
+    chartType: 'chart:line',
+    title: 'Line Chart',
+  },
+  'chart:area': {
+    ...defaultConfig,
+    chartType: 'chart:area',
+    title: 'Area Chart',
+  },
+  'chart:bar': {
+    ...defaultConfig,
+    chartType: 'chart:bar',
+    title: 'Bar Chart',
+  },
+  'chart:pie': {
+    ...defaultConfig,
+    chartType: 'chart:pie',
+    title: 'Pie Chart',
+  },
+  'chart:funnel': {
+    ...defaultConfig,
+    chartType: 'chart:funnel',
+    title: 'Funnel Chart',
+  },
+  'chart:map': {
+    ...defaultConfig,
+    chartType: 'chart:map',
+    title: 'Map Chart',
+    staticData: {
+      metricData: [{}],
+    },
+  },
+  card: {
+    ...defaultConfig,
+    title: 'Number Card',
+    chartType: 'card',
+    config: {},
+  },
+  table: {
+    ...defaultConfig,
+    chartType: 'table',
+    title: 'Table',
+    config: {
+      optionProps: {
+        isMoreThanOneDay: true,
+        moreThanOneDayFormat: 'M/D',
+      },
+    },
+  },
+  'chart:scatter': {
+    ...defaultConfig,
+    chartType: 'chart:scatter',
+    title: 'Scatter Chart',
+  },
 };

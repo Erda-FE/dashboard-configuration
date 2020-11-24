@@ -26,7 +26,7 @@ module.exports = () => {
 
   /** @type { import('webpack').Configuration } */
   const config = {
-    devtool: isProd ? '' : 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-eval-source-map',
     node: {
       net: 'empty',
     },
@@ -49,7 +49,7 @@ module.exports = () => {
     output: {
       path: path.join(__dirname, '/dist'),
       filename: '[name].js',
-      chunkFilename: '[chunkhash].chunk.js',
+      // chunkFilename: '[chunkhash].chunk.js',
       publicPath: '/',
     },
     module: {
@@ -93,7 +93,7 @@ module.exports = () => {
       maxAssetSize: 512000
     },
     optimization: {
-      minimize: isProd,
+      minimize: false,
       namedChunks: true,
       moduleIds: 'named',
       splitChunks: {

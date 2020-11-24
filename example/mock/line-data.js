@@ -83,6 +83,45 @@ export default [
   {
     w: 8,
     h: 9,
+    x: 12,
+    y: 9,
+    i: 'view-funnel',
+    view: {
+      name: 'test',
+      chartType: 'chart:funnel',
+      title: 'funnel',
+      loadData: () => {
+        const level = ['province', 'city', 'district'];
+        return Promise.resolve({
+          metricData: [
+            {
+              name: 'iphone12',
+              data: [
+                {value: 180, name: '访ss问'},
+                {value: 40, name: '咨询'},
+                {value: 20, name: '订单'},
+                {value: 80, name: '点击'},
+                {value: 100, name: '展现'}
+              ],
+            },
+            {
+              name: 'iphone11',
+              data: [
+                {value: 60, name: '访问'},
+                {value: 40, name: '咨询'},
+                {value: 20, name: '订单'},
+                {value: 80, name: '点击'},
+                {value: 100, name: '展现'}
+              ],
+            },
+          ],
+        });
+      },
+    },
+  },
+  {
+    w: 8,
+    h: 9,
     x: 0,
     y: 9,
     i: 'view-1',
@@ -238,29 +277,6 @@ export default [
       name: 'test',
       chartType: 'chart:map',
       title: 'map',
-      // staticData: {
-      //   metricData: [
-      //     {
-      //       name: 'iphone12',
-      //       data: [
-      //         { name: '哈密市', value: randomValue() },
-      //         { name: '天津', value: randomValue() },
-      //         { name: '上海', value: randomValue() },
-      //         { name: '重庆', value: randomValue() },
-      //         { name: '河北', value: randomValue() },
-      //         { name: '河南', value: randomValue() },
-      //         { name: '云南', value: randomValue() },
-      //         { name: '辽宁', value: randomValue() },
-      //         { name: '黑龙江', value: randomValue() },
-      //         { name: '湖南', value: randomValue() },
-      //         { name: '安徽', value: randomValue() },
-      //         { name: '山东', value: randomValue() },
-      //         { name: '新疆维吾尔自治区', value: randomValue() },
-      //         { name: '江苏', value: randomValue() },
-      //       ],
-      //     },
-      //   ],
-      // },
       loadData: (curMapTypes = []) => {
         const level = ['province', 'city', 'district'];
         return Promise.resolve({

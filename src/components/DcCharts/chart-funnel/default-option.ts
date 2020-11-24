@@ -9,10 +9,4 @@ export default () => ({
     x: 'right',
     y: 'center',
   },
-  series: [
-    {
-      name,
-      type: 'funnel',
-    },
-  ],
 });

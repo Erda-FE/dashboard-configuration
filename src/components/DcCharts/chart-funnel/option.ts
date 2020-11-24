@@ -1,4 +1,4 @@
-import { merge, set } from 'lodash';
+import { merge, set, map } from 'lodash';
 import { getCustomOption } from '../common/custom-option';
 import getDefaultOption from './default-option';
 
@@ -10,5 +10,10 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     set(option, ['legend', 'data'], legendData);
   }
 
-  return merge(option, { series: metricData });
+  const series = map(metricData, (_data) => ({
+    ..._data,
+    type: 'funnel',
+  }));
+
+  return merge(option, { series });
 }

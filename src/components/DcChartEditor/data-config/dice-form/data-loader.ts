@@ -1,4 +1,11 @@
-import { values, map, merge, filter } from 'lodash';
+/*
+ * Default Data-Converter
+ * @Author: licao
+ * @Date: 2020-11-25 10:38:15
+ * @Last Modified by: licao
+ * @Last Modified time: 2020-11-26 19:01:52
+ */
+import { values, map, merge, filter, get, find } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { MAP_ALIAS } from './constants';
 
@@ -35,6 +42,27 @@ export const createLoadDataFn = ({ api, chartType }: any) => async (payload: any
       data: map(_data, (item) => ({
         name: item[MAP_ALIAS],
         value: item[alias],
+      })),
+    }));
+
+    return { metricData };
+  }
+
+  if (chartType === 'chart:funnel') {
+    // 漏斗图：一维，多值
+    const xAxis = get(api, ['extraData', 'xAxis', 0, 'fid']);
+    // const yAxisKeys = map(get(api, ['extraData', 'activedMetrics']), ({ fid }) => fid);
+    const { cols, data: _data } = data;
+
+    // const xAxisCol = find(cols, { key: xAxis });
+    const yAxisCols = filter(cols, ({ key }) => key !== xAxis);
+
+    const yAxises = map(yAxisCols, (col) => col.key);
+    const metricData = map(yAxises, (yAxis) => ({
+      // name: yAxis,
+      data: map(_data, (item) => ({
+        name: item[xAxis],
+        value: item[yAxis],
       })),
     }));
 

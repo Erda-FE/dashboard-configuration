@@ -95,23 +95,12 @@ export default [
         return Promise.resolve({
           metricData: [
             {
-              name: 'iphone12',
               data: [
-                {value: 180, name: '访ss问'},
-                {value: 40, name: '咨询'},
-                {value: 20, name: '订单'},
-                {value: 80, name: '点击'},
-                {value: 100, name: '展现'}
-              ],
-            },
-            {
-              name: 'iphone11',
-              data: [
-                {value: 60, name: '访问'},
-                {value: 40, name: '咨询'},
-                {value: 20, name: '订单'},
-                {value: 80, name: '点击'},
-                {value: 100, name: '展现'}
+                {value: 180, name: 'sa'},
+                {value: 40, name: 'rr' },
+                {value: 20, name: 'tt' },
+                {value: 80, name: 'tr' },
+                {value: 100, name: 'yy' }
               ],
             },
           ],

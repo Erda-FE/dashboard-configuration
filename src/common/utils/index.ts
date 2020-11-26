@@ -52,3 +52,41 @@ export const collectFields = (ObjData: any) => {
 export const insertWhen = <T=any>(condition: boolean, list: T[]): T[] => {
   return condition ? list : [];
 };
+
+
+/**
+ * 生成 UUID
+ * @param {number} [len]
+ * @param {number} [radix]
+ * @returns
+ */
+export const genUUID = (len?: number, radix?: number) => {
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+  const _radix = radix || chars.length;
+  const uuid = [];
+
+  if (len) {
+    for (let i = 0; i < len; i++) {
+      // eslint-disable-next-line no-bitwise
+      uuid[i] = chars[0 | (Math.random() * _radix)];
+    }
+  } else {
+    let r;
+    uuid[8] = '-';
+    uuid[13] = '-';
+    uuid[18] = '-';
+    uuid[23] = '-';
+    uuid[14] = '4';
+
+    for (let i = 0; i < 36; i++) {
+      if (!uuid[i]) {
+        // eslint-disable-next-line no-bitwise
+        r = 0 | (Math.random() * 16);
+        // eslint-disable-next-line no-bitwise
+        uuid[i] = chars[i === 19 ? (r & 0x3) | 0x8 : r];
+      }
+    }
+  }
+
+  return uuid.join('');
+};

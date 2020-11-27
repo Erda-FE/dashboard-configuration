@@ -812,7 +812,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
   ]), [metaGroups, activedMetricGroups, q, activedGroup, isTableType, update, getMetaData, resetState, activedMetrics, aggregateColumns, activedFilters, filterColumns, limit, timeFormat, dynamicFilterKey, dynamicFilterDataModalVisible, time_field, customTime, xAxis]);
 
   return (
-    <div className="monitor-metrics-form">
+    <div className="dc-dice-metrics-form">
       <If condition={isTableType}>
         <div className="text-right mb16">
           <Switch

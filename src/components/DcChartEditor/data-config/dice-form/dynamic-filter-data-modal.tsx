@@ -4,8 +4,6 @@ import { uniqueId, findIndex, find, reduce, map, remove, isEmpty, isNumber } fro
 import { RenderPureForm, useUpdate } from '../../../../common';
 import { getConfig } from '../../../../config';
 
-const { dynamicFilterMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
-
 interface IProps {
   visible: boolean;
   title: string;
@@ -17,6 +15,7 @@ interface IProps {
 }
 
 export default ({ visible, title, onOk, onCancel, getTimeRange, defaultValue, ...rest }: IProps) => {
+  const { dynamicFilterMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
   const { getMetaGroups, getMetaData } = dynamicFilterMetaDataStore.effects;
   const [
     metaGroups,

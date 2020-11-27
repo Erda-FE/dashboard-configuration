@@ -1,4 +1,7 @@
-.monitor-metrics-form {
+@import "../../../../styles/variable";
+$data-config-prefix-cls: #{$prefix}-dice-metrics-form;
+
+.#{$data-config-prefix-cls} {
   .render-form.ant-form-vertical {
     width: unset;
   }

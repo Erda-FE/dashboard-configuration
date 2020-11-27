@@ -41,8 +41,9 @@ const ChartTable = ({ results = [], cols = [] }: IProps) => {
           rowKey={'id'}
           columns={_cols}
           dataSource={results}
-          scroll={isOverLimit ? { x: fixedWidth + cols.length * 200 } : undefined}
+          scroll={isOverLimit ? { x: fixedWidth + cols.length * 200, y: 500 } : { y: 500 }}
           pagination={{
+            pageSize: 20,
             hideOnSinglePage: true,
           }}
         />

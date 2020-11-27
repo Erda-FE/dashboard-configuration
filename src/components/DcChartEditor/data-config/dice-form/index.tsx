@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, FormEvent } from 'react';
 import { useMount } from 'react-use';
 import { map, uniqueId, remove, find, findIndex, reduce, filter, isEmpty, keyBy, debounce, isNumber, merge } from 'lodash';
 import { Button, Table, Select, Input, Tooltip, Switch, InputNumber } from 'antd';
@@ -81,6 +81,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     q,
     isSqlMode,
     xAxis,
+    isMetricSelector,
   }, updater, update] = useUpdate({
     activedMetricGroups: apiExtraData ? apiExtraData.activedMetricGroups : [],
     xAxis: apiExtraData && apiExtraData.xAxis ? apiExtraData.xAxis : getDefaultColumn(),
@@ -104,10 +105,11 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     dynamicFilterDataAPI: apiExtraData ? apiExtraData.dynamicFilterDataAPI : {},
     dynamicFilterDataModalVisible: false,
     q: apiExtraData ? apiExtraData.q : undefined,
-    isSqlMode: apiExtraData ? apiExtraData.isSqlMode : false,
+    isSqlMode: apiExtraData ? !!apiExtraData.isSqlMode : false,
+    isMetricSelector: apiExtraData ? !!apiExtraData.isMetricSelector : false,
   });
   // 选中的 field
-  const fieldInfo = fieldsMap[(activedMetrics[0] || {}).metric] || {};
+  const fieldInfo = fieldsMap[activedMetrics[0]?.metric] || {};
 
   useMount(() => {
     // 新的元数据接口加 version=v2
@@ -135,6 +137,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     });
   }, [update]);
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const _submitResult = useCallback(debounce(submitResult, 500), []);
 
   const getFilterMap = (data: any, key: string) => {
@@ -223,31 +226,33 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       (k) => getFilterMap(activedFilters, k)
     );
     // 多指标处理为指标切换
-    const isMetricSelector = validMetrics.length > 1;
-    const aggregate = reduce(validMetrics, (acc, { metric, aggregation }) => {
+    const isMultiMetrics = validMetrics.length > 1;
+    const defaultValidMetric = [validMetrics[0]];
+    const getAggregate = (_metrics: typeof validMetrics) => reduce(_metrics, (acc, { metric, aggregation, alias }) => {
       const metricVal = fieldsMap[metric].key;
       const metricName = fieldsMap[metric].name;
       // 筛选相同聚合方法
-      const repeatValidMetrics = filter(validMetrics, { aggregation });
+      const repeatValidMetrics = filter(_metrics, { aggregation });
 
       return {
         ...acc,
         [aggregation]: map(repeatValidMetrics, ({ metric: _metric }) => fieldsMap[_metric].key),
-        [`alias_${aggregation}.${metricVal}`]: `${metricName}${aggregationMap[aggregation].name}`,
+        [`alias_${aggregation}.${metricVal}`]: alias || `${metricName}${aggregationMap[aggregation].name}`,
       };
     }, {});
 
+    // 分组别名
     const groupCN = reduce(activedGroup, (acc, group) => {
       return {
         ...acc,
-        [`alias_last.${group}`]: (find(fieldsMap, { key: group }) || {}).name,
+        [`alias_last.${group}`]: find(fieldsMap, { key: group })?.name,
       };
     }, {});
     const result = {
       ...reduce(filters, (acc, item) => ({ ...acc, ...item }), {}),
       // 默认的 filters
       ...reduce(fieldInfo.filters, (acc, { tag, op, value }) => ({ ...acc, [`${op}_tag.${tag}`]: value }), {}),
-      ...(isMetricSelector ? {} : aggregate),
+      ...getAggregate(isMetricSelector && isMultiMetrics ? defaultValidMetric : validMetrics),
       ...groupCN,
       group: !isEmpty(activedGroup) ? `(${activedGroup.join(',')})` : undefined,
       limit,
@@ -265,7 +270,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     // 多指标转换成筛选项
     const metricSelector = {
       key: 'metric-selector',
-      options: map(validMetrics, ({ metric, aggregation }) => {
+      options: map(validMetrics, ({ metric, aggregation, alias }) => {
         const metricVal = fieldsMap[metric].key;
         const metricName = fieldsMap[metric].name;
         // 筛选相同聚合方法
@@ -273,7 +278,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
 
         const _value = {
           [aggregation]: map(repeatValidMetrics, ({ metric: _metric }) => fieldsMap[_metric].key),
-          [`alias_${aggregation}.${metricVal}`]: `${metricName}${aggregationMap[aggregation].name}`,
+          [`alias_${aggregation}.${metricVal}`]: alias || `${metricName}${aggregationMap[aggregation].name}`,
         };
 
         return {
@@ -310,14 +315,14 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       loadData: createLoadDataFn({ api: _api, chartType }),
       config: merge({}, currentChartConfig, { optionProps: { isMoreThanOneDay: !!timeFormat, moreThanOneDayFormat: timeFormat } }),
     });
-  }, [activedFilters, activedGroup, activedMetricGroups, limit, timeFormat, dynamicFilterKey, customTime, time_field, isLineType, initialUrl, activedMetrics, isTableType, activedMetricGroups, _submitResult, metaConstantMap.filters, aggregationMap, fieldsMap, fieldInfo]);
+  }, [isMetricSelector, activedFilters, activedGroup, activedMetricGroups, limit, timeFormat, dynamicFilterKey, customTime, time_field, isLineType, initialUrl, activedMetrics, isTableType, activedMetricGroups, _submitResult, metaConstantMap.filters, aggregationMap, fieldsMap, fieldInfo]);
 
   const addExtraPropertiesForMetrics = useCallback((items: Array<Record<string, any>>) => {
     if (isEmpty(items)) return [];
     return map(items, (item) => ({
       ...item,
       fid: `fid${genUUID(8)}`,
-      alias: `${fieldsMap[item.metric]?.name}${aggregationMap[item.aggregation]?.name}`,
+      alias: item.alias || `${fieldsMap[item.metric]?.name}${aggregationMap[item.aggregation]?.name}`,
     }));
   }, [aggregationMap, fieldsMap]);
 
@@ -423,7 +428,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     },
     {
       title: '方法',
-      width: 100,
+      width: 120,
       dataIndex: 'method',
       render: (value: string, { key, tag }: any) => (
         <Select
@@ -438,7 +443,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
           })}
         >
           {map(
-            (typeMap[(find(fieldsMap as any, { key: tag }) || {}).type] || {}).filters,
+            typeMap[find(fieldsMap as any, { key: tag })?.type]?.filters,
             ({ operation, name }) => <Select.Option key={operation}>{name}</Select.Option>
           )}
         </Select>
@@ -446,10 +451,9 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     },
     {
       title: '预期值',
-      width: 100,
       dataIndex: 'value',
       render: (value: any, { key, tag }: any) => {
-        const _type = (find(fieldsMap as any, { key: tag }) || {}).type;
+        const _type = find(fieldsMap as any, { key: tag })?.type;
         const _handleChange = (_val?: string | number) => update({
           activedFilters: updateColumn(
             activedFilters,
@@ -493,7 +497,6 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     },
     {
       title: '操作',
-      fixed: 'right',
       width: 70,
       render: ({ key }: any) => {
         return (
@@ -540,37 +543,66 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     // },
   ], [xAxis, fieldsMap, typeMap, isSqlMode, update]);
 
+  const handleUpdateActivedMetrics = (key: string, items: Array<{ property: string; value: any }>) => {
+    update({ activedMetrics: updateColumn(activedMetrics, key, items) });
+  };
 
   const aggregateColumns = useMemo(() => [
     {
       title: '指标',
+      width: 120,
       dataIndex: 'metric',
       render: (value: string, { key }: any) => (
         <Select
           showSearch
+          placeholder="必填"
           defaultValue={value}
-          onSelect={(v: any) => update({ activedMetrics: updateColumn(activedMetrics, key, [
+          onSelect={(v) => handleUpdateActivedMetrics(key, [
             { property: 'metric', value: v },
             { property: 'aggregation', value: undefined },
-          ]) })}
+            { property: 'alias', value: undefined },
+          ])}
         >
-          {map(fieldsMap, (v: any, k) => <Select.Option key={k} value={k}><Tooltip title={v.name}>{v.name}</Tooltip></Select.Option>)}
+          {map(fieldsMap, (v: any, k) => (
+            <Select.Option key={k} value={k}>
+              <Tooltip title={v.name}>{v.name}</Tooltip>
+            </Select.Option>
+          ))}
         </Select>
       ),
     },
     {
       title: '方法',
+      width: 120,
       dataIndex: 'aggregation',
       render: (value: string, { key, metric }: any) => (
         <Select
           showSearch
           value={value}
-          onSelect={(v: any) => update({ activedMetrics: updateColumn(activedMetrics, key, [
+          placeholder="必填"
+          onSelect={(v: any) => handleUpdateActivedMetrics(key, [
             { property: 'aggregation', value: v },
-          ]) })}
+            { property: 'alias', value: undefined },
+          ])}
         >
-          {map(((typeMap[(fieldsMap[metric] || {}).type] || {}) || {}).aggregations, (v) => <Select.Option key={v.aggregation} value={v.aggregation}>{v.name}</Select.Option>)}
+          {map(
+            typeMap[fieldsMap[metric]?.type]?.aggregations,
+            (v) => <Select.Option key={v.aggregation} value={v.aggregation}>{v.name}</Select.Option>
+          )}
         </Select>
+      ),
+    },
+    {
+      title: '别名',
+      dataIndex: 'alias',
+      render: (value: string, { key }: any) => (
+        <Input
+          value={value}
+          placeholder="选填"
+          onChange={(e: React.FocusEvent<HTMLInputElement>) => handleUpdateActivedMetrics(key, [
+            { property: 'alias', value: e.target.value },
+          ])}
+        />
       ),
     },
     {
@@ -619,7 +651,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       itemProps: {
         value: q,
         rows: 10,
-        onChange: (e: any) => {
+        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
           updater.q(e.target.value);
         },
       },
@@ -688,9 +720,9 @@ export default ({ submitResult, currentChart, form }: IProps) => {
             </Button>
             <Table
               rowKey="key"
+              bordered
               dataSource={activedFilters}
               columns={filterColumns}
-              scroll={{ x: 450 }}
               pagination={{ pageSize: 5, hideOnSinglePage: true }}
             />
           </>
@@ -796,7 +828,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         title="动态过滤数据源配置"
         visible={dynamicFilterDataModalVisible}
         isV2Type={isV2Type}
-        defaultValue={(dynamicFilterDataAPI || {}).extraData}
+        defaultValue={dynamicFilterDataAPI?.extraData}
         onCancel={() => update({ dynamicFilterDataModalVisible: false })}
         getTimeRange={getTimeRange}
         onOk={(apis) => { update({ dynamicFilterDataAPI: apis }); }}

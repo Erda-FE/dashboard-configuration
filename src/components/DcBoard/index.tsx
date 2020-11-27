@@ -191,7 +191,7 @@ const DCMain = ({
       {showOptions && <div className="dc-header">{commonOptions}</div>}
       <div className="dc-content" ref={boardRef}><BoardGrid width={width} layout={layout} /></div>
       <Drawer
-        width="90%"
+        width="100%"
         closable={false}
         maskClosable={false}
         bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}

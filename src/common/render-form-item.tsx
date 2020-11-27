@@ -212,9 +212,7 @@ export const RenderFormItem = ({
     </span>);
   return (
     <FormItem label={labelComp} {...layout} className={itemProps.type === 'hidden' ? 'hide' : ''} {...extraProps}>
-      {
-        name ? (form && form.getFieldDecorator(name, itemConfig)(ItemComp)) : ItemComp
-      }
+      { name ? (form && form.getFieldDecorator(name, itemConfig)(ItemComp)) : ItemComp }
       {suffix}
     </FormItem>
   );

@@ -22,8 +22,7 @@ interface IProps {
 const LineConfigurator = (props: IProps) => {
   const { form, forwardedRef, currentChart, setTouched, onEditorChange, isTouched } = props;
   const textMap = DashboardStore.useStore((s) => s.textMap);
-  const [{ controls }, updater] = useUpdate({ controls: form.getFieldValue('controls') });
-
+  const [{ controls }, updater] = useUpdate({ controls: form.getFieldsValue().controls });
   const setFieldsValue = useMemo(() => form.setFieldsValue, [form.setFieldsValue]);
 
   useEffect(() => {
@@ -31,7 +30,7 @@ const LineConfigurator = (props: IProps) => {
     if (!isTouched && form.isFieldsTouched()) {
       setTouched(true);
     }
-    updater.controls(form.getFieldValue('controls'));
+    updater.controls(form.getFieldsValue().controls);
   }, [form, forwardedRef, isTouched, setTouched, updater]);
 
   useEffect(() => {

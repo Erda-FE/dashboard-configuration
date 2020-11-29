@@ -38,7 +38,6 @@ const PieConfigurator = (props: IProps) => {
       label: textMap.title,
       name: 'title',
       type: 'input',
-      size: 'small',
       itemProps: {
         onBlur(e: any) {
           onEditorChange({ title: e.target.value });
@@ -49,10 +48,19 @@ const PieConfigurator = (props: IProps) => {
       label: textMap.description,
       name: 'description',
       type: 'textArea',
-      size: 'small',
       itemProps: {
         onBlur(e: any) {
           onEditorChange({ description: e.target.value });
+        },
+      },
+    },
+    {
+      label: textMap.showTotal,
+      name: 'config.optionProps.isShowTotal',
+      type: 'switch',
+      itemProps: {
+        onChange(checked: boolean) {
+          onEditorChange({ config: { optionProps: { isShowTotal: checked } } });
         },
       },
     },

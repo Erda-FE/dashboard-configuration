@@ -153,10 +153,9 @@ class Operation extends React.PureComponent<IProps, IState> {
         fetchStatus: Status.SUCCESS,
         resData,
       });
-    })
-      .catch(() => {
-        this.setState({ resData: {}, fetchStatus: Status.FAIL });
-      });
+    }).catch(() => {
+      this.setState({ resData: {}, fetchStatus: Status.FAIL });
+    });
   };
 
   onSaveImg = () => {
@@ -273,9 +272,22 @@ class Operation extends React.PureComponent<IProps, IState> {
                   </div>
                 </Dropdown>
                 <React.Fragment>
-                  <If condition={(controls && !isEmpty(controls[0])) || !isEmpty(dataConfigSelectors) || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))}>
+                  <If
+                    condition={
+                      (controls && !isEmpty(controls[0]))
+                      || !isEmpty(dataConfigSelectors)
+                      || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
+                    }
+                  >
                     <div className="dc-chart-controls-ct">
-                      <If condition={!isEmpty(controls[0]) && controls[0].key && !isEmpty(controls[0].options) && controls[0].type === 'select'}>
+                      <If
+                        condition={
+                          !isEmpty(controls[0])
+                          && controls[0].key
+                          && !isEmpty(controls[0].options)
+                          && controls[0].type === 'select'
+                        }
+                      >
                         <Select
                           allowClear
                           className="my12 ml8"
@@ -293,16 +305,21 @@ class Operation extends React.PureComponent<IProps, IState> {
                           { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
                         </Select>
                       </If>
+                      {/* 多指标选择 */}
                       <If condition={!isEmpty(dataConfigSelectors)}>
                         {
                           map(dataConfigSelectors, ({ key, options, componentProps }) => (
                             <Select
                               key={key}
+                              // defaultValue={options[0].value}
                               className="my12 ml8"
                               style={{ width: 150 }}
                               onChange={(v: any) => {
                                 this.setState({
-                                  dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, [key]: JSON.parse(v) },
+                                  dynamicLoadFnPayloadMap: {
+                                    ...dynamicLoadFnPayloadMap,
+                                    [key]: JSON.parse(v),
+                                  },
                                 }, () => {
                                   this.loadData();
                                 });
@@ -314,6 +331,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                           ))
                         }
                       </If>
+                      {/* 动态过滤 */}
                       <If condition={dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)}>
                         <Select
                           allowClear
@@ -321,7 +339,10 @@ class Operation extends React.PureComponent<IProps, IState> {
                           style={{ width: 150 }}
                           onChange={(v: any) => {
                             this.setState({
-                              dynamicLoadFnPayloadMap: { ...dynamicLoadFnPayloadMap, 'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v } },
+                              dynamicLoadFnPayloadMap: {
+                                ...dynamicLoadFnPayloadMap,
+                                'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v },
+                              },
                             }, () => {
                               this.loadData();
                             });

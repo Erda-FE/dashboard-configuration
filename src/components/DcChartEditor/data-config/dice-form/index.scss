@@ -12,6 +12,10 @@ $data-config-prefix-cls: #{$prefix}-dice-metrics-form;
     align-items: center;
   }
 
+  .flex-1 {
+    flex: 1;
+  }
+
   .inline-sub-item {
     margin-right: 8px;
   }

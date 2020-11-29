@@ -227,7 +227,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     );
     // 多指标处理为指标切换
     const isMultiMetrics = validMetrics.length > 1;
-    const defaultValidMetric = [validMetrics[0]];
+    // const defaultValidMetric = [validMetrics[0]];
     const getAggregate = (_metrics: typeof validMetrics) => reduce(_metrics, (acc, { metric, aggregation, alias }) => {
       const metricVal = fieldsMap[metric].key;
       const metricName = fieldsMap[metric].name;
@@ -252,7 +252,8 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       ...reduce(filters, (acc, item) => ({ ...acc, ...item }), {}),
       // 默认的 filters
       ...reduce(fieldInfo.filters, (acc, { tag, op, value }) => ({ ...acc, [`${op}_tag.${tag}`]: value }), {}),
-      ...getAggregate(isMetricSelector && isMultiMetrics ? defaultValidMetric : validMetrics),
+      // 聚合
+      ...(isMetricSelector && isMultiMetrics ? undefined : getAggregate(validMetrics)),
       ...groupCN,
       group: !isEmpty(activedGroup) ? `(${activedGroup.join(',')})` : undefined,
       limit,
@@ -277,8 +278,8 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         const repeatValidMetrics = filter(validMetrics, { aggregation });
 
         const _value = {
-          [aggregation]: map(repeatValidMetrics, ({ metric: _metric }) => fieldsMap[_metric].key),
-          [`alias_${aggregation}.${metricVal}`]: alias || `${metricName}${aggregationMap[aggregation].name}`,
+          [aggregation]: map(repeatValidMetrics, ({ metric: _metric }) => fieldsMap[_metric]?.key),
+          [`alias_${aggregation}.${metricVal}`]: alias || `${metricName}${aggregationMap[aggregation]?.name}`,
         };
 
         return {
@@ -306,6 +307,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         dynamicFilterDataAPI,
         time_field,
         customTime,
+        isMetricSelector,
         dataConfigSelectors: isMetricSelector ? [metricSelector] : undefined,
       },
     };
@@ -679,18 +681,26 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         required: true,
         getComp: () => (
           <>
-            <Button
-              className="mb8"
-              icon="plus"
-              onClick={() => {
-                update({ activedMetrics: [
-                  ...getDefaultColumn(),
-                  ...activedMetrics,
-                ] });
-              }}
-            >
-              添加
-            </Button>
+            <div className="flex-box">
+              <Button
+                className="mb8"
+                icon="plus"
+                onClick={() => {
+                  update({ activedMetrics: [
+                    ...getDefaultColumn(),
+                    ...activedMetrics,
+                  ] });
+                }}
+              >
+                添加
+              </Button>
+              <Switch
+                checkedChildren="分开显示"
+                unCheckedChildren="合并显示"
+                checked={isMetricSelector}
+                onChange={(checked) => updater.isMetricSelector(checked)}
+              />
+            </div>
             <Table
               bordered
               rowKey="key"
@@ -809,7 +819,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         onChange: (v: any) => update({ customTime: v }),
       },
     },
-  ]), [metaGroups, activedMetricGroups, q, activedGroup, isTableType, update, getMetaData, resetState, activedMetrics, aggregateColumns, activedFilters, filterColumns, limit, timeFormat, dynamicFilterKey, dynamicFilterDataModalVisible, time_field, customTime, xAxis]);
+  ]), [isMetricSelector, metaGroups, activedMetricGroups, q, activedGroup, isTableType, update, getMetaData, resetState, activedMetrics, aggregateColumns, activedFilters, filterColumns, limit, timeFormat, dynamicFilterKey, dynamicFilterDataModalVisible, time_field, customTime, xAxis]);
 
   return (
     <div className="dc-dice-metrics-form">

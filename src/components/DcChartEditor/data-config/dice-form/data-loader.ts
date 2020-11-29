@@ -5,7 +5,7 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-11-26 19:01:52
  */
-import { values, map, merge, filter, get, find } from 'lodash';
+import { values, map, merge, filter, get } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { MAP_ALIAS } from './constants';
 
@@ -29,7 +29,7 @@ export const createLoadDataFn = ({ api, chartType }: any) => async (payload: any
     return {
       metricData: [{
         name: data.title || '',
-        data: map(data.metricData, ({ title, value }) => ({ name: title, value })),
+        data: map(data.metricData, ({ title, name, value }) => ({ name: title || name, value })),
       }],
     };
   }

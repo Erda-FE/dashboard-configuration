@@ -1,6 +1,6 @@
 {
   "name": "@terminus/dashboard-configurator",
-  "version": "0.4.19-beta.15",
+  "version": "0.4.19-beta.16",
   "description": "Dice Charts with Echart",
   "main": "./src/index.ts",
   "repository": {

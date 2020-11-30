@@ -364,10 +364,17 @@ class Operation extends React.PureComponent<IProps, IState> {
         {this.getViewMask(fetchStatus || maskMsg)}
         {/* <Control view={view} viewId={viewId} loadData={this.loadData} /> */}
         <Choose>
-          <When condition={(!isCustomRender && !excludeEmptyType.includes(chartType) && (!resData || isEmpty(resData.metricData)))}>
+          <When
+            condition={
+              !isCustomRender
+              && !excludeEmptyType.includes(chartType)
+              && (!resData || isEmpty(resData.metricData))
+            }
+          >
             <EmptyHolder />
           </When>
           <Otherwise>
+            {/* 自定义渲染 */}
             <div className="dc-chart" ref={(ref) => { this.chartRef = ref; }}>
               <Choose>
                 <When condition={isCustomRender}>

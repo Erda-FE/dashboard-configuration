@@ -5,7 +5,7 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-11-26 19:01:52
  */
-import { values, map, merge, filter, get } from 'lodash';
+import { values, map, merge, filter, get, isEmpty } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { MAP_ALIAS } from './constants';
 
@@ -27,10 +27,12 @@ export const createLoadDataFn = ({ api, chartType }: any) => async (payload: any
   }
   if (chartType === 'chart:pie') {
     return {
-      metricData: [{
-        name: data.title || '',
-        data: map(data.metricData, ({ title, name, value }) => ({ name: title || name, value })),
-      }],
+      metricData: isEmpty(data.metricData)
+        ? []
+        : [{
+          name: data.title || '',
+          data: map(data.metricData, ({ title, name, value }) => ({ name: title || name, value })),
+        }],
     };
   }
   // 新的统一返回结构

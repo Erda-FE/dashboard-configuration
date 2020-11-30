@@ -1,4 +1,4 @@
-import { merge, set, reduce, get } from 'lodash';
+import { merge, set, reduce, get, map } from 'lodash';
 import { getCustomOption } from '../common/custom-option';
 import getDefaultOption from './default-option';
 
@@ -11,9 +11,16 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     set(option, ['legend', 'data'], legendData);
   }
 
+  console.log(metricData);
   return merge(
     option,
-    { series: metricData },
+    {
+      series: map(metricData, (item) => ({
+        ...item,
+        type: 'pie',
+        radius: isShowTotal ? ['50%', '70%'] : undefined,
+      })),
+    },
     isShowTotal ? {
       title: {
         text: '总量',
@@ -22,17 +29,15 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
         top: 'center',
         textStyle: {
           color: '#6c7a89',
-          fontSize: 24,
+          fontSize: 18,
           align: 'center',
         },
         subtextStyle: {
-          fontSize: 16,
-          color: '#27D9C8',
+          fontSize: 24,
+          verticalAlign: 'bottom',
+          color: '#000000',
         },
       },
-      series: [{
-        radius: ['50%', '70%'],
-      }],
     } : {},
   );
 }

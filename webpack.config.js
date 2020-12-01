@@ -1,74 +1,54 @@
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-const cssnano = require('cssnano');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+// const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin');
 const HappyPack = require('happypack');
 const os = require('os');
 
+// const smp = new SpeedMeasurePlugin();
+
 const happyThreadPool = HappyPack.ThreadPool({ size: os.cpus().length });
+const createHappyPackPlugin = (id, loaders) => new HappyPack({
+  id,
+  loaders,
+  threadPool: happyThreadPool,
+});
 const resolve = pathname => path.resolve(__dirname, pathname);
 
 module.exports = () => {
-  const isBuild = process.env.NODE_ENV === 'production';
+  const isProd = process.env.NODE_ENV === 'production';
 
-  const plugins = [];
-
-  if (!isBuild) {
-    plugins.push(
-      new webpack.DllReferencePlugin({
-        context: __dirname,
-        manifest: require('./manifest.json'),
-      }),
-    );
-  }
-  return {
-    devtool: isBuild ? '' : 'cheap-module-eval-source-map',
+  /** @type { import('webpack').Configuration } */
+  const config = {
+    devtool: isProd ? '' : 'cheap-module-eval-source-map',
     node: {
       net: 'empty',
     },
     entry: {
-      app: ['./example/index.js'],
+      index: isProd ? './src/index.ts' : './example/index.js',
     },
-    // externals: [
-    //   {
-    //     lodash: {
-    //       commonjs: 'lodash',
-    //       amd: 'lodash',
-    //       root: '_', // indicates global variable
-    //     },
-    //     echarts: {
-    //       commonjs: 'echarts',
-    //       amd: 'echarts',
-    //       root: 'echarts',
-    //     },
-    //     antd: {
-    //       commonjs: 'antd',
-    //       amd: 'antd',
-    //       root: 'antd',
-    //     },
-    //     react: {
-    //       commonjs: 'react',
-    //       amd: 'react',
-    //       root: 'react',
-    //     },
-    //     'react-dom': {
-    //       commonjs: 'react-dom',
-    //       amd: 'react-dom',
-    //       root: 'react-dom',
-    //     },
-    //   },
-    // ],
+    externals: isProd ? {
+      lodash: 'lodash',
+      echarts: 'echarts',
+      antd: 'antd',
+      react: 'react',
+      'react-dom': 'react-dom',
+      moment: 'moment',
+    } : undefined,
     stats: {
       assets: false,
       children: false,
     },
     output: {
       path: path.join(__dirname, '/public'),
-      filename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[name].js',
-      chunkFilename: isBuild ? '[name].[chunkhash:8].js' : 'scripts/[id].chunk.js',
+      filename: '[name].js',
+      chunkFilename: '[id].chunk.js',
       publicPath: '/',
     },
     module: {
@@ -86,18 +66,6 @@ module.exports = () => {
           ],
         },
         {
-          test: /\.(less)$/,
-          loaders: [
-            MiniCssExtractPlugin.loader,
-            'happypack/loader?id=less',
-          ],
-          include: [
-            resolve('example'),
-            resolve('src'),
-            resolve('node_modules/antd'),
-          ],
-        },
-        {
           test: /\.(css)$/,
           loaders: [
             MiniCssExtractPlugin.loader,
@@ -112,23 +80,14 @@ module.exports = () => {
       ],
     },
     resolve: {
-      alias: {
-        // 其他
-        agent: resolve('example/agent.js'),
-        app: resolve('example'),
-        ws: resolve('example/ws.js'),
-        interface: resolve('interface'),
-        common: resolve('./src/components/common'),
-        theme: resolve('./src/theme/dice.ts'),
-      },
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [resolve('example'), resolve('src'), 'node_modules'],
     },
     optimization: {
-      minimize: isBuild,
-      runtimeChunk: true,
+      minimize: isProd,
+      // runtimeChunk: true,
       namedChunks: true,
-      moduleIds: 'hashed',
+      // moduleIds: 'hashed',
       splitChunks: {
         chunks: 'all', // 必须三选一：'initial' | 'all' | 'async'
         minSize: 30000,
@@ -136,162 +95,164 @@ module.exports = () => {
         maxAsyncRequests: 5,
         maxInitialRequests: 6,
         name: true,
-        cacheGroups: {
-          styles: {
-            name: 'styles',
-            test: /\.s?css$/,
-            chunks: 'all',
-            enforce: true,
-            priority: 1,
-          },
-          commons: {
-            name: 'chunk-commons',
-            test: resolve('example/common'),
-            minChunks: 2, // 最小公用次数
-            priority: 2,
-            chunks: 'all',
-            reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的
-          },
-          antdUI: {
-            name: 'chunk-antd', // 单独将 antd 拆包
-            priority: 3,
-            test: /[\\/]node_modules[\\/]antd[\\/]/,
-            chunks: 'all',
-          },
-          libs: {
-            name: 'chunk-libs',
-            test: /[\\/]node_modules[\\/]/,
-            priority: 4,
-            chunks: 'all',
-          },
-          codeMirror: {
-            name: 'chunk-codeMirror',
-            priority: 5,
-            test: /[\\/]node_modules[\\/]codemirror[\\/]/,
-            chunks: 'all',
-          },
-        },
+        // cacheGroups: {
+        //   styles: {
+        //     name: 'styles',
+        //     test: /\.s?css$/,
+        //     chunks: 'all',
+        //     enforce: true,
+        //     priority: 1,
+        //   },
+        //   commons: {
+        //     name: 'chunk-commons',
+        //     test: resolve('example/common'),
+        //     minChunks: 2, // 最小公用次数
+        //     priority: 2,
+        //     chunks: 'all',
+        //     reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的
+        //   },
+        // },
       },
-      minimizer: isBuild ? [
-        new UglifyJsPlugin({
-          sourceMap: false,
-          cache: path.join(__dirname, '/.cache'),
-          parallel: true,
-          uglifyOptions: {
-            output: {
-              comments: false,
-              beautify: false,
+      minimizer: isProd
+        ? [
+          new UglifyJsPlugin({
+            sourceMap: false,
+            cache: path.join(__dirname, '/.cache'),
+            parallel: true,
+            uglifyOptions: {
+              output: {
+                comments: false,
+                beautify: false,
+              },
             },
-          },
-        }),
-        new OptimizeCSSAssetsPlugin({
-          assetNameRegExp: /\.css$/g,
-          cssProcessor: cssnano,
-          cssProcessorOptions: {
-            safe: true,
-            discardComments: { removeAll: true },
-            autoprefixer: {
-              remove: false,
+          }),
+          new OptimizeCSSAssetsPlugin({
+            assetNameRegExp: /\.css$/g,
+            cssProcessorOptions: {
+              safe: true,
+              discardComments: { removeAll: true },
+              autoprefixer: {
+                remove: false,
+              },
             },
-          },
-        }),
-      ] : [
-        new webpack.HotModuleReplacementPlugin(),
-      ],
-    },
-    performance: { // 为了不报warning，设置一个大值
-      maxAssetSize: 414679040,
-      maxEntrypointSize: 414679040,
+          }),
+        ]
+        : [
+          new webpack.HotModuleReplacementPlugin(),
+        ],
     },
     plugins: [
+      // new BundleAnalyzerPlugin(),
       new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV), // because webpack just do a string replace, so a pair of quotes is needed
         },
       }),
-      new HtmlWebpackPlugin({
-        filename: 'index.html',
-        template: './example/views/index.ejs',
-        hash: false,
-        inject: true,
-        needDll: !isBuild,
-        minify: isBuild ? {
-          collapseWhitespace: true,
-          minifyJS: true,
-          minifyCSS: true,
-          removeEmptyAttributes: true,
-        } : false,
-      }),
       new MiniCssExtractPlugin({
-        filename: isBuild ? '[name].[contenthash:8].css' : 'static/[name].css',
+        filename: '[name].css',
       }),
-      new HappyPack({
-        id: 'ts',
-        threadPool: happyThreadPool,
-        loaders: [
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              happyPackMode: true,
-              getCustomTransformers: path.join(__dirname, 'webpack_ts.loader.js'),
-            },
+      createHappyPackPlugin('ts', [
+        {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+            happyPackMode: true,
+            getCustomTransformers: path.join(__dirname, 'webpack_ts.loader.js'),
           },
-        ],
+        },
+      ]),
+      createHappyPackPlugin('css', [
+        'css-loader',
+      ]),
+      createHappyPackPlugin('less', [
+        'css-loader',
+        {
+          loader: 'less-loader',
+          options: {
+            sourceMap: false,
+            javascriptEnabled: true,
+          },
+        },
+      ]),
+      createHappyPackPlugin('scss', [
+        {
+          loader: 'css-loader',
+          options: {
+            sourceMap: false,
+            localIdentName: '[name]_[local]-[hash:base64:7]',
+          },
+        },
+        {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: false,
+          },
+        },
+        {
+          loader: 'sass-resources-loader',
+          options: {
+            sourceMap: false,
+            resources: [
+              resolve('./src/styles/_variable.scss'),
+            ],
+          },
+        },
+      ]),
+      new HardSourceWebpackPlugin({
+        cachePrune: {
+          // Caches younger than `maxAge` are not considered for deletion. They must
+          // be at least this (default: 2 days) old in milliseconds.
+          maxAge: 2 * 24 * 60 * 60 * 1000,
+          // All caches together must be larger than `sizeThreshold` before any
+          // caches will be deleted. Together they must be at least this
+          // (default: 50 MB) big in bytes.
+          sizeThreshold: 50 * 1024 * 1024,
+          // How to launch the extra processes. Default:
+        },
+        fork: (fork, compiler, webpackBin) => fork(
+          webpackBin(),
+          ['--config', __filename], {
+            silent: true,
+          }
+        ),
+        // Number of workers to spawn. Default:
+        numWorkers: () => os.cpus().length,
+        // Number of modules built before launching parallel building. Default:
+        minModules: 10,
       }),
-      new HappyPack({
-        id: 'css',
-        threadPool: happyThreadPool,
-        loaders: [
-          'css-loader',
-        ],
-      }),
-      new HappyPack({
-        id: 'less',
-        threadPool: happyThreadPool,
-        loaders: [
-          'css-loader',
-          {
-            loader: 'less-loader',
-            options: {
-              sourceMap: false,
-              javascriptEnabled: true,
-            },
-          },
-        ],
-      }),
-      new HappyPack({
-        id: 'scss',
-        threadPool: happyThreadPool,
-        loaders: [
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              sourceMap: false,
-              localIdentName: '[name]_[local]-[hash:base64:7]',
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: false,
-            },
-          },
-          {
-            loader: 'sass-resources-loader',
-            options: {
-              sourceMap: false,
-              resources: [
-                resolve('./example/styles/_color.scss'),
-              ],
-            },
-          },
-        ],
-      }),
-      ...plugins,
+      new HardSourceWebpackPlugin.ExcludeModulePlugin([
+        {
+          // HardSource works with mini-css-extract-plugin but due to how
+          // mini-css emits assets, assets are not emitted on repeated builds with
+          // mini-css and hard-source together. Ignoring the mini-css loader
+          // modules, but not the other css loader modules, excludes the modules
+          // that mini-css needs rebuilt to output assets every time.
+          test: /mini-css-extract-plugin[\\/]dist[\\/]loader/,
+        },
+      ]),
+      ...(
+        isProd
+          ? []
+          : [
+            new webpack.DllReferencePlugin({
+              context: __dirname,
+              manifest: require('./manifest.json'),
+            }),
+            new CopyWebpackPlugin([
+              { from: './src/static', to: 'static' },
+            ]),
+            new HtmlWebpackPlugin({
+              filename: 'index.html',
+              template: './example/views/index.ejs',
+              hash: false,
+              minify: false,
+            }),
+          ]
+      ),
     ],
   };
-};
 
+  // return smp.wrap(config);
+  return config;
+};

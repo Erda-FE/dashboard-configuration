@@ -1,15 +1,26 @@
 import { maxBy, remove } from 'lodash';
 import { createFlatStore } from '../cube';
+// eslint-disable-next-line import/no-cycle
 import chartEditorStore from './chart-editor';
+import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 
+type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
 interface IState {
   isEditMode: boolean;
   layout: any[];
+  contextMap: any;
+  theme: string;
+  locale: 'en' | 'zh';
+  textMap: TextType;
 }
 
 const initState: IState = {
   isEditMode: false,
   layout: [],
+  contextMap: {},
+  theme: 'dice',
+  locale: 'zh',
+  textMap: TEXT_ZH_MAP,
 };
 
 const getNewChartYPosition = (layout: any[]) => {
@@ -17,26 +28,26 @@ const getNewChartYPosition = (layout: any[]) => {
   return maxY + maxH;
 };
 
-
 const dashBoardStore = createFlatStore({
   name: 'dashBoard',
   state: initState,
   effects: {
     async generateChart({ select }, viewId: string) {
-      const layout = select(s => s.layout);
-      const viewMap = chartEditorStore.getState(s => s.viewMap);
+      const layout = select((s) => s.layout);
+      const viewMap = chartEditorStore.getState((s) => s.viewMap);
       const { chartType, controlType } = viewMap[viewId];
+      let size;
       if (chartType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 8, h: 9 });
+        size = { w: 8, h: 9 };
       } else if (controlType) {
-        layout.push({ i: viewId, x: 0, y: getNewChartYPosition(layout), w: 4, h: 1 });
+        size = { w: 4, h: 1 };
       }
-      dashBoardStore.updateLayout([...layout]);
+      dashBoardStore.updateLayout([...layout, { ...size, i: viewId, x: 0, y: getNewChartYPosition(layout) }]);
     },
     async saveEdit({ select }) {
-      dashBoardStore.closeEdit();
-      const layout = select(s => s.layout);
-      const viewMap = chartEditorStore.getState(s => s.viewMap);
+      dashBoardStore.setEditMode(false);
+      const layout = select((s) => s.layout);
+      const viewMap = chartEditorStore.getState((s) => s.viewMap);
       return { layout, viewMap }; // 只输出外部需要的
     },
     async deleteView(_, viewId: string) {
@@ -48,11 +59,8 @@ const dashBoardStore = createFlatStore({
     updateLayout(state, layout: any[]) {
       state.layout = layout;
     },
-    closeEdit(state) {
-      state.isEditMode = false;
-    },
-    openEdit(state) {
-      state.isEditMode = true;
+    setEditMode(state, status: boolean) {
+      state.isEditMode = status;
     },
     deleteLayout(state, viewId: string) {
       remove(state.layout, ({ i }) => viewId === i);
@@ -60,7 +68,23 @@ const dashBoardStore = createFlatStore({
     reset() {
       return initState;
     },
+    updateContextMap(state, contextMap: any) {
+      state.contextMap = contextMap;
+    },
+    setLocale(state, key: 'en' | 'zh') {
+      state.locale = key;
+      state.textMap = key === 'en' ? TEXT_EN_MAP : TEXT_ZH_MAP;
+    },
+    setTheme(state, theme?: string) {
+      state.theme = theme || 'dice';
+    },
   },
 });
+
+export const getLocale = () => dashBoardStore.getState((s) => s.locale);
+export const { setLocale } = dashBoardStore;
+
+export const getTheme = () => dashBoardStore.getState((s) => s.theme);
+export const { setTheme } = dashBoardStore;
 
 export default dashBoardStore;

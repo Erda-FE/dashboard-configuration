@@ -1,35 +1,49 @@
 export const theme = 'dice';
 
-export const areaColors = [
-  'rgba(3, 91, 227, 0.2)',
-  'rgba(45, 192, 131, 0.2)',
-  'rgba(91, 69, 194, 0.2)',
-  'rgba(254, 171, 0, 0.2)',
-  'rgba(216, 66, 218, 0.2)',
-  'rgba(80, 163, 227, 0.2)',
-  'rgba(223, 52, 9, 0.2)',
-  'rgba(246, 213, 26, 0.2)',
-  'rgba(16, 41, 151, 0.2)',
-  'rgba(46, 139, 54, 0.2)',
-  'rgba(162, 56, 183, 0.2)',
-  'rgba(156, 195, 255, 0.2)',
+const darkPurple = 'rgb(78, 96, 151)';
+const darkGreen = 'rgb(73, 142, 158)';
+const pink = 'rgb(222, 111, 87)';
+const red = 'rgb(222, 87, 87)';
+const yellow = 'rgb(247, 195, 107)';
+const orange = 'rgb(247, 167, 107)';
+const appleGreen = 'rgb(141, 179, 108)';
+const green = 'rgb(108, 179, 139)';
+const brown = 'rgb(169, 140, 114)';
+const purple = 'rgb(151, 95, 160)';
+const gray = 'rgb(205, 206, 209)';
+
+export const colorMap = {
+  darkPurple,
+  darkGreen,
+  pink,
+  red,
+  yellow,
+  orange,
+  appleGreen,
+  green,
+  brown,
+  purple,
+  gray,
+};
+
+const colorList = [
+  darkPurple,
+  pink,
+  yellow,
+  appleGreen,
+  darkGreen,
+  red,
+  orange,
+  green,
+  brown,
+  purple,
+  gray,
 ];
 
+export const areaColors = colorList.map((c) => `${c.slice(0, -1)}, 0.2)`);
+
 export const themeObj = {
-  color: [
-    'rgb(3, 91, 227)',
-    'rgb(45, 192, 131)',
-    'rgb(91, 69, 194)',
-    'rgb(254, 171, 0)',
-    'rgb(216, 66, 218)',
-    'rgb(80, 163, 227)',
-    'rgb(223, 52, 9)',
-    'rgb(246, 213, 26)',
-    'rgb(16, 41, 151)',
-    'rgb(46, 139, 54)',
-    'rgb(162, 56, 183)',
-    'rgb(156, 195, 255)',
-  ],
+  color: colorList,
   backgroundColor: '#ffffff',
   textStyle: {},
   title: {
@@ -51,7 +65,7 @@ export const themeObj = {
         width: '2',
       },
     },
-    symbolSize: '6',
+    symbolSize: '1',
     symbol: 'emptyCircle',
     smooth: true,
     smoothMonotone: 'x',
@@ -67,7 +81,7 @@ export const themeObj = {
         width: '2',
       },
     },
-    symbolSize: '6',
+    symbolSize: '1',
     symbol: 'emptyCircle',
     smooth: true,
   },
@@ -191,7 +205,7 @@ export const themeObj = {
         color: '#aaa',
       },
     },
-    symbolSize: '6',
+    symbolSize: '1',
     symbol: 'emptyCircle',
     smooth: true,
     color: [

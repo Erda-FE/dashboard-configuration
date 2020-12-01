@@ -2,57 +2,67 @@ import { createFlatStore } from '../cube';
 import { cloneDeep, forEach, startsWith } from 'lodash';
 import { generateUUID } from '../utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
+// eslint-disable-next-line import/no-cycle
 import dashBoardStore from './dash-board';
 import { NEW_CHART_VIEW_MAP } from '../constants';
 
 interface IState {
-  visible: boolean,
-  editChartId: string,
-  addMode: false,
-  viewMap: any, // 所有图表配置信息
-  codeVisible: boolean, // 代码编辑
-  viewCopy: any, // 修改时用于恢复的复制对象
-  isTouched: boolean,
+  pickChartModalVisible: boolean;
+  editChartId: string;
+  addMode: false;
+  viewMap: any; // 所有图表配置信息
+  codeVisible: boolean; // 代码编辑
+  viewCopy: any; // 修改时用于恢复的复制对象
+  isTouched: boolean;
+  dataConfigForm: any;
+  baseConfigForm: any;
 }
 
 const initState: IState = {
-  visible: false,
+  pickChartModalVisible: false, // 添加图表时选择图表类型选择
+  isTouched: false, // 数据是否变动，用于取消编辑时的判断
   editChartId: '',
   addMode: false,
   viewMap: {}, // 所有图表配置信息
-  codeVisible: false, // 代码编辑
+  codeVisible: false, // 代码编辑，暂时没用到
   viewCopy: {}, // 修改时用于恢复的复制对象
-  isTouched: false,
+  dataConfigForm: null, // 存储数据配置表单对象
+  baseConfigForm: null, // 存储基础配置表单对象
 };
 
 const chartEditorStore = createFlatStore({
   name: 'chartEditor',
   state: initState,
   effects: {
-    async addEditor({ select }) {
+    async addEditor({ select }, chartType: DC.ViewType) {
       const viewId = `view-${generateUUID()}`;
-      const viewMap = select(s => s.viewMap);
+      const viewMap = select((s) => s.viewMap);
 
       chartEditorStore.updateState({
-        visible: true,
         editChartId: viewId,
         addMode: true,
         viewMap: {
           ...viewMap,
-          [viewId]: NEW_CHART_VIEW_MAP,
+          [viewId]: NEW_CHART_VIEW_MAP[chartType],
         },
       });
+      dashBoardStore.generateChart(viewId); // 在布局中生成一个占位
+    },
+    // 添加时关闭直接移除新建的图表
+    async deleteEditor({ select }) {
+      const editChartId = select((s) => s.editChartId);
 
-      dashBoardStore.generateChart(viewId);
+      dashBoardStore.deleteView(editChartId);
+      chartEditorStore.updateState({ editChartId: '' });
+      chartEditorStore.setTouched(false);
     },
     // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
     async saveEditor({ select }, payload) {
-      const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
+      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
       const editChart = cloneDeep(viewMap[editChartId]);
 
       chartEditorStore.updateState({
         viewMap: { ...viewMap, [editChartId]: { ...editChart, ...payload } },
-        visible: false,
         addMode: false,
         editChartId: '',
         viewCopy: {},
@@ -61,54 +71,34 @@ const chartEditorStore = createFlatStore({
     },
     // 表单变化时自动保存
     async onEditorChange({ select }, payload) {
-      const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
+      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
+      const _payload = { ...payload };
+
       chartEditorStore.updateState({
         viewMap: {
           ...viewMap,
-          [editChartId]: { ...viewMap[editChartId], ...payload },
+          [editChartId]: { ...viewMap[editChartId], ..._payload },
         },
       });
     },
     // 编辑时关闭，恢复数据并置空viewCopy
     async closeEditor({ select }) {
-      const [editChartId, viewMap, viewCopy] = select(s => [s.editChartId, s.viewMap, s.viewCopy]);
-      // const isExist = find(layout, ({ i }) => i === editChartId);
-      // if (!isExist) { // 创建时取消就移除
-      //   yield put({ type: 'dashBoard/deleteView', viewId: editChartId });
-      //   yield put({ type: 'updateState', payload: { visible: false, editChartId: '' } });
-      // } else { // 编辑时取消恢复原有数据
-      // }
-      viewMap[editChartId] = viewCopy;
+      const [editChartId, viewMap, viewCopy] = select((s) => [s.editChartId, s.viewMap, s.viewCopy]);
+      const _viewMap = { ...viewMap };
+      _viewMap[editChartId] = viewCopy;
 
       chartEditorStore.updateState({
-        visible: false,
         editChartId: '',
-        viewMap: { ...viewMap },
+        viewMap: _viewMap,
         viewCopy: {},
       });
       chartEditorStore.setTouched(false);
     },
-    // 添加时关闭直接移除新建的
-    async deleteEditor({ select }) {
-      const editChartId = select(s => s.editChartId);
-
-      dashBoardStore.deleteView(editChartId);
-      chartEditorStore.updateState({ visible: false, editChartId: '' });
-      chartEditorStore.setTouched(false);
-    },
     async chooseChartType({ select }, chartType) { // 编辑时移除
-      const [editChartId, viewMap] = select(s => [s.editChartId, s.viewMap]);
+      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
       const drawerInfo = viewMap[editChartId];
       let tempPayload = {};
-      if (chartType === drawerInfo.chartType) {
-        // forEach(drawerInfo, (value, key) => { // 移除填写的图表配置
-        //   if (startsWith(key, panelDataPrefix)) {
-        //     delete drawerInfo[key];
-        //   }
-        // });
-        // yield put({ type: 'dashBoard/deleteLayout', viewId: editChartId });
-        // tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType: '' } } };
-      } else {
+      if (chartType !== drawerInfo.chartType) {
         tempPayload = { viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, chartType } } };
       }
       chartEditorStore.updateState(tempPayload);
@@ -120,7 +110,7 @@ const chartEditorStore = createFlatStore({
     },
     editView(state, editChartId: string) {
       const viewCopy = cloneDeep(state.viewMap[editChartId]);
-      return { ...state, visible: true, editChartId, viewCopy };
+      return { ...state, editChartId, viewCopy };
     },
     updateViewInfo(state, payload: any) { // 修改标题时editChartId还是空的，所以自己传要更新的viewId
       const { viewId, ...rest } = payload;
@@ -141,7 +131,7 @@ const chartEditorStore = createFlatStore({
       const { viewMap, editChartId } = state;
       const drawerInfo = viewMap[editChartId];
       if (controlType === drawerInfo.controlType) {
-        forEach(drawerInfo, (value, key) => { // 移除填写的控件配置
+        forEach(drawerInfo, (_, key) => { // 移除填写的控件配置
           if (startsWith(key, panelControlPrefix)) {
             delete drawerInfo[key];
           }
@@ -162,7 +152,7 @@ const chartEditorStore = createFlatStore({
     submitCode(state, settingInfo) {
       const { viewMap, editChartId } = state;
       const drawerInfo = viewMap[editChartId];
-      forEach(drawerInfo, (value, key) => { // 移除过去设置的的Echarts配置信息
+      forEach(drawerInfo, (_, key) => { // 移除过去设置的的Echarts配置信息
         if (startsWith(key, panelSettingPrefix)) {
           delete drawerInfo[key];
         }
@@ -174,6 +164,15 @@ const chartEditorStore = createFlatStore({
     },
     setTouched(state, isTouched: boolean) {
       state.isTouched = isTouched;
+    },
+    setPickChartModalVisible(state, pickChartModalVisible: boolean) {
+      state.pickChartModalVisible = pickChartModalVisible;
+    },
+    setDataConfigForm(state, dataConfigForm: any) {
+      state.dataConfigForm = dataConfigForm;
+    },
+    setBaseConfigForm(state, baseConfigForm: any) {
+      state.baseConfigForm = baseConfigForm;
     },
   },
 });

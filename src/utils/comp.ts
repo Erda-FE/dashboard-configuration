@@ -1,5 +1,6 @@
-import { forEach, replace } from 'lodash';
-import agent from './agent';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-unused-vars */
+// import { forEach, replace } from 'lodash';
 import domtoimage from 'dom-to-image';
 import { message } from 'antd';
 import screenfull from 'screenfull';
@@ -28,20 +29,20 @@ class ParamsManage {
 
 export const paramsManage = new ParamsManage();
 
-function convertUrl(url: string) {
-  let newUrl = url || '';
-  forEach(paramsManage.get(), (value, key) => {
-    const pattern = new RegExp(`{${key}}`, 'g');
-    newUrl = replace(newUrl, pattern, value);
-  });
-  return newUrl;
-}
+// function convertUrl(url: string) {
+//   let newUrl = url || '';
+//   forEach(paramsManage.get(), (value, key) => {
+//     const pattern = new RegExp(`{${key}}`, 'g');
+//     newUrl = replace(newUrl, pattern, value);
+//   });
+//   return newUrl;
+// }
 
 let urlDataHandle: any;
 export function registerUrlDataHandle(handle: any) {
   urlDataHandle = handle;
 }
-export function getData(url: string, query?: any) {
+export function getData(_url: string, _query?: any) {
   return {};
   // if (!url) return {};
   // const newUrl = convertUrl(url);
@@ -60,20 +61,20 @@ interface IParams { [name: string]: any }
 
 let loadingMessage: any = null;
 
-export function saveImage(dom: Element | null | Text, name: string) {
+export function saveImage(dom: Element | null | Text, name: string, textMap: any) {
   if (loadingMessage) {
     return;
   }
   if (!dom) {
-    message.error('页面为空,没有图表数据');
+    message.error(textMap['no chart data']);
     return;
   }
-  loadingMessage = message.loading('正在导出图片...', 0);
-  domtoimage.toJpeg(dom, {
+  loadingMessage = message.loading(textMap['exporting picture'], 0);
+  domtoimage.toPng(dom, {
     quality: 1,
   }).then((url: string) => {
     const link = document.createElement('a');
-    link.download = `${name}.jpeg`;
+    link.download = `${name}.png`;
     link.href = url;
     loadingMessage();
     loadingMessage = null;
@@ -81,12 +82,12 @@ export function saveImage(dom: Element | null | Text, name: string) {
   });
 }
 
-
-export function setScreenFull(dom: Element | null | Text, isFullscreen: boolean) {
+const sf = screenfull as any; // prevent type warn
+export function setScreenFull(dom: Element | null | Text, isFullscreen = sf.isFullscreen) {
   if (dom && !isFullscreen) {
-    screenfull.request(dom);
+    sf.request(dom);
   } else {
-    screenfull.exit();
+    sf.exit();
   }
 }
 
@@ -97,7 +98,7 @@ export function plainArrayValidator(_rule: any, text: string, callback: any): vo
   }
   try {
     const arrayData = strToObject(text);
-    if (Array.isArray(arrayData) && arrayData.every(x => typeof x === 'string')) {
+    if (Array.isArray(arrayData) && arrayData.every((x) => typeof x === 'string')) {
       callback();
       return;
     }

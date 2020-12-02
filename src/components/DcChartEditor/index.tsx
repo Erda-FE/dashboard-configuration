@@ -95,7 +95,7 @@ export default () => {
           </DcContainer>
         </div>
         <div className="dc-editor-setting">
-          <Tabs defaultActiveKey="setting">{tabPanes}</Tabs>
+          <Tabs defaultActiveKey="data">{tabPanes}</Tabs>
         </div>
       </div>
       <div className="dc-editor-footer">

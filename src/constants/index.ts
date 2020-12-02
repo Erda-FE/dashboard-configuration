@@ -9,6 +9,7 @@ export const TEXT_ZH_MAP = {
   'exit fullscreen': '退出全屏',
   fullscreen: '全屏',
   export: '导出',
+  'export picture': '导出图片',
   'confirm to delete': '确认删除',
   'parameter configuration': '参数配置',
   'datasource configuration': '数据源配置',
@@ -37,6 +38,7 @@ export const TEXT_ZH_MAP = {
   'show mock data': '模拟数据展示',
   'no chart data': '页面为空,没有图表数据',
   'exporting picture': '正在导出图片...',
+  'unnamed dashboard': '未命名大盘'
 };
 
 export const TEXT_EN_MAP = {
@@ -50,6 +52,7 @@ export const TEXT_EN_MAP = {
   'exit fullscreen': 'exit fullscreen',
   fullscreen: 'fullscreen',
   export: 'export',
+  'export picture': 'export picture',
   'confirm to delete': 'confirm to delete',
   'parameter configuration': 'parameter configuration',
   'datasource configuration': 'datasource configuration',
@@ -78,6 +81,7 @@ export const TEXT_EN_MAP = {
   'show mock data': 'show mock data',
   'no chart data': 'no chart data',
   'exporting picture': 'exporting picture...',
+  'unnamed dashboard': 'unnamed dashboard'
 };
 
 const defaultConfig = {

@@ -1,6 +1,8 @@
 import { get, isEmpty, isPlainObject, map } from 'lodash';
 import React, { useRef } from 'react';
 import ReactGridLayout from 'react-grid-layout';
+import { Empty } from '@terminus/nusi';
+
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { DcContainer } from '..';
@@ -42,6 +44,7 @@ export const BoardGrid = ({ width, layout }: any) => {
   if (isEmpty(dashboardLayout) || width === Infinity) {
     return null;
   }
+
   // grid 组件内部会修改layout，而cube里的是不可直接更改的，所以重新生成一个对象
   const pure = dashboardLayout.map((p) => ({ ...p }));
   const chartConfigMap = getConfig('chartConfigMap');
@@ -57,7 +60,6 @@ export const BoardGrid = ({ width, layout }: any) => {
       onLayoutChange={updateLayout}
       isDraggable
       isResizable={isEditMode}
-      style={isEditMode ? { background: 'rgba(229, 233, 242, 0.5)' } : {}}
       onDragStart={onDragStart}
       draggableHandle=".dc-draggable-handle"
     >

@@ -131,7 +131,7 @@ export default ({ layout, showOptions = false }: IPureProps) => {
   return (
     <div
       className={classnames({
-        'dc-grid': true,
+        'dc-dashboard': true,
         isFullscreen,
       })}
     >

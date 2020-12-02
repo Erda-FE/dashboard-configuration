@@ -40,6 +40,7 @@
   "author": "terminus",
   "license": "ISC",
   "dependencies": {
+    "@terminus/nusi": "^3.8.59",
     "@types/superagent": "^4.1.10",
     "antd": "^3.20.1",
     "classnames": "^2.2.6",

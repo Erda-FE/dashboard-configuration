@@ -59,17 +59,36 @@ export function getData(_url: string, _query?: any) {
 
 interface IParams { [name: string]: any }
 
-let loadingMessage: any = null;
 
-export function saveImage(dom: Element | null | Text, name: string, textMap: any) {
+/**
+ *  Dom 下载为图片
+ *
+ * @export
+ * @param {(Element | null | Text)} dom
+ * @param {string} name
+ * @param {{
+ *     loadingMsg: string;
+ *     errorMsg: string;
+ *   }} { loadingMsg, errorMsg }
+ * @returns
+ */
+let loadingMessage: any = null;
+export function saveImage(
+  dom: Element | null | Text,
+  name: string,
+  { loadingMsg, errorMsg }: {
+    loadingMsg: string;
+    errorMsg: string;
+  },
+) {
   if (loadingMessage) {
     return;
   }
   if (!dom) {
-    message.error(textMap['no chart data']);
+    message.error(errorMsg);
     return;
   }
-  loadingMessage = message.loading(textMap['exporting picture'], 0);
+  loadingMessage = message.loading(loadingMsg, 0);
   domtoimage.toPng(dom, {
     quality: 1,
   }).then((url: string) => {

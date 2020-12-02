@@ -22,9 +22,7 @@ export const useForceUpdateWithCallback = (cb: () => void): () => void => {
 };
 
 export const useComponentWidth = () => {
-  const [sized, { width }] = useSize(
-    () => <div style={{ width: '100%' }} />
-  );
+  const [sized, { width }] = useSize(() => <div style={{ width: '100%' }} />);
   return [sized, width];
 };
 

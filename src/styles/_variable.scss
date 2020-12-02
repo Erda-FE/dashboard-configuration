@@ -5,7 +5,16 @@ $color-border: #e8e8e8;
 $color-white: #fff;
 $light-black: #606060;
 $color-text: #666;
+
+$color-dark-1: rgba(0, 0, 0, 0.1) !default;
+
 $mask-color: rgba(0, 0, 0, 0.2);
 $full-background-color: rgba(55, 55, 55, 0.5);
+$content-background-color: rgba(249, 248, 251, 1);
+
+$icon-color: rgba(7, 10, 26, 0.4);
 
 $border: 1px solid $color-border;
+$dark-border: 1px solid $color-dark-1;
+
+$box-radius: 6px;

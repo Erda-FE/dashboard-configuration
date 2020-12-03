@@ -2,13 +2,14 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-03 18:01:55
+ * @Last Modified time: 2020-12-03 19:58:00
  */
 import React, { RefObject, useCallback, useMemo } from 'react';
 import { Button, Tooltip } from '@terminus/nusi';
+import { useFullscreen } from 'react-use';
 import { useForceUpdate, DcIcon } from '../../common';
 import { insertWhen } from '../../common/utils';
-import { setScreenFull, saveImage } from '../../utils/comp';
+import { saveImage } from '../../utils/comp';
 
 import DashboardStore from '../../stores/dash-board';
 import ChartEditorStore from '../../stores/chart-editor';
@@ -34,21 +35,18 @@ const DashboardHeader = ({
   onSave,
   onCancel,
 }: IProps) => {
-  const forceUpdate = useForceUpdate();
+  // const forceUpdate = useForceUpdate();
   // 编辑态
-  const [isEditMode, textMap] = DashboardStore.useStore((s) => [s.isEditMode, s.textMap]);
+  const [isEditMode, isFullscreen, textMap] = DashboardStore.useStore((s) => [s.isEditMode, s.isFullscreen, s.textMap]);
   const [viewMap] = ChartEditorStore.useStore((s) => [s.viewMap]);
-  const { setEditMode, saveEdit } = DashboardStore;
+  const { setEditMode, saveEdit, toggleFullscreen } = DashboardStore;
   const { setPickChartModalVisible } = ChartEditorStore;
+  useFullscreen(contentRef, isFullscreen, { onClose: () => toggleFullscreen() });
 
   const handleTriggerEditMode = useCallback(() => {
     setEditMode(true);
     afterEdit && afterEdit();
   }, [afterEdit, setEditMode]);
-
-  const handleSetScreenFull = (dom: HTMLDivElement | null) => {
-    setScreenFull(dom);
-  };
 
   const handleSaveImg = useCallback((dom: HTMLDivElement | null, name?: string) => {
     saveImage(dom, name || textMap['unnamed dashboard']);
@@ -87,7 +85,7 @@ const DashboardHeader = ({
     {
       icon: 'fullscreen',
       text: textMap.fullscreen,
-      onClick: () => handleSetScreenFull(contentRef.current),
+      onClick: () => toggleFullscreen(),
     },
     ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode, [
       {
@@ -96,7 +94,7 @@ const DashboardHeader = ({
         onClick: () => handleSaveImg(contentRef.current, dashboardName),
       },
     ]),
-  ], [contentRef, dashboardName, handleSaveImg, isEditMode, textMap]);
+  ], [contentRef, dashboardName, handleSaveImg, isEditMode, textMap, toggleFullscreen]);
 
   const editTools = useMemo(() => [
     ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode, [

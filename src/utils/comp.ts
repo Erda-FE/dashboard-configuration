@@ -3,7 +3,6 @@
 // import { forEach, replace } from 'lodash';
 import domtoimage from 'dom-to-image';
 import { Toast } from '@terminus/nusi';
-import screenfull from 'screenfull';
 import DashboardStore from '../stores/dash-board';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
@@ -105,14 +104,6 @@ export function saveImage(
   });
 }
 
-const sf = screenfull as any; // prevent type warn
-export function setScreenFull(dom: Element | null | Text, isFullscreen = sf.isFullscreen) {
-  if (dom && !isFullscreen) {
-    sf.request(dom);
-  } else {
-    sf.exit();
-  }
-}
 
 export function plainArrayValidator(_rule: any, text: string, callback: any): void {
   if (!text) {

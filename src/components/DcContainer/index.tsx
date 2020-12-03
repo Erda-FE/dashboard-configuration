@@ -2,9 +2,10 @@ import { Popconfirm, Tooltip, Dropdown, Menu, Select, message } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction, map, reduce, merge } from 'lodash';
 import React, { ReactElement } from 'react';
+import { useFullscreen } from 'react-use';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { getConfig } from '../../config';
-import { saveImage, setScreenFull } from '../../utils/comp';
+import { saveImage } from '../../utils/comp';
 import { EmptyHolder, DcIcon } from '../../common';
 import ChartMask, { ChartSpinMask } from '../DcCharts/chart-mask';
 import ChartEditorStore from '../../stores/chart-editor';
@@ -24,9 +25,11 @@ interface IProps {
   viewId: string;
   view: any;
   chartEditorVisible: boolean;
+  isFullscreen: boolean;
   isEditMode: boolean;
   isEditView: boolean;
   children: ReactElement<any>;
+  toggleFullscreen: () => void;
   setViewInfo: (data: object) => void;
   editView: (viewId: string) => void;
   deleteView: (viewId: string) => void;
@@ -255,7 +258,7 @@ class Operation extends React.PureComponent<IProps, IState> {
   };
 
   render() {
-    const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible } = this.props;
+    const { view, children, isEditMode, isEditView, viewId, textMap, editView, deleteView, chartEditorVisible, isFullscreen } = this.props;
     const childNode = React.Children.only(children);
     const { resData, fetchStatus, dynamicLoadFnPayloadMap, dynamicFilterData } = this.state;
     const { title: _title, description: _description, hideHeader = false, maskMsg, controls = [], customRender, config, chartType, api } = view;
@@ -351,7 +354,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                         <DcIcon type="info-circle" className="dc-chart-title-op" />
                       </Tooltip>
                     </If>
-                    <If condition={!chartEditorVisible}>
+                    <If condition={!chartEditorVisible && !isFullscreen}>
                       <DcIcon type="down" className="dc-chart-title-op" />
                     </If>
                   </div>
@@ -476,17 +479,19 @@ class Operation extends React.PureComponent<IProps, IState> {
 }
 
 export default (p: any) => {
-  const [isEditMode, textMap] = DashboardStore.useStore((s) => [s.isEditMode, s.textMap]);
+  const [isEditMode, isFullscreen, textMap] = DashboardStore.useStore((s) => [s.isEditMode, s.isFullscreen, s.textMap]);
   const [editChartId, viewMap] = ChartEditorStore.useStore((s) => [s.editChartId, s.viewMap]);
   const { updateViewInfo: setViewInfo, editView } = ChartEditorStore;
-  const { deleteView } = DashboardStore;
+  const { deleteView, toggleFullscreen } = DashboardStore;
 
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const props = {
     isEditMode,
+    isFullscreen,
     textMap,
     chartEditorVisible,
     isEditView: editChartId === p.viewId,
+    toggleFullscreen,
     setViewInfo,
     editView,
     deleteView,

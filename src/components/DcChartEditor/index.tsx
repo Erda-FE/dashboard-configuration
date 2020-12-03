@@ -1,4 +1,5 @@
 import { Button, message, Tabs, Popconfirm } from 'antd';
+import { Drawer } from '@terminus/nusi';
 import { get } from 'lodash';
 import React from 'react';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
@@ -82,41 +83,49 @@ export default () => {
   const { customRender } = currentChart;
 
   return (
-    <div className="dc-editor-mode">
-      <div className="dc-editor-content">
-        <div className="dc-editor-previewer">
-          <DcContainer viewId={editChartId} view={currentChart}>
-            <Choose>
-              <When condition={customRender && (typeof customRender === 'function')}>
-                <CustomNode render={customRender} ChartNode={ChartComponent} view={currentChart} />
-              </When>
-              <Otherwise><ChartComponent /></Otherwise>
-            </Choose>
-          </DcContainer>
+    <Drawer
+      visible
+      width="100%"
+      closable={false}
+      maskClosable={false}
+      bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}
+    >
+      <div className="dc-editor-mode">
+        <div className="dc-editor-content">
+          <div className="dc-editor-previewer">
+            <DcContainer viewId={editChartId} view={currentChart}>
+              <Choose>
+                <When condition={customRender && (typeof customRender === 'function')}>
+                  <CustomNode render={customRender} ChartNode={ChartComponent} view={currentChart} />
+                </When>
+                <Otherwise><ChartComponent /></Otherwise>
+              </Choose>
+            </DcContainer>
+          </div>
+          <div className="dc-editor-setting">
+            <Tabs defaultActiveKey="data">{tabPanes}</Tabs>
+          </div>
         </div>
-        <div className="dc-editor-setting">
-          <Tabs defaultActiveKey="data">{tabPanes}</Tabs>
+        <div className="dc-editor-footer">
+          <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
+          <Choose>
+            <When condition={isTouched}>
+              <Popconfirm
+                okText={textMap.ok}
+                cancelText={textMap.cancel}
+                placement="top"
+                title={textMap['confirm to drop data']}
+                onConfirm={addMode ? deleteEditor : closeEditor}
+              >
+                <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
+              </Popconfirm>
+            </When>
+            <Otherwise>
+              <Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>
+            </Otherwise>
+          </Choose>
         </div>
       </div>
-      <div className="dc-editor-footer">
-        <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
-        <Choose>
-          <When condition={isTouched}>
-            <Popconfirm
-              okText={textMap.ok}
-              cancelText={textMap.cancel}
-              placement="top"
-              title={textMap['confirm to drop data']}
-              onConfirm={addMode ? deleteEditor : closeEditor}
-            >
-              <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
-            </Popconfirm>
-          </When>
-          <Otherwise>
-            <Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>
-          </Otherwise>
-        </Choose>
-      </div>
-    </div>
+    </Drawer>
   );
 };

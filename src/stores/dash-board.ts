@@ -7,6 +7,7 @@ import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
 interface IState {
   isEditMode: boolean;
+  isFullscreen: boolean;
   layout: any[];
   contextMap: any;
   theme: string;
@@ -16,6 +17,7 @@ interface IState {
 
 const initState: IState = {
   isEditMode: false,
+  isFullscreen: false,
   layout: [],
   contextMap: {},
   theme: 'dice',
@@ -56,6 +58,9 @@ const dashBoardStore = createFlatStore({
     },
   },
   reducers: {
+    toggleFullscreen(state) {
+      state.isFullscreen = !state.isFullscreen;
+    },
     updateLayout(state, layout: any[]) {
       state.layout = layout;
     },

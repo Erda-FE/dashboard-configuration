@@ -8,6 +8,7 @@ import DashboardStore from '../../stores/dash-board';
 import ChartEditorStore from '../../stores/chart-editor';
 
 import './header.scss';
+import { DcIcon } from '../DcIcon';
 
 interface IProps {
   contentRef: RefObject<HTMLDivElement>;
@@ -77,13 +78,13 @@ const DashboardHeader = ({
     }
   }, [beforeSave, doSaveDashboard]);
 
-  const leftTools = useMemo(() => [
+  const leftTools: DC_BOARD_HEADER.Tool[] = useMemo(() => [
     {
-      icon: 'grow',
+      icon: 'fullscreen',
       text: textMap.fullscreen,
       onClick: () => handleSetScreenFull(contentRef.current),
     },
-    ...insertWhen(!isEditMode, [
+    ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode, [
       {
         icon: 'camera',
         text: textMap['export picture'],
@@ -93,21 +94,21 @@ const DashboardHeader = ({
   ], [contentRef, dashboardName, handleSaveImg, isEditMode, textMap]);
 
   const editTools = useMemo(() => [
-    ...insertWhen(!isEditMode, [
+    ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode, [
       {
         icon: 'edit',
         text: textMap['edit mode'],
         onClick: () => handleTriggerEditMode(),
       },
     ]),
-    ...insertWhen(isEditMode, [
+    ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
       {
-        icon: 'plus-circle',
+        icon: 'plus',
         text: textMap['add charts'],
         onClick: () => setPickChartModalVisible(true),
       },
       {
-        icon: 'check',
+        icon: 'save',
         text: textMap['save dashboard'],
         onClick: () => handleSaveDashboard(),
       },
@@ -119,9 +120,11 @@ const DashboardHeader = ({
     ]),
   ], [textMap, isEditMode, handleTriggerEditMode, handleSaveDashboard, handleCancel, setPickChartModalVisible]);
 
-  const renderTools = (tools: typeof leftTools) => tools.map(({ text, icon, onClick }) => (
+  const renderTools = (tools: DC_BOARD_HEADER.Tool[]) => tools.map(({ text, icon, onClick }) => (
     <Tooltip title={text} key={icon} >
-      <Button type="text" icon={icon} onClick={onClick} />
+      <Button type="text" onClick={onClick}>
+        <DcIcon type={icon} />
+      </Button>
     </Tooltip>
   ));
 

@@ -1,5 +1,12 @@
 export const TEXT_ZH_MAP = {
   add: '新增',
+  'add charts': '新增图表',
+  'edit mode': '编辑模式',
+  'edit charts': '编辑图表',
+  'remove charts': '移除图表',
+  'export data': '导出数据',
+  'save dashboard': '保存大盘',
+  'exit edit mode': '取消编辑',
   save: '保存',
   cancel: '取消',
   edit: '编辑',
@@ -7,7 +14,7 @@ export const TEXT_ZH_MAP = {
   ok: '确认',
   move: '移动',
   'exit fullscreen': '退出全屏',
-  fullscreen: '全屏',
+  fullscreen: '全屏查看',
   export: '导出',
   'export picture': '导出图片',
   'confirm to delete': '确认删除',
@@ -38,11 +45,20 @@ export const TEXT_ZH_MAP = {
   'show mock data': '模拟数据展示',
   'no chart data': '页面为空,没有图表数据',
   'exporting picture': '正在导出图片...',
-  'unnamed dashboard': '未命名大盘'
+  'exporting data': '正在导出数据...',
+  'export data error': '导出数据失败！',
+  'unnamed dashboard': '未命名大盘',
 };
 
 export const TEXT_EN_MAP = {
   add: 'add',
+  'add charts': 'add charts',
+  'edit mode': 'edit mode',
+  'edit charts': 'edit charts',
+  'remove charts': 'remove charts',
+  'export data': 'export as excel',
+  'save dashboard': 'save dashboard',
+  'exit edit mode': 'exit edit mode',
   save: 'save',
   cancel: 'cancel',
   edit: 'edit',
@@ -81,7 +97,8 @@ export const TEXT_EN_MAP = {
   'show mock data': 'show mock data',
   'no chart data': 'no chart data',
   'exporting picture': 'exporting picture...',
-  'unnamed dashboard': 'unnamed dashboard'
+  'exporting data': 'exporting data...',
+  'export data error': 'export data error!',
 };
 
 const defaultConfig = {

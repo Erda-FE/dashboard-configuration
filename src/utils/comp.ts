@@ -2,8 +2,11 @@
 /* eslint-disable no-unused-vars */
 // import { forEach, replace } from 'lodash';
 import domtoimage from 'dom-to-image';
-import { message } from 'antd';
+import { Toast } from '@terminus/nusi';
 import screenfull from 'screenfull';
+import DashboardStore from '../stores/dash-board';
+
+const textMap = DashboardStore.getState((s) => s.textMap);
 
 export const formItemLayout = {
   labelCol: {
@@ -59,36 +62,37 @@ export function getData(_url: string, _query?: any) {
 
 interface IParams { [name: string]: any }
 
-
+let loadingMessage: any = null;
 /**
- *  Dom 下载为图片
+ * dom to image
  *
  * @export
  * @param {(Element | null | Text)} dom
  * @param {string} name
  * @param {{
- *     loadingMsg: string;
- *     errorMsg: string;
- *   }} { loadingMsg, errorMsg }
+ *     loadingMsg?: string;
+ *     errorMsg?: string;
+ *   }} [message]
  * @returns
  */
-let loadingMessage: any = null;
 export function saveImage(
   dom: Element | null | Text,
   name: string,
-  { loadingMsg, errorMsg }: {
-    loadingMsg: string;
-    errorMsg: string;
+  message?: {
+    loadingMsg?: string;
+    errorMsg?: string;
   },
 ) {
   if (loadingMessage) {
     return;
   }
+
   if (!dom) {
-    message.error(errorMsg);
+    Toast.error(message?.errorMsg || textMap['no chart data']);
     return;
   }
-  loadingMessage = message.loading(loadingMsg, 0);
+
+  loadingMessage = Toast.loading(message?.loadingMsg || textMap['exporting picture'], 0);
   domtoimage.toPng(dom, {
     quality: 1,
   }).then((url: string) => {

@@ -1,4 +1,4 @@
-import { Popconfirm, Tooltip, Dropdown, Menu, Select } from 'antd';
+import { Popconfirm, Tooltip, Dropdown, Menu, Select, message } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, isString, isEqual, get, isFunction, map, reduce, merge } from 'lodash';
 import React, { ReactElement } from 'react';
@@ -11,9 +11,14 @@ import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 // import Control from './control';
 import { DcIcon } from '../DcIcon';
-import { getChartData } from '../../services/chart-editor';
+// DcDashboard 里面发起的请求,需要提供配置
+import { getChartData, exportChartData } from '../../services/chart-editor';
 
 import './index.scss';
+
+// 临时：匹配指标名
+const metricRegA = /metrics\/(.*)+\//;
+const metricRegB = /metrics\/(.*)+/;
 
 interface IProps {
   textMap: { [k: string]: string };
@@ -51,6 +56,8 @@ class Operation extends React.PureComponent<IProps, IState> {
   private hasLoadFn: boolean;
 
   private chartRef: HTMLDivElement | null;
+
+  private exportingData: any = null;
 
   constructor(props: IProps) {
     super(props);
@@ -160,7 +167,61 @@ class Operation extends React.PureComponent<IProps, IState> {
 
   onSaveImg = () => {
     const { viewId, textMap } = this.props;
-    saveImage(this.chartRef, viewId, textMap);
+    saveImage(this.chartRef, viewId || textMap['unnamed dashboard']);
+  };
+
+  onExportData = () => {
+    if (this.exportingData) return;
+    // 临时：从请求里面取参数。配置化 todo
+    let metricName;
+    const { view, textMap } = this.props;
+    const url = get(view, ['api', 'url']);
+    const query = get(view, ['api', 'query']);
+    // 老版数据取指标名
+    metricName = (metricRegA.exec(url) || metricRegB.exec(url) || [])[1];
+    // 新版数据取指标名
+    if (!metricName) {
+      metricName = get(view, ['api', 'body', 'from', 0]);
+    }
+
+    const { scope, scopeId } = getConfig('diceDataConfigProps');
+    const _query = {
+      start: query.start,
+      end: query.end,
+      scope,
+      scopeId,
+      ql: 'influxql:ast',
+    };
+    const payload = {
+      select: [
+        { expr: '*' },
+      ],
+      from: [metricName || ''],
+      limit: 1,
+    };
+
+    if (metricName) {
+      this.exportingData = message.loading(textMap['exporting data'], 0);
+      exportChartData(metricName, _query, payload).then((res: Blob) => {
+        const blob = new Blob([res]);
+        const fileName = `${view.title}.xlsx`;
+        const downloadElement = document.createElement('a');
+
+        downloadElement.download = fileName;
+        downloadElement.style.display = 'none';
+        downloadElement.href = URL.createObjectURL(blob);
+        document.body.appendChild(downloadElement);
+        downloadElement.click();
+        URL.revokeObjectURL(downloadElement.href);
+        document.body.removeChild(downloadElement);
+        this.exportingData();
+        this.exportingData = null;
+      }).catch(() => {
+        message.error(textMap['export data error']);
+        this.exportingData();
+        this.exportingData = null;
+      });
+    }
   };
 
   onSetScreenFull = () => {
@@ -215,11 +276,31 @@ class Operation extends React.PureComponent<IProps, IState> {
       loadData: this.loadData,
     });
 
+    const commonOptionsMenu = (
+      <Menu>
+        <Menu.Item key="0">
+          <a className="dc-chart-title-dp-op" onClick={this.onSaveImg}>
+            <DcIcon type="camera" />{textMap['export picture']}
+          </a>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <a className="dc-chart-title-dp-op" onClick={this.onExportData}>
+            <DcIcon type="excel" />{textMap['export data']}
+          </a>
+        </Menu.Item>
+        <Menu.Item key="2">
+          <a className="dc-chart-title-dp-op" onClick={this.onSetScreenFull}>
+            <DcIcon type="fullscreen" />{textMap.fullscreen}
+          </a>
+        </Menu.Item>
+      </Menu>
+    );
+
     const optionsMenu = (
       <Menu>
         <Menu.Item key="0">
           <a className="dc-chart-title-dp-op" onClick={() => editView(viewId)}>
-            <DcIcon type="edit" />{textMap.edit}
+            <DcIcon type="edit" />{textMap['edit charts']}
           </a>
         </Menu.Item>
         <Menu.Item key="1">
@@ -231,16 +312,21 @@ class Operation extends React.PureComponent<IProps, IState> {
             onConfirm={() => deleteView(viewId)}
           >
             <a className="dc-chart-title-dp-op">
-              <DcIcon type="delete" />{textMap.delete}
+              <DcIcon type="delete" />{textMap['remove charts']}
             </a>
           </Popconfirm>
         </Menu.Item>
         <Menu.Item key="2">
           <a className="dc-chart-title-dp-op" onClick={this.onSaveImg}>
-            <DcIcon type="camera" />{textMap.export}
+            <DcIcon type="camera" />{textMap['export picture']}
           </a>
         </Menu.Item>
         <Menu.Item key="3">
+          <a className="dc-chart-title-dp-op" onClick={this.onExportData}>
+            <DcIcon type="excel" />{textMap['export data']}
+          </a>
+        </Menu.Item>
+        <Menu.Item key="4">
           <a className="dc-chart-title-dp-op" onClick={this.onSetScreenFull}>
             <DcIcon type="fullscreen" />{textMap.fullscreen}
           </a>
@@ -256,17 +342,17 @@ class Operation extends React.PureComponent<IProps, IState> {
               <When condition={isCustomTitle}><React.Fragment>{title}</React.Fragment></When>
               <Otherwise>
                 <Dropdown
-                  disabled={!isEditMode || chartEditorVisible}
-                  overlay={optionsMenu}
+                  disabled={chartEditorVisible}
+                  overlay={isEditMode ? optionsMenu : commonOptionsMenu}
                 >
-                  <div className={classnames({ 'dc-chart-title-ct': true, pointer: isEditMode })}>
+                  <div className={classnames({ 'dc-chart-title-ct': true, pointer: true })}>
                     <h2 className="dc-chart-title">{title}</h2>
                     <If condition={description}>
                       <Tooltip title={description}>
                         <DcIcon type="info-circle" className="dc-chart-title-op" />
                       </Tooltip>
                     </If>
-                    <If condition={isEditMode && !chartEditorVisible}>
+                    <If condition={!chartEditorVisible}>
                       <DcIcon type="setting" className="dc-chart-title-op" />
                     </If>
                   </div>

@@ -11,7 +11,6 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     set(option, ['legend', 'data'], legendData);
   }
 
-  console.log(metricData);
   return merge(
     option,
     {

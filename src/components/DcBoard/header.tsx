@@ -45,14 +45,7 @@ const DashboardHeader = ({
   };
 
   const handleSaveImg = useCallback((dom: HTMLDivElement | null, name?: string) => {
-    saveImage(
-      dom,
-      name || textMap['unnamed dashboard'],
-      {
-        errorMsg: textMap['no chart data'],
-        loadingMsg: textMap['exporting picture'],
-      },
-    );
+    saveImage(dom, name || textMap['unnamed dashboard']);
   }, [textMap]);
 
   const handleCancel = useCallback(() => {
@@ -103,24 +96,24 @@ const DashboardHeader = ({
     ...insertWhen(!isEditMode, [
       {
         icon: 'edit',
-        text: textMap.edit,
+        text: textMap['edit mode'],
         onClick: () => handleTriggerEditMode(),
       },
     ]),
     ...insertWhen(isEditMode, [
       {
         icon: 'plus-circle',
-        text: textMap.add,
+        text: textMap['add charts'],
         onClick: () => setPickChartModalVisible(true),
       },
       {
         icon: 'check',
-        text: textMap.save,
+        text: textMap['save dashboard'],
         onClick: () => handleSaveDashboard(),
       },
       {
         icon: 'close',
-        text: textMap.cancel,
+        text: textMap['exit edit mode'],
         onClick: () => handleCancel(),
       },
     ]),

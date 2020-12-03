@@ -2,9 +2,9 @@ import React, { useRef, useEffect } from 'react';
 import { Tooltip } from 'antd';
 import classnames from 'classnames';
 import screenfull from 'screenfull';
-import { useComponentWidth, useForceUpdate, useUpdate } from '../../common';
+import { useComponentWidth, useForceUpdate, useUpdate, DcIcon } from '../../common';
 import { setScreenFull, saveImage } from '../../utils/comp';
-import { DcIcon, DcContainer } from '../index';
+import { DcContainer } from '../index';
 import DashboardStore from '../../stores/dash-board';
 
 import './index.scss';

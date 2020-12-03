@@ -160,7 +160,7 @@ const chartEditorStore = createFlatStore({
       return { ...state, viewMap: { ...viewMap, [editChartId]: { ...drawerInfo, ...settingInfo } } };
     },
     reset() {
-      return { ...cloneDeep(initState) };
+      return { ...initState };
     },
     setTouched(state, isTouched: boolean) {
       state.isTouched = isTouched;

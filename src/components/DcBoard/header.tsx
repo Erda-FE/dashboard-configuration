@@ -2,11 +2,11 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-03 16:19:58
+ * @Last Modified time: 2020-12-03 18:01:55
  */
 import React, { RefObject, useCallback, useMemo } from 'react';
 import { Button, Tooltip } from '@terminus/nusi';
-import { useForceUpdate } from '../../common';
+import { useForceUpdate, DcIcon } from '../../common';
 import { insertWhen } from '../../common/utils';
 import { setScreenFull, saveImage } from '../../utils/comp';
 
@@ -14,7 +14,6 @@ import DashboardStore from '../../stores/dash-board';
 import ChartEditorStore from '../../stores/chart-editor';
 
 import './header.scss';
-import { DcIcon } from '../DcIcon';
 
 interface IProps {
   contentRef: RefObject<HTMLDivElement>;

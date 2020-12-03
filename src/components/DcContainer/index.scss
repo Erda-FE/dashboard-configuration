@@ -12,8 +12,8 @@ $chart-prefix-cls: #{$prefix}-chart;
   border: $border;
   border-radius: 6px;
 
-  &.active {
-    border: 2px dashed $color-primary;
+  &:hover {
+    border: 1px dashed $color-primary;
     border-radius: 6px;
   }
 }

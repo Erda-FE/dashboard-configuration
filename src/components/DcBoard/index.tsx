@@ -49,6 +49,7 @@ const DCMain = ({
   const boardRef = useRef<HTMLDivElement>(null);
   const _onEditorToggle = useRef(onEditorToggle);
 
+  const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
   const [viewMap, editChartId] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId]);
   const { updateContextMap } = DashboardStore;
   const { reset: resetDrawer, addEditor } = ChartEditorStore;
@@ -85,6 +86,7 @@ const DCMain = ({
         'dc-dashboard': true,
         'dark-border': true,
         'v-flex-box': true,
+        active: isEditMode,
         isFullscreen,
       })}
     >

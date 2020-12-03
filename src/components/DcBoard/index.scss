@@ -9,6 +9,10 @@ $grid-prefix-cls: #{$prefix}-dashboard;
   border-radius: $box-radius;
   background: $content-background-color;
 
+  &.active {
+    background: $color-primary-1;
+  }
+
   // 全屏样式，不能合并一起简写，否则不生效
   :not(:root):-webkit-full-screen::backdrop {
     background: $full-background-color;

@@ -8,6 +8,11 @@ $color-text: #666;
 
 $color-dark-1: rgba(0, 0, 0, 0.1) !default;
 
+$color-white-9: rgba(255, 255, 255, 0.9);
+
+$color-primary-1: rgba($color-primary, 0.1) !default;
+$color-primary-4: rgba($color-primary, 0.4) !default;
+
 $mask-color: rgba(0, 0, 0, 0.2);
 $full-background-color: rgba(55, 55, 55, 0.5);
 $content-background-color: rgba(249, 248, 251, 1);

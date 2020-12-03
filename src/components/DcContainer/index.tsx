@@ -5,12 +5,11 @@ import React, { ReactElement } from 'react';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { getConfig } from '../../config';
 import { saveImage, setScreenFull } from '../../utils/comp';
-import { EmptyHolder } from '../../common';
+import { EmptyHolder, DcIcon } from '../../common';
 import ChartMask, { ChartSpinMask } from '../DcCharts/chart-mask';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 // import Control from './control';
-import { DcIcon } from '../DcIcon';
 // DcDashboard 里面发起的请求,需要提供配置
 import { getChartData, exportChartData } from '../../services/chart-editor';
 

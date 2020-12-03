@@ -1,7 +1,6 @@
 import { get, isEmpty, isPlainObject, map } from 'lodash';
 import React, { useRef } from 'react';
 import ReactGridLayout from 'react-grid-layout';
-import { Empty } from '@terminus/nusi';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';

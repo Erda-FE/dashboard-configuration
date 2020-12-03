@@ -300,7 +300,7 @@ class Operation extends React.PureComponent<IProps, IState> {
       <Menu>
         <Menu.Item key="0">
           <a className="dc-chart-title-dp-op" onClick={() => editView(viewId)}>
-            <DcIcon type="edit" />{textMap['edit charts']}
+            <DcIcon type="setting" />{textMap['config charts']}
           </a>
         </Menu.Item>
         <Menu.Item key="1">
@@ -353,7 +353,7 @@ class Operation extends React.PureComponent<IProps, IState> {
                       </Tooltip>
                     </If>
                     <If condition={!chartEditorVisible}>
-                      <DcIcon type="setting" className="dc-chart-title-op" />
+                      <DcIcon type="down" className="dc-chart-title-op" />
                     </If>
                   </div>
                 </Dropdown>

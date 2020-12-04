@@ -1,6 +1,6 @@
 import { createFlatStore } from '../cube';
 import { cloneDeep, forEach, startsWith } from 'lodash';
-import { generateUUID } from '../utils';
+import { genUUID } from '../common/utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 // eslint-disable-next-line import/no-cycle
 import dashBoardStore from './dash-board';
@@ -10,7 +10,7 @@ interface IState {
   pickChartModalVisible: boolean;
   editChartId: string;
   addMode: false;
-  viewMap: any; // 所有图表配置信息
+  viewMap: Record<string, DC.View>; // 所有图表配置信息
   codeVisible: boolean; // 代码编辑
   viewCopy: any; // 修改时用于恢复的复制对象
   isTouched: boolean;
@@ -35,7 +35,7 @@ const chartEditorStore = createFlatStore({
   state: initState,
   effects: {
     async addEditor({ select }, chartType: DC.ViewType) {
-      const viewId = `view-${generateUUID()}`;
+      const viewId = `view-${genUUID(8)}`;
       const viewMap = select((s) => s.viewMap);
 
       chartEditorStore.updateState({

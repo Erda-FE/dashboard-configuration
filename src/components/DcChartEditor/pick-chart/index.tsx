@@ -10,8 +10,8 @@ interface IProps {
   onPickChart: (chartType: DC.ViewType) => void;
 }
 
-export default ({ onPickChart }: IProps) => {
-  const [pickChartModalVisible] = ChartEditorStore.useStore((s) => [s.pickChartModalVisible]);
+const PickChartModal = ({ onPickChart }: IProps) => {
+  const pickChartModalVisible = ChartEditorStore.useStore((s) => s.pickChartModalVisible);
   const [locale, textMap] = DashboardStore.useStore((s) => [s.locale, s.textMap]);
   const { setPickChartModalVisible } = ChartEditorStore;
 
@@ -25,8 +25,8 @@ export default ({ onPickChart }: IProps) => {
       title={textMap['select chart type']}
       visible={pickChartModalVisible}
       width={600}
-      onCancel={() => setPickChartModalVisible(false)}
       footer={null}
+      onCancel={() => setPickChartModalVisible(false)}
     >
       <Row>
         {map(basicCharts, ({ name, enName, image }, chartType) => (
@@ -41,3 +41,5 @@ export default ({ onPickChart }: IProps) => {
     </Modal>
   );
 };
+
+export default PickChartModal;

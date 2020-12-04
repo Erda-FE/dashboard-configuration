@@ -48,6 +48,7 @@ export const TEXT_ZH_MAP = {
   'exporting data': '正在导出数据...',
   'export data error': '导出数据失败！',
   'unnamed dashboard': '未命名大盘',
+  'no data': '暂无数据',
 };
 
 export const TEXT_EN_MAP = {
@@ -99,6 +100,7 @@ export const TEXT_EN_MAP = {
   'exporting picture': 'exporting picture...',
   'exporting data': 'exporting data...',
   'export data error': 'export data error!',
+  'no data': 'no data',
 };
 
 const defaultConfig = {
@@ -165,4 +167,9 @@ export const CHARTS_INIT_CONFIG = {
     chartType: 'chart:scatter',
     title: 'Scatter Chart',
   },
+};
+
+export const GRID_LAYOUT_CONFIG = {
+  cols: 24,
+  rowHeight: 30,
 };

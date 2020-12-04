@@ -2,12 +2,12 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-03 19:58:00
+ * @Last Modified time: 2020-12-04 15:18:15
  */
 import React, { RefObject, useCallback, useMemo } from 'react';
 import { Button, Tooltip } from '@terminus/nusi';
 import { useFullscreen } from 'react-use';
-import { useForceUpdate, DcIcon } from '../../common';
+import { DcIcon } from '../../common';
 import { insertWhen } from '../../common/utils';
 import { saveImage } from '../../utils/comp';
 

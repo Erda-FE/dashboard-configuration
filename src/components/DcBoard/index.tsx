@@ -1,31 +1,41 @@
+/* Dashboard with editor
+ * @Author: licao
+ * @Date: 2020-12-04 10:25:39
+ * @Last Modified by: licao
+ * @Last Modified time: 2020-12-04 16:19:13
+ */
+import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import { isEmpty, isFunction } from 'lodash';
-import React, { useRef, useEffect } from 'react';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useUnmount } from 'react-use';
+// 渲染器部分
 import { useComponentWidth, DcEmpty } from '../../common';
+import DashboardHeader from './header';
+import BoardGrid from './grid';
+// 编辑器部分
 import DcChartEditor from '../DcChartEditor';
 import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
-import PickChartModal from '../DcChartEditor/pick-chart';
+
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
-import DashboardHeader from './header';
-import { BoardGrid } from './grid';
 
 import './index.scss';
 import '../../static/iconfont.css';
 
 interface IProps {
   name?: string; // 大盘名
-  layout?: any; // 配置信息，包含图表布局、各图表配置信息
+  layout: DC.ILayout; // 配置信息，包含图表布局、各图表配置信息
+  APIFormComponent?: React.ReactNode; // 外部数据源表单配置器
   beforeOnSave?: () => boolean; // 返回 false 来拦截 onSave
-  onSave?: (layout: any[], extra: { singleLayouts: any[]; viewMap: any }) => void; // 保存
+  onSave?: (layout: DC.ILayout[], extra: { singleLayouts: any[]; viewMap: any }) => void; // 保存
   onCancel?: () => void; // 取消编辑
   onEdit?: () => void; // 触发编辑
   onEditorToggle?: (status: boolean) => void; // 图表编辑态改变
-  APIFormComponent?: React.ReactNode | React.SFC; // 外部数据源表单配置器
 }
+
+const textMap = DashboardStore.getState((s) => s.textMap);
 
 const DcBoard = ({
   name,
@@ -43,7 +53,7 @@ const DcBoard = ({
   const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
   const [viewMap, editChartId] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId]);
   const { updateContextMap } = DashboardStore;
-  const { reset: resetDrawer, addEditor } = ChartEditorStore;
+  const { reset: resetDrawer } = ChartEditorStore;
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const [gridWidthHolder, gridWidth] = useComponentWidth();
 
@@ -63,10 +73,6 @@ const DcBoard = ({
     });
   }, [APIFormComponent, updateContextMap]);
 
-  const handlePickChart = (chartType: DC.ViewType) => {
-    addEditor(chartType);
-  };
-
   return (
     <div
       className={
@@ -75,7 +81,6 @@ const DcBoard = ({
           'dark-border': true,
           'v-flex-box': true,
           active: isEditMode,
-          // isFullscreen,
         })
       }
     >
@@ -90,7 +95,7 @@ const DcBoard = ({
       <div className="dc-dashboard-content flex-1 v-flex-box" ref={boardRef}>
         <DcEmpty
           className="flex-1"
-          description="暂无数据"
+          description={textMap['no data']}
           condition={isEmpty(layout) || gridWidth === Infinity}
         />
         <div className="dc-dashboard-grid-wp">
@@ -99,7 +104,6 @@ const DcBoard = ({
         </div>
       </div>
       <DcChartEditor />
-      <PickChartModal onPickChart={handlePickChart} />
     </div>
   );
 };

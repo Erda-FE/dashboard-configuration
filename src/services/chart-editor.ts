@@ -1,4 +1,4 @@
-import agent from '../utils/agent';
+import agent from '../common/utils/agent';
 
 export const getChartData = ({ url, query, method = 'GET', body }: DC.API) => (
   agent[method.toLowerCase()](url)

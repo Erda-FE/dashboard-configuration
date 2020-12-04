@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-11-17 17:40:41
+ * @Last Modified time: 2020-12-04 11:41:29
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
@@ -10,7 +10,7 @@ import { map, slice, findIndex } from 'lodash';
 import { Breadcrumb } from 'antd';
 import echarts from 'echarts';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
-import agent from '../../../utils/agent';
+import agent from '../../../common/utils/agent';
 import { useUpdate } from '../../../common/use-hooks';
 import ChartSizeMe from '../chart-sizeme';
 import { adcodeMap } from '../../../constants/adcode-map';

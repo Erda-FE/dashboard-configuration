@@ -5,12 +5,13 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-11-26 19:01:52
  */
-import { values, map, merge, filter, get, isEmpty } from 'lodash';
+import { values, map, merge, filter, get, isEmpty, find } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { MAP_ALIAS } from './constants';
 
-export const createLoadDataFn = ({ api, chartType }: any) => async (payload: any = {}) => {
-  const { data } = await getChartData(merge({}, api, { query: payload }));
+export const createLoadDataFn = ({ api, chartType }: any) => async (payload: any = {}, body?: any) => {
+  const { data } = await getChartData(merge({}, api, { query: payload, body }));
+  const yAxisInfo = get(api, ['extraData', 'activedMetrics']);
   if (['chart:line', 'chart:area', 'chart:bar'].includes(chartType)) {
     const { time, results } = data;
     if (results[0].data.length > 1) {
@@ -40,7 +41,7 @@ export const createLoadDataFn = ({ api, chartType }: any) => async (payload: any
     const { cols, data: _data } = data;
     const aliases = filter(map(cols, (col) => col.key), (alias) => alias !== MAP_ALIAS);
     const metricData = map(aliases, (alias) => ({
-      name: alias,
+      name: find(yAxisInfo, ({ fid: alias }))?.alias,
       data: map(_data, (item) => ({
         name: item[MAP_ALIAS],
         value: item[alias],
@@ -51,24 +52,43 @@ export const createLoadDataFn = ({ api, chartType }: any) => async (payload: any
   }
 
   if (chartType === 'chart:funnel') {
-    // 漏斗图：一维，多值
+    // // 漏斗图：一维，多值
+    // const xAxis = get(api, ['extraData', 'xAxis', 0, 'fid']);
+    // // const yAxisKeys = map(get(api, ['extraData', 'activedMetrics']), ({ fid }) => fid);
+    // const { cols, data: _data } = data;
+
+    // // const xAxisCol = find(cols, { key: xAxis });
+    // const yAxisCols = filter(cols, ({ key }) => key !== xAxis);
+
+    // const yAxises = map(yAxisCols, (col) => col.key);
+    // const metricData = map(yAxises, (yAxis) => ({
+    //   // name: yAxis,
+    //   data: map(_data, (item) => ({
+    //     name: item[xAxis],
+    //     value: item[yAxis],
+    //   })),
+    // }));
+
+
+    // 漏斗图：0维，多值
     const xAxis = get(api, ['extraData', 'xAxis', 0, 'fid']);
-    // const yAxisKeys = map(get(api, ['extraData', 'activedMetrics']), ({ fid }) => fid);
     const { cols, data: _data } = data;
 
     // const xAxisCol = find(cols, { key: xAxis });
-    const yAxisCols = filter(cols, ({ key }) => key !== xAxis);
+    // const yAxisCols = filter(cols, ({ key }) => key !== xAxis);
 
-    const yAxises = map(yAxisCols, (col) => col.key);
-    const metricData = map(yAxises, (yAxis) => ({
-      // name: yAxis,
-      data: map(_data, (item) => ({
-        name: item[xAxis],
-        value: item[yAxis],
+    const yAxises = map(yAxisInfo, (col) => col.fid);
+
+    const singleFunnelData = {
+      sort: 'none',
+      name: '',
+      data: map(yAxises, (yAxis) => ({
+        name: find(yAxisInfo, ({ fid: yAxis }))?.alias,
+        value: _data[0][yAxis],
       })),
-    }));
+    };
 
-    return { metricData };
+    return { metricData: [singleFunnelData] };
   }
   return data;
 };

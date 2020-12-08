@@ -5,8 +5,5 @@ export default () => ({
   },
   legend: {
     type: 'scroll',
-    orient: 'vertical',
-    x: 'right',
-    y: 'center',
   },
 });

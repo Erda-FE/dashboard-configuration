@@ -25,9 +25,34 @@ import './index.scss';
 import '../../static/iconfont.css';
 
 interface IProps {
-  name?: string; // 大盘名
-  layout: DC.ILayout; // 配置信息，包含图表布局、各图表配置信息
-  APIFormComponent?: React.ReactNode; // 外部数据源表单配置器
+  /**
+   *指定编辑器预览时间
+   *
+   * @type {{ startTimeMs: number; endTimeMs: number }}
+   * @memberof IProps
+   */
+  timeSpan?: { startTimeMs: number; endTimeMs: number };
+  /**
+   *大盘名
+   *
+   * @type {string}
+   * @memberof IProps
+   */
+  name?: string;
+  /**
+   *配置信息，包含图表布局、各图表配置信息
+   *
+   * @type {DC.ILayout}
+   * @memberof IProps
+   */
+  layout: DC.ILayout;
+  /**
+   *外部数据源表单配置器，经过 Antd Form 包装
+   *
+   * @type {React.ReactNode}
+   * @memberof IProps
+   */
+  APIFormComponent?: React.ReactNode;
   beforeOnSave?: () => boolean; // 返回 false 来拦截 onSave
   onSave?: (layout: DC.ILayout[], extra: { singleLayouts: any[]; viewMap: any }) => void; // 保存
   onCancel?: () => void; // 取消编辑
@@ -38,6 +63,7 @@ interface IProps {
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 const DcBoard = ({
+  timeSpan,
   name,
   APIFormComponent = DiceDataConfigFormComponent,
   layout,
@@ -53,13 +79,17 @@ const DcBoard = ({
   const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
   const [viewMap, editChartId] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId]);
   const { updateContextMap } = DashboardStore;
-  const { reset: resetDrawer } = ChartEditorStore;
+  const { reset: resetDrawer, updateState } = ChartEditorStore;
   const chartEditorVisible = !isEmpty(viewMap[editChartId]);
   const [gridWidthHolder, gridWidth] = useComponentWidth();
 
   useUnmount(() => {
     resetDrawer();
   });
+
+  useEffect(() => {
+    timeSpan && updateState({ timeSpan });
+  }, [timeSpan, updateState]);
 
   useEffect(() => {
     if (isFunction(_onEditorToggle)) {

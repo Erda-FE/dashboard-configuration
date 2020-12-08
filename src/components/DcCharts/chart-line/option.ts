@@ -117,7 +117,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       if (!endTime) {
         return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;
       }
-      return `${formatTime(param[0].name)} 到 ${formatTime(endTime)}<br/>${genTTArray(param).join('')}`;
+      return `${formatTime(endTime)}<br/>${genTTArray(param).join('')}`;
+      // return `${formatTime(param[0].name)} 到 ${formatTime(endTime)}<br/>${genTTArray(param).join('')}`;
     };
   }
 

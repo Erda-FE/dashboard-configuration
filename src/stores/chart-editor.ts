@@ -16,6 +16,13 @@ interface IState {
   isTouched: boolean;
   dataConfigForm: any;
   baseConfigForm: any;
+  /**
+   *外部传入的时间
+   *
+   * @type {{ startTimeMs: number; endTimeMs: number }}
+   * @memberof IState
+   */
+  timeSpan: { startTimeMs: number; endTimeMs: number };
 }
 
 const initState: IState = {
@@ -28,6 +35,7 @@ const initState: IState = {
   viewCopy: {}, // 修改时用于恢复的复制对象
   dataConfigForm: null, // 存储数据配置表单对象
   baseConfigForm: null, // 存储基础配置表单对象
+  timeSpan: { startTimeMs: 0, endTimeMs: 0 },
 };
 
 const chartEditorStore = createFlatStore({

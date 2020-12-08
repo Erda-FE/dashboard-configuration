@@ -56,6 +56,16 @@ const PieConfigurator = (props: IProps) => {
         },
       },
     },
+    {
+      label: textMap.unit,
+      name: 'config.optionProps.unit',
+      type: 'input',
+      itemProps: {
+        onBlur(e: any) {
+          onEditorChange({ config: { optionProps: { unit: e.target.value } } });
+        },
+      },
+    },
   ];
 
   return (

@@ -17,7 +17,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
       series: map(metricData, (item) => ({
         ...item,
         type: 'pie',
-        radius: isShowTotal ? ['50%', '70%'] : undefined,
+        radius: isShowTotal ? ['50%', '70%'] : '70%',
       })),
     },
     isShowTotal ? {

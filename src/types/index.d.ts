@@ -1,3 +1,5 @@
+import { ReactNode } from 'react';
+
 export as namespace DC;
 interface LayoutItem {
   view: DC.View;
@@ -28,18 +30,19 @@ type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'chart
 
 type ViewDefMap = Record<ViewType, ViewDefItem>;
 
+interface IExtraData {
+  dataConfigSelectors?: any[];
+  dynamicFilterKey?: string;
+  dynamicFilterDataAPI?: API;
+}
+
 interface API {
   url: string;
   method: 'GET' | 'POST';
-  query?: {
-    [k: string]: any;
-  };
-  body?: {
-    [k: string]: any;
-  };
-  header?: {
-    [k: string]: any;
-  };
+  query?: Record<string, string | number | any[]>;
+  body?: Record<string, any>;
+  header?: Record<string, string | number | any[]>;
+  extraData?: IExtraData;
 }
 
 interface View {
@@ -48,7 +51,8 @@ interface View {
   chartType: string; // chart:timeline | chart:bar | chart:radar ...
   tooltip?: any;
   chartProps?: any;
-  title?: string;
+  customRender?: () => ReactNode;
+  title?: string | (() => ReactNode);
   description?: string;
   hideHeader?: boolean; // 是否隐藏Header
   staticData?: StaticData; // 静态数据

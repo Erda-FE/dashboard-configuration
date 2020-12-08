@@ -10,11 +10,10 @@ import { insertWhen, genUUID } from '../../../../common/utils';
 import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, TIME_FORMATS } from './constants';
 import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn } from './data-loader';
+import ChartEditorStore from '../../../../stores/chart-editor';
 
 import './index.scss';
 
-// mock timeSpan
-const timeSpan = { startTimeMs: 1605830400000, endTimeMs: 1605876677944 };
 const getDefaultColumn = () => [{ key: uniqueId(), metric: undefined, aggregation: undefined }];
 
 interface IProps {
@@ -29,6 +28,7 @@ interface IProps {
 }
 
 export default ({ submitResult, currentChart, form }: IProps) => {
+  const timeSpan = ChartEditorStore.useStore((s) => s.timeSpan);
   const { dataConfigMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
   // const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
   // 配置所需的数据，宿主注入
@@ -156,15 +156,17 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     let filterExpressions = map(_filters, ({ tag, method, value }) => `${tag}${method}${isNumber(value) ? value : `'${value}'`}`);
     filterExpressions = [
       ...filterExpressions,
+      // 地图处理
       ...insertWhen(isMapType && !!preLevel, [`${preLevel}='${curMapType[curMapType.length - 1]}'`]),
     ];
     return isEmpty(filterExpressions) ? undefined : filterExpressions;
   };
   const getIndicatorExpressions = (_indicators: any) => [
     ...map(_indicators, ({ metric, aggregation, alias }) => ({
-      expr: aggregation ? `${aggregation}(${fieldsMap[metric].key})` : fieldsMap[metric].key,
+      expr: aggregation ? `${aggregation}(${fieldsMap[metric]?.key})` : fieldsMap[metric]?.key,
       alias,
     })),
+    // 地图处理
     ...insertWhen(isMapType, [
       { expr: `${mapLevel}::tag`, alias: MAP_ALIAS },
     ]),
@@ -179,7 +181,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       start: timeSpan.startTimeMs,
       end: timeSpan.endTimeMs,
     };
-  }, [customTime]);
+  }, [timeSpan, customTime]);
 
   // Sql 模式只在表格图中出现
   useEffect(() => {
@@ -517,9 +519,10 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       dataIndex: 'metric',
       render: (value: string, { key }: any) => (
         <Select
+          allowClear
           showSearch
           defaultValue={value}
-          onSelect={(v: any) => update({ xAxis: updateColumn(xAxis, key, [
+          onChange={(v: any) => update({ xAxis: updateColumn(xAxis, key, [
             { property: 'metric', value: v },
           ]) })}
         >

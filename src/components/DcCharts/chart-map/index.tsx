@@ -6,7 +6,7 @@
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
-import { map, slice, findIndex } from 'lodash';
+import { map, slice, findIndex, cloneDeep } from 'lodash';
 import { Breadcrumb } from 'antd';
 import echarts from 'echarts';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
@@ -16,6 +16,7 @@ import ChartSizeMe from '../chart-sizeme';
 import { adcodeMap } from '../../../constants/adcode-map';
 import { getOption } from './option';
 import ChartEditorStore from '../../../stores/chart-editor';
+import { MAP_LEVEL, MAP_ALIAS } from '../../DcChartEditor/data-config/dice-form/constants';
 
 import './index.scss';
 
@@ -26,13 +27,15 @@ interface IProps {
     option: object;
     onChange?: (curMapTypes: string[]) => void;
   };
-  loadData: (arg?: any) => void;
+  body: any;
+  loadData: (arg?: any, body?: any) => void;
 }
 
 const noop = () => {};
 
 const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   const loadData = useMemo(() => props.loadData || noop, [props.loadData]);
+  const preBody = useMemo(() => props.body, [props.body]);
   const { onEditorChange } = ChartEditorStore;
 
   const [{ mapType, registeredMapType }, updater] = useUpdate({
@@ -49,8 +52,19 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   useEffect(() => {
     // 编辑状态下存储当前地图层级到 store
     props.isEditView && onEditorChange({ curMapType: mapType });
-    loadData(mapType);
-  }, [mapType, props.isEditView, onEditorChange, loadData]);
+    // 临时加的，需重构
+    const [mapLevel, preLevel] = [MAP_LEVEL[mapType.length - 1], MAP_LEVEL[mapType.length - 2]];
+    const _select = cloneDeep(preBody?.select);
+    if (!_select) return;
+    const idx = findIndex(_select, { alias: MAP_ALIAS });
+    _select[idx] = { expr: `${mapLevel}::tag`, alias: MAP_ALIAS };
+    const body = {
+      groupby: [mapLevel],
+      select: _select,
+      where: preLevel ? [`${preLevel}='${mapType[mapType.length - 1]}'`] : undefined,
+    };
+    loadData(undefined, body);
+  }, [mapType, props.isEditView, onEditorChange, loadData, preBody]);
 
   const registerMap = (_mapType: string, _data: any) => {
     echarts.registerMap(_mapType, _data);

@@ -127,7 +127,7 @@ class Operation extends React.PureComponent<IProps, IState> {
     }
   }
 
-  loadData = (arg?: any) => {
+  loadData = (arg?: any, body?: any) => {
     const { view } = this.props;
     const { loadData, dataConvertor } = view;
     const { staticLoadFnPayload, dynamicLoadFnPayloadMap } = this.state;
@@ -140,7 +140,7 @@ class Operation extends React.PureComponent<IProps, IState> {
       ...reduce(dynamicLoadFnPayloadMap, (result, v) => ({ ...result, ...v }), {}),
       ...staticLoadFnPayload,
       ...arg,
-    }).then((res: any) => {
+    }, body).then((res: any) => {
       let resData = res;
       if (dataConvertor) {
         let convertor = dataConvertor;

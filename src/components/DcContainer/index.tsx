@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-10 14:09:01
+ * @Last Modified time: 2020-12-10 14:24:55
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select } from '@terminus/nusi';
@@ -303,7 +303,7 @@ const DcContainer = ({ view, viewId, children }: IProps) => {
             && (!resData || isEmpty(resData?.metricData))
           }
         >
-          <DcEmpty />
+          <DcEmpty className="full-height" />
         </When>
         <Otherwise>
           <div className="dc-chart">

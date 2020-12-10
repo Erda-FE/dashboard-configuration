@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Modal, Row, Col } from 'antd';
+import { Modal, Row, Col } from '@terminus/nusi';
 import { map } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
@@ -26,6 +26,7 @@ const PickChartModal = ({ onPickChart }: IProps) => {
       visible={pickChartModalVisible}
       width={600}
       footer={null}
+      maskClosable
       onCancel={() => setPickChartModalVisible(false)}
     >
       <Row>

@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Button, message, Tabs, Popconfirm } from 'antd';
-import { Drawer } from '@terminus/nusi';
+// import { Button, message, Tabs, Popconfirm } from 'antd';
+import { Drawer, Button, Toast, Tabs, Popover } from '@terminus/nusi';
 import { get } from 'lodash';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { getConfig } from '../../../config';
@@ -62,7 +62,7 @@ const EditorPanel = () => {
     baseConfigFormRef.current.validateFieldsAndScroll((errors: any, options: any) => {
       if (errors) return;
       if (!dataConfigFormRef.current) {
-        message.warning('请完成数据配置！');
+        Toast.warning('请完成数据配置！');
         return;
       }
       amalgamatedOptions = { ...amalgamatedOptions, ...options };
@@ -86,15 +86,16 @@ const EditorPanel = () => {
 
   return (
     <Drawer
+      className="dc-editor"
       visible
       width="100%"
       closable={false}
       maskClosable={false}
       bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}
     >
-      <div className="dc-editor-mode">
-        <div className="dc-editor-content">
-          <div className="dc-editor-previewer">
+      <div className="dc-editor-wp v-flex-box flex-space-between full-height auto-overflow">
+        <div className="dc-editor-content flex-1 auto-overflow pa12">
+          <div className="dc-editor-previewer flex-1 mr12 auto-overflow border-radius white-bg">
             <DcContainer viewId={editChartId} view={currentChart}>
               <Choose>
                 <When condition={customRender && (typeof customRender === 'function')}>
@@ -104,23 +105,23 @@ const EditorPanel = () => {
               </Choose>
             </DcContainer>
           </div>
-          <div className="dc-editor-setting">
+          <div className="dc-editor-setting py0 px12 auto-overflow white-bg border-radius">
             <Tabs defaultActiveKey="data">{tabPanes}</Tabs>
           </div>
         </div>
-        <div className="dc-editor-footer">
+        <div className="dc-editor-footer px12 py8 white-bg">
           <Button onClick={saveChart} type="primary">{textMap.ok}</Button>
           <Choose>
             <When condition={isTouched}>
-              <Popconfirm
+              <Popover
                 okText={textMap.ok}
                 cancelText={textMap.cancel}
                 placement="top"
                 title={textMap['confirm to drop data']}
-                onConfirm={addMode ? deleteEditor : closeEditor}
+                onOk={addMode ? deleteEditor : closeEditor}
               >
                 <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
-              </Popconfirm>
+              </Popover>
             </When>
             <Otherwise>
               <Button style={{ marginRight: 8 }} onClick={addMode ? deleteEditor : closeEditor}>{textMap.cancel}</Button>

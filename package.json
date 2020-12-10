@@ -50,6 +50,7 @@
     "echarts": "^4.2.1",
     "echarts-for-react": "^2.0.15-beta.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "immer": "^8.0.0",
     "lodash": "^4.17.14",
     "moment": "^2.27.0",
     "react": "^16.8.6",

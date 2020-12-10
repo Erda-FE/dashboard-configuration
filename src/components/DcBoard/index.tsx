@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 10:25:39
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-04 16:19:13
+ * @Last Modified time: 2020-12-10 11:06:57
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
@@ -74,6 +74,7 @@ const DcBoard = ({
   beforeOnSave,
 }: IProps) => {
   const boardRef = useRef<HTMLDivElement>(null);
+  const boardContentRef = useRef<HTMLDivElement>(null);
   const _onEditorToggle = useRef(onEditorToggle);
 
   const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
@@ -105,6 +106,7 @@ const DcBoard = ({
 
   return (
     <div
+      ref={boardRef}
       className={
         classnames({
           'dc-dashboard': true,
@@ -115,14 +117,15 @@ const DcBoard = ({
       }
     >
       <DashboardHeader
-        contentRef={boardRef}
+        wrapRef={boardRef}
+        contentRef={boardContentRef}
         dashboardName={name}
         afterEdit={onEdit}
         beforeSave={beforeOnSave}
         onSave={onSave}
         onCancel={onCancel}
       />
-      <div className="dc-dashboard-content flex-1 v-flex-box" ref={boardRef}>
+      <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
         <DcEmpty
           className="flex-1"
           description={textMap['no data']}

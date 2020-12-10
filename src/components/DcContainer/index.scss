@@ -51,7 +51,7 @@ $chart-prefix-cls: #{$prefix}-chart;
 
   &-title {
     margin: 0;
-    color: rgba(0, 0, 0, 0.8);
+    color: $color-text;
     font-weight: 500;
     font-size: 14px;
   }
@@ -74,10 +74,11 @@ $chart-prefix-cls: #{$prefix}-chart;
   }
 }
 
-// TODO: remove it
-.ant-dropdown-menu-item .dc-chart-title-dp-op {
+.pk-dropdown-menu-item > .dc-chart-title-dp-op {
   display: flex;
+  justify-content: center;
   align-items: center;
+  color: $color-text-sub;
 
   .dc-iconfont {
     margin-right: 8px;

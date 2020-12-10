@@ -58,8 +58,8 @@ const dashBoardStore = createFlatStore({
     },
   },
   reducers: {
-    toggleFullscreen(state) {
-      state.isFullscreen = !state.isFullscreen;
+    toggleFullscreen(state, isFullscreen?: boolean) {
+      state.isFullscreen = isFullscreen || !state.isFullscreen;
     },
     updateLayout(state, layout: any[]) {
       state.layout = layout;

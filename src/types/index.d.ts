@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactElement, ReactNode } from 'react';
 
 export as namespace DC;
 interface LayoutItem {
@@ -51,16 +51,18 @@ interface View {
   chartType: string; // chart:timeline | chart:bar | chart:radar ...
   tooltip?: any;
   chartProps?: any;
-  customRender?: () => ReactNode;
+  customRender?: (element: ReactElement<any>, view: any) => ReactNode;
   title?: string | (() => ReactNode);
   description?: string;
   hideHeader?: boolean; // 是否隐藏Header
   staticData?: StaticData; // 静态数据
   api?: API;
-  loadData?: (query?: object) => Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
+  chartQuery?: any;
+  maskMsg?: string | Element;
+  loadData?: (query?: object, body?: object) => Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
   dataConvertor?: string | DataConvertor; // 数据转换，为string时表示使用已注册的方法
   config: ChartConfig;// 所有页面上的配置项
-  controls?: string[] | React.Component[]; // 控件列表，展示在header下面，为string时表示使用已注册的组件
+  controls?: string[] | React.Component[] | any[]; // 控件列表，展示在header下面，为string时表示使用已注册的组件
 }
 
 type DataConvertor = (data: object) => object;

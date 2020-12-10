@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:10:37
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-04 16:13:42
+ * @Last Modified time: 2020-12-10 11:15:07
  */
 import React, { useRef } from 'react';
 import classnames from 'classnames';
@@ -42,11 +42,13 @@ interface IPureProps {
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 const PureDashboard = ({ name, layout, showOptions = false }: IPureProps) => {
-  const boardRef = useRef(null);
+  const boardRef = useRef<HTMLDivElement>(null);
+  const boardContentRef = useRef<HTMLDivElement>(null);
   const [gridWidthHolder, gridWidth] = useComponentWidth();
 
   return (
     <div
+      ref={boardRef}
       className={
         classnames({
           'dc-dashboard': true,
@@ -56,12 +58,13 @@ const PureDashboard = ({ name, layout, showOptions = false }: IPureProps) => {
     >
       <If condition={showOptions}>
         <DashboardHeader
-          contentRef={boardRef}
+          wrapRef={boardRef}
+          contentRef={boardContentRef}
           dashboardName={name}
           readOnly
         />
       </If>
-      <div className="dc-dashboard-content flex-1 v-flex-box" ref={boardRef}>
+      <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
         <DcEmpty
           className="flex-1"
           description={textMap['no data']}

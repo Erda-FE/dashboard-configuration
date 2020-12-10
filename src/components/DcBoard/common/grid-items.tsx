@@ -18,7 +18,6 @@ const genGridItems = (pureLayout: DC.PureLayoutItem[], viewMap: Record<string, D
       const { chartType = '' } = view;
       const ChartNode = get(chartConfigMap, [chartType, 'Component']) as any;
       const node = ChartNode ? <ChartNode {...view.chartProps} {...view.api} /> : <></>;
-      // grid 和 pureGrid 使用的 DcContainer 需要解耦
       ChildComp = <DcContainer viewId={i} view={view}>{node}</DcContainer>;
     } else {
       // eslint-disable-next-line no-console

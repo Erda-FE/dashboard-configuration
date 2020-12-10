@@ -1,10 +1,10 @@
-import { Spin } from 'antd';
+import { Spin } from '@terminus/nusi';
 import React from 'react';
 
 import './index.scss';
 
 interface IProps {
-  message?: string;
+  message?: string | Element;
 }
 
 const ChartMask = ({ message }: IProps) => {
@@ -19,6 +19,10 @@ const ChartMask = ({ message }: IProps) => {
   );
 };
 
-export const ChartSpinMask = ({ message }: IProps) => <div className="dc-chart-mask"><Spin tip={message} /></div>;
+export const ChartSpinMask = ({ message }: IProps) => (
+  <div className="dc-chart-mask">
+    <Spin tip={message as string} />
+  </div>
+);
 
 export default ChartMask;

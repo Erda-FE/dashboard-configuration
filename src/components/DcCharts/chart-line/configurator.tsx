@@ -1,8 +1,5 @@
-/**
- * 2D 线形图：折线、柱状、曲线
- */
 import { get } from 'lodash';
-import { Form } from 'antd';
+import { Form } from '@terminus/nusi';
 import React, { useMemo, useEffect } from 'react';
 import { WrappedFormUtils } from 'antd/lib/form/Form';
 import { insertWhen } from '../../../common/utils';
@@ -254,8 +251,6 @@ const LineConfigurator = (props: IProps) => {
   );
 };
 
-const LineForm = Form.create()(LineConfigurator);
-
 const Configurator = (p: any) => {
   const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId, s.isTouched]);
 
@@ -266,7 +261,7 @@ const Configurator = (p: any) => {
     isTouched,
     currentChart: get(viewMap, [editChartId]),
   };
-  return <LineForm {...p} {...storeProps} />;
+  return <LineConfigurator {...p} {...storeProps} />; aaaaaaaaaqaa;
 };
 
 export default React.forwardRef((props, ref) => (

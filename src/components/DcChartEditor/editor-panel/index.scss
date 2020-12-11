@@ -6,8 +6,12 @@ $editor-prefix-cls: #{$prefix}-editor;
     display: flex;
   }
 
-  &-setting {
-    width: 550px;
+  &-common-setting {
+    width: 250px;
+  }
+
+  &-data-setting {
+    width: 450px;
   }
 
   &-footer {

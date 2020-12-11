@@ -44,8 +44,16 @@
     border-radius: $box-radius;
   }
 
+  .border-bottom {
+    border-bottom: $dark-border;
+  }
+
   .white-bg {
     background-color: $color-white;
+  }
+
+  .bold-500 {
+    font-weight: 500;
   }
 
   &.dark-border,

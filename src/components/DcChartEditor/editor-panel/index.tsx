@@ -1,6 +1,5 @@
 import * as React from 'react';
-// import { Button, message, Tabs, Popconfirm } from 'antd';
-import { Drawer, Button, Toast, Tabs, Popover } from '@terminus/nusi';
+import { Drawer, Button, Toast, Popover } from '@terminus/nusi';
 import { get } from 'lodash';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { getConfig } from '../../../config';
@@ -11,8 +10,6 @@ import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
 import './index.scss';
-
-const { TabPane } = Tabs;
 
 const noop = () => null;
 
@@ -72,14 +69,6 @@ const EditorPanel = () => {
 
   const info = getConfig('chartConfigMap')[currentChart.chartType];
   const { Configurator = noop, Component: ChartComponent } = info;
-  const tabPanes = [
-    <TabPane tab={textMap['parameter configuration']} key="setting">
-      <Configurator ref={baseConfigFormRef} />
-    </TabPane>,
-    <TabPane tab={textMap['datasource configuration']} key="data">
-      <DataConfig ref={dataConfigFormRef} />
-    </TabPane>,
-  ];
 
   const CustomNode = ({ ChartNode, render, view, ...props }: any) => render(<ChartNode {...props} />, view);
   const { customRender } = currentChart;
@@ -95,7 +84,15 @@ const EditorPanel = () => {
     >
       <div className="dc-editor-wp v-flex-box flex-space-between full-height auto-overflow">
         <div className="dc-editor-content flex-1 auto-overflow pa12">
-          <div className="dc-editor-previewer flex-1 mr12 auto-overflow border-radius white-bg">
+          <div className="dc-editor-common-setting v-flex-box py0 px12 auto-overflow white-bg border-radius">
+            <div className="dc-editor-setting-title bold-500 fz16 mb8 py8 border-bottom">
+              {textMap['parameter configuration']}
+            </div>
+            <div className="auto-overflow flex-1">
+              <Configurator ref={baseConfigFormRef} />
+            </div>
+          </div>
+          <div className="dc-editor-previewer flex-1 mx12 auto-overflow border-radius white-bg">
             <DcContainer viewId={editChartId} view={currentChart}>
               <Choose>
                 <When condition={customRender && (typeof customRender === 'function')}>
@@ -105,8 +102,13 @@ const EditorPanel = () => {
               </Choose>
             </DcContainer>
           </div>
-          <div className="dc-editor-setting py0 px12 auto-overflow white-bg border-radius">
-            <Tabs defaultActiveKey="data">{tabPanes}</Tabs>
+          <div className="dc-editor-data-setting v-flex-box py0 px12 white-bg border-radius">
+            <div className="dc-editor-setting-title bold-500 fz16 mb8 py8 border-bottom">
+              {textMap['datasource configuration']}
+            </div>
+            <div className="auto-overflow flex-1">
+              <DataConfig ref={dataConfigFormRef} />
+            </div>
           </div>
         </div>
         <div className="dc-editor-footer px12 py8 white-bg">

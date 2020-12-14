@@ -46,7 +46,6 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
         normal: {
           show: isLabel,
           position: 'top',
-          formatter: (label: any) => label.data.label,
         },
       },
       // markLine: i === 0 ? markLine : {}, //TODO

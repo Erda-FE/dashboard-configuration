@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-04 11:41:29
+ * @Last Modified time: 2020-12-14 19:51:49
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
@@ -36,7 +36,7 @@ const noop = () => {};
 const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   const loadData = useMemo(() => props.loadData || noop, [props.loadData]);
   const preBody = useMemo(() => props.body, [props.body]);
-  const { onEditorChange } = ChartEditorStore;
+  const { updateEditor } = ChartEditorStore;
 
   const [{ mapType, registeredMapType }, updater] = useUpdate({
     mapType: [],
@@ -51,7 +51,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   useEffect(() => {
     // 编辑状态下存储当前地图层级到 store
-    props.isEditView && onEditorChange({ curMapType: mapType });
+    props.isEditView && updateEditor({ curMapType: mapType });
     // 临时加的，需重构
     const [mapLevel, preLevel] = [MAP_LEVEL[mapType.length - 1], MAP_LEVEL[mapType.length - 2]];
     const _select = cloneDeep(preBody?.select);
@@ -64,7 +64,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
       where: preLevel ? [`${preLevel}='${mapType[mapType.length - 1]}'`] : undefined,
     };
     loadData(undefined, body);
-  }, [mapType, props.isEditView, onEditorChange, loadData, preBody]);
+  }, [mapType, props.isEditView, loadData, preBody]);
 
   const registerMap = (_mapType: string, _data: any) => {
     echarts.registerMap(_mapType, _data);

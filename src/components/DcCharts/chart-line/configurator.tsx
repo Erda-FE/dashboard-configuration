@@ -1,134 +1,115 @@
+import * as React from 'react';
+import { Checkbox } from '@terminus/nusi';
 import { get } from 'lodash';
-import { Form } from '@terminus/nusi';
-import React, { useMemo, useEffect } from 'react';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { insertWhen } from '../../../common/utils';
-import { RenderPureForm, KVTable, useUpdate } from '../../../common';
+// import { KVTable, useUpdate } from '../../../common';
+import CommonConfigurator from '../common/common-configurator';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
-interface IProps {
-  currentChart: DC.View;
-  form: WrappedFormUtils;
-  forwardedRef: { current: any };
-  setTouched: any;
-  onEditorChange: any;
-  isTouched: any;
-}
+const textMap = DashboardStore.getState((s) => s.textMap);
 
-const LineConfigurator = (props: IProps) => {
-  const { form, forwardedRef, currentChart, setTouched, onEditorChange, isTouched } = props;
-  const textMap = DashboardStore.useStore((s) => s.textMap);
-  const [{ controls }, updater] = useUpdate({ controls: form.getFieldsValue().controls });
-  const setFieldsValue = useMemo(() => form.setFieldsValue, [form.setFieldsValue]);
+// const LineConfigurator = (props: IProps) => {
+//   const { form, forwardedRef, currentChart, setTouched, updateEditor, isTouched } = props;
+//   const textMap = DashboardStore.useStore((s) => s.textMap);
+//   const [{ controls }, updater] = useUpdate({ controls: form.getFieldsValue().controls });
+//   const setFieldsValue = useMemo(() => form.setFieldsValue, [form.setFieldsValue]);
 
-  useEffect(() => {
-    forwardedRef.current = form;
-    if (!isTouched && form.isFieldsTouched()) {
-      setTouched(true);
-    }
-    updater.controls(form.getFieldsValue().controls);
-  }, [form, forwardedRef, isTouched, setTouched, updater]);
+//   useEffect(() => {
+//     forwardedRef.current = form;
+//     if (!isTouched && form.isFieldsTouched()) {
+//       setTouched(true);
+//     }
+//     updater.controls(form.getFieldsValue().controls);
+//   }, [form, forwardedRef, isTouched, setTouched, updater]);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setFieldsValue(currentChart);
-      currentChart.controls && updater.controls(currentChart.controls);
-    }, 0);
-  }, [currentChart, setFieldsValue, updater]);
+//   useEffect(() => {
+//     setTimeout(() => {
+//       setFieldsValue(currentChart);
+//       currentChart.controls && updater.controls(currentChart.controls);
+//     }, 0);
+//   }, [currentChart, setFieldsValue, updater]);
 
-  // const onConfigChange = (key: string, value: any) => {
-  //   const _config = cloneDeep(currentChart.config);
-  //   set(_config, key, value);
-  //   onEditorChange({ config: _config });
-  // };
+//   // const onConfigChange = (key: string, value: any) => {
+//   //   const _config = cloneDeep(currentChart.config);
+//   //   set(_config, key, value);
+//   //   updateEditor({ config: _config });
+//   // };
+// };
 
-  const fields = useMemo(() => [
-    {
-      label: textMap.title,
-      name: 'title',
-      type: 'input',
-      itemProps: {
-        onBlur(e: any) {
-          onEditorChange({ title: e.target.value });
-        },
-      },
-    },
-    {
-      label: textMap.description,
-      name: 'description',
-      type: 'textArea',
-      itemProps: {
-        onBlur(e: any) {
-          onEditorChange({ description: e.target.value });
-        },
-      },
-    },
+export default () => {
+  const viewCopy = ChartEditorStore.useStore(s => s.viewCopy);
+  const { updateEditor } = ChartEditorStore;
+  const isLabel = get(viewCopy, ['config', 'optionProps', 'isLabel']);
+
+  const fields = [
     {
       label: textMap.label,
       name: 'config.optionProps.isLabel',
-      type: 'switch',
-      itemProps: {
-        onChange(isLabel: boolean) {
-          onEditorChange({ config: { optionProps: { isLabel } } });
+      type: Checkbox,
+      required: false,
+      customProps: {
+        defaultChecked: isLabel,
+        children: textMap['show label'],
+        onChange(e: React.FocusEvent<HTMLInputElement>) {
+          updateEditor({ config: { optionProps: { isLabel: e.target.checked } } });
         },
       },
     },
-    {
-      label: textMap.controls,
-      name: 'controls[0].type',
-      type: 'select',
-      options: [{ name: textMap.select, value: 'select' }],
-      itemProps: {
-        allowClear: true,
-        onSelect(v: any) {
-          onEditorChange({ controls: [{
-            type: v,
-            key: undefined,
-            options: [],
-          }] });
-        },
-      },
-    },
-    ...insertWhen(controls && controls[0].type, [
-      {
-        label: textMap['field name'],
-        name: 'controls[0].key',
-        required: true,
-        type: 'input',
-        initialValue: controls && controls[0] && controls[0].key,
-        itemProps: {
-          onBlur(e: any) {
-            onEditorChange({ controls: [{
-              type: controls[0].type,
-              key: e.target.value,
-              options: [],
-            }] });
-          },
-        },
-      },
-      {
-        label: textMap['control data'],
-        name: 'controls[0].options',
-        required: true,
-        type: 'custom',
-        getComp: () => (
-          <KVTable
-            customValue={controls && controls[0] && controls[0].options}
-            forwardedRef={forwardedRef}
-            onChange={(values: DC.IKVTableValue[]) => {
-              onEditorChange({
-                controls: [{
-                  type: controls[0].type,
-                  key: controls[0].key,
-                  options: values,
-                }],
-              });
-            }}
-          />
-        ),
-      },
-    ]),
+    // 自定义筛选条件，场景基本没有？
+    // {
+    //   label: textMap.controls,
+    //   name: 'controls[0].type',
+    //   type: 'select',
+    //   options: [{ name: textMap.select, value: 'select' }],
+    //   itemProps: {
+    //     allowClear: true,
+    //     onSelect(v: any) {
+    //       updateEditor({ controls: [{
+    //         type: v,
+    //         key: undefined,
+    //         options: [],
+    //       }] });
+    //     },
+    //   },
+    // },
+    // ...insertWhen(controls && controls[0].type, [
+    //   {
+    //     label: textMap['field name'],
+    //     name: 'controls[0].key',
+    //     required: true,
+    //     type: 'input',
+    //     initialValue: controls && controls[0] && controls[0].key,
+    //     itemProps: {
+    //       onBlur(e: any) {
+    //         updateEditor({ controls: [{
+    //           type: controls[0].type,
+    //           key: e.target.value,
+    //           options: [],
+    //         }] });
+    //       },
+    //     },
+    //   },
+    //   {
+    //     label: textMap['control data'],
+    //     name: 'controls[0].options',
+    //     required: true,
+    //     type: 'custom',
+    //     getComp: () => (
+    //       <KVTable
+    //         customValue={controls && controls[0] && controls[0].options}
+    //         forwardedRef={forwardedRef}
+    //         onChange={(values: DC.IKVTableValue[]) => {
+    //           updateEditor({
+    //             controls: [{
+    //               type: controls[0].type,
+    //               key: controls[0].key,
+    //               options: values,
+    //             }],
+    //           });
+    //         }}
+    //       />
+    //     ),
+    //   },
     // {
     //   label: '提示',
     //   subList: [
@@ -239,31 +220,7 @@ const LineConfigurator = (props: IProps) => {
     //     ],
     //   ],
     // },
-  ], [textMap, forwardedRef, controls, onEditorChange]);
+  ];
 
-  return (
-    <section className="configurator-section">
-      <RenderPureForm
-        list={fields}
-        form={form}
-      />
-    </section>
-  );
+  return <CommonConfigurator fields={fields} />;
 };
-
-const Configurator = (p: any) => {
-  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId, s.isTouched]);
-
-  const { setTouched, onEditorChange } = ChartEditorStore;
-  const storeProps = {
-    setTouched,
-    onEditorChange,
-    isTouched,
-    currentChart: get(viewMap, [editChartId]),
-  };
-  return <LineConfigurator {...p} {...storeProps} />; aaaaaaaaaqaa;
-};
-
-export default React.forwardRef((props, ref) => (
-  <Configurator forwardedRef={ref} {...props} />
-));

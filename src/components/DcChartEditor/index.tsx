@@ -4,10 +4,10 @@ import EditorPanel from './editor-panel';
 import ChartEditorStore from '../../stores/chart-editor';
 
 const DcChartEditor = () => {
-  const { addEditor } = ChartEditorStore;
+  const { addView } = ChartEditorStore;
 
   const handlePickChart = (chartType: DC.ViewType) => {
-    addEditor(chartType);
+    addView(chartType);
   };
 
   return (

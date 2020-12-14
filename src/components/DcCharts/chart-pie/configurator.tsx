@@ -1,83 +1,32 @@
+import * as React from 'react';
+import { Checkbox } from '@terminus/nusi';
 import { get } from 'lodash';
-import { Form } from 'antd';
-import React, { useMemo, useEffect } from 'react';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
-import { RenderPureForm } from '../../../common';
+import CommonConfigurator from '../common/common-configurator';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
-interface IProps {
-  form: WrappedFormUtils;
-  forwardedRef: { current: any };
-}
+const textMap = DashboardStore.getState((s) => s.textMap);
 
-const PieConfigurator = (props: IProps) => {
-  const [viewMap, editChartId, isTouched] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId, s.isTouched]);
-  const textMap = DashboardStore.useStore((s) => s.textMap);
-  const { setTouched, onEditorChange } = ChartEditorStore;
-  const currentChart = get(viewMap, [editChartId]);
-  const { form, forwardedRef } = props;
-
-  const setFieldsValue = useMemo(() => form.setFieldsValue, [form.setFieldsValue]);
-
-  useEffect(() => {
-    forwardedRef.current = form;
-    if (!isTouched && form.isFieldsTouched()) {
-      setTouched(true);
-    }
-  }, [form, forwardedRef, isTouched, setTouched]);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setFieldsValue(currentChart);
-    }, 0);
-  }, [currentChart, setFieldsValue]);
+export default () => {
+  const viewCopy = ChartEditorStore.useStore(s => s.viewCopy);
+  const { updateEditor } = ChartEditorStore;
+  const isShowTotal = get(viewCopy, ['config', 'optionProps', 'isShowTotal']);
 
   const fields = [
     {
-      label: textMap.title,
-      name: 'title',
-      type: 'input',
-      itemProps: {
-        onBlur(e: any) {
-          onEditorChange({ title: e.target.value });
-        },
-      },
-    },
-    {
-      label: textMap.description,
-      name: 'description',
-      type: 'textArea',
-      itemProps: {
-        onBlur(e: any) {
-          onEditorChange({ description: e.target.value });
-        },
-      },
-    },
-    {
       label: textMap.showTotal,
       name: 'config.optionProps.isShowTotal',
-      type: 'switch',
-      itemProps: {
-        onChange(checked: boolean) {
-          onEditorChange({ config: { optionProps: { isShowTotal: checked } } });
+      type: Checkbox,
+      required: false,
+      customProps: {
+        defaultChecked: isShowTotal,
+        children: textMap['show label'],
+        onChange(e: React.FocusEvent<HTMLInputElement>) {
+          updateEditor({ config: { optionProps: { isShowTotal: e.target.checked } } });
         },
       },
     },
   ];
 
-  return (
-    <section className="configurator-section">
-      <RenderPureForm
-        list={fields}
-        form={form}
-      />
-    </section>
-  );
+  return <CommonConfigurator fields={fields} />;
 };
-
-const PieForm = Form.create()(PieConfigurator);
-
-export default React.forwardRef((props, ref) => (
-  <PieForm forwardedRef={ref} {...props} />
-));

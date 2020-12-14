@@ -1,5 +1,5 @@
+import { cloneDeep, forEach, merge, startsWith } from 'lodash';
 import { createFlatStore } from '../cube';
-import { cloneDeep, forEach, startsWith } from 'lodash';
 import { genUUID } from '../common/utils';
 import { panelControlPrefix, panelSettingPrefix } from '../utils/constants';
 // eslint-disable-next-line import/no-cycle
@@ -8,11 +8,10 @@ import { CHARTS_INIT_CONFIG } from '../constants';
 
 interface IState {
   pickChartModalVisible: boolean;
-  editChartId: string;
-  addMode: false;
+  editChartId?: string;
+  addMode: boolean;
   viewMap: Record<string, DC.View>; // 所有图表配置信息
-  codeVisible: boolean; // 代码编辑
-  viewCopy: any; // 修改时用于恢复的复制对象
+  viewCopy?: DC.View; // 修改时用于恢复的复制对象
   isTouched: boolean;
   dataConfigForm: any;
   baseConfigForm: any;
@@ -28,11 +27,10 @@ interface IState {
 const initState: IState = {
   pickChartModalVisible: false, // 添加图表时选择图表类型选择
   isTouched: false, // 数据是否变动，用于取消编辑时的判断
-  editChartId: '',
+  editChartId: undefined,
   addMode: false,
   viewMap: {}, // 所有图表配置信息
-  codeVisible: false, // 代码编辑，暂时没用到
-  viewCopy: {}, // 修改时用于恢复的复制对象
+  viewCopy: undefined, // 修改时用于恢复的复制对象
   dataConfigForm: null, // 存储数据配置表单对象
   baseConfigForm: null, // 存储基础配置表单对象
   timeSpan: { startTimeMs: 0, endTimeMs: 0 },
@@ -42,20 +40,6 @@ const chartEditorStore = createFlatStore({
   name: 'chartEditor',
   state: initState,
   effects: {
-    async addEditor({ select }, chartType: DC.ViewType) {
-      const viewId = `view-${genUUID(8)}`;
-      const viewMap = select((s) => s.viewMap);
-
-      chartEditorStore.updateState({
-        editChartId: viewId,
-        addMode: true,
-        viewMap: {
-          ...viewMap,
-          [viewId]: CHARTS_INIT_CONFIG[chartType],
-        },
-      });
-      dashBoardStore.generateChart(viewId); // 在布局中生成一个占位
-    },
     // 添加时关闭直接移除新建的图表
     async deleteEditor({ select }) {
       const editChartId = select((s) => s.editChartId);
@@ -64,41 +48,24 @@ const chartEditorStore = createFlatStore({
       chartEditorStore.updateState({ editChartId: '' });
       chartEditorStore.setTouched(false);
     },
-    // 编辑时保存仅置空viewCopy即可，新增时保存无需处理（将values置回源数据中）
-    async saveEditor({ select }, payload) {
-      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
-      const editChart = cloneDeep(viewMap[editChartId]);
-
-      chartEditorStore.updateState({
-        viewMap: { ...viewMap, [editChartId]: { ...editChart, ...payload } },
-        addMode: false,
-        editChartId: '',
-        viewCopy: {},
-      });
-      chartEditorStore.setTouched(false);
-    },
-    // 表单变化时自动保存
-    async onEditorChange({ select }, payload) {
-      const [editChartId, viewMap] = select((s) => [s.editChartId, s.viewMap]);
-      const _payload = { ...payload };
-
-      chartEditorStore.updateState({
-        viewMap: {
-          ...viewMap,
-          [editChartId]: { ...viewMap[editChartId], ..._payload },
-        },
-      });
-    },
-    // 编辑时关闭，恢复数据并置空viewCopy
+    // 编辑时关闭，恢复数据并置空 viewCopy
     async closeEditor({ select }) {
-      const [editChartId, viewMap, viewCopy] = select((s) => [s.editChartId, s.viewMap, s.viewCopy]);
+      const [
+        editChartId,
+        viewMap,
+        viewCopy
+      ] = select((s) => [
+        s.editChartId,
+        s.viewMap,
+        s.viewCopy
+      ]);
       const _viewMap = { ...viewMap };
       _viewMap[editChartId] = viewCopy;
 
       chartEditorStore.updateState({
         editChartId: '',
         viewMap: _viewMap,
-        viewCopy: {},
+        viewCopy: undefined,
       });
       chartEditorStore.setTouched(false);
     },
@@ -116,11 +83,35 @@ const chartEditorStore = createFlatStore({
     updateState(state, payload: any) {
       return { ...state, ...payload };
     },
-    editView(state, editChartId: string) {
-      const viewCopy = cloneDeep(state.viewMap[editChartId]);
-      return { ...state, editChartId, viewCopy };
+    saveEditor(state) {
+      const { editChartId, viewCopy } = state;
+      editChartId && viewCopy && (state.viewMap[editChartId] = viewCopy);
     },
-    updateViewInfo(state, payload: any) { // 修改标题时editChartId还是空的，所以自己传要更新的viewId
+    updateEditor(state, payload) {
+      state.isTouched = true;
+      merge(state.viewCopy, payload);
+    },
+    resetEditor(state) {
+      state.viewCopy = undefined;
+      state.editChartId = undefined;
+      state.isTouched = false;
+    },
+    // 新增图表
+    addView(state, chartType: DC.ViewType) {
+      const viewId = `view-${genUUID(8)}`;
+      state.editChartId = viewId;
+      state.addMode = true;
+      state.viewCopy = CHARTS_INIT_CONFIG[chartType] as unknown as DC.View;
+      // 在 Dashboard 新增 view 占位
+      dashBoardStore.generateChart(viewId);
+    },
+    // 编辑图表
+    editView(state, editChartId: string) {
+      state.editChartId = editChartId;
+      state.viewCopy = cloneDeep(state.viewMap[editChartId]);
+    },
+    // 修改标题时editChartId还是空的，所以自己传要更新的viewId
+    updateViewInfo(state, payload: any) {
       const { viewId, ...rest } = payload;
       if (viewId) {
         state.viewMap[viewId] = {
@@ -129,7 +120,7 @@ const chartEditorStore = createFlatStore({
         };
       }
     },
-    updateViewMap(state, viewMap: any) {
+    updateViewMap(state, viewMap: Record<string, DC.View>) {
       state.viewMap = viewMap;
     },
     init(state, viewMap) {

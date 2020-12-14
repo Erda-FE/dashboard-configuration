@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-14 19:51:49
+ * @Last Modified time: 2020-12-14 23:15:53
  */
 import React, { useCallback, useEffect, useMemo } from 'react';
 import { useMount } from 'react-use';
@@ -12,7 +12,7 @@ import echarts from 'echarts';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import agent from '../../../common/utils/agent';
 import { useUpdate } from '../../../common/use-hooks';
-import ChartSizeMe from '../chart-sizeme';
+import { ChartSizeMe } from '../common';
 import { adcodeMap } from '../../../constants/adcode-map';
 import { getOption } from './option';
 import ChartEditorStore from '../../../stores/chart-editor';

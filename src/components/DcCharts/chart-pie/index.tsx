@@ -1,7 +1,7 @@
 /**
  * 2D 饼图
  */
-import ChartSizeMe from '../chart-sizeme';
+import { ChartSizeMe } from '../common';
 import * as React from 'react';
 import { getOption } from './option';
 

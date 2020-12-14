@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-10 14:24:55
+ * @Last Modified time: 2020-12-14 23:18:19
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select } from '@terminus/nusi';
@@ -13,7 +13,7 @@ import { useUpdate, DcIcon, DcEmpty } from '../../common';
 import { getConfig } from '../../config';
 import { FetchStatus } from './constants';
 import ViewDropdownOptions from './options';
-import ChartMask, { ChartSpinMask } from '../DcCharts/chart-mask';
+import { ChartMask, ChartSpinMask } from '../DcCharts/common';
 // DcDashboard 里面发起的请求,需要提供配置
 import { getChartData } from '../../services/chart-editor';
 

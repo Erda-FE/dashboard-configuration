@@ -5,7 +5,7 @@ import React, { ReactElement } from 'react';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { getConfig } from '../../config';
 import { EmptyHolder, DcIcon } from '../../common';
-import ChartMask, { ChartSpinMask } from '../DcCharts/chart-mask';
+import { ChartMask, ChartSpinMask } from '../DcCharts/common';
 import ViewDropdownOptions from './options';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';

@@ -9,7 +9,6 @@ interface IState {
   isEditMode: boolean;
   isFullscreen: boolean;
   layout: any[];
-  contextMap: any;
   theme: string;
   locale: 'en' | 'zh';
   textMap: TextType;
@@ -19,7 +18,6 @@ const initState: IState = {
   isEditMode: false,
   isFullscreen: false,
   layout: [],
-  contextMap: {},
   theme: 'dice',
   locale: 'zh',
   textMap: TEXT_ZH_MAP,
@@ -72,9 +70,6 @@ const dashBoardStore = createFlatStore({
     },
     reset() {
       return initState;
-    },
-    updateContextMap(state, contextMap: any) {
-      state.contextMap = contextMap;
     },
     setLocale(state, key: 'en' | 'zh') {
       state.locale = key;

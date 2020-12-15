@@ -43,13 +43,13 @@ export default () => {
 
   const fields = [
     {
-      label: textMap.label,
+      label: textMap['chart label'],
       name: 'config.optionProps.isLabel',
       type: Checkbox,
       required: false,
       customProps: {
         defaultChecked: isLabel,
-        children: textMap['show label'],
+        children: textMap['show chart label'],
         onChange(e: React.FocusEvent<HTMLInputElement>) {
           updateEditor({ config: { optionProps: { isLabel: e.target.checked } } });
         },

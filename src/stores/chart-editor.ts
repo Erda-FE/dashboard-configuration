@@ -22,6 +22,13 @@ interface IState {
    * @memberof IState
    */
   timeSpan: { startTimeMs: number; endTimeMs: number };
+  /**
+   *编辑器上下文信息
+   *
+   * @type {Record<string, any>}
+   * @memberof IState
+   */
+  editorContextMap: Record<string, any>;
 }
 
 const initState: IState = {
@@ -34,6 +41,7 @@ const initState: IState = {
   dataConfigForm: null, // 存储数据配置表单对象
   baseConfigForm: null, // 存储基础配置表单对象
   timeSpan: { startTimeMs: 0, endTimeMs: 0 },
+  editorContextMap: {},
 };
 
 const chartEditorStore = createFlatStore({
@@ -83,14 +91,41 @@ const chartEditorStore = createFlatStore({
     updateState(state, payload: any) {
       return { ...state, ...payload };
     },
+    /**
+     *注册编辑器上下文信息
+     *
+     * @param {*} state
+     * @param {Record<string, any>} contextMap
+     */
+    updateEditorContextMap(state, contexts: Array<{ name: string, context: any  }>) {
+      contexts.forEach(({ name, context }) => {
+        state.editorContextMap[`${name}`] = context;
+      });
+    },
+    /**
+     *完成图表编辑
+     *
+     * @param {*} state
+     */
     saveEditor(state) {
       const { editChartId, viewCopy } = state;
       editChartId && viewCopy && (state.viewMap[editChartId] = viewCopy);
     },
-    updateEditor(state, payload) {
+    /**
+     *实时更新图表数据，触发预览区更新
+     *
+     * @param {*} state
+     * @param {*} payload
+     */
+    updateEditor(state, payload: Partial<DC.View>) {
       state.isTouched = true;
       merge(state.viewCopy, payload);
     },
+    /**
+     *重置图表编辑器初始状态
+     *
+     * @param {*} state
+     */
     resetEditor(state) {
       state.viewCopy = undefined;
       state.editChartId = undefined;

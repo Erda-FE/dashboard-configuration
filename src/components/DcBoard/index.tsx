@@ -47,17 +47,42 @@ interface IProps {
    */
   layout: DC.ILayout;
   /**
-   *外部数据源表单配置器，经过 Antd Form 包装
+   *外部数据源表单配置器，机制待完善
    *
    * @type {React.ReactNode}
    * @memberof IProps
    */
   APIFormComponent?: React.ReactNode;
-  beforeOnSave?: () => boolean; // 返回 false 来拦截 onSave
-  onSave?: (layout: DC.ILayout[], extra: { singleLayouts: any[]; viewMap: any }) => void; // 保存
-  onCancel?: () => void; // 取消编辑
-  onEdit?: () => void; // 触发编辑
-  onEditorToggle?: (status: boolean) => void; // 图表编辑态改变
+  /**
+   *返回 false 来拦截 onSave
+   *
+   * @memberof IProps
+   */
+  beforeOnSave?: () => boolean;
+  /**
+   *保存大盘
+   *
+   * @memberof IProps
+   */
+  onSave?: (layout: DC.ILayout[], extra: { singleLayouts: any[]; viewMap: Record<string, DC.View> }) => void;
+  /**
+   *取消大盘编辑模式
+   *
+   * @memberof IProps
+   */
+  onCancel?: () => void;
+  /**
+   *触发大盘编辑模式
+   *
+   * @memberof IProps
+   */
+  onEdit?: () => void;
+  /**
+   *进入图表编辑模式
+   *
+   * @memberof IProps
+   */
+  onEditorToggle?: (status: boolean) => void;
 }
 
 const textMap = DashboardStore.getState((s) => s.textMap);
@@ -78,10 +103,9 @@ const DcBoard = ({
   const _onEditorToggle = useRef(onEditorToggle);
 
   const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
-  const [viewMap, editChartId] = ChartEditorStore.useStore((s) => [s.viewMap, s.editChartId]);
-  const { updateContextMap } = DashboardStore;
-  const { reset: resetDrawer, updateState } = ChartEditorStore;
-  const chartEditorVisible = !isEmpty(viewMap[editChartId]);
+  const editChartId = ChartEditorStore.useStore((s) => s.editChartId);
+  const { reset: resetDrawer, updateState, updateEditorContextMap } = ChartEditorStore;
+  const chartEditorVisible = !!editChartId;
   const [gridWidthHolder, gridWidth] = useComponentWidth();
 
   useUnmount(() => {
@@ -99,10 +123,13 @@ const DcBoard = ({
   }, [chartEditorVisible]);
 
   useEffect(() => {
-    updateContextMap({
-      getAPIFormComponent: () => APIFormComponent,
-    });
-  }, [APIFormComponent, updateContextMap]);
+    updateEditorContextMap([
+      {
+        name: 'getAPIFormComponent',
+        context:() => APIFormComponent,
+      }
+    ]);
+  }, [APIFormComponent, updateEditorContextMap]);
 
   return (
     <div

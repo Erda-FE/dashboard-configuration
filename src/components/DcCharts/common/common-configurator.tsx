@@ -24,7 +24,7 @@ export default ({ fields: extraFields = [] }: { fields?: any[] }) => {
       },
     },
     {
-      label: textMap.description,
+      label: textMap['chart description'],
       name: 'description',
       type: Input.TextArea,
       required: false,

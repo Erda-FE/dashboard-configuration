@@ -15,8 +15,6 @@ const noop = () => null;
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 const EditorPanel = () => {
-  const commonConfigFormRef = React.useRef(null as any);
-  const dataConfigFormRef = React.useRef(null as any);
   const [
     viewCopy,
     editChartId,
@@ -47,16 +45,16 @@ const EditorPanel = () => {
       bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}
     >
       <div className="dc-editor-wp v-flex-box flex-space-between full-height auto-overflow">
-        <div className="dc-editor-content flex-1 auto-overflow pa12">
+        <div className="dc-editor-content flex-1 auto-overflow pa8">
           <div className="dc-editor-common-setting v-flex-box py0 px12 auto-overflow white-bg border-radius">
             <div className="dc-editor-setting-title bold-500 fz14 mb8 py8 border-bottom">
               {textMap['common configuration']}
             </div>
             <div className="auto-overflow flex-1">
-              <CommonConfigForm ref={commonConfigFormRef} />
+              <CommonConfigForm />
             </div>
           </div>
-          <div className="dc-editor-previewer flex-1 mx12 auto-overflow border-radius white-bg">
+          <div className="dc-editor-previewer flex-1 mx8 auto-overflow border-radius white-bg">
             <DcContainer viewId={editChartId} view={viewCopy}>
               <ChartComponent />
             </DcContainer>
@@ -66,7 +64,7 @@ const EditorPanel = () => {
               {textMap['datasource configuration']}
             </div>
             <div className="auto-overflow flex-1">
-              <DataConfig ref={dataConfigFormRef} />
+              <DataConfig />
             </div>
           </div>
         </div>

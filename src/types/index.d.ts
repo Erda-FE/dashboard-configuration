@@ -86,6 +86,7 @@ interface Option {
   isBarChangeColor?: boolean;
   tooltipFormatter?: Function;
   isLabel?: boolean;
+  isConnectNulls?: boolean;
   noAreaColor?: boolean;
   unitType?: string;
   unit?: string;

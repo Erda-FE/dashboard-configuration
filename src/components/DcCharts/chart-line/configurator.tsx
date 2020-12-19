@@ -37,9 +37,10 @@ const textMap = DashboardStore.getState((s) => s.textMap);
 // };
 
 export default () => {
-  const viewCopy = ChartEditorStore.useStore(s => s.viewCopy);
+  const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy);
   const { updateEditor } = ChartEditorStore;
   const isLabel = get(viewCopy, ['config', 'optionProps', 'isLabel']);
+  const isConnectNulls = get(viewCopy, ['config', 'optionProps', 'isConnectNulls']);
 
   const fields = [
     {
@@ -52,6 +53,19 @@ export default () => {
         children: textMap['show chart label'],
         onChange(e: React.FocusEvent<HTMLInputElement>) {
           updateEditor({ config: { optionProps: { isLabel: e.target.checked } } });
+        },
+      },
+    },
+    {
+      label: textMap['connect null'],
+      name: 'config.optionProps.isConnectNulls',
+      type: Checkbox,
+      required: false,
+      customProps: {
+        defaultChecked: isConnectNulls,
+        children: textMap['show chart label'],
+        onChange(e: React.FocusEvent<HTMLInputElement>) {
+          updateEditor({ config: { optionProps: { isConnectNulls: e.target.checked } } });
         },
       },
     },

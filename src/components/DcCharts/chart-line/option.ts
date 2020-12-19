@@ -25,6 +25,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     isMoreThanOneDay,
     moreThanOneDayFormat,
     preciseTooltip,
+    isConnectNulls,
   } = optionProps;
 
   const yAxis: any[] = [];
@@ -49,7 +50,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
         },
       },
       // markLine: i === 0 ? markLine : {}, //TODO
-      connectNulls: true,
+      connectNulls: isConnectNulls || false,
       symbol: 'emptyCircle',
       symbolSize: 1,
       barMaxWidth: 50,
@@ -60,10 +61,12 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       },
       ...rest,
       type: value.type || 'line',
-      data: !isBarChangeColor ? value.data : map(value.data, (item: any, j) => {
-        const sect = Math.ceil(value.data.length / changeColors.length);
-        return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
-      }),
+      data: !isBarChangeColor
+        ? value.data
+        : map(value.data, (item: any, j) => {
+          const sect = Math.ceil(value.data.length / changeColors.length);
+          return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
+        }),
     });
     // const curMax = value.data ? calMax([value.data]) : [];
     // maxArr[yAxisIndex] = maxArr[yAxisIndex] && maxArr[yAxisIndex] > curMax ? maxArr[yAxisIndex] : curMax;
@@ -105,19 +108,19 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     const curYAxis = yAxis[i] || yAxis[yAxis.length - 1];
     return [curYAxis.unitType, curYAxis.unit];
   };
-  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${preciseTooltip ? unit.value : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
+  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${(preciseTooltip || isNaN(unit.value)) ? (isNaN(unit.value) ? '--' : unit.value) : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
   const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
   let defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
 
   if (time) {
     defaultTTFormatter = (param) => {
       // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-      const endTime = time[param[0].dataIndex + 1];
-      if (!endTime) {
-        return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;
-      }
-      return `${formatTime(endTime)}<br/>${genTTArray(param).join('')}`;
+      // const endTime = time[param[0].dataIndex + 1];
+      // if (!endTime) {
+      //   return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;
+      // }
       // return `${formatTime(param[0].name)} 到 ${formatTime(endTime)}<br/>${genTTArray(param).join('')}`;
+      return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;
     };
   }
 
@@ -141,9 +144,9 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       },
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
-    dataZoom: find(metricData, { type: 'bar' }) && ((xData && xData.length > 10) || (time && time.length > 10))
+    dataZoom: ((xData && xData.length > 10) || (time && time.length > 30))
       ? {
-        height: 15,
+        height: 25,
         start: 0,
         end: 500 / (xData || time).length,
       }

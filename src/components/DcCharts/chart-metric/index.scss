@@ -25,7 +25,8 @@ $metric-prefix-cls: #{$prefix}-metric;
 
     .#{$metric-prefix-cls}-value {
       margin-bottom: 8px;
-      font-size: 20px;
+      font-weight: 500;
+      font-size: 24px;
     }
 
     .#{$metric-prefix-cls}-name {

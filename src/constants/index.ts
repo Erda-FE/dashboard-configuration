@@ -40,6 +40,7 @@ export const TEXT_ZH_MAP = {
   'select chart type': '选择图表类型',
   'chart label': '图表标签',
   'show chart label': '显示图表标签',
+  'connect null': '连接空值',
   line: '线形图',
   area: '面积图',
   bar: '柱状图',
@@ -55,14 +56,14 @@ export const TEXT_ZH_MAP = {
   'export data error': '导出数据失败！',
   'unnamed dashboard': '未命名大盘',
   'no data': '暂无数据',
-  'dsl': 'DSL',
+  dsl: 'DSL',
   'metrics group': '指标分组',
   'empty metric group tip': '请先选择指标分组！',
   'configuration mode': '配置模式',
   time: '时间',
   expr: '表达式',
   'add metric': '添加指标',
-  'dimensions': '维度',
+  dimensions: '维度',
 };
 
 export const TEXT_EN_MAP = {
@@ -107,6 +108,7 @@ export const TEXT_EN_MAP = {
   'select chart type': 'select chart type',
   'chart label': 'chart label',
   'show chart label': 'show chart label',
+  'connect null': 'connect null value',
   line: 'line',
   area: 'area',
   bar: 'bar',
@@ -121,14 +123,14 @@ export const TEXT_EN_MAP = {
   'exporting data': 'exporting data...',
   'export data error': 'export data error!',
   'no data': 'no data',
-  'dsl': 'DSL',
+  dsl: 'DSL',
   'metrics group': 'metrics group',
   'empty metric group tip': 'Please select metric group first!',
   'configuration mode': 'configuration mode',
   time: 'time',
   expr: 'expression',
   'add metric': 'add metric',
-  'dimensions': 'dimensions',
+  dimensions: 'dimensions',
 };
 
 const defaultConfig = {

@@ -5,13 +5,8 @@ export default () => ({
     trigger: 'axis',
     transitionDuration: 0,
     confine: true,
-    axisPointer: {
-      type: 'none',
-    },
   },
   legend: {
-    bottom: 10,
-    padding: [15, 5, 0, 5],
     orient: 'horizontal',
     align: 'left',
     type: 'scroll',

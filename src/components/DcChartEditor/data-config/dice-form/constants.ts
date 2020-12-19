@@ -79,3 +79,23 @@ export const MAP_LEVEL = ['province', 'city', 'district'];
 
 // 地图固定的指标别名
 export const MAP_ALIAS = 'map_name';
+// 指标前缀名
+export const METRIC_UID_PREFIX = 'mid';
+/**
+ *特殊指标类型名
+ *
+ * @export
+ * @enum {number}
+ */
+export enum SPECIAL_METRIC_TYPE {
+  time = 'time',
+  expr = 'expr',
+  field = 'field',
+}
+// 特殊指标值，唯一标志
+export const SPECIAL_METRIC = {
+  [`${SPECIAL_METRIC_TYPE.time}`]: 'c_dimensions-time',
+  [`${SPECIAL_METRIC_TYPE.expr}`]: 'c_metric-expr',
+  [`${SPECIAL_METRIC_TYPE.field}`]: 'c_data-field'
+}
+

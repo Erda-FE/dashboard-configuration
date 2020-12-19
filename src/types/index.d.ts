@@ -34,6 +34,7 @@ interface IExtraData {
   dataConfigSelectors?: any[];
   dynamicFilterKey?: string;
   dynamicFilterDataAPI?: API;
+  dimensions: any[];
 }
 
 interface API {
@@ -48,7 +49,8 @@ interface API {
 interface View {
   name: string;
   // 展示类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择
-  chartType: string; // chart:timeline | chart:bar | chart:radar ...
+  chartType: ViewType; // chart:timeline | chart:bar | chart:radar ...
+  curMapType?: any[];
   tooltip?: any;
   chartProps?: any;
   customRender?: (element: ReactElement<any>, view: any) => ReactNode;

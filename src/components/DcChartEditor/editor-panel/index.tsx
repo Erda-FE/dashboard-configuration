@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Drawer, Button, Popover } from '@terminus/nusi';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { getConfig } from '../../../config';
-import DataConfig from '../data-config';
+import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';
 
 import ChartEditorStore from '../../../stores/chart-editor';
@@ -45,26 +45,26 @@ const EditorPanel = () => {
       bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}
     >
       <div className="dc-editor-wp v-flex-box flex-space-between full-height auto-overflow">
-        <div className="dc-editor-content flex-1 auto-overflow pa8">
-          <div className="dc-editor-common-setting v-flex-box py0 px12 auto-overflow white-bg border-radius">
+        <div className="dc-editor-content flex-1 auto-overflow pa4">
+          <div className="dc-editor-common-setting v-flex-box py0 px12 auto-overflow border-radius white-bg">
             <div className="dc-editor-setting-title bold-500 fz14 mb8 py8 border-bottom">
               {textMap['common configuration']}
             </div>
-            <div className="auto-overflow flex-1">
+            <div className="auto-y-overflow flex-1">
               <CommonConfigForm />
             </div>
           </div>
-          <div className="dc-editor-previewer flex-1 mx8 auto-overflow border-radius white-bg">
+          <div className="dc-editor-previewer flex-1 mx4 auto-overflow border-radius white-bg box-shadow">
             <DcContainer viewId={editChartId} view={viewCopy}>
               <ChartComponent />
             </DcContainer>
           </div>
-          <div className="dc-editor-data-setting v-flex-box py0 px12 white-bg border-radius">
+          <div className="dc-editor-data-setting v-flex-box py0 px12 border-radius white-bg">
             <div className="dc-editor-setting-title bold-500 fz14 mb8 py8 border-bottom">
               {textMap['datasource configuration']}
             </div>
-            <div className="auto-overflow flex-1">
-              <DataConfig />
+            <div className="auto-y-overflow flex-1">
+              <DataConfigurator />
             </div>
           </div>
         </div>

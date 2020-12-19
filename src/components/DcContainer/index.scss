@@ -10,11 +10,11 @@ $chart-prefix-cls: #{$prefix}-chart;
   height: 100%;
   background-color: #fff;
   border: $border;
-  border-radius: 6px;
+  border-radius: $box-radius;
 
   &:hover {
     border: 1px dashed $color-primary;
-    border-radius: 6px;
+    border-radius: $box-radius;
   }
 }
 

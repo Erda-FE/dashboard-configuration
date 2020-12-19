@@ -1,35 +1,39 @@
 import React, { useEffect, useMemo, useCallback } from 'react';
 import { useMount } from 'react-use';
-import { map, uniqueId, remove, find, findIndex, reduce, filter, isEmpty, keyBy, debounce, isNumber, merge } from 'lodash';
-import { Button, Table, Select, Input, Tooltip, Switch, InputNumber } from 'antd';
-import { WrappedFormUtils } from 'antd/lib/form/Form';
+import { map, uniqueId, remove, find, findIndex, reduce, filter, isEmpty, keyBy, debounce, isNumber, merge, get } from 'lodash';
+import { Button, Table, Select, Input, Tooltip, InputNumber } from 'antd';
+import { FormBuilder, Switch, Cascader, Input } from '@terminus/nusi';
 import { If } from 'tsx-control-statements/components';
+import { CHART_TYPE } from '../../../DcCharts';
 import { getConfig } from '../../../../config';
-import { RenderPureForm, useUpdate } from '../../../../common';
+import { RenderPureForm, useUpdate, DcFormBuilder } from '../../../../common';
+import { useLoading } from '../../../../common/stores/loading';
 import { insertWhen, genUUID } from '../../../../common/utils';
 import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, TIME_FORMATS } from './constants';
 import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn } from './data-loader';
+import DimensionConfigurator from './dimension-configurator';
+
 import ChartEditorStore from '../../../../stores/chart-editor';
+import DashboardStore from '../../../../stores/dash-board';
 
 import './index.scss';
 
-const getDefaultColumn = () => [{ key: uniqueId(), metric: undefined, aggregation: undefined }];
+const { TextArea } = Input;
+
+const getDefaultColumn = (prefix?: string) => [{ key: uniqueId(prefix), metric: undefined, aggregation: undefined }];
+const textMap = DashboardStore.getState((s) => s.textMap);
 
 interface IProps {
-  currentChart: {
-    chartType: string;
-    api?: any;
-    curMapType?: string[];
-    config?: object;
-  };
-  form: WrappedFormUtils;
-  submitResult: (result: any, extraOption?: any) => void;
+  currentChart: DC.View;
+  submitResult: (result: DC.API, extraOption?: Partial<DC.View>) => void;
 }
 
-export default ({ submitResult, currentChart, form }: IProps) => {
+export default ({ submitResult, currentChart }: IProps) => {
   const timeSpan = ChartEditorStore.useStore((s) => s.timeSpan);
   const { dataConfigMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
+  const [isFetchingMetaGroups] = useLoading(dataConfigMetaDataStore, ['getMetaGroups']);
+  console.log(isFetchingMetaGroups);
   // const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
   // 配置所需的数据，宿主注入
   const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;
@@ -53,12 +57,12 @@ export default ({ submitResult, currentChart, form }: IProps) => {
   const { types: typeMap } = metaConstantMap;
   const aggregationMap = useMemo(() => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}), [typeMap]);
   // 图表信息
-  const { chartType, api = {}, curMapType = [], config: currentChartConfig = {} } = currentChart;
+  const { chartType, api = {} as DC.API, curMapType = [], config: currentChartConfig = {} } = currentChart;
   const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
   const apiExtraData = api.extraData;
-  const isLineType = ['chart:line', 'chart:bar', 'chart:area'].includes(chartType);
-  const isTableType = chartType === 'table';
-  const isMapType = chartType === 'chart:map';
+  const isLineType = [CHART_TYPE.line, CHART_TYPE.bar, CHART_TYPE.area].includes(chartType);
+  const isTableType = chartType === CHART_TYPE.table;
+  const isMapType = chartType === CHART_TYPE.map;
   // 请求数据接口，宿主注入
   const initialUrl = isLineType ? '/api/metrics/{{metricName}}/histogram' : '/api/metrics/{{metricName}}';
   // 新增的散点图、地图采用新的拼接规则和返回结构
@@ -80,11 +84,13 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     dynamicFilterDataModalVisible,
     q,
     isSqlMode,
-    xAxis,
+    typeDimensions,
+    valueDimensions,
     isMetricSelector,
   }, updater, update] = useUpdate({
     activedMetricGroups: apiExtraData ? apiExtraData.activedMetricGroups : [],
-    xAxis: apiExtraData && apiExtraData.xAxis ? apiExtraData.xAxis : getDefaultColumn(),
+    typeDimensions: get(api, 'extraData.typeDimensions'),
+    valueDimensions: get(api, 'extraData.valueDimensions'),
     activedMetrics: apiExtraData ?
       [
         ...(apiExtraData.activedMetrics || []),
@@ -125,7 +131,6 @@ export default ({ submitResult, currentChart, form }: IProps) => {
   const resetState = useCallback((_metric) => {
     update({
       activedMetrics: [],
-      xAxis: getDefaultColumn(),
       activedFilters: [],
       activedGroup: [],
       limit: undefined,
@@ -333,7 +338,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
   // 新版拼接规则
   useEffect(() => {
     const validMetrics = addExtraPropertiesForMetrics(filter(activedMetrics, ({ metric, aggregation }) => metric && aggregation));
-    const validXAxis = addExtraPropertiesForMetrics(filter(xAxis as any[], ({ metric }) => metric));
+    // const validXAxis = addExtraPropertiesForMetrics(filter(xAxis as any[], ({ metric }) => metric));
 
     if (!isV2Type || isEmpty(validMetrics) || isEmpty(fieldInfo)) return;
 
@@ -375,7 +380,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
       extraData: {
         activedMetricGroups,
         activedMetrics: validMetrics,
-        xAxis: validXAxis,
+        // xAxis: validXAxis,
         filters: activedFilters,
         group: activedGroup,
         limit,
@@ -388,7 +393,7 @@ export default ({ submitResult, currentChart, form }: IProps) => {
 
     // 新版数据请求
     _submitResult(_api, { loadData: createLoadDataFn({ api: _api, chartType }) });
-  }, [activedFilters, time_field, customTime, activedMetrics, xAxis, fieldInfo, aggregationMap, activedGroup, activedMetricGroups, mapLevel]);
+  }, [activedFilters, time_field, customTime, activedMetrics, fieldInfo, aggregationMap, activedGroup, activedMetricGroups, mapLevel]);
 
   const deleteColumn = (cols: any, colKey: any) => {
     const _cols = [...cols];
@@ -514,39 +519,39 @@ export default ({ submitResult, currentChart, form }: IProps) => {
     },
   ], [activedFilters, fieldInfo.tags, fieldsMap, typeMap, update]);
 
-  const xAxisColumns = useMemo(() => [
-    {
-      dataIndex: 'metric',
-      render: (value: string, { key }: any) => (
-        <Select
-          allowClear
-          showSearch
-          defaultValue={value}
-          onChange={(v: any) => update({ xAxis: updateColumn(xAxis, key, [
-            { property: 'metric', value: v },
-          ]) })}
-        >
-          {map(fieldsMap, (v: any, k) => <Select.Option key={k} value={k}><Tooltip title={v.name}>{v.name}</Tooltip></Select.Option>)}
-        </Select>
-      ),
-    },
-    // {
-    //   title: '操作',
-    //   width: 70,
-    //   render: ({ key }: any) => {
-    //     return (
-    //       <div className="table-operations">
-    //         <span
-    //           className="table-operations-btn"
-    //           onClick={() => update({ xAxis: deleteColumn(xAxis, key) })}
-    //         >
-    //           删除
-    //         </span>
-    //       </div>
-    //     );
-    //   },
-    // },
-  ], [xAxis, fieldsMap, typeMap, isSqlMode, update]);
+  // const xAxisColumns = useMemo(() => [
+  //   {
+  //     dataIndex: 'metric',
+  //     render: (value: string, { key }: any) => (
+  //       <Select
+  //         allowClear
+  //         showSearch
+  //         defaultValue={value}
+  //         onChange={(v: any) => update({ xAxis: updateColumn(xAxis, key, [
+  //           { property: 'metric', value: v },
+  //         ]) })}
+  //       >
+  //         {map(fieldsMap, (v: any, k) => <Select.Option key={k} value={k}><Tooltip title={v.name}>{v.name}</Tooltip></Select.Option>)}
+  //       </Select>
+  //     ),
+  //   },
+  //   // {
+  //   //   title: '操作',
+  //   //   width: 70,
+  //   //   render: ({ key }: any) => {
+  //   //     return (
+  //   //       <div className="table-operations">
+  //   //         <span
+  //   //           className="table-operations-btn"
+  //   //           onClick={() => update({ xAxis: deleteColumn(xAxis, key) })}
+  //   //         >
+  //   //           删除
+  //   //         </span>
+  //   //       </div>
+  //   //     );
+  //   //   },
+  //   // },
+  // ], [fieldsMap, typeMap, isSqlMode, update]);
 
   const handleUpdateActivedMetrics = (key: string, items: Array<{ property: string; value: any }>) => {
     update({ activedMetrics: updateColumn(activedMetrics, key, items) });
@@ -630,14 +635,28 @@ export default ({ submitResult, currentChart, form }: IProps) => {
 
   const fieldsList = useMemo(() => ([
     {
-      label: '指标分组',
-      type: 'cascader',
-      required: true,
-      options: metaGroups,
-      itemProps: {
-        defaultValue: activedMetricGroups,
+      label: textMap['configuration mode'],
+      type: Switch,
+      name: 'isSqlMode',
+      required: false,
+      show: () => isTableType,
+      customProps: {
+        checkedChildren: 'SQL',
+        unCheckedChildren: textMap.dsl,
+        checked: isSqlMode,
+        onChange: (checked: boolean) => updater.isSqlMode(checked),
+      },
+    },
+    {
+      label: textMap['metrics group'],
+      type: Cascader,
+      name: 'activedMetricGroups',
+      initialValue: activedMetricGroups,
+      customProps: {
+        // defaultValue: activedMetricGroups,
+        allowClear: false,
         showSearch: true,
-        placeholder: '请选择指标分组',
+        options: metaGroups,
         onChange: (v: any) => {
           update({ activedMetricGroups: v });
           getMetaData({
@@ -649,194 +668,225 @@ export default ({ submitResult, currentChart, form }: IProps) => {
         },
       },
     },
-    ...insertWhen(isSqlMode, [{
+    {
       label: 'SQL',
-      type: 'textArea',
-      required: true,
-      itemProps: {
+      name: 'sql',
+      type: TextArea,
+      show: () => isTableType,
+      customProps: {
         value: q,
         rows: 10,
         onChange: (e: React.FocusEvent<HTMLInputElement>) => {
           updater.q(e.target.value);
         },
       },
-    }]),
+    },
+    {
+      label: textMap.dimensions,
+      name: 'typeDimensions',
+      initialValue: typeDimensions,
+      required: false,
+      show: () => !isSqlMode,
+      type: DimensionConfigurator,
+      customProps: {
+        type: 'type',
+        disabled: isEmpty(activedMetricGroups),
+        metricsMap: fieldsMap,
+        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => updater.typeDimensions(v)
+      },
+    },
+    {
+      label: textMap.value,
+      name: 'valueDimensions',
+      initialValue: valueDimensions,
+      required: false,
+      show: () => !isSqlMode,
+      type: DimensionConfigurator,
+      customProps: {
+        type: 'value',
+        disabled: isEmpty(activedMetricGroups),
+        metricsMap: fieldsMap,
+        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => updater.valueDimensions(v)
+      },
+    },
+      // getComp: () => (
+      //   <Table
+      //     bordered
+      //     rowKey="key"
+      //     dataSource={xAxis}
+      //     columns={xAxisColumns}
+      //     showHeader={false}
+      //     pagination={{ pageSize: 5, hideOnSinglePage: true }}
+      //   />
+      // ),
     // 新结构中：“维度”维护在前端
-    ...insertWhen(!isSqlMode, [
-      ...insertWhen(isNeedXAxisType, [
-        {
-          label: '维度',
-          required: true,
-          getComp: () => (
-            <Table
-              bordered
-              rowKey="key"
-              dataSource={xAxis}
-              columns={xAxisColumns}
-              showHeader={false}
-              pagination={{ pageSize: 5, hideOnSinglePage: true }}
-            />
-          ),
-        },
-      ]),
-      {
-        label: '聚合',
-        required: true,
-        getComp: () => (
-          <>
-            <div className="flex-box">
-              <Button
-                className="mb8"
-                icon="plus"
-                onClick={() => {
-                  update({ activedMetrics: [
-                    ...getDefaultColumn(),
-                    ...activedMetrics,
-                  ] });
-                }}
-              >
-                添加
-              </Button>
-              <Switch
-                checkedChildren="分开显示"
-                unCheckedChildren="合并显示"
-                checked={isMetricSelector}
-                onChange={(checked) => updater.isMetricSelector(checked)}
-              />
-            </div>
-            <Table
-              bordered
-              rowKey="key"
-              dataSource={activedMetrics}
-              columns={aggregateColumns}
-              pagination={{ pageSize: 5, hideOnSinglePage: true }}
-            />
-          </>
-        ),
-      },
-      {
-        label: '过滤',
-        required: false,
-        getComp: () => (
-          <>
-            <Button
-              className="mb8"
-              icon="plus"
-              onClick={() => {
-                update({ activedFilters: [
-                  ...activedFilters,
-                  { key: uniqueId(), tag: undefined, value: undefined, method: undefined },
-                ] });
-              }}
-            >
-              添加
-            </Button>
-            <Table
-              rowKey="key"
-              bordered
-              dataSource={activedFilters}
-              columns={filterColumns}
-              pagination={{ pageSize: 5, hideOnSinglePage: true }}
-            />
-          </>
-        ),
-      },
-      ...insertWhen(!isMapType && !isNeedXAxisType, [{
-        label: '分组',
-        required: false,
-        type: 'select',
-        options: map(filter(fieldsMap, { type: 'string' }), ({ key, name }) => ({ name, value: key })),
-        itemProps: {
-          type: 'select',
-          placeholder: '请选择分组',
-          mode: 'multiple',
-          defaultValue: activedGroup,
-          onChange: (v: any) => update({ activedGroup: v }),
-        },
-      }]),
-      {
-        label: '动态过滤',
-        required: false,
-        getComp: () => (
-          <div className="flex-box">
-            <Select
-              className="inline-sub-item"
-              showSearch
-              allowClear
-              placeholder="选择过滤字段"
-              defaultValue={dynamicFilterKey}
-              onSelect={(v: any) => update({ dynamicFilterKey: v })}
-            >
-              {map(fieldsMap, (v: any, k) => <Select.Option key={k} value={k}><Tooltip title={v.name}>{v.name}</Tooltip></Select.Option>)}
-            </Select>
-            <Button disabled={!dynamicFilterKey} onClick={() => update({ dynamicFilterDataModalVisible: true })}>数据源</Button>
-          </div>
-        ),
-      },
-      ...insertWhen(isLineType, [{
-        label: 'X轴时间格式',
-        required: false,
-        type: 'select',
-        options: TIME_FORMATS,
-        itemProps: {
-          type: 'select',
-          allowClear: true,
-          placeholder: '可指定时间轴显示格式',
-          defaultValue: timeFormat,
-          onChange: (v: any) => update({ timeFormat: v }),
-        },
-      }]),
-      ...insertWhen(isTableType, [{
-        label: 'TopN',
-        required: false,
-        type: 'inputNumber',
-        itemProps: {
-          min: 0,
-          max: 100,
-          precision: 0,
-          defaultValue: limit,
-          onChange: (v: any) => update({ limit: v }),
-        },
-      }])]),
-    {
-      label: '自定义时间字段',
-      required: false,
-      type: 'select',
-      options: map(filter(fieldsMap, { type: 'number' }), ({ key, name }) => ({ name, value: key })),
-      itemProps: {
-        allowClear: true,
-        placeholder: '可选择字段指定为时间字段',
-        defaultValue: time_field,
-        onChange: (v: any) => update({ time_field: v }),
-      },
-    },
-    {
-      label: '固定时间范围',
-      required: false,
-      type: 'select',
-      options: map(CUSTOM_TIME_RANGE_MAP, ({ name }, value) => ({ value, name })),
-      itemProps: {
-        allowClear: true,
-        placeholder: '可选择固定时间来筛选',
-        defaultValue: customTime,
-        onChange: (v: any) => update({ customTime: v }),
-      },
-    },
-  ]), [isMetricSelector, metaGroups, activedMetricGroups, q, activedGroup, isTableType, update, getMetaData, resetState, activedMetrics, aggregateColumns, activedFilters, filterColumns, limit, timeFormat, dynamicFilterKey, dynamicFilterDataModalVisible, time_field, customTime, xAxis]);
+    // ...insertWhen(!isSqlMode, [
+    //   ...insertWhen(isNeedXAxisType, [
+    //     {
+    //       label: '维度',
+    //       required: true,
+    //       getComp: () => (
+    //         <Table
+    //           bordered
+    //           rowKey="key"
+    //           dataSource={xAxis}
+    //           columns={xAxisColumns}
+    //           showHeader={false}
+    //           pagination={{ pageSize: 5, hideOnSinglePage: true }}
+    //         />
+    //       ),
+    //     },
+    //   ]),
+    //   {
+    //     label: '聚合',
+    //     required: true,
+    //     getComp: () => (
+    //       <>
+    //         <div className="flex-box">
+    //           <Button
+    //             className="mb8"
+    //             icon="plus"
+    //             onClick={() => {
+    //               update({ activedMetrics: [
+    //                 ...getDefaultColumn(),
+    //                 ...activedMetrics,
+    //               ] });
+    //             }}
+    //           >
+    //             添加
+    //           </Button>
+    //           <Switch
+    //             checkedChildren="分开显示"
+    //             unCheckedChildren="合并显示"
+    //             checked={isMetricSelector}
+    //             onChange={(checked) => updater.isMetricSelector(checked)}
+    //           />
+    //         </div>
+    //         <Table
+    //           bordered
+    //           rowKey="key"
+    //           dataSource={activedMetrics}
+    //           columns={aggregateColumns}
+    //           pagination={{ pageSize: 5, hideOnSinglePage: true }}
+    //         />
+    //       </>
+    //     ),
+    //   },
+    //   {
+    //     label: '过滤',
+    //     required: false,
+    //     getComp: () => (
+    //       <>
+    //         <Button
+    //           className="mb8"
+    //           icon="plus"
+    //           onClick={() => {
+    //             update({ activedFilters: [
+    //               ...activedFilters,
+    //               { key: uniqueId(), tag: undefined, value: undefined, method: undefined },
+    //             ] });
+    //           }}
+    //         >
+    //           添加
+    //         </Button>
+    //         <Table
+    //           rowKey="key"
+    //           bordered
+    //           dataSource={activedFilters}
+    //           columns={filterColumns}
+    //           pagination={{ pageSize: 5, hideOnSinglePage: true }}
+    //         />
+    //       </>
+    //     ),
+    //   },
+    //   ...insertWhen(!isMapType && !isNeedXAxisType, [{
+    //     label: '分组',
+    //     required: false,
+    //     type: 'select',
+    //     options: map(filter(fieldsMap, { type: 'string' }), ({ key, name }) => ({ name, value: key })),
+    //     itemProps: {
+    //       type: 'select',
+    //       placeholder: '请选择分组',
+    //       mode: 'multiple',
+    //       defaultValue: activedGroup,
+    //       onChange: (v: any) => update({ activedGroup: v }),
+    //     },
+    //   }]),
+    //   {
+    //     label: '动态过滤',
+    //     required: false,
+    //     getComp: () => (
+    //       <div className="flex-box">
+    //         <Select
+    //           className="inline-sub-item"
+    //           showSearch
+    //           allowClear
+    //           placeholder="选择过滤字段"
+    //           defaultValue={dynamicFilterKey}
+    //           onSelect={(v: any) => update({ dynamicFilterKey: v })}
+    //         >
+    //           {map(fieldsMap, (v: any, k) => <Select.Option key={k} value={k}><Tooltip title={v.name}>{v.name}</Tooltip></Select.Option>)}
+    //         </Select>
+    //         <Button disabled={!dynamicFilterKey} onClick={() => update({ dynamicFilterDataModalVisible: true })}>数据源</Button>
+    //       </div>
+    //     ),
+    //   },
+    //   ...insertWhen(isLineType, [{
+    //     label: 'X轴时间格式',
+    //     required: false,
+    //     type: 'select',
+    //     options: TIME_FORMATS,
+    //     itemProps: {
+    //       type: 'select',
+    //       allowClear: true,
+    //       placeholder: '可指定时间轴显示格式',
+    //       defaultValue: timeFormat,
+    //       onChange: (v: any) => update({ timeFormat: v }),
+    //     },
+    //   }]),
+    //   ...insertWhen(isTableType, [{
+    //     label: 'TopN',
+    //     required: false,
+    //     type: 'inputNumber',
+    //     itemProps: {
+    //       min: 0,
+    //       max: 100,
+    //       precision: 0,
+    //       defaultValue: limit,
+    //       onChange: (v: any) => update({ limit: v }),
+    //     },
+    //   }])
+    // ]),
+    // {
+    //   label: '自定义时间字段',
+    //   required: false,
+    //   type: 'select',
+    //   options: map(filter(fieldsMap, { type: 'number' }), ({ key, name }) => ({ name, value: key })),
+    //   itemProps: {
+    //     allowClear: true,
+    //     placeholder: '可选择字段指定为时间字段',
+    //     defaultValue: time_field,
+    //     onChange: (v: any) => update({ time_field: v }),
+    //   },
+    // },
+    // {
+    //   label: '固定时间范围',
+    //   required: false,
+    //   type: 'select',
+    //   options: map(CUSTOM_TIME_RANGE_MAP, ({ name }, value) => ({ value, name })),
+    //   itemProps: {
+    //     allowClear: true,
+    //     placeholder: '可选择固定时间来筛选',
+    //     defaultValue: customTime,
+    //     onChange: (v: any) => update({ customTime: v }),
+    //   },
+    // },
+  ]), [typeDimensions, valueDimensions, isMetricSelector, metaGroups, activedMetricGroups, q, activedGroup, isTableType, update, updater, getMetaData, resetState, activedMetrics, aggregateColumns, activedFilters, filterColumns, limit, timeFormat, dynamicFilterKey, dynamicFilterDataModalVisible, time_field, customTime, isSqlMode]);
 
   return (
     <div className="dc-dice-metrics-form">
-      <If condition={isTableType}>
-        <div className="text-right mb16">
-          <Switch
-            checkedChildren="SQL"
-            unCheckedChildren="表单"
-            checked={isSqlMode}
-            onChange={(checked) => updater.isSqlMode(checked)}
-          />
-        </div>
-      </If>
-      <RenderPureForm form={form} layout="vertical" list={fieldsList} />
+      <DcFormBuilder fields={fieldsList} />
+      {/* <RenderPureForm layout="vertical" list={fieldsList} /> */}
       <DynamicFilterDataModal
         title="动态过滤数据源配置"
         visible={dynamicFilterDataModalVisible}

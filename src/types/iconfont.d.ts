@@ -1,1 +1,1 @@
-type DcIconType = 'down' | 'close-circle' | 'plus-circle' | 'plus-square' | 'excel' | 'image' | 'edit' | 'fullscreen' | 'fullscreen-exit' | 'close' | 'drag' | 'plus' | 'info-circle' | 'setting' | 'save' | 'delete' | 'camera';
+type DcIconType = 'control' | 'minus-circle' | 'minus-square' | 'minus' | 'down' | 'close-circle' | 'plus-circle' | 'plus-square' | 'excel' | 'image' | 'edit' | 'fullscreen' | 'fullscreen-exit' | 'close' | 'drag' | 'plus' | 'info-circle' | 'setting' | 'save' | 'delete' | 'camera';

@@ -138,7 +138,7 @@ const chartEditorStore = createFlatStore({
       state.addMode = true;
       state.viewCopy = CHARTS_INIT_CONFIG[chartType] as unknown as DC.View;
       // 在 Dashboard 新增 view 占位
-      dashBoardStore.generateChart(viewId);
+      // dashBoardStore.generateChart(viewId);
     },
     // 编辑图表
     editView(state, editChartId: string) {

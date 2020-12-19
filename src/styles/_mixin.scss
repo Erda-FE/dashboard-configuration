@@ -36,6 +36,16 @@
     overflow: auto;
   }
 
+  .auto-x-overflow {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .auto-y-overflow {
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
   .inline-sub-item {
     margin-right: 8px;
   }
@@ -50,6 +60,10 @@
 
   .white-bg {
     background-color: $color-white;
+  }
+
+  .box-shadow {
+    box-shadow: 0 2px 4px 0 $color-dark-1, 0 10px 24px 0 rgba(0, 0, 0, 0.06);
   }
 
   .bold-500 {

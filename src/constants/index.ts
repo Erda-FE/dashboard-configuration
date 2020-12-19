@@ -55,6 +55,14 @@ export const TEXT_ZH_MAP = {
   'export data error': '导出数据失败！',
   'unnamed dashboard': '未命名大盘',
   'no data': '暂无数据',
+  'dsl': 'DSL',
+  'metrics group': '指标分组',
+  'empty metric group tip': '请先选择指标分组！',
+  'configuration mode': '配置模式',
+  time: '时间',
+  expr: '表达式',
+  'add metric': '添加指标',
+  'dimensions': '维度',
 };
 
 export const TEXT_EN_MAP = {
@@ -113,6 +121,14 @@ export const TEXT_EN_MAP = {
   'exporting data': 'exporting data...',
   'export data error': 'export data error!',
   'no data': 'no data',
+  'dsl': 'DSL',
+  'metrics group': 'metrics group',
+  'empty metric group tip': 'Please select metric group first!',
+  'configuration mode': 'configuration mode',
+  time: 'time',
+  expr: 'expression',
+  'add metric': 'add metric',
+  'dimensions': 'dimensions',
 };
 
 const defaultConfig = {

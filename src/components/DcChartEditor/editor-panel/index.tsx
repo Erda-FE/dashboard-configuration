@@ -24,7 +24,7 @@ const EditorPanel = () => {
     s.editChartId,
     s.isTouched,
   ]);
-  
+
   if (!viewCopy || !editChartId) return null;
 
   const { saveEditor, resetEditor } = ChartEditorStore;

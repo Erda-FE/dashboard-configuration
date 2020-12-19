@@ -49,6 +49,13 @@ declare namespace DICE_DATA_CONFIGURATOR {
      * @memberof ValueDimension
      */
     aggregation?: string;
+    /**
+     *自定义表达式
+     *
+     * @type {string}
+     * @memberof ValueDimension
+     */
+    expr?: string;
   }
 
   /**
@@ -72,16 +79,16 @@ declare namespace DICE_DATA_CONFIGURATOR {
       *   })}
       * @memberof Dimension
       */
-     timeInterval?: {
-       value: number;
-       unit: 's' | 'm' | 'h' | 'D' | 'W' | 'M' | 'Y'
-     };
-     /**
+    timeInterval?: {
+      value: number;
+      unit: 's' | 'm' | 'h' | 'D' | 'W' | 'M' | 'Y';
+    };
+    /**
       *时间格式，可选，type 为 time 时可指定
       *
       * @type {string}
       * @memberof Dimension
       */
-     timeFormat?: string;
+    timeFormat?: string;
   }
 }

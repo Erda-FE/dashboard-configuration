@@ -88,6 +88,7 @@ interface Option {
   isLabel?: boolean;
   isConnectNulls?: boolean;
   noAreaColor?: boolean;
+  nullDisplay?: string;
   unitType?: string;
   unit?: string;
   decimal?: number;

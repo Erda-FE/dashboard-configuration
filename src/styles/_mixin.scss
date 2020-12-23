@@ -8,6 +8,11 @@
     align-items: center;
   }
 
+  .flex-inline-box {
+    display: inline-flex;
+    justify-content: space-between;
+  }
+
   .v-flex-box {
     display: flex;
     flex-direction: column;

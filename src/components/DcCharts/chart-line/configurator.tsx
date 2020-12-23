@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Checkbox } from '@terminus/nusi';
+import { Checkbox, Input } from '@terminus/nusi';
 import { get } from 'lodash';
 // import { KVTable, useUpdate } from '../../../common';
 import { CommonConfigurator } from '../common';
@@ -41,6 +41,7 @@ export default () => {
   const { updateEditor } = ChartEditorStore;
   const isLabel = get(viewCopy, ['config', 'optionProps', 'isLabel']);
   const isConnectNulls = get(viewCopy, ['config', 'optionProps', 'isConnectNulls']);
+  const nullDisplay = get(viewCopy, ['config', 'optionProps', 'nullDisplay']);
 
   const fields = [
     {
@@ -63,9 +64,21 @@ export default () => {
       required: false,
       customProps: {
         defaultChecked: isConnectNulls,
-        children: textMap['show chart label'],
+        children: textMap['connect null'],
         onChange(e: React.FocusEvent<HTMLInputElement>) {
           updateEditor({ config: { optionProps: { isConnectNulls: e.target.checked } } });
+        },
+      },
+    },
+    {
+      label: textMap['null display'],
+      name: 'config.optionProps.nullDisplay',
+      type: Input,
+      required: false,
+      customProps: {
+        defaultChecked: nullDisplay,
+        onBlur(e: React.FocusEvent<HTMLInputElement>) {
+          updateEditor({ config: { optionProps: { nullDisplay: e.target.value } } });
         },
       },
     },

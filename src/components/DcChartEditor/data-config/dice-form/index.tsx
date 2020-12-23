@@ -12,7 +12,7 @@ import { insertWhen, genUUID } from '../../../../common/utils';
 import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, TIME_FORMATS } from './constants';
 import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn } from './data-loader';
-import DimensionConfigurator from './dimension-configurator';
+import DimensionsConfigurator from './dimensions-configurator';
 
 import ChartEditorStore from '../../../../stores/chart-editor';
 import DashboardStore from '../../../../stores/dash-board';
@@ -29,11 +29,10 @@ interface IProps {
   submitResult: (result: DC.API, extraOption?: Partial<DC.View>) => void;
 }
 
-export default ({ submitResult, currentChart }: IProps) => {
+const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const timeSpan = ChartEditorStore.useStore((s) => s.timeSpan);
   const { dataConfigMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
   const [isFetchingMetaGroups] = useLoading(dataConfigMetaDataStore, ['getMetaGroups']);
-  console.log(isFetchingMetaGroups);
   // const timeSpan = customDashboardStore.useStore((s) => s.timeSpan);
   // 配置所需的数据，宿主注入
   const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;
@@ -53,9 +52,13 @@ export default ({ submitResult, currentChart }: IProps) => {
     const singleFieldsMap = reduce(fields, (acc, field) => ({ ...acc, [`${metric}-${field.key}`]: { ...field, tags, metric, filters } }), {});
     return { ...result, ...singleFieldsMap };
   }, {}), [metaMetrics]);
+
   const defaultMetric = useMemo(() => metaMetrics[0] || {}, [metaMetrics]);
   const { types: typeMap } = metaConstantMap;
+
   const aggregationMap = useMemo(() => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}), [typeMap]);
+  const filtersMap = useMemo(() => reduce(typeMap, (result, { filters }) => ({ ...result, ...keyBy(filters, 'operation') }), {}), [typeMap]);
+
   // 图表信息
   const { chartType, api = {} as DC.API, curMapType = [], config: currentChartConfig = {} } = currentChart;
   const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
@@ -86,11 +89,14 @@ export default ({ submitResult, currentChart }: IProps) => {
     isSqlMode,
     typeDimensions,
     valueDimensions,
+    resultFilters,
     isMetricSelector,
   }, updater, update] = useUpdate({
     activedMetricGroups: apiExtraData ? apiExtraData.activedMetricGroups : [],
     typeDimensions: get(api, 'extraData.typeDimensions'),
+    // || [{ type: 'expr', alias: '表达式sss', key: 'typeY1zk48cC', expr: 'default-expr' }]
     valueDimensions: get(api, 'extraData.valueDimensions'),
+    resultFilters: get(api, 'extraData.resultFilters'),
     activedMetrics: apiExtraData ?
       [
         ...(apiExtraData.activedMetrics || []),
@@ -119,12 +125,12 @@ export default ({ submitResult, currentChart }: IProps) => {
 
   useMount(() => {
     // 新的元数据接口加 version=v2
-    getMetaGroups({ scope, scopeId, version: isV2Type ? 'v2' : undefined });
+    getMetaGroups({ scope, scopeId, version: 'v2' });
     !isEmpty(activedMetricGroups) && getMetaData({
       scope,
       scopeId,
       groupId: activedMetricGroups[activedMetricGroups.length - 1],
-      version: isV2Type ? 'v2' : undefined,
+      version: 'v2',
     });
   });
 
@@ -663,7 +669,7 @@ export default ({ submitResult, currentChart }: IProps) => {
             scope,
             scopeId,
             groupId: v[v.length - 1],
-            version: isV2Type ? 'v2' : undefined,
+            version: 'v2',
           }).then(resetState);
         },
       },
@@ -687,12 +693,16 @@ export default ({ submitResult, currentChart }: IProps) => {
       initialValue: typeDimensions,
       required: false,
       show: () => !isSqlMode,
-      type: DimensionConfigurator,
+      type: DimensionsConfigurator,
       customProps: {
         type: 'type',
+        addText: textMap['add metric'],
         disabled: isEmpty(activedMetricGroups),
         metricsMap: fieldsMap,
-        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => updater.typeDimensions(v)
+        typeMap,
+        aggregationMap,
+        filtersMap,
+        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => updater.typeDimensions(v),
       },
     },
     {
@@ -701,24 +711,46 @@ export default ({ submitResult, currentChart }: IProps) => {
       initialValue: valueDimensions,
       required: false,
       show: () => !isSqlMode,
-      type: DimensionConfigurator,
+      type: DimensionsConfigurator,
       customProps: {
         type: 'value',
+        addText: textMap['add value'],
         disabled: isEmpty(activedMetricGroups),
         metricsMap: fieldsMap,
-        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => updater.valueDimensions(v)
+        typeMap,
+        aggregationMap,
+        filtersMap,
+        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => updater.valueDimensions(v),
       },
     },
-      // getComp: () => (
-      //   <Table
-      //     bordered
-      //     rowKey="key"
-      //     dataSource={xAxis}
-      //     columns={xAxisColumns}
-      //     showHeader={false}
-      //     pagination={{ pageSize: 5, hideOnSinglePage: true }}
-      //   />
-      // ),
+    {
+      label: textMap['result filter'],
+      name: 'resultFilters',
+      initialValue: resultFilters,
+      required: false,
+      show: () => !isSqlMode,
+      type: DimensionsConfigurator,
+      customProps: {
+        type: 'filter',
+        addText: textMap['add filter'],
+        disabled: isEmpty(activedMetricGroups),
+        metricsMap: fieldsMap,
+        typeMap,
+        aggregationMap,
+        filtersMap,
+        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => updater.resultFilters(v),
+      },
+    },
+    // getComp: () => (
+    //   <Table
+    //     bordered
+    //     rowKey="key"
+    //     dataSource={xAxis}
+    //     columns={xAxisColumns}
+    //     showHeader={false}
+    //     pagination={{ pageSize: 5, hideOnSinglePage: true }}
+    //   />
+    // ),
     // 新结构中：“维度”维护在前端
     // ...insertWhen(!isSqlMode, [
     //   ...insertWhen(isNeedXAxisType, [
@@ -881,7 +913,7 @@ export default ({ submitResult, currentChart }: IProps) => {
     //     onChange: (v: any) => update({ customTime: v }),
     //   },
     // },
-  ]), [typeDimensions, valueDimensions, isMetricSelector, metaGroups, activedMetricGroups, q, activedGroup, isTableType, update, updater, getMetaData, resetState, activedMetrics, aggregateColumns, activedFilters, filterColumns, limit, timeFormat, dynamicFilterKey, dynamicFilterDataModalVisible, time_field, customTime, isSqlMode]);
+  ]), [typeDimensions, typeMap, filtersMap, valueDimensions, resultFilters, isMetricSelector, metaGroups, activedMetricGroups, q, activedGroup, isTableType, update, updater, getMetaData, resetState, activedMetrics, aggregateColumns, activedFilters, filterColumns, limit, timeFormat, dynamicFilterKey, dynamicFilterDataModalVisible, time_field, customTime, isSqlMode]);
 
   return (
     <div className="dc-dice-metrics-form">
@@ -899,3 +931,5 @@ export default ({ submitResult, currentChart }: IProps) => {
     </div>
   );
 };
+
+export default DiceForm;

@@ -4,14 +4,18 @@ declare namespace DICE_DATA_CONFIGURATOR {
    *
    * @type DimensionMetricType
    */
-  type DimensionMetricType = 'time' | 'field' | 'expr';
+  type DimensionMetricType = 'time' | 'field' | 'expr' | 'filter';
+
+  type DimensionConfigsActionType = 'configExpr' | 'configAlias' | 'configTime' | 'configFieldAggregation' | 'configFilter';
+
+  type FieldType = 'bool' | 'number' | 'string';
 
   /**
-   *维度类型：数值维度，类别维度=文本维度+时间维度
+   *维度类型：数值维度，类别维度=文本维度+时间维度，筛选维度
    *
    * @type DimensionType
    */
-  type DimensionType = 'value' | 'type';
+  type DimensionType = 'value' | 'type' | 'filter';
 
   interface ValueDimension {
     /**
@@ -81,7 +85,7 @@ declare namespace DICE_DATA_CONFIGURATOR {
       */
     timeInterval?: {
       value: number;
-      unit: 's' | 'm' | 'h' | 'D' | 'W' | 'M' | 'Y';
+      unit: 's' | 'm' | 'h' | 'd' | 'W' | 'M';
     };
     /**
       *时间格式，可选，type 为 time 时可指定
@@ -90,5 +94,32 @@ declare namespace DICE_DATA_CONFIGURATOR {
       * @memberof Dimension
       */
     timeFormat?: string;
+    /**
+     *自定义时间字段，可选，type 为 time 时可指定
+     *
+     * @type {string}
+     * @memberof Dimension
+     */
+    timeField?: string;
+    /**
+     *自定义时间区间，可选，type 为 time 时可指定
+     *
+     * @type {string}
+     * @memberof Dimension
+     */
+    customTime?: string;
+    /**
+     *过滤
+     *
+     * @type {{
+     *       operator: string;
+     *       value: any;
+     *     }}
+     * @memberof Dimension
+     */
+    filter?: {
+      operation: string;
+      value: any;
+    },
   }
 }

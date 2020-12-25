@@ -21,7 +21,7 @@ const CreateAliasModal = ({ defaultValue, ...rest }: IProps) => {
       required: false,
       initialValue: defaultValue.alias,
       customProps: {
-        maxLength: 20,
+        maxLength: 50,
       },
     },
   ];

@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'antd/lib/style/v2-compatible-reset.css';
-import { Input } from 'antd';
+import { Input } from '@terminus/nusi';
 import { registDataConvertor, registControl, registChartOption, registTheme } from '../src';
 import { ajaxConvertor } from './mock/ajax-data';
 import { darkTheme } from './theme';

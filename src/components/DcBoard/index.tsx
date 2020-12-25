@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 10:25:39
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-10 11:06:57
+ * @Last Modified time: 2020-12-25 18:42:37
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
@@ -17,75 +17,34 @@ import BoardGrid from './grid';
 // 编辑器部分
 import DcChartEditor from '../DcChartEditor';
 import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
-
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 
 import './index.scss';
 import '../../static/iconfont.css';
 
+const textMap = DashboardStore.getState((s) => s.textMap);
+
 interface IProps {
-  /**
-   *指定编辑器预览时间
-   *
-   * @type {{ startTimeMs: number; endTimeMs: number }}
-   * @memberof IProps
-   */
+  /** 指定编辑器的预览时间 */
   timeSpan?: { startTimeMs: number; endTimeMs: number };
-  /**
-   *大盘名
-   *
-   * @type {string}
-   * @memberof IProps
-   */
+  /** 大盘名 */
   name?: string;
-  /**
-   *配置信息，包含图表布局、各图表配置信息
-   *
-   * @type {DC.ILayout}
-   * @memberof IProps
-   */
+  /** 配置信息，包含图表布局、各图表配置信息 */
   layout: DC.ILayout;
-  /**
-   *外部数据源表单配置器，机制待完善
-   *
-   * @type {React.ReactNode}
-   * @memberof IProps
-   */
+  /** 外部数据源表单配置器，机制待完善 */
   APIFormComponent?: React.ReactNode;
-  /**
-   *返回 false 来拦截 onSave
-   *
-   * @memberof IProps
-   */
+  /** 返回 false 来拦截 onSave */
   beforeOnSave?: () => boolean;
-  /**
-   *保存大盘
-   *
-   * @memberof IProps
-   */
+  /** 保存大盘回调 */
   onSave?: (layout: DC.ILayout[], extra: { singleLayouts: any[]; viewMap: Record<string, DC.View> }) => void;
-  /**
-   *取消大盘编辑模式
-   *
-   * @memberof IProps
-   */
+  /** 取消大盘编辑模式回调 */
   onCancel?: () => void;
-  /**
-   *触发大盘编辑模式
-   *
-   * @memberof IProps
-   */
+  /** 触发大盘编辑模式回调 */
   onEdit?: () => void;
-  /**
-   *进入图表编辑模式
-   *
-   * @memberof IProps
-   */
+  /** 进入图表编辑模式回调 */
   onEditorToggle?: (status: boolean) => void;
 }
-
-const textMap = DashboardStore.getState((s) => s.textMap);
 
 const DcBoard = ({
   timeSpan,
@@ -102,8 +61,7 @@ const DcBoard = ({
   const boardContentRef = useRef<HTMLDivElement>(null);
   const _onEditorToggle = useRef(onEditorToggle);
 
-  const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
-  const editChartId = ChartEditorStore.useStore((s) => s.editChartId);
+  const [isEditMode, editChartId] = ChartEditorStore.useStore((s) => [s.isEditMode, s.editChartId]);
   const { reset: resetDrawer, updateState, updateEditorContextMap } = ChartEditorStore;
   const chartEditorVisible = !!editChartId;
   const [gridWidthHolder, gridWidth] = useComponentWidth();
@@ -126,8 +84,8 @@ const DcBoard = ({
     updateEditorContextMap([
       {
         name: 'getAPIFormComponent',
-        context:() => APIFormComponent,
-      }
+        context: () => APIFormComponent,
+      },
     ]);
   }, [APIFormComponent, updateEditorContextMap]);
 

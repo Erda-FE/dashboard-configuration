@@ -11,7 +11,7 @@ const { Group: InputGroup } = Input;
 interface IProps {
   defaultValue: DICE_DATA_CONFIGURATOR.Dimension;
   visible: boolean;
-  metricsMap: any;
+  metricsMap: Record<string, any>;
   onCancel: ((e: React.MouseEvent<any, MouseEvent>) => void) | undefined;
   onOk: (v: any) => void;
 }
@@ -44,7 +44,7 @@ const CreateTimeModal = ({ defaultValue, metricsMap, ...rest }: IProps) => {
       required: false,
       initialValue: defaultValue.timeField,
       customProps: {
-        options: map(filter(metricsMap, { type: 'number' }), ({ name: label }, key) => ({ label, value: key })),
+        options: map(filter(metricsMap, { type: 'number' }), ({ name: label, key }) => ({ label, value: key })),
         allowClear: true,
         showSearch: true,
       },

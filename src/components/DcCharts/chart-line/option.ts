@@ -1,4 +1,4 @@
-import { map, merge, find } from 'lodash';
+import { map, merge, find, isEmpty } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
@@ -21,7 +21,6 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     decimal = 2,
     yAxisNames = [],
     legendFormatter,
-    timeSpan,
     isMoreThanOneDay,
     moreThanOneDayFormat,
     preciseTooltip,
@@ -32,7 +31,13 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const yAxis: any[] = [];
   const series: any[] = [];
   const legendData: Array<{name: string}> = [];
-  const moreThanOneDay = isMoreThanOneDay || (timeSpan ? timeSpan.seconds > (24 * 3600) : false);
+  
+  let defaultMoreThanOneDay = false;
+  // 自动处理时间格式，大于一天显示日期
+  if (!isEmpty(time)) {
+    defaultMoreThanOneDay = time[time.length - 1] - time[0] > 24 * 3600 * 1000
+  }
+  const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
 
   map(metricData, (value, i) => {
     const { axisIndex, name, tag, ...rest } = value;
@@ -135,9 +140,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     },
     xAxis: [
       {
-        data: xData || time || [], /* 类目轴数据 */
+        data: xData || time || [],
         axisLabel: {
-          // interval: find(metricData, { type: 'bar' }) ? 0 : undefined,
           formatter: xData
             ? (value: string) => value
             : (value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm'),

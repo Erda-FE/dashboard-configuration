@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:08:25
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-10 19:46:54
+ * @Last Modified time: 2020-12-25 19:54:43
  */
 import * as React from 'react';
 import { isEmpty } from 'lodash';
@@ -11,18 +11,14 @@ import { genGridItems } from './common';
 import { GRID_LAYOUT_CONFIG } from '../../constants';
 import { splitLayoutAndView } from './common/utils';
 import ChartEditorStore from '../../stores/chart-editor';
-import DashboardStore from '../../stores/dash-board';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
 const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
-  const [dashboardLayout, isEditMode] = DashboardStore.useStore((s) => [s.layout, s.isEditMode]);
-  const viewMap = ChartEditorStore.useStore((s) => s.viewMap);
-  const { updateLayout, reset: resetBoard } = DashboardStore;
-  const { updateViewMap: updateChildMap } = ChartEditorStore;
+  const [dashboardLayout, isEditMode, viewMap] = ChartEditorStore.useStore((s) => [s.layout, s.isEditMode, s.viewMap]);
+  const { updateViewMap: updateChildMap, updateLayout } = ChartEditorStore;
 
-  React.useEffect(() => () => resetBoard(), [resetBoard]);
   React.useEffect(() => {
     const [a, b] = splitLayoutAndView(layout);
     updateLayout(a);

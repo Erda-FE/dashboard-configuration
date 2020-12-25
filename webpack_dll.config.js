@@ -5,8 +5,9 @@ const vendors = [
   'react',
   'react-dom',
   'lodash',
-  'antd',
   'moment',
+  '@terminus/nusi',
+  'immer',
 ];
 
 module.exports = {

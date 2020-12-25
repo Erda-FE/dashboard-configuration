@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-14 23:18:19
+ * @Last Modified time: 2020-12-24 21:20:18
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select } from '@terminus/nusi';
@@ -32,7 +32,7 @@ interface IProps {
 }
 const DcContainer = ({ view, viewId, children }: IProps) => {
   const [isEditMode, isFullscreen] = DashboardStore.useStore((s) => [s.isEditMode, s.isFullscreen]);
-  const [editChartId, viewMap] = ChartEditorStore.useStore((s) => [s.editChartId, s.viewMap]);
+  const [editChartId, viewCopy] = ChartEditorStore.useStore((s) => [s.editChartId, s.viewCopy]);
 
   const {
     title: _title,
@@ -50,7 +50,7 @@ const DcContainer = ({ view, viewId, children }: IProps) => {
     chartQuery,
   } = view;
 
-  const chartEditorVisible = !isEmpty(viewMap[editChartId]);
+  const chartEditorVisible = !isEmpty(viewCopy);
   const isEditView = editChartId === viewId;
   const childNode = React.Children.only(children);
   const hasLoadFn = isFunction(loadData);

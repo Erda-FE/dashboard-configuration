@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-10 19:42:07
+ * @Last Modified time: 2020-12-25 16:48:55
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
 import { Button, Tooltip } from '@terminus/nusi';
@@ -11,7 +11,6 @@ import { If } from 'tsx-control-statements/components';
 import { DcIcon } from '../../common';
 import { insertWhen } from '../../common/utils';
 import { saveImage } from '../../utils/comp';
-
 import DashboardStore from '../../stores/dash-board';
 import ChartEditorStore from '../../stores/chart-editor';
 
@@ -40,12 +39,9 @@ const DashboardHeader = ({
   onSave,
   onCancel,
 }: IProps) => {
-  // const forceUpdate = useForceUpdate();
   // 编辑态
-  const [isEditMode] = DashboardStore.useStore((s) => [s.isEditMode]);
-  const [viewMap] = ChartEditorStore.useStore((s) => [s.viewMap]);
-  const { setEditMode, saveEdit, toggleFullscreen } = DashboardStore;
-  const { setPickChartModalVisible } = ChartEditorStore;
+  const [isEditMode, viewMap] = ChartEditorStore.useStore((s) => [s.isEditMode, s.viewMap]);
+  const { setEditMode, setPickChartModalVisible, saveEdit, toggleFullscreen } = ChartEditorStore;
 
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
   const isFullscreen = useFullscreen(wrapRef, _isFullscreen, { onClose: () => _toggleFullscreen() });

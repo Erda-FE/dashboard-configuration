@@ -9,7 +9,7 @@ export default () => {
   return (
     <APIFormComponent
       currentChart={viewCopy}
-      submitResult={(apiObj: DC.API, restConfig: Partial<DC.View> = {}) => updateEditor({ api: apiObj, ...restConfig })}
+      submitResult={(payload: Partial<DC.View>) => updateEditor(payload)}
     />
   );
 };

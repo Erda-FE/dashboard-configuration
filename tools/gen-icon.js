@@ -2,13 +2,13 @@
  * @Author: licao
  * @Date: 2020-10-26 11:02:00
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-22 11:21:25
+ * @Last Modified time: 2020-12-24 16:10:48
  */
 
 const fs = require('fs');
 const agent = require('superagent');
 
-const iconUrl = '//at.alicdn.com/t/font_2032442_vmyr9iuj48.css';
+const iconUrl = '//at.alicdn.com/t/font_2032442_i2ebv26geme.css';
 const reg = /\.dc-icon-([a-zA-Z-_]+):before /g; // match dc-icon-(xxx)
 
 const errHandler = msg => (err) => {

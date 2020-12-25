@@ -2,10 +2,10 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-23 11:43:37
+ * @Last Modified time: 2020-12-25 13:27:13
  */
-import React, { useMemo, useCallback } from 'react';
-import { map, uniqueId, some, remove, find, findIndex, isEmpty } from 'lodash';
+import React, { useMemo, useCallback, useEffect } from 'react';
+import { map, uniqueId, some, remove, find, findIndex } from 'lodash';
 import { produce } from 'immer';
 import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle, useUpdateEffect } from 'react-use';
@@ -31,16 +31,16 @@ interface IProps {
   value?: DICE_DATA_CONFIGURATOR.Dimension[];
   metricsMap: Record<string, any>;
   typeMap: Record<string, any>;
-  aggregationMap: Record<string, any>;
+  aggregationMap: Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>;
   filtersMap: Record<string, any>;
   type: DICE_DATA_CONFIGURATOR.DimensionType;
   addText?: string;
   disabled?: boolean;
-  onChange?: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => void;
+  onChange: (v?: DICE_DATA_CONFIGURATOR.Dimension[]) => void;
 }
 
 const DimensionsConfigurator = ({
-  value = [],
+  value,
   metricsMap,
   typeMap,
   aggregationMap,
@@ -55,19 +55,19 @@ const DimensionsConfigurator = ({
   const [aliasModalVisible, toggleAliasModalVisible] = useToggle(false);
   const [timeModalVisible, toggleTimeModalVisible] = useToggle(false);
   const [filterModalVisible, toggleFilterModalVisible] = useToggle(false);
+  const dimensions = useMemo(() => value || [], [value]);
   const [{
-    dimensions,
+    // dimensions,
     // 正在编辑的 dimension
     curDimension,
   }, updater] = useUpdate({
-    dimensions: value,
+    // dimensions: value,
     curDimension: {} as unknown as DICE_DATA_CONFIGURATOR.Dimension,
   });
 
-  useUpdateEffect(() => {
-    updater.dimensions([]);
-    updater.curDimension({} as DICE_DATA_CONFIGURATOR.Dimension);
-  }, [metricsMap]);
+  // useEffect(() => {
+  //   onChange && onChange(dimensions);
+  // }, [dimensions, onChange]);
 
   // 生成 dimension 分组
   const metricOptions = useMemo(() => ([
@@ -89,6 +89,13 @@ const DimensionsConfigurator = ({
     },
   ]), [dimensionType, dimensions, metricsMap]);
 
+  const handleUpdateDimension = useCallback((dimension: DICE_DATA_CONFIGURATOR.Dimension) => {
+    onChange(produce(dimensions, (draft) => {
+      const index = findIndex(dimensions, { key: dimension.key });
+      draft[index] = dimension;
+    }));
+  }, [dimensions, onChange]);
+
   // 触发操作
   const handleTriggerAction = useCallback((key: string, type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType, option?: { payload?: any; isUpdateDirectly?: boolean }) => {
     const _curDimension = find(dimensions, { key });
@@ -105,12 +112,13 @@ const DimensionsConfigurator = ({
       toggleTimeModalVisible();
     }
     if (type === 'configFieldAggregation') {
-      handleUpdateDimension({ ..._curDimension, ...option?.payload });
+      const fieldType = option?.payload?.fieldType || metricsMap[_curDimension?.field as string]?.type;
+      handleUpdateDimension({ ..._curDimension, ...option?.payload, fieldType });
     }
     if (type === 'configFilter') {
-      toggleFilterModalVisible()
+      toggleFilterModalVisible();
     }
-  }, [dimensions, updater, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, toggleFilterModalVisible]);
+  }, [dimensions, updater, metricsMap, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, handleUpdateDimension, toggleFilterModalVisible]);
 
 
   const handleAddDimension = useCallback((val: string[]) => {
@@ -119,6 +127,7 @@ const DimensionsConfigurator = ({
     const isFilter = dimensionType === 'filter';
     let type: DICE_DATA_CONFIGURATOR.DimensionMetricType = SPECIAL_METRIC_TYPE.field;
     let alias: string = metricsMap[field]?.name;
+    const fieldType = metricsMap[field]?.type;
 
     if (metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.time]) {
       type = SPECIAL_METRIC_TYPE.time;
@@ -134,8 +143,9 @@ const DimensionsConfigurator = ({
       type = SPECIAL_METRIC_TYPE.filter;
     }
 
-    const newDimension = genDefaultDimension({ type, alias, prefix: dimensionType, field });
-    updater.dimensions([...dimensions, newDimension]);
+    const newDimension = genDefaultDimension({ type, alias, prefix: dimensionType, field, fieldType });
+    onChange([...dimensions, newDimension]);
+
     toggleSelectVisible();
     // 自动打开表达式输入
     if (isExpr) {
@@ -146,17 +156,10 @@ const DimensionsConfigurator = ({
       updater.curDimension(newDimension);
       handleTriggerAction(newDimension.key, 'configFilter');
     }
-  }, [metricsMap, dimensions, dimensionType, updater, toggleSelectVisible, handleTriggerAction]);
-
-  const handleUpdateDimension = (dimension: DICE_DATA_CONFIGURATOR.Dimension) => {
-    updater.dimensions(produce(dimensions, (draft) => {
-      const index = findIndex(dimensions, { key: dimension.key });
-      draft[index] = dimension;
-    }));
-  };
+  }, [dimensionType, metricsMap, onChange, dimensions, toggleSelectVisible, updater, handleTriggerAction]);
 
   const handleRemoveDimension = (key: string) => {
-    updater.dimensions(produce(dimensions, (draft) => {
+    onChange(produce(dimensions, (draft) => {
       remove(draft, { key });
     }));
   };
@@ -182,22 +185,20 @@ const DimensionsConfigurator = ({
   };
 
   return (
-    <div className="dc-dice-metric-group">
-      {map(dimensions, ({ key, alias, type, expr, field, filter, customTime, aggregation }) => {
+    <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
+      {map(dimensions, ({ key, alias, type, expr, fieldType, filter, customTime, aggregation }) => {
         // 表达式未填提示
         const isUncompleted = type === 'expr' && !expr;
         // 别名自动显示
-        let _alias = alias,
-          aggregationOptions;
+        let _alias = alias;
+        let aggregationOptions;
 
         if (type === 'time' && !!customTime) {
           _alias = `${alias}-${CUSTOM_TIME_RANGE_MAP[customTime].name}`;
         }
         if (type === 'field') {
-          const fieldType = metricsMap[field as string]?.type;
-
           aggregationOptions = map(
-            typeMap[fieldType]?.aggregations,
+            typeMap[fieldType as string]?.aggregations,
             (v) => ({ value: v.aggregation, label: v.name })
           );
           aggregation && (_alias = `${alias}-${aggregationMap[aggregation]?.name}`);
@@ -213,6 +214,7 @@ const DimensionsConfigurator = ({
             dimensionType={dimensionType}
             aggregationOptions={aggregationOptions}
             aggregation={aggregation}
+            aggregationMap={aggregationMap}
             onTriggerAction={(actionType, option) => handleTriggerAction(key, actionType, option)}
           >
             <Tag
@@ -224,6 +226,14 @@ const DimensionsConfigurator = ({
               <DcIcon className="mr4" size="small" type="down" />
               <If condition={isUncompleted}>
                 <DcInfoIcon size="small" info={textMap['uncompleted input']} />
+              </If>
+              <If condition={type === 'expr' && !isUncompleted}><DcIcon className="mr4" type="Function" /></If>
+              <If condition={type === 'time'}><DcIcon className="mr4" type="time-circle" size="small" /></If>
+              <If condition={(['field', 'filter'] as DICE_DATA_CONFIGURATOR.DimensionMetricType[]).includes(type)}>
+                <Choose>
+                  <When condition={fieldType === 'number'}><DcIcon className="mr4" type="Field-number" /></When>
+                  <When condition={fieldType === 'string'}><DcIcon className="mr4" type="Field-String" /></When>
+                </Choose>
               </If>
               {cutStr(_alias, METRIC_DISPLAY_CHARS_LIMIT, { showTip: true })}
             </Tag>

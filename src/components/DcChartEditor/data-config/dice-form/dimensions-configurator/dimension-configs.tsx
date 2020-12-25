@@ -16,8 +16,9 @@ interface IProps {
   type: DICE_DATA_CONFIGURATOR.DimensionMetricType;
   dimensionType: DICE_DATA_CONFIGURATOR.DimensionType;
   aggregation?: string;
-  aggregationOptions?: Array<{ value: string; label: string }>;
-  onTriggerAction: (type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType, option?: { payload?: any; isUpdateDirectly?: boolean }) => void;
+  aggregationMap?: Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>;
+  aggregationOptions?: ComponentOptions;
+  onTriggerAction: (type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType, option?: { payload?: Partial<DICE_DATA_CONFIGURATOR.Dimension>; isUpdateDirectly?: boolean }) => void;
 }
 
 const DimensionConfigs = ({
@@ -26,6 +27,7 @@ const DimensionConfigs = ({
   dimensionType,
   aggregationOptions,
   aggregation,
+  aggregationMap,
   onTriggerAction,
 }: IProps) => {
   const child = React.Children.only(children);
@@ -65,9 +67,11 @@ const DimensionConfigs = ({
 
   const handleClick = ({ keyPath }: any) => {
     if (keyPath[1] === SPECIAL_METRIC_TYPE.field) {
+      const curAggregation = keyPath[0];
       onTriggerAction('configFieldAggregation', {
         payload: {
-          aggregation: keyPath[0] === aggregation ? undefined : keyPath[0],
+          aggregation: curAggregation === aggregation ? undefined : curAggregation,
+          fieldType: curAggregation === aggregation ? undefined : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[curAggregation as string]?.result_type,
         },
         isUpdateDirectly: true
       });

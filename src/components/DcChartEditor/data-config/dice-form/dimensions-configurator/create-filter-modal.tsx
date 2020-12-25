@@ -21,7 +21,7 @@ interface IFilterInputProps {
   value: any;
   onChange(v: any): void;
   fieldType: DICE_DATA_CONFIGURATOR.FieldType;
-  options: { label: string; value: string }[];
+  options: ComponentOptions;
 }
 
 const FilterInput = ({ value, onChange, fieldType, options }: IFilterInputProps) => (

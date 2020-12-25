@@ -1,84 +1,63 @@
 import * as React from 'react';
 import { Checkbox, Input } from '@terminus/nusi';
-import { get } from 'lodash';
-// import { KVTable, useUpdate } from '../../../common';
+import produce from 'immer';
 import { CommonConfigurator } from '../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 
-// const LineConfigurator = (props: IProps) => {
-//   const { form, forwardedRef, currentChart, setTouched, updateEditor, isTouched } = props;
-//   const textMap = DashboardStore.useStore((s) => s.textMap);
-//   const [{ controls }, updater] = useUpdate({ controls: form.getFieldsValue().controls });
-//   const setFieldsValue = useMemo(() => form.setFieldsValue, [form.setFieldsValue]);
-
-//   useEffect(() => {
-//     forwardedRef.current = form;
-//     if (!isTouched && form.isFieldsTouched()) {
-//       setTouched(true);
-//     }
-//     updater.controls(form.getFieldsValue().controls);
-//   }, [form, forwardedRef, isTouched, setTouched, updater]);
-
-//   useEffect(() => {
-//     setTimeout(() => {
-//       setFieldsValue(currentChart);
-//       currentChart.controls && updater.controls(currentChart.controls);
-//     }, 0);
-//   }, [currentChart, setFieldsValue, updater]);
-
-//   // const onConfigChange = (key: string, value: any) => {
-//   //   const _config = cloneDeep(currentChart.config);
-//   //   set(_config, key, value);
-//   //   updateEditor({ config: _config });
-//   // };
-// };
-
 export default () => {
-  const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy);
   const { updateEditor } = ChartEditorStore;
-  const isLabel = get(viewCopy, ['config', 'optionProps', 'isLabel']);
-  const isConnectNulls = get(viewCopy, ['config', 'optionProps', 'isConnectNulls']);
-  const nullDisplay = get(viewCopy, ['config', 'optionProps', 'nullDisplay']);
+  const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
+  const currentChartConfig = viewCopy?.config || {};
+  const optionProps = currentChartConfig.optionProps || {};
+  const { isLabel, isConnectNulls, nullDisplay } = optionProps;
+
+  const updateOptionProps = (_optionProps: Record<string, any>) => {
+    updateEditor({
+      config: produce(currentChartConfig, (draft) => {
+        draft.optionProps = { ...optionProps, ..._optionProps };
+      }),
+    });
+  };
 
   const fields = [
     {
       label: textMap['chart label'],
-      name: 'config.optionProps.isLabel',
+      name: 'isLabel',
       type: Checkbox,
       required: false,
       customProps: {
         defaultChecked: isLabel,
         children: textMap['show chart label'],
         onChange(e: React.FocusEvent<HTMLInputElement>) {
-          updateEditor({ config: { optionProps: { isLabel: e.target.checked } } });
+          updateOptionProps({ isLabel: e.target.checked });
         },
       },
     },
     {
       label: textMap['connect null'],
-      name: 'config.optionProps.isConnectNulls',
+      name: 'isConnectNulls',
       type: Checkbox,
       required: false,
       customProps: {
         defaultChecked: isConnectNulls,
         children: textMap['connect null'],
         onChange(e: React.FocusEvent<HTMLInputElement>) {
-          updateEditor({ config: { optionProps: { isConnectNulls: e.target.checked } } });
+          updateOptionProps({ isConnectNulls: e.target.checked });
         },
       },
     },
     {
       label: textMap['null display'],
-      name: 'config.optionProps.nullDisplay',
+      name: 'nullDisplay',
       type: Input,
       required: false,
       customProps: {
         defaultChecked: nullDisplay,
         onBlur(e: React.FocusEvent<HTMLInputElement>) {
-          updateEditor({ config: { optionProps: { nullDisplay: e.target.value } } });
+          updateOptionProps({ nullDisplay: e.target.value });
         },
       },
     },

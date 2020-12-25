@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:10:37
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-10 11:15:07
+ * @Last Modified time: 2020-12-25 16:27:48
  */
 import React, { useRef } from 'react';
 import classnames from 'classnames';
@@ -10,36 +10,21 @@ import { isEmpty } from 'lodash';
 import { If } from 'tsx-control-statements/components';
 import PureBoardGrid from './pure-grid';
 import { useComponentWidth, DcEmpty } from '../../common';
-import DashboardHeader from './header';
+import DashboardHeader from './pure-header';
 import DashboardStore from '../../stores/dash-board';
 
 import './index.scss';
 
+const textMap = DashboardStore.getState((s) => s.textMap);
+
 interface IPureProps {
-  /**
-   * Dashboard Name，used as the name of the export file
-   *
-   * @type {string}
-   * @memberof IPureProps
-   */
+  /** 大盘名 */
   name?: string;
-  /**
-   * Config data array to layout dashboard
-   *
-   * @type {DC.ILayout}
-   * @memberof IPureProps
-   */
+  /** 大盘配置 */
   layout: DC.ILayout;
-  /**
-   * Whether to display the Dashboard general operation bar
-   *
-   * @type {boolean}
-   * @memberof IPureProps
-   */
+  /** 是否显示大盘全局操作栏 */
   showOptions?: boolean;
 }
-
-const textMap = DashboardStore.getState((s) => s.textMap);
 
 const PureDashboard = ({ name, layout, showOptions = false }: IPureProps) => {
   const boardRef = useRef<HTMLDivElement>(null);
@@ -61,7 +46,6 @@ const PureDashboard = ({ name, layout, showOptions = false }: IPureProps) => {
           wrapRef={boardRef}
           contentRef={boardContentRef}
           dashboardName={name}
-          readOnly
         />
       </If>
       <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">

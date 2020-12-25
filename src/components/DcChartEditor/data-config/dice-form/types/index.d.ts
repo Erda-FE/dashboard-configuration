@@ -47,6 +47,13 @@ declare namespace DICE_DATA_CONFIGURATOR {
      */
     field?: string;
     /**
+     *指标结果类型，type 为 field 时必须
+     *
+     * @type {('number' | 'string')}
+     * @memberof ValueDimension
+     */
+    fieldType?: 'number' | 'string';
+    /**
      *聚合方法
      *
      * @type {string}
@@ -121,5 +128,11 @@ declare namespace DICE_DATA_CONFIGURATOR {
       operation: string;
       value: any;
     },
+  }
+
+  interface AggregationInfo {
+    aggregation: string;
+    name: string;
+    result_type: 'string' | 'number';
   }
 }

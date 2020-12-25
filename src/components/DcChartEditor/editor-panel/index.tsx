@@ -45,9 +45,10 @@ const EditorPanel = () => {
       bodyStyle={{ height: '100%', background: '#f4f3f7', padding: 0 }}
     >
       <div className="dc-editor-wp v-flex-box flex-space-between full-height auto-overflow">
+        <div className="dc-editor-header px16 py12 border-bottom color-text-sub white-bg fz22">{textMap['config charts']}</div>
         <div className="dc-editor-content flex-1 auto-overflow pa4">
           <div className="dc-editor-common-setting v-flex-box py0 px12 auto-overflow border-radius white-bg">
-            <div className="dc-editor-setting-title bold-500 fz14 mb8 py8 border-bottom">
+            <div className="dc-editor-setting-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
               {textMap['common configuration']}
             </div>
             <div className="auto-y-overflow flex-1">
@@ -60,7 +61,7 @@ const EditorPanel = () => {
             </DcContainer>
           </div>
           <div className="dc-editor-data-setting v-flex-box py0 px12 border-radius white-bg">
-            <div className="dc-editor-setting-title bold-500 fz14 mb8 py8 border-bottom">
+            <div className="dc-editor-setting-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
               {textMap['datasource configuration']}
             </div>
             <div className="auto-y-overflow flex-1">
@@ -68,7 +69,7 @@ const EditorPanel = () => {
             </div>
           </div>
         </div>
-        <div className="dc-editor-footer px12 py8 white-bg">
+        <div className="dc-editor-footer px12 py8 white-bg border-top">
           <Button onClick={completeEditor} type="primary">{textMap.ok}</Button>
           <Choose>
             <When condition={isTouched}>

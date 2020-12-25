@@ -8,7 +8,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
   const isShowTotal = get(config, ['optionProps', 'isShowTotal']);
 
   if (legendData.length) {
-    set(option, ['legend', 'data'], legendData);
+    set(option, 'legend.data', legendData);
   }
 
   return merge(

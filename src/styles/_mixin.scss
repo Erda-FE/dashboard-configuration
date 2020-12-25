@@ -63,6 +63,10 @@
     border-bottom: $dark-border;
   }
 
+  .border-top {
+    border-top: $dark-border;
+  }
+
   .white-bg {
     background-color: $color-white;
   }
@@ -75,8 +79,23 @@
     font-weight: 500;
   }
 
-  &.dark-border,
+  .color-text-sub {
+    color: $color-text-sub;
+  }
+
+  .primary-border {
+    border: $primary-border;
+  }
+
+  .dark-dotted-border {
+    border: $dark-dotted-border;
+  }
+
   .dark-border {
+    border: $dark-border;
+  }
+
+  &.dark-border {
     border: $dark-border;
   }
 }

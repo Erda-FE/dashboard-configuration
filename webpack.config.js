@@ -37,7 +37,6 @@ module.exports = () => {
     externals: isProd ? {
       lodash: 'lodash',
       echarts: 'echarts',
-      antd: 'antd',
       react: 'react',
       'react-dom': 'react-dom',
       moment: 'moment',

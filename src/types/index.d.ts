@@ -16,7 +16,7 @@ interface PureLayoutItem {
 
 export type ILayout = Array<Merge<LayoutItem, PureLayoutItem>>;
 
-interface ViewDefItem {
+export interface ViewDefItem {
   name: string;
   enName: string;
   image: React.ReactNode;
@@ -39,14 +39,16 @@ interface IExtraData {
 
 interface API {
   url: string;
-  method: 'GET' | 'POST';
-  query?: Record<string, string | number | any[]>;
+  method: 'get' | 'post';
+  query?: Record<string, any>;
   body?: Record<string, any>;
-  header?: Record<string, string | number | any[]>;
-  extraData?: IExtraData;
+  header?: Record<string, any>;
+  // extraData?: IExtraData;
 }
 
 interface View {
+  /** 指定大盘版本，识别旧版不能编辑 */
+  version?: string;
   name: string;
   // 展示类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择
   chartType: ViewType; // chart:timeline | chart:bar | chart:radar ...
@@ -58,7 +60,7 @@ interface View {
   description?: string;
   hideHeader?: boolean; // 是否隐藏Header
   staticData?: StaticData; // 静态数据
-  api?: API;
+  api?: any;
   chartQuery?: any;
   maskMsg?: string | Element;
   loadData?: (query?: object, body?: object) => Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
@@ -70,13 +72,26 @@ interface View {
 type DataConvertor = (data: object) => object;
 type OptionFn = (data: object, optionExtra?: object) => object;
 
-interface ChartConfig {
+export interface DatasourceConfig {
+  activedMetricGroups: string[];
+  typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+  valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+  resultFilters?: DICE_DATA_CONFIGURATOR.Dimension[];
+  isSqlMode?: boolean;
+  q?: string;
+  limit?: number;
+}
+
+export interface ChartConfig {
   // 配置优先级：optionFn > option
   option?: Option;// 图表配置（完全匹配echarts配置）
-  optionProps?: {// 一些用于调整option的参数
+  /** 一些用于调整option的参数 */
+  optionProps?: {
     [k: string]: any;
   };
-
+  /** 数据源配置 */
+  dataSourceConfig?: DatasourceConfig;
+  // 下面的字段待清理，后端没有存
   optionFn?: OptionFn;
   optionExtra?: object;
 }
@@ -115,10 +130,3 @@ interface StaticData {
   extraOption: object; // 可能需要根据返回数据调整 option
   [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
 }
-
-interface IKVTableValue {
-  value?: string;
-  name?: string;
-  uniKey?: string;
-}
-

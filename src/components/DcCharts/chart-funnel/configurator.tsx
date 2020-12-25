@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Input } from '@terminus/nusi';
-import { get } from 'lodash';
+import produce from 'immer';
 import { CommonConfigurator } from '../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
@@ -8,19 +8,31 @@ import DashboardStore from '../../../stores/dash-board';
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 export default () => {
-  const viewCopy = ChartEditorStore.useStore(s => s.viewCopy);
-  const unit = get(viewCopy, ['config', 'optionProps', 'unit'])
   const { updateEditor } = ChartEditorStore;
+  const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
+  const currentChartConfig = viewCopy?.config || {};
+  const optionProps = currentChartConfig.optionProps || {};
+  const { unit } = optionProps;
+
+  const updateOptionProps = (_optionProps: Record<string, any>) => {
+    updateEditor({
+      config: produce(currentChartConfig, (draft) => {
+        draft.optionProps = { ...optionProps, ..._optionProps };
+      }),
+    });
+  };
+
+
   const fields = [
     {
       label: textMap.unit,
-      name: 'config.optionProps.unit',
+      name: 'unit',
       type: Input,
       required: false,
       initialValue: unit,
       customProps: {
         onBlur(e: React.FocusEvent<HTMLInputElement>) {
-          updateEditor({ config: { optionProps: { unit: e.target.value } } });
+          updateOptionProps({ unit: e.target.value });
         },
       },
     },

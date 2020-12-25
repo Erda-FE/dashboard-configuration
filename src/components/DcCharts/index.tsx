@@ -1,4 +1,5 @@
 import React from 'react';
+import { set, get, map as _map } from 'lodash';
 // 图表组件
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
@@ -20,20 +21,8 @@ const SvgContainer = ({ children }: any) => (
   </svg>
 );
 
-export enum CHART_TYPE {
-  line = 'chart:line',
-  area = 'chart:area',
-  bar = 'chart:bar',
-  pie = 'chart:pie',
-  funnel = 'chart:funnel',
-  scatter = 'chart:scatter',
-  map = 'chart:map',
-  table = 'table',
-  card = 'card',
-}
-
 const basicCharts: Partial<DC.ViewDefMap> = {
-  [CHART_TYPE.line]: {
+  'chart:line': {
     name: '折线图',
     enName: 'Line',
     image: (
@@ -41,10 +30,17 @@ const basicCharts: Partial<DC.ViewDefMap> = {
         <path d="M497.778 790.756L304.356 651.378l-133.69 108.089-54.044-68.267 182.045-147.911 204.8 145.067 358.4-213.334 45.51 73.956z" fill="#25ca64" /><path d="M497.778 534.756L304.356 395.378l-133.69 108.089-54.044-68.267 182.045-147.911 204.8 145.067 358.4-213.334 45.51 73.956z" fill="#5d48df" />
       </SvgContainer>
     ),
-    Component: ChartLine,
+    // Component: ChartLine,
+    Component(props) {
+      const metricData = get(props, 'data.metricData');
+      const _metricData = _map(metricData, ((metric) => ({ ...metric, type: 'line' })));
+      set(props, 'data.metricData', _metricData);
+      set(props, 'config.optionProps.noAreaColor', true);
+      return <ChartLine {...props} />;
+    },
     Configurator: LineConfigurator,
   },
-  [CHART_TYPE.area]: {
+  'chart:area': {
     name: '面积图',
     enName: 'Area',
     image: (
@@ -52,10 +48,17 @@ const basicCharts: Partial<DC.ViewDefMap> = {
         <path d="M85.333 824.889S201.956 199.11 352.711 199.11c125.156 0 119.467 227.556 213.333 227.556s76.8-116.623 176.356-116.623c156.444 0 196.267 512 196.267 512H85.333z" fill="#25ca64" /><path d="M85.333 824.889s116.623-310.045 267.378-310.045c125.156 0 119.467 113.778 213.333 113.778s76.8-56.889 176.356-56.889c156.444 0 196.267 256 196.267 256H85.333z" fill="#5d48df" />
       </SvgContainer>
     ),
-    Component: ChartLine,
+    // Component: ChartLine,
+    Component(props) {
+      const metricData = get(props, 'data.metricData');
+      const _metricData = _map(metricData, ((metric) => ({ ...metric, type: 'line' })));
+      set(props, 'data.metricData', _metricData);
+      set(props, 'config.optionProps.noAreaColor', false);
+      return <ChartLine {...props} />;
+    },
     Configurator: LineConfigurator,
   },
-  [CHART_TYPE.bar]: {
+  'chart:bar': {
     name: '柱状图',
     enName: 'Bar',
     image: (
@@ -63,10 +66,17 @@ const basicCharts: Partial<DC.ViewDefMap> = {
         <path d="M142.222 526.222h142.222v312.89H142.222z" fill="#25ca64" /><path d="M341.333 184.889h142.223V839.11H341.333z" fill="#706EE7" /><path d="M540.444 412.444h142.223v426.667H540.444z" fill="#29C287" /><path d="M739.556 611.556h142.222V839.11H739.556z" fill="#5d48df" />
       </SvgContainer>
     ),
-    Component: ChartLine,
+    // Component: ChartLine,
+    Component(props) {
+      const data = get(props, 'data');
+      const metricData = get(props, 'data.metricData');
+      const _metricData = _map(metricData, ((metric) => ({ ...metric, type: 'bar' })));
+      const _props = { ...props, data: { ...data, metricData: _metricData } };
+      return <ChartLine {..._props} />;
+    },
     Configurator: LineConfigurator,
   },
-  [CHART_TYPE.pie]: {
+  'chart:pie': {
     name: '饼图',
     enName: 'Pie',
     image: (
@@ -77,7 +87,7 @@ const basicCharts: Partial<DC.ViewDefMap> = {
     Component: ChartPie,
     Configurator: PieConfigurator,
   },
-  [CHART_TYPE.funnel]: {
+  'chart:funnel': {
     name: '漏斗图',
     enName: 'Funnel',
     image: (
@@ -88,7 +98,7 @@ const basicCharts: Partial<DC.ViewDefMap> = {
     Component: ChartFunnel,
     Configurator: FunnelConfigurator,
   },
-  [CHART_TYPE.map]: {
+  'chart:map': {
     name: '下钻地图',
     enName: 'Map',
     image: (
@@ -99,7 +109,7 @@ const basicCharts: Partial<DC.ViewDefMap> = {
     Component: ChartMap,
     Configurator: MapConfigurator,
   },
-  [CHART_TYPE.card]: {
+  card: {
     name: '指标卡片',
     enName: 'Card',
     image: (
@@ -110,7 +120,7 @@ const basicCharts: Partial<DC.ViewDefMap> = {
     Component: ChartMetric,
     Configurator: MetricConfigurator,
   },
-  [CHART_TYPE.table]: {
+  table: {
     name: '数据表格',
     enName: 'Table',
     image: (

@@ -2,7 +2,7 @@
  * 数据表格
  */
 import React from 'react';
-import { Table } from 'antd';
+import { Table } from '@terminus/nusi';
 import { map } from 'lodash';
 
 interface IProps {
@@ -22,8 +22,8 @@ const ChartTable = ({ results = [], cols = [] }: IProps) => {
     if (index === 0 && isOverLimit) {
       r = {
         ...r,
-        width: fixedWidth,
-        fixed: 'left',
+        // width: fixedWidth,
+        // fixed: 'left',
       };
     }
     if (col.unit) {
@@ -38,21 +38,20 @@ const ChartTable = ({ results = [], cols = [] }: IProps) => {
     <React.Fragment>
       <section className="table-panel">
         <Table
-          rowKey={'id'}
+          rowKey="c_key"
           columns={_cols}
           dataSource={results}
-          scroll={isOverLimit ? { x: fixedWidth + cols.length * 200, y: 500 } : { y: 500 }}
-          pagination={{
-            pageSize: 20,
-            hideOnSinglePage: true,
-          }}
+          // scroll={isOverLimit ? { x: fixedWidth + cols.length * 200  } : { }}
+          pagination={false}
         />
       </section>
     </React.Fragment>
   );
 };
 
-export default ({ data: { metricData: results, cols }, ...rest }: any) => {
+export default ({ data, ...rest }: any) => {
+  console.log(data);
+  const { metricData: results, cols } = data;
   const props = {
     results,
     cols,

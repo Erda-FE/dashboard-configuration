@@ -35,7 +35,7 @@ interface IProps {
 }
 
 const Options = ({ view, viewId, viewRef, children }: IProps) => {
-  const [editChartId, viewMap] = ChartEditorStore.useStore((s) => [s.editChartId, s.viewMap]);
+  const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy);
   const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
   const { editView } = ChartEditorStore;
   const { deleteView, toggleFullscreen } = DashboardStore;
@@ -48,7 +48,7 @@ const Options = ({ view, viewId, viewRef, children }: IProps) => {
     toggleFullscreen(isFullscreen);
   }, [isFullscreen, toggleFullscreen]);
 
-  const chartEditorVisible = !isEmpty(viewMap[editChartId]);
+  const chartEditorVisible = !isEmpty(viewCopy);
 
   const handleRemoveItem = useCallback(() => {
     Modal.confirm({

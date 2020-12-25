@@ -1,8 +1,0 @@
-@import "../styles/variable";
-$table-prefix-cls: #{$prefix}-kv-table;
-
-.#{$table-prefix-cls} {
-  .add-btn {
-    margin-bottom: 8px;
-  }
-}

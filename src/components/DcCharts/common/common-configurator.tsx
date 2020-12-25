@@ -7,9 +7,10 @@ import DashboardStore from '../../../stores/dash-board';
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 export default ({ fields: extraFields = [] }: { fields?: any[] }) => {
-  const viewCopy = ChartEditorStore.useStore(s => s.viewCopy);
-  const { title, description } = viewCopy as DC.View;
   const { updateEditor } = ChartEditorStore;
+  const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
+  const { title, description } = viewCopy || {};
+
   const fields = [
     {
       label: textMap['chart title'],

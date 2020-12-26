@@ -1,4 +1,4 @@
-import { cloneDeep, forEach, maxBy, remove, omit } from 'lodash';
+import { cloneDeep, forEach, maxBy, remove, omit, some } from 'lodash';
 import { produce } from 'immer';
 import { createFlatStore } from '../cube';
 import { genUUID } from '../common/utils';
@@ -9,10 +9,12 @@ const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
   return maxY + maxH;
 };
 
-const generateLayout = (id: string, items?: DC.PureLayoutItem[]): DC.PureLayoutItem[] => {
+const updateLayout = (id: string, items: DC.PureLayoutItem[]): DC.PureLayoutItem[] => {
+  if (some(items, { i: id })) return items;
+
   const size = { w: 8, h: 9 };
   return [
-    ...(items || []),
+    ...items,
     {
       i: id,
       x: 0,
@@ -25,7 +27,7 @@ const generateLayout = (id: string, items?: DC.PureLayoutItem[]): DC.PureLayoutI
 interface IState {
   pickChartModalVisible: boolean;
   isEditMode: boolean;
-  pureLayout?: DC.PureLayoutItem[];
+  pureLayout: DC.PureLayoutItem[];
   editChartId?: string;
   viewMap: Record<string, DC.View>; // 所有图表配置信息
   viewCopy?: DC.View; // 修改时用于恢复的复制对象
@@ -52,7 +54,7 @@ const initState: IState = {
   pickChartModalVisible: false, // 添加图表时选择图表类型选择
   isTouched: false, // 数据是否变动，用于取消编辑时的判断
   isEditMode: false,
-  pureLayout: undefined,
+  pureLayout: [],
   viewMap: {}, // 所有图表配置信息
   editChartId: undefined,
   viewCopy: undefined, // 修改时用于恢复的复制对象
@@ -94,10 +96,10 @@ const chartEditorStore = createFlatStore({
      * @param {*} state
      */
     saveEditor(state) {
-      const { editChartId, viewCopy } = state;
+      const { editChartId, viewCopy, pureLayout } = state;
       if (editChartId && viewCopy) {
         state.viewMap[editChartId] = viewCopy;
-        state.pureLayout = generateLayout(editChartId, state.pureLayout);
+        state.pureLayout = updateLayout(editChartId, pureLayout);
       }
     },
     updateLayout(state, pureLayout: DC.PureLayoutItem[]) {
@@ -130,10 +132,7 @@ const chartEditorStore = createFlatStore({
     addView(state, chartType: DC.ViewType) {
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;
-      state.viewCopy = {
-        version: 'v2',
-        ...(CHARTS_INIT_CONFIG[chartType] as unknown as DC.View),
-      };
+      state.viewCopy = CHARTS_INIT_CONFIG[chartType] as unknown as DC.View;
     },
     // 编辑图表
     editView(state, editChartId: string) {

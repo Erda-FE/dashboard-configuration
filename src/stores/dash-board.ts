@@ -22,8 +22,8 @@ const dashBoardStore = createFlatStore({
   name: 'dashBoard',
   state: initState,
   reducers: {
-    toggleFullscreen(state, isFullscreen?: boolean) {
-      state.isFullscreen = isFullscreen || !state.isFullscreen;
+    toggleFullscreen(state, isFullscreen: boolean) {
+      state.isFullscreen = isFullscreen;
     },
     reset() {
       return initState;

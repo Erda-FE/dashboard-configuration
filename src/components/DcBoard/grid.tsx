@@ -2,21 +2,25 @@
  * @Author: licao
  * @Date: 2020-12-04 15:08:25
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-25 19:54:43
+ * @Last Modified time: 2020-12-26 16:36:44
  */
 import * as React from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, map } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import { genGridItems } from './common';
+import { DcEmpty } from '../../common';
 import { GRID_LAYOUT_CONFIG } from '../../constants';
 import { splitLayoutAndView } from './common/utils';
 import ChartEditorStore from '../../stores/chart-editor';
+import DashboardStore from '../../stores/dash-board';
 
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 
+const textMap = DashboardStore.getState((s) => s.textMap);
+
 const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
-  const [dashboardLayout, isEditMode, viewMap] = ChartEditorStore.useStore((s) => [s.layout, s.isEditMode, s.viewMap]);
+  const [isEditMode, viewMap, pureLayout] = ChartEditorStore.useStore((s) => [s.isEditMode, s.viewMap, s.pureLayout]);
   const { updateViewMap: updateChildMap, updateLayout } = ChartEditorStore;
 
   React.useEffect(() => {
@@ -25,17 +29,23 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
     updateChildMap(b);
   }, [layout, updateChildMap, updateLayout]);
 
-  if (isEmpty(dashboardLayout) || width === Infinity) {
-    return null;
+  if (isEmpty(pureLayout) || width === Infinity) {
+    return (
+      <DcEmpty
+        className="flex-1 full-height"
+        description={textMap['no data']}
+        condition
+      />
+    );
   }
 
   // grid 组件内部会修改layout，而cube里的是不可直接更改的，所以重新生成一个对象
-  const pureLayout = dashboardLayout.map((p) => ({ ...p }));
+  const _pureLayout = map(pureLayout, (p) => ({ ...p }));
 
   return (
     <ReactGridLayout
       autoSize
-      layout={pureLayout}
+      layout={_pureLayout}
       width={width}
       cols={GRID_LAYOUT_CONFIG.cols}
       rowHeight={GRID_LAYOUT_CONFIG.rowHeight}
@@ -46,7 +56,7 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
       useCSSTransforms
       onLayoutChange={updateLayout}
     >
-      {genGridItems(pureLayout, viewMap)}
+      {genGridItems(_pureLayout, viewMap)}
     </ReactGridLayout>
   );
 };

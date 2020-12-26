@@ -2,12 +2,12 @@
  * @Author: licao
  * @Date: 2020-12-04 17:57:36
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-10 10:58:22
+ * @Last Modified time: 2020-12-26 17:07:57
  */
 
 import React, { useCallback, useEffect, useMemo, RefObject, ReactNode, memo } from 'react';
 import { Modal, Menu, Toast, Dropdown } from '@terminus/nusi';
-import { get, isEmpty } from 'lodash';
+import { get } from 'lodash';
 import { useFullscreen, useToggle } from 'react-use';
 import { getConfig } from '../../config';
 import { DcIcon } from '../../common';
@@ -32,13 +32,12 @@ interface IProps {
   viewRef: RefObject<Element>;
   view: any;
   children: ReactNode;
+  toggleFullscreen: (v: boolean) => void;
 }
 
-const Options = ({ view, viewId, viewRef, children }: IProps) => {
-  const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy);
-  const isEditMode = DashboardStore.useStore((s) => s.isEditMode);
-  const { editView } = ChartEditorStore;
-  const { deleteView, toggleFullscreen } = DashboardStore;
+const Options = ({ view, viewId, viewRef, children, toggleFullscreen }: IProps) => {
+  const [isEditMode, editChartId] = ChartEditorStore.useStore((s) => [s.isEditMode, s.editChartId]);
+  const { editView, deleteView } = ChartEditorStore;
 
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
   const [isExportingData, toggleExportingDataStatus] = useToggle(false);
@@ -48,7 +47,7 @@ const Options = ({ view, viewId, viewRef, children }: IProps) => {
     toggleFullscreen(isFullscreen);
   }, [isFullscreen, toggleFullscreen]);
 
-  const chartEditorVisible = !isEmpty(viewCopy);
+  const chartEditorVisible = !!editChartId;
 
   const handleRemoveItem = useCallback(() => {
     Modal.confirm({

@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-25 16:48:55
+ * @Last Modified time: 2020-12-26 21:25:44
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
 import { Button, Tooltip } from '@terminus/nusi';
@@ -65,16 +65,15 @@ const DashboardHeader = ({
   }, [onCancel, setEditMode]);
 
   const doSaveDashboard = useCallback(() => {
-    saveEdit().then((full: { layout: any[]; viewMap: { [k: string]: any } }) => {
-      if (onSave) {
-        const { layout: singleLayouts, viewMap: _viewMap } = full;
-        const fullLayouts = singleLayouts.map((_layout) => ({
-          ..._layout,
-          view: _viewMap[_layout.i],
-        }));
-        onSave(fullLayouts, { singleLayouts, viewMap });
-      }
-    });
+    const full: { layout?: DC.PureLayoutItem[]; viewMap: Record<string, DC.View> } = saveEdit();
+    if (onSave) {
+      const { layout: singleLayouts, viewMap: _viewMap } = full;
+      const fullLayouts = (singleLayouts || []).map((_layout) => ({
+        ..._layout,
+        view: _viewMap[_layout.i],
+      }));
+      onSave(fullLayouts, { singleLayouts: singleLayouts || [], viewMap });
+    }
   }, [onSave, saveEdit, viewMap]);
 
   const handleSaveDashboard = useCallback(() => {

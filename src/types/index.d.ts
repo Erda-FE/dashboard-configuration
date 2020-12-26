@@ -10,8 +10,8 @@ interface PureLayoutItem {
   x: number;
   y: number;
   i: string;
-  moved: boolean;
-  static: boolean;
+  moved?: boolean;
+  static?: boolean;
 }
 
 export type ILayout = Array<Merge<LayoutItem, PureLayoutItem>>;

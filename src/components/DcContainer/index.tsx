@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-24 21:20:18
+ * @Last Modified time: 2020-12-26 17:08:02
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select } from '@terminus/nusi';
@@ -16,7 +16,6 @@ import ViewDropdownOptions from './options';
 import { ChartMask, ChartSpinMask } from '../DcCharts/common';
 // DcDashboard 里面发起的请求,需要提供配置
 import { getChartData } from '../../services/chart-editor';
-
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 
@@ -29,10 +28,15 @@ interface IProps {
   viewId: string;
   view: DC.View;
   children: ReactElement<any>;
+  isPure?: boolean;
 }
-const DcContainer = ({ view, viewId, children }: IProps) => {
-  const [isEditMode, isFullscreen] = DashboardStore.useStore((s) => [s.isEditMode, s.isFullscreen]);
-  const [editChartId, viewCopy] = ChartEditorStore.useStore((s) => [s.editChartId, s.viewCopy]);
+const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
+  const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
+  const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
+  const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
+  const { toggleFullscreen: toggleFromEditorPureFullscreen } = DashboardStore;
+  const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
+  const toggleFullscreen = isPure ? togglePureFullscreen : toggleFromEditorPureFullscreen;
 
   const {
     title: _title,
@@ -50,8 +54,7 @@ const DcContainer = ({ view, viewId, children }: IProps) => {
     chartQuery,
   } = view;
 
-  const chartEditorVisible = !isEmpty(viewCopy);
-  const isEditView = editChartId === viewId;
+  const chartEditorVisible = !!editChartId;
   const childNode = React.Children.only(children);
   const hasLoadFn = isFunction(loadData);
   const dataConfigSelectors = get(api, ['extraData', 'dataConfigSelectors']);
@@ -81,7 +84,7 @@ const DcContainer = ({ view, viewId, children }: IProps) => {
     ...childNode.props,
     data: resData,
     config,
-    isEditView,
+    isEditView: chartEditorVisible,
     loadData,
   });
 
@@ -178,6 +181,7 @@ const DcContainer = ({ view, viewId, children }: IProps) => {
             view={view}
             viewId={viewId}
             viewRef={viewRef}
+            toggleFullscreen={toggleFullscreen}
           >
             {getTitle()}
           </ViewDropdownOptions>
@@ -287,7 +291,7 @@ const DcContainer = ({ view, viewId, children }: IProps) => {
   };
 
   return (
-    <div ref={viewRef} className={classnames({ 'dc-view-wrapper': true, active: isEditView })}>
+    <div ref={viewRef} className={classnames({ 'dc-view-wrapper': true })}>
       <If condition={!hideHeader || isEditMode}>{getHeader()}</If>
       <If condition={isEditMode && !chartEditorVisible}>
         <Tooltip title={textMap.move}>

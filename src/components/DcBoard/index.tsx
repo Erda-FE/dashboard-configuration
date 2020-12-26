@@ -2,28 +2,25 @@
  * @Author: licao
  * @Date: 2020-12-04 10:25:39
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-25 18:42:37
+ * @Last Modified time: 2020-12-26 16:36:32
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
-import { isEmpty, isFunction } from 'lodash';
+import { isFunction } from 'lodash';
 import 'react-grid-layout/css/styles.css';
 import 'react-resizable/css/styles.css';
 import { useUnmount } from 'react-use';
 // 渲染器部分
-import { useComponentWidth, DcEmpty } from '../../common';
+import { useComponentWidth } from '../../common';
 import DashboardHeader from './header';
 import BoardGrid from './grid';
 // 编辑器部分
 import DcChartEditor from '../DcChartEditor';
 import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
 import ChartEditorStore from '../../stores/chart-editor';
-import DashboardStore from '../../stores/dash-board';
 
 import './index.scss';
 import '../../static/iconfont.css';
-
-const textMap = DashboardStore.getState((s) => s.textMap);
 
 interface IProps {
   /** 指定编辑器的预览时间 */
@@ -111,12 +108,7 @@ const DcBoard = ({
         onCancel={onCancel}
       />
       <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
-        <DcEmpty
-          className="flex-1"
-          description={textMap['no data']}
-          condition={isEmpty(layout) || gridWidth === Infinity}
-        />
-        <div className="dc-dashboard-grid-wp">
+        <div className="dc-dashboard-grid-wp full-height">
           {gridWidthHolder}
           <BoardGrid width={gridWidth} layout={layout} />
         </div>

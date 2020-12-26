@@ -4,17 +4,28 @@ import { createFlatStore } from '../cube';
 import { genUUID } from '../common/utils';
 import { CHARTS_INIT_CONFIG } from '../constants';
 
-const getNewChartYPosition = (layout: any[]) => {
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-  const { y: maxY, h: maxH } = maxBy(layout, ({ y, h }) => y + h) || { y: 0, h: 0 };
-  // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
+  const { y: maxY, h: maxH } = maxBy(items, ({ y, h }) => y + h) || { y: 0, h: 0 };
   return maxY + maxH;
+};
+
+const generateLayout = (id: string, items?: DC.PureLayoutItem[]): DC.PureLayoutItem[] => {
+  const size = { w: 8, h: 9 };
+  return [
+    ...(items || []),
+    {
+      i: id,
+      x: 0,
+      y: getNewChartYPosition(items),
+      ...size,
+    },
+  ];
 };
 
 interface IState {
   pickChartModalVisible: boolean;
   isEditMode: boolean;
-  layout: DC.PureLayoutItem[];
+  pureLayout?: DC.PureLayoutItem[];
   editChartId?: string;
   viewMap: Record<string, DC.View>; // 所有图表配置信息
   viewCopy?: DC.View; // 修改时用于恢复的复制对象
@@ -37,13 +48,13 @@ interface IState {
 }
 
 const initState: IState = {
+  isFullscreen: false,
   pickChartModalVisible: false, // 添加图表时选择图表类型选择
   isTouched: false, // 数据是否变动，用于取消编辑时的判断
   isEditMode: false,
-  layout: [],
-  editChartId: undefined,
-  isFullscreen: false,
+  pureLayout: undefined,
   viewMap: {}, // 所有图表配置信息
+  editChartId: undefined,
   viewCopy: undefined, // 修改时用于恢复的复制对象
   timeSpan: { startTimeMs: 0, endTimeMs: 0 },
   editorContextMap: {},
@@ -53,8 +64,8 @@ const chartEditorStore = createFlatStore({
   name: 'chartEditor',
   state: initState,
   reducers: {
-    toggleFullscreen(state, isFullscreen?: boolean) {
-      state.isFullscreen = isFullscreen || !state.isFullscreen;
+    toggleFullscreen(state, isFullscreen: boolean) {
+      state.isFullscreen = isFullscreen;
     },
     updateState(state, payload: any) {
       return { ...state, ...payload };
@@ -62,14 +73,8 @@ const chartEditorStore = createFlatStore({
     setEditMode(state, status: boolean) {
       state.isEditMode = status;
     },
-    deleteView(_, viewId: string) {
-      chartEditorStore.deleteLayout(viewId);
-      chartEditorStore.deleteEditorInfo(viewId);
-    },
-    deleteLayout(state, viewId: string) {
-      remove(state.layout, ({ i }) => i === viewId);
-    },
-    deleteEditorInfo(state, viewId: string) {
+    deleteView(state, viewId: string) {
+      state.pureLayout && remove(state.pureLayout, ({ i }) => i === viewId);
       state.viewMap = omit(state.viewMap, [viewId]);
     },
     /**
@@ -92,25 +97,11 @@ const chartEditorStore = createFlatStore({
       const { editChartId, viewCopy } = state;
       if (editChartId && viewCopy) {
         state.viewMap[editChartId] = viewCopy;
-        chartEditorStore.generateLayout({ id: editChartId });
+        state.pureLayout = generateLayout(editChartId, state.pureLayout);
       }
     },
-    generateLayout(state, { id }: { id: string }) {
-      const { layout } = state;
-      const size = { w: 8, h: 9 };
-
-      chartEditorStore.updateLayout([
-        ...layout,
-        {
-          ...size,
-          i: id,
-          x: 0,
-          y: getNewChartYPosition(layout),
-        },
-      ]);
-    },
-    updateLayout(state, layout: any[]) {
-      state.layout = layout;
+    updateLayout(state, pureLayout: DC.PureLayoutItem[]) {
+      state.pureLayout = pureLayout;
     },
     /**
      *实时更新图表数据，触发预览区更新
@@ -161,7 +152,7 @@ const chartEditorStore = createFlatStore({
     },
     saveEdit(state) {
       chartEditorStore.setEditMode(false);
-      return { layout: state.layout, viewMap: state.viewMap }; // 只输出外部需要的
+      return { layout: state.pureLayout, viewMap: state.viewMap }; // 只输出外部需要的
     },
     updateViewMap(state, viewMap: Record<string, DC.View>) {
       state.viewMap = viewMap;

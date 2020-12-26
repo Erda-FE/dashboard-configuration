@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:07:46
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-04 15:10:15
+ * @Last Modified time: 2020-12-26 15:03:47
  */
 import React, { useEffect } from 'react';
 import { isEmpty } from 'lodash';
@@ -45,7 +45,7 @@ const PureBoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) =>
       isResizable={false}
       useCSSTransforms
     >
-      {genGridItems(copyPureLayout, viewMap)}
+      {genGridItems(copyPureLayout, viewMap, true)}
     </ReactGridLayout>
   );
 };

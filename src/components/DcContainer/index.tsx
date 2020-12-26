@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-26 17:08:02
+ * @Last Modified time: 2020-12-27 00:05:00
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select } from '@terminus/nusi';
@@ -34,7 +34,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
   const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
-  const { toggleFullscreen: toggleFromEditorPureFullscreen } = DashboardStore;
+  const { toggleFullscreen: toggleFromEditorPureFullscreen } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
   const toggleFullscreen = isPure ? togglePureFullscreen : toggleFromEditorPureFullscreen;
 

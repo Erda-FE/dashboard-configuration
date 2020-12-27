@@ -3,9 +3,9 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-25 12:45:10
+ * @Last Modified time: 2020-12-27 17:12:32
  */
-import { reduce, map, merge, filter, get, isEmpty, find, some } from 'lodash';
+import { reduce, map, merge, isEmpty, isMap } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { MAP_ALIAS } from './constants';
 
@@ -30,6 +30,7 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
   const isLineType = (['chart:line', 'chart:area', 'chart:bar'] as DC.ViewType[]).includes(chartType);
   const isBarType = chartType === 'chart:bar';
   const isPieType = chartType === 'chart:pie';
+  const isMapType = chartType === 'chart:map';
   const isFunnelType = chartType === 'chart:funnel';
   const isMetricCardType = chartType === 'card';
   const isTableType = chartType === 'table';
@@ -106,6 +107,19 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
         metricData: map(valueDimensions, (item) => ({ name: item.alias, value: dataSource[0][item.key] })),
       };
     }
+    if (isMapType) {
+      const { data: dataSource } = data;
+
+      return {
+        metricData: map(valueDimensions, (item) => ({
+          name: item.alias,
+          data: map(dataSource, (dataItem) => ({
+            name: dataItem[MAP_ALIAS],
+            value: dataItem[item.key],
+          })),
+        })),
+      };
+    }
   }
   // 1个维度，1个数值
   if (typeDimensionsLen === 1 && valueDimensionsLen === 1) {
@@ -138,21 +152,4 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
   if (typeDimensionsLen > 0 && valueDimensionsLen > 0) {}
 
   return {};
-
-  // const yAxisInfo = get(api, ['extraData', 'activedMetrics']);
-
-  // // 新的统一返回结构
-  // if (chartType === 'chart:map') {
-  //   const { cols, data: _data } = data;
-  //   const aliases = filter(map(cols, (col) => col.key), (alias) => alias !== MAP_ALIAS);
-  //   const metricData = map(aliases, (alias) => ({
-  //     name: find(yAxisInfo, ({ fid: alias }))?.alias,
-  //     data: map(_data, (item) => ({
-  //       name: item[MAP_ALIAS],
-  //       value: item[alias],
-  //     })),
-  //   }));
-
-  //   return { metricData };
-  // }
 };

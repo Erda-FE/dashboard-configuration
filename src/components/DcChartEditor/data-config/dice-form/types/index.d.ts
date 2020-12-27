@@ -127,7 +127,7 @@ declare namespace DICE_DATA_CONFIGURATOR {
     filter?: {
       operation: string;
       value: any;
-    },
+    };
   }
 
   interface AggregationInfo {

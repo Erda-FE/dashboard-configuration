@@ -60,7 +60,7 @@ interface View {
   description?: string;
   hideHeader?: boolean; // 是否隐藏Header
   staticData?: StaticData; // 静态数据
-  api?: any;
+  api?: API;
   chartQuery?: any;
   maskMsg?: string | Element;
   loadData?: (query?: object, body?: object) => Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用

@@ -113,7 +113,6 @@ const chartEditorStore = createFlatStore({
      */
     updateEditor(state, payload: Partial<DC.View>) {
       state.isTouched = true;
-      // state.viewCopy.config = {};
       state.viewCopy = produce((state.viewCopy || {}) as DC.View, (draft) => {
         forEach(payload, (v, k) => { draft[k] = v; });
       });

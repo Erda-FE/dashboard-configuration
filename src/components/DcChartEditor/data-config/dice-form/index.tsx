@@ -2,9 +2,9 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-25 19:50:52
+ * @Last Modified time: 2020-12-27 19:10:08
  */
-import React, { useMemo, useCallback, useRef, useEffect } from 'react';
+import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
 import { map, forEach, find, reduce, isEmpty, keyBy, debounce, isNumber } from 'lodash';
 import produce from 'immer';
@@ -85,17 +85,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     });
   };
 
-  // 表达式拼接规则：https://yuque.antfin-inc.com/docs/share/f9069b1a-5110-4954-b427-9bed97afd593#WmfAm
-  const getFilterExpressions = (_filters: any[]) => {
-    let filterExpressions = map(_filters, ({ tag, method, value }) => `${tag}${method}${isNumber(value) ? value : `'${value}'`}`);
-    filterExpressions = [
-      ...filterExpressions,
-      // 地图处理
-      ...insertWhen(isMapType && !!preLevel, [`${preLevel}='${curMapType[curMapType.length - 1]}'`]),
-    ];
-    return isEmpty(filterExpressions) ? undefined : filterExpressions;
-  };
-
   const getTimeRange = useCallback(() => {
     const _customTime = find(dataSource.typeDimensions, { type: 'time' })?.customTime;
     if (_customTime) {
@@ -109,204 +98,17 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     };
   }, [dataSource.typeDimensions, timeSpan]);
 
-  // // Sql 模式只在表格图中出现
-  // useEffect(() => {
-  //   if (isSqlMode) {
-  //     if (!q) return;
-
-  //     const _api = {
-  //       url: initialUrl.replace(/{{metricName}}/g, defaultMetric.metric),
-  //       method: 'GET',
-  //       query: {
-  //         q,
-  //         ...reduce(defaultMetric.filters, (acc, { tag, op, value }) => ({ ...acc, [`${op}_tag.${tag}`]: value }), {}),
-  //         format: 'chartv2',
-  //         time_field,
-  //         ...getTimeRange(),
-  //         filter__metric_scope: scope,
-  //         filter__metric_scope_id: scopeId,
-  //       },
-  //       extraData: {
-  //         activedMetricGroups,
-  //         q,
-  //         isSqlMode,
-  //         time_field,
-  //         customTime,
-  //         dynamicFilterKey,
-  //         dynamicFilterDataAPI,
-  //       },
-  //     };
-
-  //     _aa-submitResult(_api, { loadData: createLoadDataFn({ api: _api, chartType }) });
-  //   }
-  // }, [isSqlMode, q, _submitResult, customTime, time_field, initialUrl, defaultMetric, activedMetricGroups, getTimeRange, dynamicFilterKey, dynamicFilterDataAPI, chartType]);
-
-  // // 动态配置 api query，旧版拼接规则
-  // useEffect(() => {
-  //   const validMetrics = filter(activedMetrics, ({ metric, aggregation }) => metric && aggregation);
-  //   if (isEmpty(fieldsMap) || isEmpty(validMetrics) || isEmpty(fieldInfo) || isV2Type) return;
-
-  //   const filters = map(
-  //     map(
-  //       reduce(typeMap, (result, { filters: _filters }) => [...result, ...(_filters || [])], [] as MONITOR_COMMON_METADATA.Filter[]),
-  //       ({ operation }) => operation
-  //     ),
-  //     (k) => getFilterMap(activedFilters, k)
-  //   );
-  //   // 多指标处理为指标切换
-  //   const isMultiMetrics = validMetrics.length > 1;
-  //   // const defaultValidMetric = [validMetrics[0]];
-  //   const getAggregate = (_metrics: typeof validMetrics) => reduce(_metrics, (acc, { metric, aggregation, alias }) => {
-  //     const metricVal = fieldsMap[metric].key;
-  //     const metricName = fieldsMap[metric].name;
-  //     // 筛选相同聚合方法
-  //     const repeatValidMetrics = filter(_metrics, { aggregation });
-
-  //     return {
-  //       ...acc,
-  //       [aggregation]: map(repeatValidMetrics, ({ metric: _metric }) => fieldsMap[_metric].key),
-  //       [`alias_${aggregation}.${metricVal}`]: alias || `${metricName}${aggregationMap[aggregation].name}`,
-  //     };
-  //   }, {});
-
-  //   // 分组别名
-  //   const groupCN = reduce(activedGroup, (acc, group) => {
-  //     return {
-  //       ...acc,
-  //       [`alias_last.${group}`]: find(fieldsMap, { key: group })?.name,
-  //     };
-  //   }, {});
-  //   const result = {
-  //     ...reduce(filters, (acc, item) => ({ ...acc, ...item }), {}),
-  //     // 默认的 filters
-  //     ...reduce(fieldInfo.filters, (acc, { tag, op, value }) => ({ ...acc, [`${op}_tag.${tag}`]: value }), {}),
-  //     // 聚合
-  //     ...(isMetricSelector && isMultiMetrics ? undefined : getAggregate(validMetrics)),
-  //     ...groupCN,
-  //     group: !isEmpty(activedGroup) ? `(${activedGroup.join(',')})` : undefined,
-  //     limit,
-  //     time_field,
-  //     columns: isTableType && activedGroup
-  //       ? `${map(validMetrics, ({ metric, aggregation }) => `${map(activedGroup, (group) => `last.${group}`).join(',')},${aggregation}.${fieldsMap[metric].key}`).join(',')}`
-  //       : undefined,
-  //     last: isTableType ? activedGroup : undefined,
-  //     sort: isTableType ? `${validMetrics[0].aggregation}_${fieldsMap[validMetrics[0].metric].key}` : undefined,
-  //     format: 'chartv2',
-  //     ...getTimeRange(),
-  //     filter__metric_scope: scope,
-  //     filter__metric_scope_id: scopeId,
-  //   };
-  //   // 多指标转换成筛选项
-  //   const metricSelector = {
-  //     key: 'metric-selector',
-  //     options: map(validMetrics, ({ metric, aggregation, alias }) => {
-  //       const metricVal = fieldsMap[metric].key;
-  //       const metricName = fieldsMap[metric].name;
-  //       // 筛选相同聚合方法
-  //       const repeatValidMetrics = filter(validMetrics, { aggregation });
-
-  //       const _value = {
-  //         [aggregation]: map(repeatValidMetrics, ({ metric: _metric }) => fieldsMap[_metric]?.key),
-  //         [`alias_${aggregation}.${metricVal}`]: alias || `${metricName}${aggregationMap[aggregation]?.name}`,
-  //       };
-
-  //       return {
-  //         value: JSON.stringify(_value),
-  //         name: `${metricName}${aggregationMap[aggregation].name}`,
-  //       };
-  //     }),
-  //     componentProps: {
-  //       placeholder: '请选择指标',
-  //     },
-  //   };
-  //   const _api = {
-  //     url: initialUrl.replace(/{{metricName}}/g, fieldInfo.metric),
-  //     method: 'GET',
-  //     query: result,
-  //     // 前端回填用的存储结构
-  //     extraData: {
-  //       activedMetricGroups,
-  //       activedMetrics: validMetrics,
-  //       filters: activedFilters,
-  //       group: activedGroup,
-  //       limit,
-  //       timeFormat,
-  //       dynamicFilterKey,
-  //       dynamicFilterDataAPI,
-  //       time_field,
-  //       customTime,
-  //       isMetricSelector,
-  //       dataConfigSelectors: isMetricSelector ? [metricSelector] : undefined,
-  //     },
-  //   };
-
-  //   // 旧的拼接方式
-  //   _aa-submitResult(_api, {
-  //     loadData: createLoadDataFn({ api: _api, chartType }),
-  //     config: merge({}, currentChartConfig, { optionProps: { isMoreThanOneDay: !!timeFormat, moreThanOneDayFormat: timeFormat } }),
-  //   });
-  // }, [isMetricSelector, activedFilters, activedGroup, activedMetricGroups, limit, timeFormat, dynamicFilterKey, customTime, time_field, isLineType, initialUrl, activedMetrics, isTableType, activedMetricGroups, _submitResult, metaConstantMap.filters, aggregationMap, fieldsMap, fieldInfo]);
-
-
-  // // 新版拼接规则
-  // useEffect(() => {
-  //   const validMetrics = addExtraPropertiesForMetrics(filter(activedMetrics, ({ metric, aggregation }) => metric && aggregation));
-  //   // const validXAxis = addExtraPropertiesForMetrics(filter(xAxis as any[], ({ metric }) => metric));
-
-  //   if (!isV2Type || isEmpty(validMetrics) || isEmpty(fieldInfo)) return;
-
-  //   const _activedFilters = filter(activedFilters, ({ tag, value, method }) => tag && value && method);
-  //   const _api = {
-  //     url: loadDataUrl,
-  //     method: 'POST',
-  //     query: {
-  //       format: 'chartv2',
-  //       ql: 'influxql:ast',
-  //       type: '_',
-  //       time_field,
-  //       ...getTimeRange(),
-  //       filter__metric_scope: scope,
-  //       filter__metric_scope_id: scopeId,
-  //     },
-  //     body: {
-  //       select: getIndicatorExpressions(
-  //         map([...validXAxis, ...validMetrics], ({ fid, ...rest }) => ({
-  //           ...rest,
-  //           alias: fid,
-  //         }))
-  //       ),
-  //       where: getFilterExpressions(_activedFilters),
-  //       from: [fieldInfo.metric],
-  //       groupby: isMapType
-  //         // 地图下钻产生的值 => 需要获取图表信息
-  //         ? [mapLevel]
-  //         :
-  //         (isEmpty(activedGroup) && isEmpty(validXAxis))
-  //           ? undefined
-  //           : [
-  //             ...activedGroup,
-  //             ...map(validXAxis, ({ metric }) => fieldsMap[metric]?.key),
-  //           ],
-  //       limit: 100,
-  //     },
-  //     // 前端回填用的存储结构
-  //     extraData: {
-  //       activedMetricGroups,
-  //       activedMetrics: validMetrics,
-  //       // xAxis: validXAxis,
-  //       filters: activedFilters,
-  //       group: activedGroup,
-  //       limit,
-  //       dynamicFilterKey,
-  //       dynamicFilterDataAPI,
-  //       time_field,
-  //       customTime,
-  //     },
-  //   };
-
-  //   // 新版数据请求
-  //   _aa-submitResult(_api, { loadData: createLoadDataFn({ api: _api, chartType }) });
-  // }, [activedFilters, time_field, customTime, activedMetrics, fieldInfo, aggregationMap, activedGroup, activedMetricGroups, mapLevel]);
+  const getDSLFilters = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
+    if (isEmpty(dimensions)) return;
+    return map(dimensions, ({ type, field, filter, expr }) => {
+      if (type === 'filter') {
+        return `${fieldsMap[field as string]?.key}${filter?.operation}${isNumber(filter?.value) ? filter?.value : `'${filter?.value}'`}`;
+      } else if (type === 'expr') {
+        return expr;
+      }
+      return '';
+    });
+  }, [fieldsMap]);
 
   const getDSLSelects = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => (isEmpty(dimensions)
     ? undefined
@@ -374,14 +176,16 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     activedMetricGroups,
     typeDimensions,
     valueDimensions,
+    resultFilters,
+    isSqlMode,
+    q,
   }: DC.DatasourceConfig): DC.API => {
     return {
       url: loadDataUrl,
       method: 'post',
       query: {
         format: 'chartv2',
-        ql: 'influxql:ast',
-        // q,
+        ql: isSqlMode ? 'influxql' : 'influxql:ast',
         type: '_',
         time_field: find(typeDimensions, { type: 'time' })?.timeField,
         ...getTimeRange(),
@@ -391,13 +195,13 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       body: {
         from: isEmpty(activedMetricGroups) ? undefined : [activedMetricGroups[activedMetricGroups.length - 1].split('@').pop()],
         select: getDSLSelects([...(typeDimensions || []), ...(valueDimensions || [])]),
-        // where: getFilterExpressions(_activedFilters),
+        where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
         groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
         // 0个维度且有1个或多个多个值，limit为1，返回最新值
-        limit: ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) ? 1 : undefined,
+        limit: ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType ? 1 : undefined,
       },
     };
-  }, [getDSLGroupBy, getDSLSelects, getTimeRange, scope, scopeId]);
+  }, [getDSLFilters, getDSLGroupBy, getDSLSelects, getTimeRange, isMapType, scope, scopeId]);
 
   const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>) => {
     const newDataSource = produce(dataSource, (draft) => {

@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-27 00:05:00
+ * @Last Modified time: 2020-12-27 18:25:05
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select } from '@terminus/nusi';
@@ -84,6 +84,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     ...childNode.props,
     data: resData,
     config,
+    api,
     isEditView: chartEditorVisible,
     loadData,
   });

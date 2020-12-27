@@ -1,6 +1,6 @@
 {
   "name": "@terminus/dashboard-configurator",
-  "version": "0.4.19-beta.16",
+  "version": "1.0.0-beta.1",
   "description": "Dice Charts with Echart",
   "main": "./src/index.ts",
   "types": "./src/types/index.d.ts",
@@ -43,7 +43,6 @@
   "dependencies": {
     "@terminus/nusi": "^3.8.59",
     "@types/superagent": "^4.1.10",
-    "antd": "^3.20.1",
     "classnames": "^2.2.6",
     "cube-state": "1.2.1",
     "dom-to-image": "^2.6.0",

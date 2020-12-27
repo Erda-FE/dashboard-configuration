@@ -2,12 +2,12 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-27 18:24:57
+ * @Last Modified time: 2020-12-27 19:20:51
  */
 import React, { useCallback, useMemo } from 'react';
 import { useMount } from 'react-use';
-import { map, slice, findIndex, cloneDeep, get } from 'lodash';
-import { Breadcrumb } from 'antd';
+import { map, slice, findIndex, cloneDeep } from 'lodash';
+import { Breadcrumb } from '@terminus/nusi';
 import echarts from 'echarts';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import agent from '../../../common/utils/agent';

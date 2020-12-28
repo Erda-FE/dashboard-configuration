@@ -3,7 +3,7 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-27 17:12:32
+ * @Last Modified time: 2020-12-28 17:36:28
  */
 import { reduce, map, merge, isEmpty, isMap } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
@@ -59,7 +59,7 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
     if (isLineType) {
       const { cols, data: dataSource } = data;
       const { type, key } = _typeDimensions[0];
-      const time = type === 'time' ? map(dataSource, (item) => Math.round(item[key] / (10 ** 6))) : undefined;
+      const time = type === 'time' ? map(dataSource, (item) => item[key]) : undefined;
       const xData = (['field', 'expr'] as DICE_DATA_CONFIGURATOR.DimensionMetricType[]).includes(type) ? map(dataSource, (item) => item[key]) : undefined;
 
       return {

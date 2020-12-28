@@ -163,8 +163,18 @@ export const TIME_INTERVALS = [
     label: textMap.week,
     value: 'W',
   },
-  {
-    label: textMap.month,
-    value: 'M',
-  },
+  // {
+  //   label: textMap.month,
+  //   value: 'M',
+  // },
+];
+
+export const TIME_FIELDS_UNITS = [
+  { label: 'ns', value: 'ns' },
+  { label: 'µs', value: 'µs' },
+  { label: 'ms', value: 'ms' },
+  { label: 's', value: 's' },
+  { label: 'm', value: 'm' },
+  { label: 'h', value: 'h' },
+  { label: 'day', value: 'day' },
 ];

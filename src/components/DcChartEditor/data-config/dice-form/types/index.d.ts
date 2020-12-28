@@ -17,6 +17,16 @@ declare namespace DICE_DATA_CONFIGURATOR {
    */
   type DimensionType = 'value' | 'type' | 'filter';
 
+  interface TimeInterval {
+    value: number;
+    unit: 's' | 'm' | 'h' | 'd' | 'W';
+  }
+
+  interface TimeField {
+    value: string;
+    unit: 'ns' | 'µs' | 'ms' | 's' | 'm' | 'h' | 'day';
+  }
+
   interface ValueDimension {
     /**
      *列表唯一 key
@@ -86,14 +96,11 @@ declare namespace DICE_DATA_CONFIGURATOR {
      *
      * @type {({
       *     value: number;
-      *     unit: 's' | 'm' | 'h' | 'D' | 'W' | 'M' | 'Y'
+      *     unit: 's' | 'm' | 'h' | 'D' | 'W'
       *   })}
       * @memberof Dimension
       */
-    timeInterval?: {
-      value: number;
-      unit: 's' | 'm' | 'h' | 'd' | 'W' | 'M';
-    };
+    timeInterval?: TimeInterval;
     /**
       *时间格式，可选，type 为 time 时可指定
       *
@@ -107,7 +114,7 @@ declare namespace DICE_DATA_CONFIGURATOR {
      * @type {string}
      * @memberof Dimension
      */
-    timeField?: string;
+    timeField?: TimeField;
     /**
      *自定义时间区间，可选，type 为 time 时可指定
      *

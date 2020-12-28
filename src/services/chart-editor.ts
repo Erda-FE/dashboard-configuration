@@ -1,6 +1,6 @@
 import agent from '../common/utils/agent';
 
-export const getChartData = ({ url, query, method = 'GET', body }: DC.API) => (
+export const getChartData = ({ url, query, method = 'get', body }: DC.API) => (
   agent[method.toLowerCase()](url)
     .query(query)
     .send(body)

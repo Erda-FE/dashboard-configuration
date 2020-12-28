@@ -17,6 +17,7 @@ const globalConfig = {
     dynamicFilterMetaDataStore,
     scope: '',
     scopeId: '',
+    loadDataApi: {},
   },
 };
 

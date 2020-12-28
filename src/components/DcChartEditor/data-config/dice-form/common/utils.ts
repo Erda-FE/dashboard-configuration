@@ -13,3 +13,24 @@ export const genDefaultDimension = ({ prefix, ...rest }: Merge<Omit<DICE_DATA_CO
     key: `${prefix || METRIC_UID_PREFIX}${genUUID(8)}`,
   }
 );
+
+export const getIntervalString = (interval: DICE_DATA_CONFIGURATOR.TimeInterval): string => {
+  let intervalString = '';
+  const { value, unit } = interval;
+  switch (unit) {
+    case 's':
+    case 'm':
+    case 'h':
+      intervalString = String(value) + unit;
+      break;
+    case 'd':
+      intervalString = String(value * 24) + unit;
+      break;
+    case 'W':
+      intervalString = String(value * 24 * 7) + unit;
+      break;
+    default:
+      break;
+  }
+  return intervalString;
+};

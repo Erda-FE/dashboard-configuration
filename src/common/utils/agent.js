@@ -3,6 +3,35 @@ import agent from 'superagent';
 
 const superagent = agentUse(agent);
 
+/**
+ * 获取cookies对象，传入key时获取单个字段
+ * @param 需要获取的cookie key
+ */
+export function getCookies(key) {
+  const cookies = {};
+  window.document.cookie.split(';').forEach((item) => {
+    const [k, v] = item.split('=');
+    cookies[k.trim()] = v && v.trim();
+  });
+  return key ? cookies[key] : cookies;
+}
+
+
+/**
+ * set accept header
+ */
+function setHeader(req) {
+  req.set('Accept', 'application/vnd.dice+json;version=1.0');
+  if (!['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(req.method)) {
+    const token = getCookies('OPENAPI-CSRF-TOKEN');
+    if (token) {
+      req.set('OPENAPI-CSRF-TOKEN', token);
+    }
+  }
+  return req;
+}
+
+
 function endPromise(req) {
   const _Promise = Promise;
 
@@ -56,6 +85,7 @@ superagentPromisePlugin.patch = function patch(sa) {
   return sa;
 };
 
+superagent.use(setHeader);
 superagent.use(superagentPromisePlugin);
 
 export default superagent;

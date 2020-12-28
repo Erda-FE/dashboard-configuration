@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-27 19:10:08
+ * @Last Modified time: 2020-12-28 18:03:21
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -13,6 +13,7 @@ import { getConfig } from '../../../../config';
 // import { useLoading } from '../../../../common/stores/loading';
 import { DcFormBuilder, DcInfoLabel } from '../../../../common';
 import { insertWhen } from '../../../../common/utils';
+import { getIntervalString } from './common/utils';
 import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS } from './constants';
 // import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn, ICreateLoadDataFn } from './data-loader';
@@ -34,7 +35,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const timeSpan = ChartEditorStore.useStore((s) => s.timeSpan);
   // const [isFetchingMetaGroups] = useLoading(dataConfigMetaDataStore, ['getMetaGroups']);
   // 配置所需的数据，宿主注入
-  const { dataConfigMetaDataStore, scope, scopeId } = getConfig('diceDataConfigProps');
+  const { dataConfigMetaDataStore, scope, scopeId, loadDataApi } = getConfig('diceDataConfigProps');
   const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;
   const [
     metaGroups,
@@ -66,7 +67,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const isTableType = chartType === 'table';
   const isMapType = chartType === 'chart:map';
   // 新增的散点图、地图采用新的拼接规则和返回结构
-  const loadDataUrl = '/api/query';
   const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
 
   const _submitResult = debounce(submitResult, 500);
@@ -120,7 +120,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
             expr = _expr;
             break;
           case 'time':
-            expr = 'time';
+            expr = 'time()';
             break;
           case 'field':
             expr = aggregation ? `${aggregation}(${fieldsMap[field as string]?.key})` : fieldsMap[field as string]?.key;
@@ -146,11 +146,11 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       ? [mapLevel]
       : isEmpty(dimensions)
         ? undefined
-        : map(dimensions, ({ type, field, expr }) => {
+        : map(dimensions, ({ type, field, expr, timeInterval }) => {
           let val;
           switch (type) {
             case 'time':
-              val = 'time';
+              val = (timeInterval?.value && timeInterval?.unit) ? `time(${getIntervalString(timeInterval)})` : 'time()';
               break;
             case 'field':
               val = fieldsMap[field as string]?.key;
@@ -173,7 +173,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   }, [chartType]);
 
   const genApi = useCallback(({
-    activedMetricGroups,
+    // activedMetricGroups,
     typeDimensions,
     valueDimensions,
     resultFilters,
@@ -181,19 +181,20 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     q,
   }: DC.DatasourceConfig): DC.API => {
     return {
-      url: loadDataUrl,
+      url: loadDataApi.url,
       method: 'post',
       query: {
         format: 'chartv2',
         ql: isSqlMode ? 'influxql' : 'influxql:ast',
         type: '_',
-        time_field: find(typeDimensions, { type: 'time' })?.timeField,
+        epoch: 'ms',
+        time_field: find(typeDimensions, { type: 'time' })?.timeField?.value,
+        time_unit: find(typeDimensions, { type: 'time' })?.timeField?.unit,
         ...getTimeRange(),
-        filter__metric_scope: scope,
-        filter__metric_scope_id: scopeId,
+        ...loadDataApi.query,
       },
       body: {
-        from: isEmpty(activedMetricGroups) ? undefined : [activedMetricGroups[activedMetricGroups.length - 1].split('@').pop()],
+        from: metaMetrics[0]?.metric ? [metaMetrics[0]?.metric] : undefined,
         select: getDSLSelects([...(typeDimensions || []), ...(valueDimensions || [])]),
         where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
         groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
@@ -201,7 +202,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         limit: ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType ? 1 : undefined,
       },
     };
-  }, [getDSLFilters, getDSLGroupBy, getDSLSelects, getTimeRange, isMapType, scope, scopeId]);
+  }, [getDSLFilters, getDSLGroupBy, getDSLSelects, getTimeRange, isMapType, scope, scopeId, metaMetrics]);
 
   const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>) => {
     const newDataSource = produce(dataSource, (draft) => {

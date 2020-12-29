@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-27 19:20:51
+ * @Last Modified time: 2020-12-29 14:50:54
  */
 import React, { useCallback, useMemo } from 'react';
 import { useMount } from 'react-use';
@@ -45,7 +45,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   useMount(() => {
     // 初始化全国地图
-    agent.get('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json')
+    agent.get('/areas_v2/bound/100000_full.json')
       .then((_data: any) => registerMap('中华人民共和国', JSON.parse(_data.text)));
   });
 
@@ -97,7 +97,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     }
 
     const adcode = adcodeMap.get(mapType);
-    agent.get(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`)
+    agent.get(`/areas_v2/bound/${adcode}_full.json`)
       .then((_data: any) => registerMap(mapType, JSON.parse(_data.text)));
   };
 

@@ -50,7 +50,6 @@ const ChartTable = ({ results = [], cols = [] }: IProps) => {
 };
 
 export default ({ data, ...rest }: any) => {
-  console.log(data);
   const { metricData: results, cols } = data;
   const props = {
     results,

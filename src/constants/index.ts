@@ -89,6 +89,7 @@ export const TEXT_ZH_MAP = {
   month: '月',
   'result filter': '结果筛选器',
   'valueDimensions info': '除表格外，其他图表所选值需保证返回值为数值类型！',
+  'config err': '配置数据有误，请补全配置！',
 };
 
 export const TEXT_EN_MAP = {
@@ -181,6 +182,7 @@ export const TEXT_EN_MAP = {
   month: 'month',
   'result filter': 'result filter',
   'valueDimensions info': 'Except for the table, the selected value of other charts must ensure that the return value is numeric!',
+  'config err': 'The configuration data is incorrect, please complete the configuration!',
 };
 
 const defaultConfig = {

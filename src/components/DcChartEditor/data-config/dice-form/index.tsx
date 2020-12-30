@@ -2,19 +2,19 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-28 18:03:21
+ * @Last Modified time: 2020-12-30 19:00:06
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
 import { map, forEach, find, reduce, isEmpty, keyBy, debounce, isNumber } from 'lodash';
 import produce from 'immer';
-import { Switch, Cascader, Input } from '@terminus/nusi';
+import { Switch, Cascader, Input, InputNumber } from '@terminus/nusi';
 import { getConfig } from '../../../../config';
 // import { useLoading } from '../../../../common/stores/loading';
 import { DcFormBuilder, DcInfoLabel } from '../../../../common';
 import { insertWhen } from '../../../../common/utils';
 import { getIntervalString } from './common/utils';
-import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS } from './constants';
+import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, SQL_OPERATOR } from './constants';
 // import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn, ICreateLoadDataFn } from './data-loader';
 import DimensionsConfigurator from './dimensions-configurator';
@@ -23,7 +23,6 @@ import DashboardStore from '../../../../stores/dash-board';
 
 import './index.scss';
 
-const { TextArea } = Input;
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 interface IProps {
@@ -54,7 +53,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     const singleFieldsMap = reduce(fields, (acc, field) => ({ ...acc, [`${metric}-${field.key}`]: { ...field, tags, metric, filters } }), {});
     return { ...result, ...singleFieldsMap };
   }, {}), [metaMetrics]);
-
+  const curMetric = metaMetrics[0];
   const { types: typeMap } = metaConstantMap;
 
   const aggregationMap = useMemo(() => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}), [typeMap]);
@@ -68,7 +67,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const isMapType = chartType === 'chart:map';
   // 新增的散点图、地图采用新的拼接规则和返回结构
   const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
-
   const _submitResult = debounce(submitResult, 500);
 
   useMount(() => {
@@ -76,13 +74,15 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     handleGetMetaData(dataSourceConfig?.activedMetricGroups);
   });
 
+  const _getMetaData = (_activedMetricGroups: string[]) => getMetaData({
+    scope,
+    scopeId,
+    groupId: _activedMetricGroups[_activedMetricGroups.length - 1],
+    version: 'v2',
+  });
+
   const handleGetMetaData = (_activedMetricGroups?: string[]) => {
-    _activedMetricGroups && !isEmpty(_activedMetricGroups) && getMetaData({
-      scope,
-      scopeId,
-      groupId: _activedMetricGroups[_activedMetricGroups.length - 1],
-      version: 'v2',
-    });
+    _activedMetricGroups && !isEmpty(_activedMetricGroups) && _getMetaData(_activedMetricGroups);
   };
 
   const getTimeRange = useCallback(() => {
@@ -172,37 +172,49 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     } as any);
   }, [chartType]);
 
+  const getSqlString = (sql?: DC.SqlContent) => {
+    if (!sql) return '';
+    const sqlStr = reduce(SQL_OPERATOR, (result, operator, key) => {
+      return `${result}${sql[key] ? `${operator} ${sql[key]} ` : ''}`;
+    }, '');
+    return sqlStr;
+  };
+
   const genApi = useCallback(({
-    // activedMetricGroups,
     typeDimensions,
     valueDimensions,
     resultFilters,
     isSqlMode,
-    q,
+    sql,
   }: DC.DatasourceConfig): DC.API => {
+    const { url, query } = loadDataApi;
     return {
-      url: loadDataApi.url,
-      method: 'post',
+      url,
+      method: isSqlMode ? 'get' : 'post',
       query: {
         format: 'chartv2',
         ql: isSqlMode ? 'influxql' : 'influxql:ast',
+        q: isSqlMode ? getSqlString(sql) : undefined,
         type: '_',
-        epoch: 'ms',
+        epoch: !isTableType ? 'ms' : undefined,
         time_field: find(typeDimensions, { type: 'time' })?.timeField?.value,
         time_unit: find(typeDimensions, { type: 'time' })?.timeField?.unit,
         ...getTimeRange(),
-        ...loadDataApi.query,
+        ...query,
       },
-      body: {
-        from: metaMetrics[0]?.metric ? [metaMetrics[0]?.metric] : undefined,
-        select: getDSLSelects([...(typeDimensions || []), ...(valueDimensions || [])]),
-        where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
-        groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
-        // 0个维度且有1个或多个多个值，limit为1，返回最新值
-        limit: ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType ? 1 : undefined,
-      },
+      body: isSqlMode
+        ? undefined
+        :
+        {
+          from: curMetric?.metric ? [curMetric?.metric] : undefined,
+          select: getDSLSelects([...(typeDimensions || []), ...(valueDimensions || [])]),
+          where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
+          groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
+          // 0个维度且有1个或多个多个值，limit为1，返回最新值
+          limit: ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType ? 1 : undefined,
+        },
     };
-  }, [getDSLFilters, getDSLGroupBy, getDSLSelects, getTimeRange, isMapType, scope, scopeId, metaMetrics]);
+  }, [getDSLFilters, getDSLGroupBy, getDSLSelects, getTimeRange, isMapType, curMetric, isTableType, loadDataApi]);
 
   const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>) => {
     const newDataSource = produce(dataSource, (draft) => {
@@ -211,11 +223,18 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
     const _api = genApi(newDataSource);
     _submitResult({
-      config: produce(currentChartConfig, (draft) => { draft.dataSourceConfig = newDataSource; }),
+      config: produce(currentChartConfig, (draft: { dataSourceConfig: any }) => { draft.dataSourceConfig = newDataSource; }),
       api: _api,
       loadData: getLoadData({ api: _api, ...newDataSource }),
     });
   }, [_submitResult, dataSource, currentChartConfig, genApi, getLoadData]);
+
+  const handleUpdateSqlContent = (_dataSource: Partial<DC.SqlContent>) => {
+    const sql = produce(dataSource.sql || {}, (draft) => {
+      forEach(_dataSource, (v, k) => { draft[k] = v; });
+    });
+    handleUpdateDataSource({ sql });
+  };
 
   const fieldsList = [
     {
@@ -232,9 +251,89 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       },
     },
     {
+      label: 'SELECT',
+      name: 'SELECT',
+      type: Input,
+      initialValue: dataSource?.sql?.select,
+      show: () => dataSource.isSqlMode,
+      customProps: {
+        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+          handleUpdateSqlContent({ select: e.target.value });
+        },
+      },
+    },
+    {
+      label: 'FROM',
+      type: Cascader,
+      name: 'FROM',
+      show: () => dataSource.isSqlMode,
+      initialValue: dataSource?.sql?.from,
+      customProps: {
+        allowClear: false,
+        showSearch: true,
+        options: metaGroups,
+        onChange: (v: string[]) => {
+          _getMetaData(v).then((res?: { metric: string }) => handleUpdateSqlContent({ from: res?.metric }));
+        },
+      },
+    },
+    {
+      label: 'WHERE',
+      name: 'WHERE',
+      type: Input,
+      required: false,
+      initialValue: dataSource?.sql?.where,
+      show: () => dataSource.isSqlMode,
+      customProps: {
+        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+          handleUpdateSqlContent({ where: e.target.value });
+        },
+      },
+    },
+    {
+      label: 'GROUP BY',
+      name: 'GROUP BY',
+      type: Input,
+      required: false,
+      initialValue: dataSource?.sql?.groupBy,
+      show: () => dataSource.isSqlMode,
+      customProps: {
+        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+          handleUpdateSqlContent({ groupBy: e.target.value });
+        },
+      },
+    },
+    {
+      label: 'ORDER BY',
+      name: 'ORDER BY',
+      type: Input,
+      required: false,
+      initialValue: dataSource?.sql?.orderBy,
+      show: () => dataSource.isSqlMode,
+      customProps: {
+        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+          handleUpdateSqlContent({ orderBy: e.target.value });
+        },
+      },
+    },
+    {
+      label: 'LIMIT',
+      name: 'LIMIT',
+      type: InputNumber,
+      required: false,
+      initialValue: dataSource?.sql?.limit,
+      show: () => dataSource.isSqlMode,
+      customProps: {
+        min: 1,
+        precision: 0,
+        onChange: (v: number) => handleUpdateSqlContent({ limit: v }),
+      },
+    },
+    {
       label: textMap['metrics group'],
       type: Cascader,
       name: 'activedMetricGroups',
+      show: () => !dataSource.isSqlMode,
       initialValue: dataSource?.activedMetricGroups,
       customProps: {
         allowClear: false,
@@ -243,19 +342,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         onChange: (v: string[]) => {
           handleUpdateDataSource({ activedMetricGroups: v });
           !dataSource?.isSqlMode && handleGetMetaData(v);
-        },
-      },
-    },
-    {
-      label: 'SQL',
-      name: 'sql',
-      type: TextArea,
-      initialValue: dataSource?.q,
-      show: () => isTableType && dataSource.isSqlMode,
-      customProps: {
-        rows: 10,
-        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
-          handleUpdateDataSource({ q: e.target.value });
         },
       },
     },

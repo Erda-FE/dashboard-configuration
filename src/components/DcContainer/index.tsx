@@ -2,10 +2,10 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-27 18:25:05
+ * @Last Modified time: 2020-12-30 16:12:23
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
-import { Tooltip, Select } from '@terminus/nusi';
+import { Tooltip, Select, Toast } from '@terminus/nusi';
 import classnames from 'classnames';
 import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
@@ -124,11 +124,19 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
           resData: _resData,
         });
       })
-      .catch(() => {
-        update({
-          resData: {},
-          fetchStatus: FetchStatus.FAIL,
-        });
+      .catch((err) => {
+        if (err.status === 400) {
+          Toast.warning(textMap['config err'], 1);
+          update({
+            resData: undefined,
+            fetchStatus: FetchStatus.SUCCESS,
+          });
+        } else {
+          update({
+            resData: undefined,
+            fetchStatus: FetchStatus.FAIL,
+          });
+        }
       });
   }, [dataConvertor, dynamicLoadFnPayloadMap, loadData, staticLoadFnPayload, update, updater]);
 

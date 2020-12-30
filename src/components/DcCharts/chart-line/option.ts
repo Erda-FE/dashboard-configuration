@@ -31,11 +31,11 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const yAxis: any[] = [];
   const series: any[] = [];
   const legendData: Array<{name: string}> = [];
-  
+
   let defaultMoreThanOneDay = false;
   // 自动处理时间格式，大于一天显示日期
   if (!isEmpty(time)) {
-    defaultMoreThanOneDay = time[time.length - 1] - time[0] > 24 * 3600 * 1000
+    defaultMoreThanOneDay = time[time.length - 1] - time[0] > 24 * 3600 * 1000;
   }
   const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
 

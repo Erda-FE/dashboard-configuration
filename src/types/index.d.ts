@@ -72,13 +72,22 @@ interface View {
 type DataConvertor = (data: object) => object;
 type OptionFn = (data: object, optionExtra?: object) => object;
 
+interface SqlContent {
+  select?: string;
+  from?: string;
+  where?: string;
+  groupBy?: string;
+  orderBy?: string;
+  limit?: number;
+}
+
 export interface DatasourceConfig {
   activedMetricGroups: string[];
   typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   resultFilters?: DICE_DATA_CONFIGURATOR.Dimension[];
   isSqlMode?: boolean;
-  q?: string;
+  sql?: SqlContent;
   limit?: number;
 }
 

@@ -3,7 +3,7 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-28 17:36:28
+ * @Last Modified time: 2020-12-30 18:56:18
  */
 import { reduce, map, merge, isEmpty, isMap } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
@@ -38,9 +38,10 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
   if (isTableType) {
     if (isSqlMode) {
       const { data: dataSource, cols } = data;
+      const _cols = map(cols, (col) => ({ dataIndex: col.key, title: col.key }));
       return {
-        cols: map(cols, (col) => ({ dataIndex: col.key, title: col.key })),
-        metricData: map(dataSource, (item, i) => (reduce(cols, (result, { dataIndex }) => ({ ...result, [dataIndex]: item[dataIndex], c_key: i }), {}))),
+        cols: _cols,
+        metricData: map(dataSource, (item, k) => (reduce(_cols, (result, { dataIndex }) => ({ ...result, [dataIndex]: item[dataIndex], c_key: k }), {}))),
       };
     } else {
       const { data: dataSource } = data;

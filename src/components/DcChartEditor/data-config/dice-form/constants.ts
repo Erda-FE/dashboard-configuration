@@ -90,6 +90,7 @@ export const METRIC_UID_PREFIX = 'mid';
  * @enum {number}
  */
 
+// eslint-disable-next-line no-shadow
 export enum SPECIAL_METRIC_TYPE {
   time = 'time',
   expr = 'expr',
@@ -178,3 +179,22 @@ export const TIME_FIELDS_UNITS = [
   { label: 'h', value: 'h' },
   { label: 'day', value: 'day' },
 ];
+
+// eslint-disable-next-line no-shadow
+export enum SQL_KEY_WORD {
+  select = 'select',
+  from = 'from',
+  where = 'where',
+  groupBy = 'groupBy',
+  orderBy = 'orderBy',
+  limit = 'limit',
+}
+
+export const SQL_OPERATOR = {
+  [SQL_KEY_WORD.select]: 'SELECT',
+  [SQL_KEY_WORD.from]: 'FROM',
+  [SQL_KEY_WORD.where]: 'WHERE',
+  [SQL_KEY_WORD.groupBy]: 'GROUP BY',
+  [SQL_KEY_WORD.orderBy]: 'ORDER BY',
+  [SQL_KEY_WORD.limit]: 'LIMIT',
+};

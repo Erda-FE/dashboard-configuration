@@ -82,7 +82,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "cz-customizable": "^6.3.0",
-    "eslint": "^7.13.0",
+    "eslint": "^7.16.0",
     "eslint-config-ali": "^11.2.0",
     "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-plugin-compat": "^3.8.0",
@@ -93,10 +93,10 @@
     "happypack": "^5.0.0",
     "hard-source-webpack-plugin": "^0.13.1",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^4.3.0",
+    "husky": "^4.3.6",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "lint-staged": "^7.2.2",
+    "lint-staged": "^7.3.0",
     "mini-css-extract-plugin": "0.4.1",
     "node-sass": "^4.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
@@ -124,11 +124,11 @@
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "lint-staged": {
-    "example/**/*.ts": [
+    "src/**/*.ts": [
       "eslint --fix",
       "git add"
     ],
-    "example/**/*.tsx": [
+    "src/**/*.tsx": [
       "eslint --fix",
       "git add"
     ]

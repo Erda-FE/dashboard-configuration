@@ -2,15 +2,15 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-29 14:50:54
+ * @Last Modified time: 2020-12-29 17:57:37
  */
 import React, { useCallback, useMemo } from 'react';
 import { useMount } from 'react-use';
 import { map, slice, findIndex, cloneDeep } from 'lodash';
-import { Breadcrumb } from '@terminus/nusi';
+import { Breadcrumb, Toast } from '@terminus/nusi';
 import echarts from 'echarts';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
-import agent from '../../../common/utils/agent';
+import client from '../../../common/utils/client';
 import { useUpdate } from '../../../common/use-hooks';
 import { ChartSizeMe } from '../common';
 import { adcodeMap } from '../../../constants/adcode-map';
@@ -45,8 +45,9 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   useMount(() => {
     // 初始化全国地图
-    agent.get('/areas_v2/bound/100000_full.json')
-      .then((_data: any) => registerMap('中华人民共和国', JSON.parse(_data.text)));
+    client('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '' })
+      .then((res) => registerMap('中华人民共和国', res))
+      .catch((err) => { Toast.error(err); });
   });
 
   const loadMapDataSource = (_mapTypes: string[]) => {
@@ -97,8 +98,9 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     }
 
     const adcode = adcodeMap.get(mapType);
-    agent.get(`/areas_v2/bound/${adcode}_full.json`)
-      .then((_data: any) => registerMap(mapType, JSON.parse(_data.text)));
+    client(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`, { referrer: '' })
+      .then((res) => registerMap(mapType, res))
+      .catch((err) => { Toast.error(err); });
   };
 
   return (

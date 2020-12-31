@@ -2,13 +2,13 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-30 19:00:06
+ * @Last Modified time: 2020-12-31 14:45:38
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
 import { map, forEach, find, reduce, isEmpty, keyBy, debounce, isNumber } from 'lodash';
 import produce from 'immer';
-import { Switch, Cascader, Input, InputNumber } from '@terminus/nusi';
+import { Switch, Cascader, Input, InputNumber, Select } from '@terminus/nusi';
 import { getConfig } from '../../../../config';
 // import { useLoading } from '../../../../common/stores/loading';
 import { DcFormBuilder, DcInfoLabel } from '../../../../common';
@@ -85,8 +85,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     _activedMetricGroups && !isEmpty(_activedMetricGroups) && _getMetaData(_activedMetricGroups);
   };
 
-  const getTimeRange = useCallback(() => {
-    const _customTime = find(dataSource.typeDimensions, { type: 'time' })?.customTime;
+  const getTimeRange = useCallback((_customTime?: string) => {
     if (_customTime) {
       const [start, end] = CUSTOM_TIME_RANGE_MAP[_customTime].getTimeRange();
       return { start, end };
@@ -96,7 +95,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       start: startTimeMs,
       end: endTimeMs,
     };
-  }, [dataSource.typeDimensions, timeSpan]);
+  }, [timeSpan]);
 
   const getDSLFilters = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
     if (isEmpty(dimensions)) return;
@@ -185,6 +184,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     valueDimensions,
     resultFilters,
     isSqlMode,
+    customTime,
     sql,
   }: DC.DatasourceConfig): DC.API => {
     const { url, query } = loadDataApi;
@@ -199,7 +199,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         epoch: !isTableType ? 'ms' : undefined,
         time_field: find(typeDimensions, { type: 'time' })?.timeField?.value,
         time_unit: find(typeDimensions, { type: 'time' })?.timeField?.unit,
-        ...getTimeRange(),
+        ...getTimeRange(customTime),
         ...query,
       },
       body: isSqlMode
@@ -397,6 +397,18 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         aggregationMap,
         filtersMap,
         onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ resultFilters: v }),
+      },
+    },
+    {
+      label: textMap['fixed time range'],
+      type: Select,
+      name: 'customTime',
+      initialValue: dataSource?.customTime,
+      required: false,
+      customProps: {
+        options: map(CUSTOM_TIME_RANGE_MAP, ({ name: label }, value) => ({ label, value })),
+        allowClear: true,
+        onChange: (v: string) => handleUpdateDataSource({ customTime: v }),
       },
     },
   ];

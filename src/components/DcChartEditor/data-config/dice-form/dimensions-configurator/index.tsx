@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-25 13:27:13
+ * @Last Modified time: 2020-12-31 14:42:20
  */
 import React, { useMemo, useCallback, useEffect } from 'react';
 import { map, uniqueId, some, remove, find, findIndex } from 'lodash';
@@ -192,10 +192,10 @@ const DimensionsConfigurator = ({
         // 别名自动显示
         let _alias = alias;
         let aggregationOptions;
-
-        if (type === 'time' && !!customTime) {
-          _alias = `${alias}-${CUSTOM_TIME_RANGE_MAP[customTime].name}`;
-        }
+        // 固定时间是针对所有图表的
+        // if (type === 'time' && !!customTime) {
+        //   _alias = `${alias}-${CUSTOM_TIME_RANGE_MAP[customTime].name}`;
+        // }
         if (type === 'field') {
           aggregationOptions = map(
             typeMap[fieldType as string]?.aggregations,

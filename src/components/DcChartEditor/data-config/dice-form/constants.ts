@@ -17,35 +17,35 @@ export const PAGINATION: IPagination = {
 
 export const CUSTOM_TIME_RANGE_MAP = {
   today: {
-    name: '今天',
+    name: textMap.today,
     getTimeRange: () => getScopeTimeRange('day'),
   },
   yesterday: {
-    name: '昨天',
+    name: textMap.yesterday,
     getTimeRange: () => getLastScopeTimeRange('day'),
   },
   'this-week': {
-    name: '本周',
+    name: textMap['this week'],
     getTimeRange: () => getScopeTimeRange('week'),
   },
   'last-week': {
-    name: '上周',
+    name: textMap['last week'],
     getTimeRange: () => getLastScopeTimeRange('week'),
   },
   'this-month': {
-    name: '本月',
+    name: textMap['this month'],
     getTimeRange: () => getScopeTimeRange('month'),
   },
   'last-month': {
-    name: '上月',
+    name: textMap['last month'],
     getTimeRange: () => getLastScopeTimeRange('month'),
   },
   'this-year': {
-    name: '今年',
+    name: textMap['this year'],
     getTimeRange: () => getScopeTimeRange('year'),
   },
   'last-year': {
-    name: '去年',
+    name: textMap['last year'],
     getTimeRange: () => getLastScopeTimeRange('year'),
   },
 };

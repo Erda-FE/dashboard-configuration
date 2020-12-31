@@ -1,8 +1,8 @@
-/*
+/* 简单封装 Fetch
  * @Author: licao
  * @Date: 2020-12-29 16:37:41
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-29 17:16:47
+ * @Last Modified time: 2020-12-31 12:56:25
  */
 
 const client = (url: string, { body, ...restConfig }: Record<string, any>) => {

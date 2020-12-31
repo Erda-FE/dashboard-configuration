@@ -85,17 +85,6 @@ const CreateTimeModal = ({ defaultValue, metricsMap, ...rest }: IProps) => {
         allowClear: true,
       },
     },
-    {
-      label: textMap['fixed time range'],
-      type: Select,
-      name: 'customTime',
-      initialValue: defaultValue.customTime,
-      required: false,
-      customProps: {
-        options: map(CUSTOM_TIME_RANGE_MAP, ({ name: label }, value) => ({ label, value })),
-        allowClear: true,
-      },
-    },
   ];
 
   return (

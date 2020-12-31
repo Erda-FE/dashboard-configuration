@@ -3,11 +3,11 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-30 18:56:18
+ * @Last Modified time: 2020-12-31 19:57:48
  */
-import { reduce, map, merge, isEmpty, isMap } from 'lodash';
+import { reduce, map, merge, isEmpty } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
-import { MAP_ALIAS } from './constants';
+import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
 
 export interface ICreateLoadDataFn {
   api: DC.API;
@@ -15,12 +15,32 @@ export interface ICreateLoadDataFn {
   typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   isSqlMode?: boolean;
+  customTime?: string;
 }
 
-export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensions, isSqlMode }: ICreateLoadDataFn) => async (payload: any = {}, body?: any) => {
+export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensions, isSqlMode, customTime }: ICreateLoadDataFn) => async (payload: any = {}, body?: any) => {
   // 除表格外，其他图表所选值需保证返回值为数值类型
   // if (some(valueDimensions, { fieldType: 'string' }) && chartType !== 'table') return {};
-  const { data } = await getChartData(merge({}, api, { query: payload, body }));
+  // 固定时间范围查询逻辑 customTime
+  let customTimeResult = {};
+  if (customTime) {
+    const [a, b] = CUSTOM_TIME_RANGE_MAP[customTime].getTimeRange();
+    customTimeResult = {
+      start: a,
+      end: b,
+    };
+  }
+  const { data } = await getChartData(merge(
+    {},
+    api,
+    {
+      query: {
+        ...customTimeResult,
+        ...payload,
+      },
+      body,
+    }
+  ));
   if (isEmpty(data?.data)) return {};
 
   const _typeDimensions = typeDimensions || [];

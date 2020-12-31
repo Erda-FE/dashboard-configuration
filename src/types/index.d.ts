@@ -43,7 +43,6 @@ interface API {
   query?: Record<string, any>;
   body?: Record<string, any>;
   header?: Record<string, any>;
-  // extraData?: IExtraData;
 }
 
 interface View {
@@ -86,6 +85,8 @@ export interface DatasourceConfig {
   typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   resultFilters?: DICE_DATA_CONFIGURATOR.Dimension[];
+  // 自定义时间区间，可选
+  customTime?: string;
   isSqlMode?: boolean;
   sql?: SqlContent;
   limit?: number;

@@ -116,13 +116,6 @@ declare namespace DICE_DATA_CONFIGURATOR {
      */
     timeField?: TimeField;
     /**
-     *自定义时间区间，可选，type 为 time 时可指定
-     *
-     * @type {string}
-     * @memberof Dimension
-     */
-    customTime?: string;
-    /**
      *过滤
      *
      * @type {{

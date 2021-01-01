@@ -4,15 +4,15 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-12-31 14:42:20
  */
-import React, { useMemo, useCallback, useEffect } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex } from 'lodash';
 import { produce } from 'immer';
 import { Toast, Cascader, Tag } from '@terminus/nusi';
-import { useToggle, useUpdateEffect } from 'react-use';
+import { useToggle } from 'react-use';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { DcIcon, DcInfoIcon, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
-import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, CUSTOM_TIME_RANGE_MAP } from '../constants';
+import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC } from '../constants';
 import DashboardStore from '../../../../../stores/dash-board';
 import { genDefaultDimension } from '../common/utils';
 import CreateExprModal from './create-expr-modal';
@@ -57,17 +57,10 @@ const DimensionsConfigurator = ({
   const [filterModalVisible, toggleFilterModalVisible] = useToggle(false);
   const dimensions = useMemo(() => value || [], [value]);
   const [{
-    // dimensions,
-    // 正在编辑的 dimension
     curDimension,
   }, updater] = useUpdate({
-    // dimensions: value,
     curDimension: {} as unknown as DICE_DATA_CONFIGURATOR.Dimension,
   });
-
-  // useEffect(() => {
-  //   onChange && onChange(dimensions);
-  // }, [dimensions, onChange]);
 
   // 生成 dimension 分组
   const metricOptions = useMemo(() => ([
@@ -79,7 +72,7 @@ const DimensionsConfigurator = ({
       },
     ]),
     {
-      value: SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
+      value: dimensionType === 'filter' ? SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter] : SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
       label: textMap.metric,
       children: map(metricsMap, ({ name: label }, key) => ({ value: key, label })),
     },
@@ -124,7 +117,7 @@ const DimensionsConfigurator = ({
   const handleAddDimension = useCallback((val: string[]) => {
     const [metricField, field] = val;
     const isExpr = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr];
-    const isFilter = dimensionType === 'filter';
+    const isFilter = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter];
     let type: DICE_DATA_CONFIGURATOR.DimensionMetricType = SPECIAL_METRIC_TYPE.field;
     let alias: string = metricsMap[field]?.name;
     const fieldType = metricsMap[field]?.type;
@@ -186,16 +179,12 @@ const DimensionsConfigurator = ({
 
   return (
     <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
-      {map(dimensions, ({ key, alias, type, expr, fieldType, filter, customTime, aggregation }) => {
+      {map(dimensions, ({ key, alias, type, expr, fieldType, filter, aggregation }) => {
         // 表达式未填提示
         const isUncompleted = type === 'expr' && !expr;
         // 别名自动显示
         let _alias = alias;
         let aggregationOptions;
-        // 固定时间是针对所有图表的
-        // if (type === 'time' && !!customTime) {
-        //   _alias = `${alias}-${CUSTOM_TIME_RANGE_MAP[customTime].name}`;
-        // }
         if (type === 'field') {
           aggregationOptions = map(
             typeMap[fieldType as string]?.aggregations,

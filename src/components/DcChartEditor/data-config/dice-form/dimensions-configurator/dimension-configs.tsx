@@ -61,7 +61,7 @@ const DimensionConfigs = ({
         key: SPECIAL_METRIC_TYPE.filter,
         label: textMap['filter config'],
         actionKey: 'configFilter',
-      }
+      },
     ];
   }
 
@@ -73,7 +73,7 @@ const DimensionConfigs = ({
           aggregation: curAggregation === aggregation ? undefined : curAggregation,
           fieldType: curAggregation === aggregation ? undefined : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[curAggregation as string]?.result_type,
         },
-        isUpdateDirectly: true
+        isUpdateDirectly: true,
       });
     }
   };

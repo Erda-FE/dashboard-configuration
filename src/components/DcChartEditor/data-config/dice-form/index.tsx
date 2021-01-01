@@ -65,8 +65,8 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
   const isTableType = chartType === 'table';
   const isMapType = chartType === 'chart:map';
-  // 新增的散点图、地图采用新的拼接规则和返回结构
   const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
+  const sqlContent = dataSource?.sql || {};
   const _submitResult = debounce(submitResult, 500);
 
   useMount(() => {
@@ -254,7 +254,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       label: 'SELECT',
       name: 'SELECT',
       type: Input,
-      initialValue: dataSource?.sql?.select,
+      initialValue: sqlContent.select,
       show: () => dataSource.isSqlMode,
       customProps: {
         onChange: (e: React.FocusEvent<HTMLInputElement>) => {
@@ -267,13 +267,16 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       type: Cascader,
       name: 'FROM',
       show: () => dataSource.isSqlMode,
-      initialValue: dataSource?.sql?.from,
+      initialValue: sqlContent.fromSource,
       customProps: {
         allowClear: false,
         showSearch: true,
         options: metaGroups,
         onChange: (v: string[]) => {
-          _getMetaData(v).then((res?: { metric: string }) => handleUpdateSqlContent({ from: res?.metric }));
+          _getMetaData(v).then((res?: { metric: string }) => handleUpdateSqlContent({
+            from: res?.metric,
+            fromSource: v,
+          }));
         },
       },
     },
@@ -282,7 +285,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       name: 'WHERE',
       type: Input,
       required: false,
-      initialValue: dataSource?.sql?.where,
+      initialValue: sqlContent.where,
       show: () => dataSource.isSqlMode,
       customProps: {
         onChange: (e: React.FocusEvent<HTMLInputElement>) => {
@@ -295,7 +298,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       name: 'GROUP BY',
       type: Input,
       required: false,
-      initialValue: dataSource?.sql?.groupBy,
+      initialValue: sqlContent.groupBy,
       show: () => dataSource.isSqlMode,
       customProps: {
         onChange: (e: React.FocusEvent<HTMLInputElement>) => {
@@ -308,7 +311,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       name: 'ORDER BY',
       type: Input,
       required: false,
-      initialValue: dataSource?.sql?.orderBy,
+      initialValue: sqlContent.orderBy,
       show: () => dataSource.isSqlMode,
       customProps: {
         onChange: (e: React.FocusEvent<HTMLInputElement>) => {
@@ -321,7 +324,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       name: 'LIMIT',
       type: InputNumber,
       required: false,
-      initialValue: dataSource?.sql?.limit,
+      initialValue: sqlContent.limit,
       show: () => dataSource.isSqlMode,
       customProps: {
         min: 1,

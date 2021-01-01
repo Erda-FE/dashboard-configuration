@@ -41,6 +41,7 @@ const ChartTable = ({ results = [], cols = [] }: IProps) => {
           rowKey="c_key"
           columns={_cols}
           dataSource={results}
+          rowClassName={(_, index) => (index % 2 === 1 ? 'dark-row' : '')}
           // scroll={isOverLimit ? { x: fixedWidth + cols.length * 200  } : { }}
           pagination={false}
         />

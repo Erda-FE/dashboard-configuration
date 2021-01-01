@@ -74,6 +74,8 @@ type OptionFn = (data: object, optionExtra?: object) => object;
 interface SqlContent {
   select?: string;
   from?: string;
+  // 前端回填
+  fromSource?: string[];
   where?: string;
   groupBy?: string;
   orderBy?: string;

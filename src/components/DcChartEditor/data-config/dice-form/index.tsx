@@ -97,6 +97,13 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     };
   }, [timeSpan]);
 
+  const getDefaultFilter = useCallback(() => {
+    return reduce(curMetric?.filters, (result, { tag, op, value }) => ({
+      ...result,
+      [`${op}_${tag}`]: value,
+    }), {});
+  }, [curMetric?.filters]);
+
   const getDSLFilters = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
     if (isEmpty(dimensions)) return;
     return map(dimensions, ({ type, field, filter, expr }) => {
@@ -199,6 +206,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         epoch: !isTableType ? 'ms' : undefined,
         time_field: find(typeDimensions, { type: 'time' })?.timeField?.value,
         time_unit: find(typeDimensions, { type: 'time' })?.timeField?.unit,
+        ...getDefaultFilter(),
         ...getTimeRange(customTime),
         ...query,
       },
@@ -214,7 +222,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
           limit: ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType ? 1 : undefined,
         },
     };
-  }, [getDSLFilters, getDSLGroupBy, getDSLSelects, getTimeRange, isMapType, curMetric, isTableType, loadDataApi]);
+  }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, isMapType]);
 
   const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>) => {
     const newDataSource = produce(dataSource, (draft) => {

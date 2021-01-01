@@ -32,7 +32,7 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
   if (isEmpty(pureLayout) || width === Infinity) {
     return (
       <DcEmpty
-        className="flex-1 full-height"
+        className="full-height"
         description={textMap['no data']}
         condition
       />

@@ -108,7 +108,7 @@ const DcBoard = ({
         onCancel={onCancel}
       />
       <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
-        <div className="dc-dashboard-grid-wp full-height">
+        <div className="dc-dashboard-grid-wp flex-1">
           {gridWidthHolder}
           <BoardGrid width={gridWidth} layout={layout} />
         </div>

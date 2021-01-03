@@ -19,7 +19,7 @@ interface IProps {
 
 interface IFilterInputProps {
   value: any;
-  onChange(v: any): void;
+  onChange: (v: any) => void;
   fieldType: DICE_DATA_CONFIGURATOR.FieldType;
   options: ComponentOptions;
 }
@@ -80,13 +80,13 @@ const CreateFilterModal = ({ defaultValue, metricsMap, typeMap, ...rest }: IProp
       customProps: {
         fieldType,
         options,
-      }
+      },
     },
   ];
 
   return (
     <DcFormModal
-      title={textMap['filter config']}
+      title={`${textMap['filter config']}-${defaultValue.alias}`}
       fields={fields}
       {...rest}
     />

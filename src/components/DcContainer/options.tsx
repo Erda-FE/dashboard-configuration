@@ -135,17 +135,17 @@ const Options = ({ view, viewId, viewRef, children, toggleFullscreen }: IProps) 
       text: textMap['export picture'],
       onClick: () => handleSaveImg(),
     },
-    {
-      icon: 'excel',
-      text: textMap['export data'],
-      onClick: () => handleExportData(),
-    },
+    // {
+    //   icon: 'excel',
+    //   text: textMap['export data'],
+    //   onClick: () => handleExportData(),
+    // },
     {
       icon: 'fullscreen',
       text: textMap.fullscreen,
       onClick: () => _toggleFullscreen(),
     },
-  ], [isEditMode, viewId, editView, handleRemoveItem, handleSaveImg, handleExportData, _toggleFullscreen]);
+  ], [isEditMode, viewId, editView, handleRemoveItem, handleSaveImg, _toggleFullscreen]);
 
   return (
     <Dropdown

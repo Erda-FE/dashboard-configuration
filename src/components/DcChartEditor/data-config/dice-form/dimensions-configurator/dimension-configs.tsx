@@ -38,7 +38,8 @@ const DimensionConfigs = ({
     configs = [...configs, ...COMMON_DIMENSIONS_CONFIGS];
   }
 
-  if (type === 'field') {
+  // 维度不需要聚合方法
+  if (type === 'field' && dimensionType !== 'type') {
     configs = [
       {
         key: SPECIAL_METRIC_TYPE.field,

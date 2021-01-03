@@ -5,7 +5,8 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-12-31 19:57:48
  */
-import { reduce, map, merge, isEmpty } from 'lodash';
+import { reduce, map, merge, isEmpty, dropWhile, find, forEach, slice, uniqBy, chunk } from 'lodash';
+import { produce } from 'immer';
 import { getChartData } from '../../../../services/chart-editor';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
 
@@ -78,7 +79,7 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
   if (typeDimensionsLen === 1 && valueDimensionsLen > 0) {
     // 下面这层数据转化要分离到各个图表组件的 option 中，todo。由于老版本依赖了同一份 option，所以先放在新版 data-loader 中
     if (isLineType) {
-      const { cols, data: dataSource } = data;
+      const { data: dataSource } = data;
       const { type, key } = _typeDimensions[0];
       const time = type === 'time' ? map(dataSource, (item) => item[key]) : undefined;
       const xData = (['field', 'expr'] as DICE_DATA_CONFIGURATOR.DimensionMetricType[]).includes(type) ? map(dataSource, (item) => item[key]) : undefined;
@@ -168,9 +169,31 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
       };
     }
   }
-  // 1个或多个维度，1个或多个数值
-  // eslint-disable-next-line no-empty
-  if (typeDimensionsLen > 0 && valueDimensionsLen > 0) {}
+  // 多个维度，1个数值
+  if (typeDimensionsLen > 1 && valueDimensionsLen === 1) {
+    if (isLineType) {
+      const { data: dataSource } = data;
+      const timeDimension = find(_typeDimensions, { type: 'time' });
+      if (!timeDimension) return {};
+
+      const valueDimension = _valueDimensions[0];
+      const otherDimensions = dropWhile(_typeDimensions, { type: 'time' });
+      const time = map(uniqBy(dataSource, timeDimension.key), (item) => item[timeDimension.key]);
+      const groups = chunk(dataSource, time.length);
+      const metricData = map(groups, (group) => {
+        const nameItem: any = find(group, (item: any) => !!item[valueDimension.key]) || {};
+        return {
+          data: map(group, (item: any) => item[valueDimension.key]),
+          name: reduce(otherDimensions, (name, { key }) => `${name}${nameItem[key]} `, ''),
+        };
+      });
+
+      return {
+        metricData,
+        time,
+      };
+    }
+  }
 
   return {};
 };

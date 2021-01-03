@@ -5,7 +5,7 @@
  * @Last Modified time: 2020-12-31 14:42:20
  */
 import React, { useMemo, useCallback } from 'react';
-import { map, uniqueId, some, remove, find, findIndex } from 'lodash';
+import { map, uniqueId, some, remove, find, findIndex, pickBy } from 'lodash';
 import { produce } from 'immer';
 import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle } from 'react-use';
@@ -62,9 +62,10 @@ const DimensionsConfigurator = ({
     curDimension: {} as unknown as DICE_DATA_CONFIGURATOR.Dimension,
   });
 
+  const isTypeDimension = dimensionType === 'type';
   // 生成 dimension 分组
   const metricOptions = useMemo(() => ([
-    ...insertWhen(dimensionType === 'type', [
+    ...insertWhen(isTypeDimension, [
       {
         value: SPECIAL_METRIC[SPECIAL_METRIC_TYPE.time],
         label: textMap[SPECIAL_METRIC_TYPE.time],
@@ -74,13 +75,16 @@ const DimensionsConfigurator = ({
     {
       value: dimensionType === 'filter' ? SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter] : SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
       label: textMap.metric,
-      children: map(metricsMap, ({ name: label }, key) => ({ value: key, label })),
+      // 维度只需要 string 类型指标
+      children: isTypeDimension
+        ? map(pickBy(metricsMap, ({ type }) => type === 'string'), ({ name: label }, key) => ({ value: key, label }))
+        : map(metricsMap, ({ name: label }, key) => ({ value: key, label })),
     },
     {
       value: SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr],
       label: textMap[SPECIAL_METRIC_TYPE.expr],
     },
-  ]), [dimensionType, dimensions, metricsMap]);
+  ]), [dimensionType, dimensions, isTypeDimension, metricsMap]);
 
   const handleUpdateDimension = useCallback((dimension: DICE_DATA_CONFIGURATOR.Dimension) => {
     onChange(produce(dimensions, (draft) => {

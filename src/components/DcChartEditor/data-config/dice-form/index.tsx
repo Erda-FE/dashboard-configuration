@@ -231,7 +231,14 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
     const _api = genApi(newDataSource);
     _submitResult({
-      config: produce(currentChartConfig, (draft: { dataSourceConfig: any }) => { draft.dataSourceConfig = newDataSource; }),
+      config: produce(currentChartConfig, (draft) => {
+        draft.dataSourceConfig = newDataSource;
+        const moreThanOneDayFormat = find(draft.dataSourceConfig.typeDimensions, { type: 'time' })?.timeFormat;
+        if (moreThanOneDayFormat) {
+          const optionProps = draft.optionProps || {};
+          draft.optionProps = { ...optionProps, moreThanOneDayFormat };
+        }
+      }),
       api: _api,
       loadData: getLoadData({ api: _api, ...newDataSource }),
     });

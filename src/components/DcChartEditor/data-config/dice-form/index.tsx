@@ -116,8 +116,8 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     });
   }, [fieldsMap]);
 
-  const getDSLSelects = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => (isEmpty(dimensions)
-    ? undefined
+  const getDSLSelects = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[], isAutoPrecision?: boolean) => (isEmpty(dimensions)
+    ? []
     : [
       ...map(dimensions, ({ type, field, aggregation, key, expr: _expr }) => {
         let expr;
@@ -129,7 +129,15 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
             expr = 'time()';
             break;
           case 'field':
-            expr = aggregation ? `${aggregation}(${fieldsMap[field as string]?.key})` : fieldsMap[field as string]?.key;
+            expr = aggregation
+              ?
+              isAutoPrecision
+                ? `round_float(${aggregation}(${fieldsMap[field as string]?.key}), 2)` // 自动处理返回值精度问题，后面需自动处理
+                : `${aggregation}(${fieldsMap[field as string]?.key})}`
+              :
+              isAutoPrecision
+                ? `round_float(${fieldsMap[field as string]?.key}, 2)`
+                : fieldsMap[field as string]?.key;
             break;
           default:
             break;
@@ -215,7 +223,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         :
         {
           from: curMetric?.metric ? [curMetric?.metric] : undefined,
-          select: getDSLSelects([...(typeDimensions || []), ...(valueDimensions || [])]),
+          select: [...getDSLSelects(typeDimensions || []), ...getDSLSelects(valueDimensions || [], true)],
           where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
           groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
           // 0个维度且有1个或多个多个值，limit为1，返回最新值

@@ -108,7 +108,14 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     if (isEmpty(dimensions)) return;
     return map(dimensions, ({ type, field, filter, expr }) => {
       if (type === 'filter') {
-        return `${fieldsMap[field as string]?.key}${filter?.operation}${isNumber(filter?.value) ? filter?.value : `'${filter?.value}'`}`;
+        return `${fieldsMap[field as string]?.key}${filter?.operation}${
+          isNumber(filter?.value)
+            ? filter?.value
+            // 正则表达式特殊处理下
+            : filter?.operation === '=~'
+              ? `/${filter?.value}/`
+              : `'${filter?.value}'`
+        }`;
       } else if (type === 'expr') {
         return expr;
       }

@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-31 14:42:20
+ * @Last Modified time: 2021-01-05 11:21:17
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy } from 'lodash';
@@ -109,8 +109,8 @@ const DimensionsConfigurator = ({
       toggleTimeModalVisible();
     }
     if (type === 'configFieldAggregation') {
-      const fieldType = option?.payload?.fieldType || metricsMap[_curDimension?.field as string]?.type;
-      handleUpdateDimension({ ..._curDimension, ...option?.payload, fieldType });
+      const resultType = option?.payload?.resultType || metricsMap[_curDimension?.field as string]?.type;
+      handleUpdateDimension({ ..._curDimension, ...option?.payload, resultType });
     }
     if (type === 'configFilter') {
       toggleFilterModalVisible();
@@ -124,7 +124,6 @@ const DimensionsConfigurator = ({
     const isFilter = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter];
     let type: DICE_DATA_CONFIGURATOR.DimensionMetricType = SPECIAL_METRIC_TYPE.field;
     let alias: string = metricsMap[field]?.name;
-    const fieldType = metricsMap[field]?.type;
 
     if (metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.time]) {
       type = SPECIAL_METRIC_TYPE.time;
@@ -140,7 +139,7 @@ const DimensionsConfigurator = ({
       type = SPECIAL_METRIC_TYPE.filter;
     }
 
-    const newDimension = genDefaultDimension({ type, alias, prefix: dimensionType, field, fieldType });
+    const newDimension = genDefaultDimension({ type, alias, prefix: dimensionType, field, resultType: metricsMap[field]?.type });
     onChange([...dimensions, newDimension]);
 
     toggleSelectVisible();
@@ -183,15 +182,16 @@ const DimensionsConfigurator = ({
 
   return (
     <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
-      {map(dimensions, ({ key, alias, type, expr, fieldType, filter, aggregation }) => {
+      {map(dimensions, ({ key, alias, type, expr, resultType, filter, aggregation, field }) => {
         // 表达式未填提示
         const isUncompleted = type === 'expr' && !expr;
-        // 别名自动显示
+        // 别名自动补全显示
         let _alias = alias;
         let aggregationOptions;
+
         if (type === 'field') {
           aggregationOptions = map(
-            typeMap[fieldType as string]?.aggregations,
+            typeMap[metricsMap[field as string]?.type]?.aggregations,
             (v) => ({ value: v.aggregation, label: v.name })
           );
           aggregation && (_alias = `${alias}-${aggregationMap[aggregation]?.name}`);
@@ -224,8 +224,8 @@ const DimensionsConfigurator = ({
               <If condition={type === 'time'}><DcIcon className="mr4" type="time-circle" size="small" /></If>
               <If condition={(['field', 'filter'] as DICE_DATA_CONFIGURATOR.DimensionMetricType[]).includes(type)}>
                 <Choose>
-                  <When condition={fieldType === 'number'}><DcIcon className="mr4" type="Field-number" /></When>
-                  <When condition={fieldType === 'string'}><DcIcon className="mr4" type="Field-String" /></When>
+                  <When condition={resultType === 'number'}><DcIcon className="mr4" type="Field-number" /></When>
+                  <When condition={resultType === 'string'}><DcIcon className="mr4" type="Field-String" /></When>
                 </Choose>
               </If>
               {cutStr(_alias, METRIC_DISPLAY_CHARS_LIMIT, { showTip: true })}

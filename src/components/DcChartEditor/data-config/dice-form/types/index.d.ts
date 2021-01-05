@@ -62,7 +62,7 @@ declare namespace DICE_DATA_CONFIGURATOR {
      * @type {('number' | 'string')}
      * @memberof ValueDimension
      */
-    fieldType?: 'number' | 'string';
+    resultType?: 'number' | 'string';
     /**
      *聚合方法
      *

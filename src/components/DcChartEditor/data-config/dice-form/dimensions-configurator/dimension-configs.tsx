@@ -72,7 +72,7 @@ const DimensionConfigs = ({
       onTriggerAction('configFieldAggregation', {
         payload: {
           aggregation: curAggregation === aggregation ? undefined : curAggregation,
-          fieldType: curAggregation === aggregation ? undefined : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[curAggregation as string]?.result_type,
+          resultType: curAggregation === aggregation ? undefined : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[curAggregation as string]?.result_type,
         },
         isUpdateDirectly: true,
       });

@@ -5,8 +5,7 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-12-31 19:57:48
  */
-import { reduce, map, merge, isEmpty, dropWhile, find, forEach, slice, uniqBy, chunk } from 'lodash';
-import { produce } from 'immer';
+import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
 
@@ -20,8 +19,6 @@ export interface ICreateLoadDataFn {
 }
 
 export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensions, isSqlMode, customTime }: ICreateLoadDataFn) => async (payload: any = {}, body?: any) => {
-  // 除表格外，其他图表所选值需保证返回值为数值类型
-  // if (some(valueDimensions, { fieldType: 'string' }) && chartType !== 'table') return {};
   // 固定时间范围查询逻辑 customTime
   let customTimeResult = {};
   if (customTime) {

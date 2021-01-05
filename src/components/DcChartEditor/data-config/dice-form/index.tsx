@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-05 11:49:56
+ * @Last Modified time: 2021-01-05 13:56:16
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -53,7 +53,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     const singleFieldsMap = reduce(fields, (acc, field) => ({ ...acc, [`${metric}-${field.key}`]: { ...field, tags, metric, filters } }), {});
     return { ...result, ...singleFieldsMap };
   }, {}), [metaMetrics]);
-  const curMetric = metaMetrics[0];
+  const curMetric = metaMetrics ? metaMetrics[0] : {};
   const { types: typeMap } = metaConstantMap;
 
   const aggregationMap = useMemo(() => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}), [typeMap]);

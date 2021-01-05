@@ -2,10 +2,10 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-05 11:21:17
+ * @Last Modified time: 2021-01-05 14:03:24
  */
 import React, { useMemo, useCallback } from 'react';
-import { map, uniqueId, some, remove, find, findIndex, pickBy } from 'lodash';
+import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
 import { produce } from 'immer';
 import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle } from 'react-use';
@@ -72,14 +72,16 @@ const DimensionsConfigurator = ({
         disabled: some(dimensions, { type: SPECIAL_METRIC_TYPE.time }),
       },
     ]),
-    {
-      value: dimensionType === 'filter' ? SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter] : SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
-      label: textMap.metric,
-      // 维度只需要 string 类型指标
-      children: isTypeDimension
-        ? map(pickBy(metricsMap, ({ type }) => type === 'string'), ({ name: label }, key) => ({ value: key, label }))
-        : map(metricsMap, ({ name: label }, key) => ({ value: key, label })),
-    },
+    ...insertWhen(!isEmpty(metricsMap), [
+      {
+        value: dimensionType === 'filter' ? SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter] : SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
+        label: textMap.metric,
+        // 维度只需要 string 类型指标
+        children: isTypeDimension
+          ? map(pickBy(metricsMap, ({ type }) => type === 'string'), ({ name: label }, key) => ({ value: key, label }))
+          : map(metricsMap, ({ name: label }, key) => ({ value: key, label })),
+      },
+    ]),
     {
       value: SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr],
       label: textMap[SPECIAL_METRIC_TYPE.expr],

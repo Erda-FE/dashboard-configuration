@@ -218,6 +218,11 @@ export const CHARTS_INIT_CONFIG = {
     ...defaultConfig,
     chartType: 'chart:line',
     title: 'Line Chart',
+    config: {
+      optionProps: {
+        noAreaColor: true,
+      },
+    },
   },
   'chart:area': {
     ...defaultConfig,

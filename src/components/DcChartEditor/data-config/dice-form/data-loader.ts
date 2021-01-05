@@ -3,7 +3,7 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-31 19:57:48
+ * @Last Modified time: 2021-01-05 17:42:24
  */
 import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
@@ -181,7 +181,7 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
         const nameItem: any = find(group, (item: any) => !!item[valueDimension.key]) || {};
         return {
           data: map(group, (item: any) => item[valueDimension.key]),
-          name: reduce(otherDimensions, (name, { key }) => `${name}${nameItem[key]} `, ''),
+          name: reduce(otherDimensions, (name, { key }, index) => `${name}${nameItem[key]}${index !== otherDimensions.length - 1 ? ' / ' : ''}`, ''),
         };
       });
 

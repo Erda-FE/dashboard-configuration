@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Checkbox, Input } from '@terminus/nusi';
 import produce from 'immer';
 import { CommonConfigurator } from '../common';
+import { DcInfoLabel } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
@@ -50,7 +51,7 @@ export default () => {
       },
     },
     {
-      label: textMap['null display'],
+      label: <DcInfoLabel text={textMap['null display']} info={textMap['null display tip']} />,
       name: 'nullDisplay',
       type: Input,
       required: false,

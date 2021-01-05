@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-05 13:56:16
+ * @Last Modified time: 2021-01-05 14:29:23
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -288,7 +288,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: sqlContent.select,
       show: () => dataSource.isSqlMode,
       customProps: {
-        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
           handleUpdateSqlContent({ select: e.target.value });
         },
       },
@@ -304,10 +304,12 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         showSearch: true,
         options: metaGroups,
         onChange: (v: string[]) => {
-          _getMetaData(v).then((res?: { metric: string }) => handleUpdateSqlContent({
-            from: res?.metric,
-            fromSource: v,
-          }));
+          _getMetaData(v).then((res?: Array<{ metric: string }>) => {
+            handleUpdateSqlContent({
+              from: res ? res[0]?.metric : '',
+              fromSource: v,
+            });
+          });
         },
       },
     },
@@ -319,7 +321,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: sqlContent.where,
       show: () => dataSource.isSqlMode,
       customProps: {
-        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
           handleUpdateSqlContent({ where: e.target.value });
         },
       },
@@ -332,7 +334,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: sqlContent.groupBy,
       show: () => dataSource.isSqlMode,
       customProps: {
-        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
           handleUpdateSqlContent({ groupBy: e.target.value });
         },
       },
@@ -345,7 +347,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: sqlContent.orderBy,
       show: () => dataSource.isSqlMode,
       customProps: {
-        onChange: (e: React.FocusEvent<HTMLInputElement>) => {
+        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
           handleUpdateSqlContent({ orderBy: e.target.value });
         },
       },

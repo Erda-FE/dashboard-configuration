@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-31 14:45:38
+ * @Last Modified time: 2021-01-05 11:49:56
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -65,6 +65,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
   const isTableType = chartType === 'table';
   const isMapType = chartType === 'chart:map';
+  const isLineType = (['chart:line', 'chart:area', 'chart:bar'] as DC.ViewType[]).includes(chartType);
   const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
   const sqlContent = dataSource?.sql || {};
   const _submitResult = debounce(submitResult, 500);
@@ -379,7 +380,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       },
     },
     {
-      label: textMap.dimensions,
+      label: isLineType ? <DcInfoLabel text={textMap.dimensions} info={textMap['typeDimensions info']} /> : textMap.dimensions,
       name: 'typeDimensions',
       initialValue: dataSource?.typeDimensions,
       required: false,

@@ -97,6 +97,7 @@ export const TEXT_ZH_MAP = {
   'last year': '去年',
   'result filter': '结果筛选器',
   'valueDimensions info': '除表格外，其他图表所选值需保证返回值为数值类型！',
+  'typeDimensions info': '选择多个维度时，时间必选，其他维度自动分组',
   'config err': '配置数据有误，请补全配置！',
 };
 
@@ -198,6 +199,7 @@ export const TEXT_EN_MAP = {
   'last year': 'last year',
   'result filter': 'result filter',
   'valueDimensions info': 'Except for the table, the selected value of other charts must ensure that the return value is numeric!',
+  'typeDimensions info': 'When selecting multiple dimensions, time must be selected, other dimensions are automatically grouped',
   'config err': 'The configuration data is incorrect, please complete the configuration!',
 };
 

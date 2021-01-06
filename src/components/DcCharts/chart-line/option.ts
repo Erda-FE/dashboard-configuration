@@ -8,7 +8,7 @@ import getDefaultOption from './default-option';
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
-  const { metricData = [], xData, time } = data;
+  const { metricData = [], xData, time, valueNames = [] } = data;
   const { optionProps = {} } = config;
   const {
     seriesName,
@@ -79,7 +79,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     const curUnitType = (value.unitType || customUnitType || ''); // y轴单位
     const curUnit = (value.unit || customUnit || ''); // y轴单位
     yAxis[yAxisIndex] = {
-      name: yAxisNames[yAxisIndex] || name || '',
+      name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || name || '',
       nameTextStyle: {
         padding: [0, 0, 0, 5],
       },

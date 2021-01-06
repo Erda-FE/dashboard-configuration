@@ -3,7 +3,7 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-05 17:42:24
+ * @Last Modified time: 2021-01-06 19:39:31
  */
 import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
@@ -188,6 +188,7 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
       return {
         metricData,
         time,
+        valueNames: [valueDimension.alias],
       };
     }
   }

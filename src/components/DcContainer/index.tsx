@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-30 16:12:23
+ * @Last Modified time: 2021-01-06 17:34:37
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast } from '@terminus/nusi';
@@ -80,15 +80,6 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   });
   const viewRef = useRef<HTMLDivElement>(null);
 
-  const _childNode = React.cloneElement(childNode, {
-    ...childNode.props,
-    data: resData,
-    config,
-    api,
-    isEditView: chartEditorVisible,
-    loadData,
-  });
-
   const _loadData = useCallback((arg?: any, body?: any) => {
     if (!isFunction(loadData)) return;
     updater.fetchStatus(FetchStatus.FETCH);
@@ -139,6 +130,15 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
         }
       });
   }, [dataConvertor, dynamicLoadFnPayloadMap, loadData, staticLoadFnPayload, update, updater]);
+
+  const _childNode = React.cloneElement(childNode, {
+    ...childNode.props,
+    data: resData,
+    config,
+    api,
+    isEditView: chartEditorVisible,
+    loadData: _loadData,
+  });
 
   const loadDynamicFilterData = useCallback(() => {
     const _dynamicFilterDataAPI = get(api, ['extraData', 'dynamicFilterDataAPI']);

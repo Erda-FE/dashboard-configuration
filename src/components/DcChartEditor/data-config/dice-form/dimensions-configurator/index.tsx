@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-05 14:03:24
+ * @Last Modified time: 2021-01-07 16:54:40
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
@@ -88,15 +88,33 @@ const DimensionsConfigurator = ({
     },
   ]), [dimensionType, dimensions, isTypeDimension, metricsMap]);
 
-  const handleUpdateDimension = useCallback((dimension: DICE_DATA_CONFIGURATOR.Dimension) => {
+  const updateDimension = useCallback((dimension: DICE_DATA_CONFIGURATOR.Dimension) => {
     onChange(produce(dimensions, (draft) => {
       const index = findIndex(dimensions, { key: dimension.key });
       draft[index] = dimension;
     }));
   }, [dimensions, onChange]);
 
+  const handleSubmitModal = (v: Partial<DICE_DATA_CONFIGURATOR.Dimension>) => {
+    const isNewDimension = findIndex(dimensions, { key: curDimension.key }) < 0;
+    const newDimension = {
+      ...curDimension,
+      ...v,
+    };
+    if (isNewDimension) {
+      onChange([...dimensions, newDimension]);
+    } else {
+      updateDimension(newDimension);
+    }
+    handleCancelModal();
+  };
+
   // 触发操作
-  const handleTriggerAction = useCallback((key: string, type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType, option?: { payload?: any; isUpdateDirectly?: boolean }) => {
+  const handleTriggerAction = useCallback((
+    key: string,
+    type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType,
+    option?: { payload?: any; isUpdateDirectly?: boolean }
+  ) => {
     const _curDimension = find(dimensions, { key });
     const isUpdateDirectly = option?.isUpdateDirectly || false;
     _curDimension && !isUpdateDirectly && updater.curDimension(_curDimension);
@@ -112,15 +130,16 @@ const DimensionsConfigurator = ({
     }
     if (type === 'configFieldAggregation') {
       const resultType = option?.payload?.resultType || metricsMap[_curDimension?.field as string]?.type;
-      handleUpdateDimension({ ..._curDimension, ...option?.payload, resultType });
+      updateDimension({ ..._curDimension, ...option?.payload, resultType });
     }
     if (type === 'configFilter') {
       toggleFilterModalVisible();
     }
-  }, [dimensions, updater, metricsMap, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, handleUpdateDimension, toggleFilterModalVisible]);
+  }, [dimensions, updater, metricsMap, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, updateDimension, toggleFilterModalVisible]);
 
 
   const handleAddDimension = useCallback((val: string[]) => {
+    toggleSelectVisible();
     const [metricField, field] = val;
     const isExpr = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr];
     const isFilter = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter];
@@ -142,18 +161,20 @@ const DimensionsConfigurator = ({
     }
 
     const newDimension = genDefaultDimension({ type, alias, prefix: dimensionType, field, resultType: metricsMap[field]?.type });
-    onChange([...dimensions, newDimension]);
 
-    toggleSelectVisible();
-    // 自动打开表达式输入
+    // 自动打开表达式输入，完成后新增
     if (isExpr) {
       updater.curDimension(newDimension);
       handleTriggerAction(newDimension.key, 'configExpr');
+      return;
     }
+    // 自动打开筛选输入，完成后新增
     if (isFilter) {
       updater.curDimension(newDimension);
       handleTriggerAction(newDimension.key, 'configFilter');
+      return;
     }
+    onChange([...dimensions, newDimension]);
   }, [dimensionType, metricsMap, onChange, dimensions, toggleSelectVisible, updater, handleTriggerAction]);
 
   const handleRemoveDimension = (key: string) => {
@@ -172,14 +193,6 @@ const DimensionsConfigurator = ({
     toggleAliasModalVisible(false);
     toggleTimeModalVisible(false);
     toggleFilterModalVisible(false);
-  };
-
-  const handleSubmitModal = (v: Partial<DICE_DATA_CONFIGURATOR.Dimension>) => {
-    handleUpdateDimension({
-      ...curDimension,
-      ...v,
-    });
-    handleCancelModal();
   };
 
   return (

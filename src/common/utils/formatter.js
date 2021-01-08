@@ -122,6 +122,10 @@ const MonitorChartFormatterMap = (unitType, unit) => {
 
 export const getFormatter = (unitType, unit) => MonitorChartFormatterMap(unitType, unit) || new NumberFormatter(unit);
 
+export const getCommonFormatter = (_unit, _val) => {
+  return (!_unit || !_unit?.type || !_unit?.unit) ? _val : getFormatter(_unit.type, _unit.unit).format(_val, 2);
+};
+
 export const getPrettyFixed = (value, fixed = 2) => {
   const fixValue = Number(value).toFixed(fixed);
   return /\.(0)+$/.test(fixValue) ? `${parseInt(fixValue, 10)}` : fixValue;

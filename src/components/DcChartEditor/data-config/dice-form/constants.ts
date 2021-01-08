@@ -143,6 +143,53 @@ export const DIMENSIONS_CONFIGS: Record<SPECIAL_METRIC_TYPE, DimensionConfig[]> 
   ],
 };
 
+// eslint-disable-next-line no-shadow
+export enum UNIT_TYPE {
+  NUMBER = 'NUMBER',
+  PERCENT = 'PERCENT',
+  CAPACITY = 'CAPACITY',
+  TRAFFIC = 'TRAFFIC',
+  TIME = 'TIME',
+  CUSTOM = 'CUSTOM',
+}
+
+export const UNIT_INF_MAP = {
+  [UNIT_TYPE.NUMBER]: {
+    name: textMap['number conversion'],
+    value: UNIT_TYPE.NUMBER,
+    units: ['', 'K', 'M'],
+    defaultUnit: '',
+  },
+  [UNIT_TYPE.PERCENT]: {
+    name: textMap.percent,
+    value: UNIT_TYPE.PERCENT,
+    defaultUnit: '%',
+  },
+  [UNIT_TYPE.CAPACITY]: {
+    name: textMap['capacity unit'],
+    value: UNIT_TYPE.CAPACITY,
+    units: ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
+    defaultUnit: 'B',
+  },
+  [UNIT_TYPE.TRAFFIC]: {
+    name: textMap['traffic unit'],
+    value: UNIT_TYPE.TRAFFIC,
+    units: ['B/S', 'KB/S', 'MB/S', 'GB/S', 'TB/S', 'PB/S', 'EB/S', 'ZB/S', 'YB/S'],
+    defaultUnit: 'B/S',
+  },
+  [UNIT_TYPE.TIME]: {
+    name: textMap['time unit'],
+    value: UNIT_TYPE.TIME,
+    units: ['ns', 'μs', 'ms', 's'],
+    defaultUnit: 'ms',
+  },
+  [UNIT_TYPE.CUSTOM]: {
+    name: textMap.custom,
+    value: UNIT_TYPE.CUSTOM,
+    defaultUnit: '',
+  },
+};
+
 export const TIME_INTERVALS = [
   {
     label: textMap.second,

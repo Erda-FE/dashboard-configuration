@@ -1,18 +1,65 @@
 import * as React from 'react';
-import { Input } from '@terminus/nusi';
+import { map } from 'lodash';
+import { Input, Select, Col } from '@terminus/nusi';
+import { Choose, When } from 'tsx-control-statements/components';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
+import { UNIT_INF_MAP } from '../constants';
+
+const { Group: InputGroup } = Input;
 
 const textMap = DashboardStore.getState((s) => s.textMap);
+
+const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit; [k: string]: any }) => {
+  const { type, unit } = value || {};
+  return (
+    <InputGroup size={size}>
+      <Col span={6}>
+        <Select
+          allowClear
+          value={type}
+          size={size}
+          options={map(UNIT_INF_MAP, (item) => ({ label: item.name, value: item.value }))}
+          onChange={(v) => onChange({ ...value, type: v, unit: UNIT_INF_MAP[v]?.defaultUnit })}
+        />
+      </Col>
+      <Col span={8}>
+        <Choose>
+          <When condition={type === 'CUSTOM'}>
+            <Input
+              value={unit}
+              size={size}
+              maxLength={10}
+              placeholder={textMap['input custom unit']}
+              onChange={(e: React.FocusEvent<HTMLInputElement>) => {
+                onChange({ ...value, unit: e.target.value });
+              }}
+            />
+          </When>
+          <When condition={!!UNIT_INF_MAP[type || '']?.units}>
+            <Select
+              value={unit}
+              size={size}
+              options={map(UNIT_INF_MAP[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
+              onChange={(v) => onChange({ ...value, unit: v })}
+            />
+          </When>
+        </Choose>
+      </Col>
+    </InputGroup>
+  );
+};
+
 
 interface IProps {
   defaultValue: DICE_DATA_CONFIGURATOR.Dimension;
   visible: boolean;
+  isNeedUnit?: boolean;
   onCancel: ((e: React.MouseEvent<any, MouseEvent>) => void) | undefined;
   onOk: (v: any) => void;
 }
 
-const CreateAliasModal = ({ defaultValue, ...rest }: IProps) => {
+const CreateAliasModal = ({ defaultValue, isNeedUnit, ...rest }: IProps) => {
   const fields = [
     {
       label: textMap.alias,
@@ -23,6 +70,14 @@ const CreateAliasModal = ({ defaultValue, ...rest }: IProps) => {
       customProps: {
         maxLength: 50,
       },
+    },
+    {
+      label: textMap['unit config'],
+      type: UnitConfig,
+      name: 'unit',
+      show: () => isNeedUnit,
+      required: false,
+      initialValue: defaultValue.unit,
     },
   ];
 

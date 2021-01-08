@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-07 16:54:40
+ * @Last Modified time: 2021-01-08 17:39:53
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
@@ -285,6 +285,7 @@ const DimensionsConfigurator = ({
       <CreateAliasModal
         visible={aliasModalVisible}
         defaultValue={curDimension}
+        isNeedUnit={dimensionType === 'value'}
         onCancel={handleCancelModal}
         onOk={handleSubmitModal}
       />

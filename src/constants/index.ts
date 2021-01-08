@@ -37,6 +37,7 @@ export const TEXT_ZH_MAP = {
   description: '描述',
   showTotal: '显示总量',
   unit: '显示单位',
+  'unit config': '数值单位配置',
   'select chart type': '选择图表类型',
   'chart label': '图表标签',
   'show chart label': '显示图表标签',
@@ -100,6 +101,15 @@ export const TEXT_ZH_MAP = {
   'typeDimensions info': '选择多个维度时，时间必选，其他维度自动分组',
   'null display tip': '指定数据为空时显示的值，默认为 --',
   'config err': '配置数据有误，请补全配置！',
+  custom: '自定义',
+  'number conversion': '数值转换',
+  'time unit': '时间单位',
+  'traffic unit': '速率单位',
+  'capacity unit': '容量单位',
+  percent: '百分比',
+  'input custom unit': '输入自定义单位',
+  'select base unit': '选择返回值单位',
+  null: '无',
 };
 
 export const TEXT_EN_MAP = {
@@ -141,6 +151,7 @@ export const TEXT_EN_MAP = {
   description: 'description',
   showTotal: 'show total num',
   unit: 'unit',
+  'unit config': 'unit config',
   'select chart type': 'select chart type',
   'chart label': 'chart label',
   'show chart label': 'show chart label',
@@ -203,6 +214,15 @@ export const TEXT_EN_MAP = {
   'typeDimensions info': 'When selecting multiple dimensions, time must be selected, other dimensions are automatically grouped',
   'null display tip': 'Specify the value displayed when the data is empty, the default is --',
   'config err': 'The configuration data is incorrect, please complete the configuration!',
+  'number conversion': 'number conversion',
+  'time unit': 'time unit',
+  'traffic unit': 'traffic unit',
+  'capacity unit': 'capacity unit',
+  percent: 'percent',
+  custom: 'custom',
+  'input custom unit': 'input custom unit',
+  'select base unit': 'select base unit',
+  null: 'nothing',
 };
 
 const defaultConfig = {

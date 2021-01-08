@@ -4,6 +4,7 @@
 import React from 'react';
 import { uniqueId, map, isNumber, ceil } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
+import { getCommonFormatter } from '../../../common/utils';
 
 import './index.scss';
 
@@ -27,7 +28,7 @@ const Metric = ({ results = [], viewId }: IProps) => (
         map(results, ({ name, value, unit, color }) => (
           <div className="dc-metric-item" key={uniqueId(viewId)}>
             <span className={`dc-metric-value ${color ? `color-${color}` : ''}`}>
-              {`${isNumber(value) ? ceil(value, 2) : value || '--'}${unit || ''}`}
+              {`${isNumber(value) ? getCommonFormatter(unit, ceil(value, 2)) : value || '--'}`}
             </span>
             <span className="dc-metric-name">{name || ''}</span>
           </div>

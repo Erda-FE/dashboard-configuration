@@ -1,4 +1,4 @@
-import { map, merge, find, isEmpty } from 'lodash';
+import { map, merge, isEmpty } from 'lodash';
 import moment from 'moment';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
@@ -40,7 +40,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
 
   map(metricData, (value, i) => {
-    const { axisIndex, name, tag, ...rest } = value;
+    const { axisIndex, name, tag, unit: _unit, ...rest } = value;
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
@@ -74,30 +74,31 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
           return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
         }),
     });
-    // const curMax = value.data ? calMax([value.data]) : [];
-    // maxArr[yAxisIndex] = maxArr[yAxisIndex] && maxArr[yAxisIndex] > curMax ? maxArr[yAxisIndex] : curMax;
-    const curUnitType = (value.unitType || customUnitType || ''); // y轴单位
-    const curUnit = (value.unit || customUnit || ''); // y轴单位
+    // y 轴单位类型
+    const curUnitType = (_unit?.type || customUnitType || '');
+    // y 轴基准单位
+    const curUnit = (_unit?.unit || customUnit || '');
     yAxis[yAxisIndex] = {
+      // 轴线名
       name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || name || '',
-      nameTextStyle: {
-        padding: [0, 0, 0, 5],
-      },
-      position: yAxisIndex === 0 ? 'left' : 'right',
+      // 轴线名位置
+      nameLocation: 'center',
+      // 轴线名离轴线间距
+      nameGap: 30,
+      // 轴线偏移
       offset: 10,
-      splitLine: {
-        show: true,
-      },
+      position: yAxisIndex === 0 ? 'left' : 'right',
+      // 不显示刻度
       axisTick: {
         show: false,
       },
+      // 隐藏轴线
       axisLine: {
         show: false,
       },
-      nameLocation: 'center',
-      nameGap: 30,
       unitType: curUnitType,
       unit: curUnit,
+      // 坐标轴刻度配置
       axisLabel: {
         margin: 0,
         formatter: (val: string) => getFormatter(curUnitType, curUnit).format(val, decimal),

@@ -1,6 +1,6 @@
 import { get, pick } from 'lodash';
 
-export { getFormatter } from './formatter';
+export { getFormatter, getCommonFormatter } from './formatter';
 export { cutStr } from './str-num-date';
 
 /**

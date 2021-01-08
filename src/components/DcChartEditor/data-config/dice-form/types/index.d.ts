@@ -1,21 +1,14 @@
 declare namespace DICE_DATA_CONFIGURATOR {
-  /**
-   *指标类型：时间、指定指标、自定义表达式
-   *
-   * @type DimensionMetricType
-   */
+  /** 指标类型：时间、指定指标、自定义表达式 */
   type DimensionMetricType = 'time' | 'field' | 'expr' | 'filter';
-
+  /** 维度配置注册的事件名 */
   type DimensionConfigsActionType = 'configExpr' | 'configAlias' | 'configTime' | 'configFieldAggregation' | 'configFilter';
-
+  /** 指标类型 */
   type FieldType = 'bool' | 'number' | 'string';
-
-  /**
-   *维度类型：数值维度，类别维度=文本维度+时间维度，筛选维度
-   *
-   * @type DimensionType
-   */
+  /** 维度类型：数值维度，类别维度=文本维度+时间维度，筛选维度 */
   type DimensionType = 'value' | 'type' | 'filter';
+  /** 值维度单位配置 */
+  type DimensionUnitType = 'CUSTOM' | 'NUMBER' | 'PERCENT' | 'CAPACITY' | 'TRAFFIC' | 'TIME';
 
   interface TimeInterval {
     value: number;
@@ -25,6 +18,11 @@ declare namespace DICE_DATA_CONFIGURATOR {
   interface TimeField {
     value: string;
     unit: 'ns' | 'µs' | 'ms' | 's' | 'm' | 'h' | 'day';
+  }
+
+  interface FieldUnit {
+    type: DimensionUnitType;
+    unit: string;
   }
 
   interface ValueDimension {
@@ -77,6 +75,13 @@ declare namespace DICE_DATA_CONFIGURATOR {
      * @memberof ValueDimension
      */
     expr?: string;
+    /**
+     *字段单位配置
+     *
+     * @type {FieldUnit}
+     * @memberof ValueDimension
+     */
+    unit?: FieldUnit;
   }
 
   /**

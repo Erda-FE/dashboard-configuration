@@ -3,7 +3,7 @@ import { Select, Input, InputNumber } from '@terminus/nusi';
 import { map, filter } from 'lodash';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
-import { TIME_INTERVALS, TIME_FORMATS, CUSTOM_TIME_RANGE_MAP, TIME_FIELDS_UNITS } from '../constants';
+import { TIME_INTERVALS, TIME_FORMATS, TIME_FIELDS_UNITS } from '../constants';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 const { Group: InputGroup } = Input;

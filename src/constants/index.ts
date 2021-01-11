@@ -28,6 +28,8 @@ export const TEXT_ZH_MAP = {
   select: '选择框',
   'control data': '控件数据',
   value: '值',
+  sort: '结果排序',
+  'result limit': '结果截取',
   name: '名称',
   action: '操作',
   'confirm to drop data': '已修改，确认退出编辑？',
@@ -73,6 +75,7 @@ export const TEXT_ZH_MAP = {
   'add metric': '添加指标',
   'add value': '添加值',
   'add filter': '添加筛选器',
+  'add sort': '添加排序',
   dimensions: '维度',
   alias: '别名',
   'alias input': '别名录入',
@@ -110,6 +113,9 @@ export const TEXT_ZH_MAP = {
   'input custom unit': '输入自定义单位',
   'select base unit': '选择返回值单位',
   null: '无',
+  'sort method': '排序方式',
+  desc: '降序',
+  asc: '升序',
 };
 
 export const TEXT_EN_MAP = {
@@ -142,6 +148,8 @@ export const TEXT_EN_MAP = {
   select: 'select',
   'control data': 'control data',
   value: 'value',
+  sort: 'sort',
+  'result limit': 'result limit',
   name: 'name',
   action: 'action',
   'confirm to drop data': 'Modified, confirm to exit edit mode',
@@ -186,6 +194,7 @@ export const TEXT_EN_MAP = {
   'add metric': 'add metric',
   'add value': 'add value',
   'add filter': 'add filter',
+  'add sort': 'add sort',
   dimensions: 'dimensions',
   alias: 'alias',
   'alias input': 'alias input',
@@ -223,6 +232,9 @@ export const TEXT_EN_MAP = {
   'input custom unit': 'input custom unit',
   'select base unit': 'select base unit',
   null: 'nothing',
+  'sort method': 'sort method',
+  desc: 'DESC',
+  asc: 'ASC',
 };
 
 const defaultConfig = {

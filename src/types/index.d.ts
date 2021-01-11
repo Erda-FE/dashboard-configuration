@@ -86,6 +86,7 @@ export interface DatasourceConfig {
   activedMetricGroups: string[];
   typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+  sortDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
   resultFilters?: DICE_DATA_CONFIGURATOR.Dimension[];
   // 自定义时间区间，可选
   customTime?: string;

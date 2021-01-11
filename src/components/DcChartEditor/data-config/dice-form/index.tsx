@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-05 14:29:23
+ * @Last Modified time: 2021-01-11 16:20:28
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -127,7 +127,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const getDSLSelects = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[], isAutoPrecision?: boolean) => (isEmpty(dimensions)
     ? []
     : [
-      ...map(dimensions, ({ type, field, aggregation, key, expr: _expr }) => {
+      ...map(dimensions, ({ type, field, aggregation, key, expr: _expr, resultType }) => {
         let expr;
         switch (type) {
           case 'expr':
@@ -139,11 +139,11 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
           case 'field':
             expr = aggregation
               ?
-              isAutoPrecision
+              isAutoPrecision && resultType === 'number'
                 ? `round_float(${aggregation}(${fieldsMap[field as string]?.key}), 2)` // 自动处理返回值精度问题，后面需自动处理
                 : `${aggregation}(${fieldsMap[field as string]?.key})}`
               :
-              isAutoPrecision
+              isAutoPrecision && resultType === 'number'
                 ? `round_float(${fieldsMap[field as string]?.key}, 2)`
                 : fieldsMap[field as string]?.key;
             break;
@@ -187,6 +187,30 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         });
   }, [fieldsMap, isMapType, mapLevel]);
 
+  const getDSLOrderBy = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
+    return isEmpty(dimensions)
+      ? undefined
+      : map(dimensions, ({ type, field, aggregation, expr: _expr, sort }) => {
+        let expr;
+        switch (type) {
+          case 'expr':
+            expr = _expr;
+            break;
+          case 'sort':
+            expr = aggregation
+              ? `${aggregation}(${fieldsMap[field as string]?.key})`
+              : fieldsMap[field as string]?.key;
+            break;
+          default:
+            break;
+        }
+        return {
+          expr,
+          dir: sort,
+        };
+      });
+  }, [fieldsMap]);
+
   const getLoadData = useCallback((payload: Omit<ICreateLoadDataFn, 'chartType'>) => {
     return createLoadDataFn({
       ...payload,
@@ -205,10 +229,12 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const genApi = useCallback(({
     typeDimensions,
     valueDimensions,
+    sortDimensions,
     resultFilters,
     isSqlMode,
     customTime,
     sql,
+    limit,
   }: DC.DatasourceConfig): DC.API => {
     const { url, query } = loadDataApi;
     return {
@@ -234,11 +260,12 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
           select: [...getDSLSelects(typeDimensions || []), ...getDSLSelects(valueDimensions || [], true)],
           where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
           groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
+          orderby: getDSLOrderBy(sortDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
           // 0个维度且有1个或多个多个值，limit为1，返回最新值
-          limit: ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType ? 1 : undefined,
+          limit: limit || (((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && (!isMapType || !isTableType) ? 1 : undefined),
         },
     };
-  }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, isMapType]);
+  }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, getDSLOrderBy, isMapType]);
 
   const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>) => {
     const newDataSource = produce(dataSource, (draft) => {
@@ -433,6 +460,37 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         aggregationMap,
         filtersMap,
         onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ resultFilters: v }),
+      },
+    },
+    {
+      label: textMap.sort,
+      name: 'sortDimensions',
+      initialValue: dataSource?.sortDimensions,
+      required: false,
+      show: () => !dataSource.isSqlMode,
+      type: DimensionsConfigurator,
+      customProps: {
+        type: 'sort',
+        addText: textMap['add sort'],
+        disabled: isEmpty(dataSource.activedMetricGroups),
+        metricsMap: fieldsMap,
+        typeMap,
+        aggregationMap,
+        filtersMap,
+        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ sortDimensions: v }),
+      },
+    },
+    {
+      label: textMap['result limit'],
+      name: 'limit',
+      type: InputNumber,
+      required: false,
+      initialValue: dataSource?.limit,
+      show: () => !dataSource.isSqlMode,
+      customProps: {
+        min: 1,
+        precision: 0,
+        onChange: (v: number) => handleUpdateDataSource({ limit: v }),
       },
     },
     {

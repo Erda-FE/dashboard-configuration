@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-08 17:39:53
+ * @Last Modified time: 2021-01-11 15:27:49
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
@@ -12,7 +12,7 @@ import { useToggle } from 'react-use';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { DcIcon, DcInfoIcon, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
-import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC } from '../constants';
+import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, SortMap } from '../constants';
 import DashboardStore from '../../../../../stores/dash-board';
 import { genDefaultDimension } from '../common/utils';
 import CreateExprModal from './create-expr-modal';
@@ -63,6 +63,8 @@ const DimensionsConfigurator = ({
   });
 
   const isTypeDimension = dimensionType === 'type';
+  // 特殊的指标类型，和 props 传入的 type 一致
+  const fieldTypes = useMemo(() => [SPECIAL_METRIC_TYPE.filter, SPECIAL_METRIC_TYPE.sort], []);
   // 生成 dimension 分组
   const metricOptions = useMemo(() => ([
     ...insertWhen(isTypeDimension, [
@@ -74,7 +76,7 @@ const DimensionsConfigurator = ({
     ]),
     ...insertWhen(!isEmpty(metricsMap), [
       {
-        value: dimensionType === 'filter' ? SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter] : SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
+        value: fieldTypes.includes(dimensionType) ? SPECIAL_METRIC[dimensionType] : SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
         label: textMap.metric,
         // 维度只需要 string 类型指标
         children: isTypeDimension
@@ -86,7 +88,7 @@ const DimensionsConfigurator = ({
       value: SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr],
       label: textMap[SPECIAL_METRIC_TYPE.expr],
     },
-  ]), [dimensionType, dimensions, isTypeDimension, metricsMap]);
+  ]), [dimensionType, dimensions, fieldTypes, isTypeDimension, metricsMap]);
 
   const updateDimension = useCallback((dimension: DICE_DATA_CONFIGURATOR.Dimension) => {
     onChange(produce(dimensions, (draft) => {
@@ -132,6 +134,9 @@ const DimensionsConfigurator = ({
       const resultType = option?.payload?.resultType || metricsMap[_curDimension?.field as string]?.type;
       updateDimension({ ..._curDimension, ...option?.payload, resultType });
     }
+    if (type === 'configSort') {
+      updateDimension({ ..._curDimension, ...option?.payload });
+    }
     if (type === 'configFilter') {
       toggleFilterModalVisible();
     }
@@ -143,6 +148,7 @@ const DimensionsConfigurator = ({
     const [metricField, field] = val;
     const isExpr = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr];
     const isFilter = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.filter];
+    const isSort = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.sort];
     let type: DICE_DATA_CONFIGURATOR.DimensionMetricType = SPECIAL_METRIC_TYPE.field;
     let alias: string = metricsMap[field]?.name;
 
@@ -158,6 +164,10 @@ const DimensionsConfigurator = ({
 
     if (isFilter) {
       type = SPECIAL_METRIC_TYPE.filter;
+    }
+
+    if (isSort) {
+      type = SPECIAL_METRIC_TYPE.sort;
     }
 
     const newDimension = genDefaultDimension({ type, alias, prefix: dimensionType, field, resultType: metricsMap[field]?.type });
@@ -197,19 +207,19 @@ const DimensionsConfigurator = ({
 
   return (
     <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
-      {map(dimensions, ({ key, alias, type, expr, resultType, filter, aggregation, field }) => {
+      {map(dimensions, ({ key, alias, type, expr, resultType, filter, aggregation, field, sort }) => {
         // 表达式未填提示
         const isUncompleted = type === 'expr' && !expr;
         // 别名自动补全显示
         let _alias = alias;
         let aggregationOptions;
 
-        if (type === 'field') {
+        if (['field', 'sort'].includes(type)) {
           aggregationOptions = map(
             typeMap[metricsMap[field as string]?.type]?.aggregations,
             (v) => ({ value: v.aggregation, label: v.name })
           );
-          aggregation && (_alias = `${alias}-${aggregationMap[aggregation]?.name}`);
+          _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap[sort]?.label}` : ''}`;
         }
         if (type === 'filter' && filter?.operation) {
           _alias = `${alias}(${filtersMap[filter.operation].name} ${filter?.value})`;
@@ -222,6 +232,7 @@ const DimensionsConfigurator = ({
             dimensionType={dimensionType}
             aggregationOptions={aggregationOptions}
             aggregation={aggregation}
+            sort={sort}
             aggregationMap={aggregationMap}
             onTriggerAction={(actionType, option) => handleTriggerAction(key, actionType, option)}
           >

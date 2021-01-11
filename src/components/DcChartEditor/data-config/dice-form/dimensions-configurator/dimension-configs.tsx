@@ -16,6 +16,7 @@ interface IProps {
   type: DICE_DATA_CONFIGURATOR.DimensionMetricType;
   dimensionType: DICE_DATA_CONFIGURATOR.DimensionType;
   aggregation?: string;
+  sort?: 'DESC' | 'ASC';
   aggregationMap?: Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>;
   aggregationOptions?: ComponentOptions;
   onTriggerAction: (type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType, option?: { payload?: Partial<DICE_DATA_CONFIGURATOR.Dimension>; isUpdateDirectly?: boolean }) => void;
@@ -27,6 +28,7 @@ const DimensionConfigs = ({
   dimensionType,
   aggregationOptions,
   aggregation,
+  sort,
   aggregationMap,
   onTriggerAction,
 }: IProps) => {
@@ -39,7 +41,7 @@ const DimensionConfigs = ({
   }
 
   // 维度不需要聚合方法
-  if (type === 'field' && dimensionType !== 'type') {
+  if (['field', 'sort'].includes(type) && dimensionType !== 'type') {
     configs = [
       {
         key: SPECIAL_METRIC_TYPE.field,
@@ -54,6 +56,7 @@ const DimensionConfigs = ({
       ...configs,
     ];
     aggregation && (selectedKeys = [aggregation, SPECIAL_METRIC_TYPE.field]);
+    sort && (selectedKeys = [sort, SPECIAL_METRIC_TYPE.sort]);
   }
 
   if (type === 'filter') {
@@ -67,12 +70,20 @@ const DimensionConfigs = ({
   }
 
   const handleClick = ({ keyPath }: any) => {
-    if (keyPath[1] === SPECIAL_METRIC_TYPE.field) {
-      const curAggregation = keyPath[0];
+    const [_val, _type] = keyPath;
+    if (_type === SPECIAL_METRIC_TYPE.field) {
       onTriggerAction('configFieldAggregation', {
         payload: {
-          aggregation: curAggregation === aggregation ? undefined : curAggregation,
-          resultType: curAggregation === aggregation ? undefined : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[curAggregation as string]?.result_type,
+          aggregation: _val === aggregation ? undefined : _val,
+          resultType: _val === aggregation ? undefined : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[_val as string]?.result_type,
+        },
+        isUpdateDirectly: true,
+      });
+    }
+    if (_type === SPECIAL_METRIC_TYPE.sort) {
+      onTriggerAction('configSort', {
+        payload: {
+          sort: _val === sort ? undefined : _val,
         },
         isUpdateDirectly: true,
       });

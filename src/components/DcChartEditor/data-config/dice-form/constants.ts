@@ -1,3 +1,4 @@
+import { map } from 'lodash';
 import moment from 'moment';
 import DashboardStore from '../../../../stores/dash-board';
 
@@ -96,6 +97,7 @@ export enum SPECIAL_METRIC_TYPE {
   expr = 'expr',
   field = 'field',
   filter = 'filter',
+  sort = 'sort',
 }
 
 // 特殊指标值，唯一标志
@@ -104,6 +106,7 @@ export const SPECIAL_METRIC = {
   [SPECIAL_METRIC_TYPE.expr]: 'c_metric-expr',
   [SPECIAL_METRIC_TYPE.field]: 'c_data-field',
   [SPECIAL_METRIC_TYPE.filter]: 'c_data-filter',
+  [SPECIAL_METRIC_TYPE.sort]: 'c_data-sort',
 };
 
 interface DimensionConfig {
@@ -123,6 +126,17 @@ export const COMMON_DIMENSIONS_CONFIGS: DimensionConfig[] = [
   },
 ];
 
+// eslint-disable-next-line no-shadow
+enum SORT_TYPE {
+  desc = 'DESC',
+  asc = 'ASC'
+}
+
+export const SortMap = {
+  [SORT_TYPE.desc]: { value: SORT_TYPE.desc, label: textMap.desc },
+  [SORT_TYPE.asc]: { value: SORT_TYPE.asc, label: textMap.asc },
+};
+
 export const DIMENSIONS_CONFIGS: Record<SPECIAL_METRIC_TYPE, DimensionConfig[]> = {
   [SPECIAL_METRIC_TYPE.expr]: [
     {
@@ -140,6 +154,14 @@ export const DIMENSIONS_CONFIGS: Record<SPECIAL_METRIC_TYPE, DimensionConfig[]> 
     },
   ],
   [SPECIAL_METRIC_TYPE.field]: [
+  ],
+  [SPECIAL_METRIC_TYPE.sort]: [
+    {
+      key: SPECIAL_METRIC_TYPE.sort,
+      label: textMap['sort method'],
+      type: 'sub',
+      options: map(SortMap, (item) => item),
+    },
   ],
 };
 

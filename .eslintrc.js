@@ -38,7 +38,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2015,
     sourceType: 'module',
-    project: './tsconfig.json',
+    project: ['./tsconfig.json'],
     tsconfigRootDir: __dirname,
     ecmaFeatures: {
       jsx: true,
@@ -54,6 +54,7 @@ module.exports = {
     }
   },
   rules: {
+    'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['draft', 'state'] }],
     'import/prefer-default-export': 'off',
     // 'react/jsx-filename-extension': [2, { 'extensions': ['.js', '.jsx', '.ts', '.tsx'] }],
     'react/prop-types': 'off',

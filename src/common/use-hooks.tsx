@@ -22,11 +22,13 @@ export const useForceUpdateWithCallback = (cb: () => void): () => void => {
 };
 
 export const useComponentWidth = () => {
-  const [sized, { width }] = useSize(
-    () => <div style={{ width: '100%' }} />
-  );
+  const [sized, { width }] = useSize(() => <div style={{ width: '100%' }} />);
   return [sized, width];
 };
+
+interface Obj<T = any> {
+  [k: string]: T;
+}
 
 type UpdateFn<T> = (patch: Partial<T> | ((prevState: T) => Partial<T>)) => void;
 type UpdatePartFn<U> = (patch: U | Function) => void;
@@ -36,15 +38,14 @@ type UpdaterFn<T> = {
 };
 
 type NullableValue<T> = {
-  [K in keyof T]: T[K] extends null ? null | { [p: string]: any } // 初始状态里对象值可能是null
+  [K in keyof T]: T[K] extends null ? null | Obj // 初始状态里对象值可能是null
     : T[K] extends never[] ? any[] // 初始值是空数组，则认为可放任意结构数组
-      : T[K] extends any[] ? T[K] // 初始值是有值的数组
-        : T[K] extends object ? { [p: string]: any } : T[K] // 如果是对象类型，不限制内部结构，是object类型即可
+      : T[K] extends { [p: string]: never } ? Obj // 初始值是空对象，不限制内部结构，是object类型即可
+        : T[K]
 };
 
 type ResetFn = () => void;
 
-/* eslint-disable arrow-parens */
 /**
  * 状态更新
  * @param initState 初始状态
@@ -82,4 +83,3 @@ export const useUpdate = <T extends object>(
 
   return [state, updater, update, reset];
 };
-/* eslint-disable arrow-parens */

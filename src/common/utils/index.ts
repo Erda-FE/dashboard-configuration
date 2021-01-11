@@ -1,21 +1,7 @@
-import { wrapWithTooltip } from './get-tsx';
 import { get, pick } from 'lodash';
 
-export { getFormatter } from './formatter';
-interface ICutOptions {
-  suffix?: string;
-  showTip?: boolean;
-}
-
-export function cutStr(fullStr: string, limit = 0, options?: ICutOptions) {
-  if (typeof fullStr !== 'string') {
-    return '';
-  }
-  const { suffix = '...', showTip = false } = options || {};
-  const str = (fullStr.length > limit ? `${fullStr.substring(0, limit)}${suffix}` : fullStr);
-  const sameLength = fullStr.length === str.length;
-  return showTip && !sameLength ? wrapWithTooltip(fullStr, str) : str;
-}
+export { getFormatter, getCommonFormatter } from './formatter';
+export { cutStr } from './str-num-date';
 
 /**
  * used to filter out empty fields and collect fields as object
@@ -51,4 +37,54 @@ export const collectFields = (ObjData: any) => {
  */
 export const insertWhen = <T=any>(condition: boolean, list: T[]): T[] => {
   return condition ? list : [];
+};
+
+
+/**
+ * 生成 UUID
+ * @param {number} [len]
+ * @param {number} [radix]
+ * @returns
+ */
+// export const generateUUID = () => {
+//   let d = new Date().getTime();
+//   // 只用8位够了
+//   const uuid = 'xxxxxxxx'.replace(/[xy]/g, (c) => {
+//     // eslint-disable-next-line
+//     const r = (d + (Math.random() * 16)) % 16 | 0;
+//     d = Math.floor(d / 16);
+//     // eslint-disable-next-line
+//     return (c === 'x' ? r : ((r & 0x7) | 0x8)).toString(16);
+//   });
+//   return uuid;
+// };
+export const genUUID = (len?: number, radix?: number) => {
+  const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
+  const _radix = radix || chars.length;
+  const uuid = [];
+
+  if (len) {
+    for (let i = 0; i < len; i++) {
+      // eslint-disable-next-line no-bitwise
+      uuid[i] = chars[0 | (Math.random() * _radix)];
+    }
+  } else {
+    let r;
+    uuid[8] = '-';
+    uuid[13] = '-';
+    uuid[18] = '-';
+    uuid[23] = '-';
+    uuid[14] = '4';
+
+    for (let i = 0; i < 36; i++) {
+      if (!uuid[i]) {
+        // eslint-disable-next-line no-bitwise
+        r = 0 | (Math.random() * 16);
+        // eslint-disable-next-line no-bitwise
+        uuid[i] = chars[i === 19 ? (r & 0x3) | 0x8 : r];
+      }
+    }
+  }
+
+  return uuid.join('');
 };

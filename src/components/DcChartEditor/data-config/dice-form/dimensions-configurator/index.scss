@@ -1,0 +1,16 @@
+@import "../../../../../styles/variable";
+$dice-metric-group-prefix-cls: #{$prefix}-dice-metric-group;
+
+.#{$dice-metric-group-prefix-cls} {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.#{$prefix}-editor-dimension-config {
+  display: flex;
+  justify-content: space-between;
+
+  .#{$prefix}-iconfont {
+    color: $color-text-desc;
+  }
+}

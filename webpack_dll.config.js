@@ -5,14 +5,15 @@ const vendors = [
   'react',
   'react-dom',
   'lodash',
-  'antd',
   'moment',
+  '@terminus/nusi',
+  'immer',
 ];
 
 module.exports = {
   entry: { vendor: vendors },
   output: {
-    path: path.join(__dirname, 'public'),
+    path: path.join(__dirname, 'dist'),
     filename: 'dll.js',
     library: '[name]_[hash]',
   },

@@ -1,0 +1,22 @@
+@import "../../../../styles/variable";
+$data-config-prefix-cls: #{$prefix}-dice-metrics-form;
+
+.#{$data-config-prefix-cls} {
+  .render-form.ant-form-vertical {
+    width: unset;
+  }
+
+  .flex-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .flex-1 {
+    flex: 1;
+  }
+
+  .inline-sub-item {
+    margin-right: 8px;
+  }
+}

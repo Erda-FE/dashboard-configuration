@@ -20,19 +20,6 @@ module.exports = {
   ticketNumberPrefix: '#',
   ticketNumberRegExp: '\\d{0,9}',
 
-  // it needs to match the value for field type. Eg.: 'fix'
-  /*
-  scopeOverrides: {
-    fix: [
-
-      {name: 'merge'},
-      {name: 'style'},
-      {name: 'e2eTest'},
-      {name: 'unitTest'}
-    ]
-  },
-  */
-
   messages: {
     type: '选择你要 Commit 的变更类型：',
     ticketNumber: '输入修改对应的 Issue Id（格式\d{0,9}）【可选】：',

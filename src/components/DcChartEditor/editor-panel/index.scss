@@ -1,0 +1,23 @@
+@import "../../../styles/editor-utils";
+$editor-prefix-cls: #{$prefix}-editor;
+
+.#{$editor-prefix-cls} {
+  &-content {
+    display: flex;
+  }
+
+  &-common-setting {
+    width: 250px;
+  }
+
+  &-data-setting {
+    width: 350px;
+  }
+
+  &-footer {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: start;
+    align-items: center;
+  }
+}

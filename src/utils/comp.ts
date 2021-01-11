@@ -2,8 +2,10 @@
 /* eslint-disable no-unused-vars */
 // import { forEach, replace } from 'lodash';
 import domtoimage from 'dom-to-image';
-import { message } from 'antd';
-import screenfull from 'screenfull';
+import { Toast } from '@terminus/nusi';
+import DashboardStore from '../stores/dash-board';
+
+const textMap = DashboardStore.getState((s) => s.textMap);
 
 export const formItemLayout = {
   labelCol: {
@@ -60,16 +62,36 @@ export function getData(_url: string, _query?: any) {
 interface IParams { [name: string]: any }
 
 let loadingMessage: any = null;
-
-export function saveImage(dom: Element | null | Text, name: string, textMap: any) {
+/**
+ * dom to image
+ *
+ * @export
+ * @param {(Element | null | Text)} dom
+ * @param {string} name
+ * @param {{
+ *     loadingMsg?: string;
+ *     errorMsg?: string;
+ *   }} [message]
+ * @returns
+ */
+export function saveImage(
+  dom: Element | null | Text,
+  name: string,
+  message?: {
+    loadingMsg?: string;
+    errorMsg?: string;
+  },
+) {
   if (loadingMessage) {
     return;
   }
+
   if (!dom) {
-    message.error(textMap['no chart data']);
+    Toast.error(message?.errorMsg || textMap['no chart data']);
     return;
   }
-  loadingMessage = message.loading(textMap['exporting picture'], 0);
+
+  loadingMessage = Toast.loading(message?.loadingMsg || textMap['exporting picture'], 0);
   domtoimage.toPng(dom, {
     quality: 1,
   }).then((url: string) => {
@@ -82,14 +104,6 @@ export function saveImage(dom: Element | null | Text, name: string, textMap: any
   });
 }
 
-const sf = screenfull as any; // prevent type warn
-export function setScreenFull(dom: Element | null | Text, isFullscreen = sf.isFullscreen) {
-  if (dom && !isFullscreen) {
-    sf.request(dom);
-  } else {
-    sf.exit();
-  }
-}
 
 export function plainArrayValidator(_rule: any, text: string, callback: any): void {
   if (!text) {

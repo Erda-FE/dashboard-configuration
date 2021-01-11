@@ -26,17 +26,17 @@ module.exports = () => {
 
   /** @type { import('webpack').Configuration } */
   const config = {
-    devtool: isProd ? '' : 'cheap-module-eval-source-map',
+    devtool: 'cheap-module-eval-source-map',
     node: {
       net: 'empty',
     },
+    mode: isProd ? 'production' : 'development',
     entry: {
       index: isProd ? './src/index.ts' : './example/index.js',
     },
     externals: isProd ? {
       lodash: 'lodash',
       echarts: 'echarts',
-      antd: 'antd',
       react: 'react',
       'react-dom': 'react-dom',
       moment: 'moment',
@@ -46,9 +46,9 @@ module.exports = () => {
       children: false,
     },
     output: {
-      path: path.join(__dirname, '/public'),
+      path: path.join(__dirname, '/dist'),
       filename: '[name].js',
-      chunkFilename: '[id].chunk.js',
+      // chunkFilename: '[chunkhash].chunk.js',
       publicPath: '/',
     },
     module: {
@@ -75,7 +75,10 @@ module.exports = () => {
         {
           test: /\.(tsx?|jsx?)$/,
           loader: 'happypack/loader?id=ts',
-          exclude: /node_modules/,
+          include: [
+            resolve('example'),
+            resolve('src'),
+          ],
         },
       ],
     },
@@ -83,35 +86,29 @@ module.exports = () => {
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [resolve('example'), resolve('src'), 'node_modules'],
     },
+    performance: {
+      hints: false,
+      maxEntrypointSize: 512000,
+      maxAssetSize: 512000
+    },
     optimization: {
-      minimize: isProd,
-      // runtimeChunk: true,
+      minimize: false,
       namedChunks: true,
-      // moduleIds: 'hashed',
+      moduleIds: 'named',
       splitChunks: {
-        chunks: 'all', // 必须三选一：'initial' | 'all' | 'async'
+        chunks: 'all',
         minSize: 30000,
         minChunks: 1,
         maxAsyncRequests: 5,
-        maxInitialRequests: 6,
+        maxInitialRequests: 5,
         name: true,
-        // cacheGroups: {
-        //   styles: {
-        //     name: 'styles',
-        //     test: /\.s?css$/,
-        //     chunks: 'all',
-        //     enforce: true,
-        //     priority: 1,
-        //   },
-        //   commons: {
-        //     name: 'chunk-commons',
-        //     test: resolve('example/common'),
-        //     minChunks: 2, // 最小公用次数
-        //     priority: 2,
-        //     chunks: 'all',
-        //     reuseExistingChunk: true, // 表示是否使用已有的 chunk，如果为 true 则表示如果当前的 chunk 包含的模块已经被抽取出去了，那么将不会重新生成新的
-        //   },
-        // },
+        cacheGroups: {
+          vendors: {
+            test: /[\\/]node_modules[\\/]/,
+            reuseExistingChunk: true,
+            priority: -10,
+          },
+        },
       },
       minimizer: isProd
         ? [

@@ -2,10 +2,47 @@ $prefix: "dc";
 
 $color-primary: #6a549e;
 $color-border: #e8e8e8;
-$color-white: #ffffff;
+$color-white: #fff;
 $light-black: #606060;
-$color-text: #666666;
-$mask-color: rgba(0, 0, 0, .2);
-$full-background-color: rgba(55, 55, 55, .5);
+$gray: #666 !default;
+$darkgray:#999 !default;
+$lightgray: #bbb !default;
+$table-gray: #f2f2f2 !default;
+
+$color-dark-1: rgba(0, 0, 0, 0.1) !default;
+$color-dark-8: rgba(0, 0, 0, 0.8) !default;
+$color-dark-6: rgba(0, 0, 0, 0.6) !default;
+$color-dark-4: rgba(0, 0, 0, 0.4) !default;
+$color-dark-3: rgba(0, 0, 0, 0.3) !default;
+$color-dark-2: rgba(0, 0, 0, 0.2) !default;
+
+$color-white-1: rgba(255, 255, 255, 0.1) !default;
+$color-white-8: rgba(255, 255, 255, 0.8) !default;
+$color-white-6: rgba(255, 255, 255, 0.6) !default;
+$color-white-4: rgba(255, 255, 255, 0.4) !default;
+$color-white-3: rgba(255, 255, 255, 0.3) !default;
+$color-white-2: rgba(255, 255, 255, 0.2) !default;
+$color-white-9: rgba(255, 255, 255, 0.9) !default;
+
+$color-primary-1: rgba($color-primary, 0.1) !default;
+$color-primary-4: rgba($color-primary, 0.4) !default;
+
+// Color text
+$color-text: $color-dark-8 !default;
+$color-text-sub: $color-dark-6 !default;
+$color-text-desc: $color-dark-4 !default;
+$color-text-icon: $color-dark-3 !default;
+$color-text-holder: $color-dark-2 !default;
+
+$mask-color: rgba(0, 0, 0, 0.2);
+$full-background-color: rgba(55, 55, 55, 0.5);
+$content-background-color: rgba(249, 248, 251, 1);
+
+$icon-color: rgba(7, 10, 26, 0.4);
 
 $border: 1px solid $color-border;
+$dark-border: 1px solid $color-dark-1;
+$dark-dotted-border: 1px dotted $color-dark-1;
+$primary-border: 1px solid $color-primary;
+
+$box-radius: 3px;

@@ -1,4 +1,4 @@
-public/
+dist/
 .sass-cache/
 .idea/
 node_modules/

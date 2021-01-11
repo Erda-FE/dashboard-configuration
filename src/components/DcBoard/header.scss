@@ -1,0 +1,24 @@
+@import "../../styles/dashboard-util";
+$header-prefix-cls: #{$prefix}-dashboard-header;
+
+.#{$header-prefix-cls} {
+  padding: 0 4px;
+  border-radius: $box-radius $box-radius 0 0;
+  border-bottom: $dark-border;
+  background: rgba(252, 252, 253, 1);
+  height: 50px;
+
+  .#{$prefix}-dashboard-tools {
+    .#{$prefix}-iconfont {
+      font-size: 18px;
+    }
+
+    &.#{$prefix}-dashboard-left-tools > button {
+      margin-right: 4px;
+    }
+
+    &.#{$prefix}-dashboard-right-tools > button {
+      margin-left: 4px;
+    }
+  }
+}

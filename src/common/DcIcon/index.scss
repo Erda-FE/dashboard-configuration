@@ -1,0 +1,8 @@
+@import "../../styles/variable";
+$iconfont-prefix-cls: #{$prefix}-iconfont;
+
+.#{$iconfont-prefix-cls} {
+  &.small {
+    font-size: 12px;
+  }
+}

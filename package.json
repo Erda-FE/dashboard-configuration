@@ -1,9 +1,19 @@
 {
   "name": "@terminus/dashboard-configurator",
-  "version": "0.4.19",
-  "description": "Dashboard configurator with Echart",
+  "version": "1.0.0-beta.14",
+  "description": "Dice Charts with Echart",
   "main": "./src/index.ts",
   "types": "./src/types/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://gittar.app.terminus.io/terminus-dice/dashboard-configurator"
+  },
+  "keywords": [
+    "dice",
+    "charts",
+    "react",
+    "Echarts"
+  ],
   "sideEffects": [
     "*.scss",
     "*.css",
@@ -11,15 +21,14 @@
   ],
   "scripts": {
     "prewatch": "shell/check-dll.sh",
-    "watch": "rm -rf public/scripts && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d",
+    "watch": "rm -rf dist && ENV=watch ./node_modules/.bin/webpack --progress --color -w -d",
     "preweb": "shell/check-dll.sh",
-    "web": "rm -rf public/scripts && webpack-dev-server --config webpack.server.js --mode=development",
+    "web": "webpack-dev-server --config webpack.server.js --mode development",
     "dll": "webpack --config webpack_dll.config.js --mode development",
     "icon": "node tools/gen-icon",
-    "province-map": "node tools/gen-province-map",
     "adcode-map": "node tools/gen-adcode-map",
-    "build": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --color",
-    "analyze": "rm -rf public && NODE_ENV=production ./node_modules/.bin/webpack --mode=production --config webpack.analyze.js",
+    "build": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --color",
+    "analyze": "rm -rf dist && NODE_ENV=production ./node_modules/.bin/webpack --config webpack.analyze.js",
     "commit": "./node_modules/cz-customizable/standalone.js",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
@@ -29,27 +38,18 @@
     "pub-alpha": "npm version prerelease --preid alpha && npm publish --tag alpha && git push",
     "pub-beta": "npm version prerelease --preid beta && npm publish --tag beta && git push"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://gittar.app.terminus.io/terminus-dice/dashboard-configurator"
-  },
-  "keywords": [
-    "dashboard",
-    "configurator",
-    "antd",
-    "cube-state",
-    "Echart"
-  ],
   "author": "terminus",
   "license": "ISC",
   "dependencies": {
-    "antd": "^3.20.1",
+    "@terminus/nusi": "^3.8.59",
+    "@types/superagent": "^4.1.10",
     "classnames": "^2.2.6",
     "cube-state": "1.2.1",
     "dom-to-image": "^2.6.0",
     "echarts": "^4.2.1",
     "echarts-for-react": "^2.0.15-beta.0",
     "eslint-plugin-react-hooks": "^4.2.0",
+    "immer": "^8.0.0",
     "lodash": "^4.17.14",
     "moment": "^2.27.0",
     "react": "^16.8.6",
@@ -85,7 +85,7 @@
     "copy-webpack-plugin": "^4.5.2",
     "css-loader": "^0.28.11",
     "cz-customizable": "^6.3.0",
-    "eslint": "^7.13.0",
+    "eslint": "^7.16.0",
     "eslint-config-ali": "^11.2.0",
     "eslint-import-resolver-webpack": "^0.13.0",
     "eslint-plugin-compat": "^3.8.0",
@@ -96,10 +96,10 @@
     "happypack": "^5.0.0",
     "hard-source-webpack-plugin": "^0.13.1",
     "html-webpack-plugin": "^3.2.0",
-    "husky": "^4.3.0",
+    "husky": "^4.3.6",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
-    "lint-staged": "^7.2.2",
+    "lint-staged": "^7.3.0",
     "mini-css-extract-plugin": "0.4.1",
     "node-sass": "^4.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.0",
@@ -110,9 +110,14 @@
     "sass-resources-loader": "^2.0.0",
     "speed-measure-webpack-plugin": "^1.3.3",
     "style-loader": "^0.13.2",
+    "stylelint": "^13.7.2",
+    "stylelint-config-standard": "^20.0.0",
+    "superagent": "^6.0.0",
+    "superagent-use": "^0.1.0",
     "svg-inline-loader": "^0.8.2",
     "ts-import-plugin": "^1.4.4",
     "ts-loader": "^4.5.0",
+    "tsx-control-statements": "^4.0.0",
     "typescript": "^4.0.5",
     "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.28.2",
@@ -122,22 +127,18 @@
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "lint-staged": {
-    "example/**/*.js": [
+    "src/**/*.ts": [
       "eslint --fix",
       "git add"
     ],
-    "example/**/*.ts": [
-      "eslint --fix",
-      "git add"
-    ],
-    "example/**/*.tsx": [
+    "src/**/*.tsx": [
       "eslint --fix",
       "git add"
     ]
   },
   "files": [
     "src",
-    "index.js",
-    "README.md"
+    "README.md",
+    "package.json"
   ]
 }

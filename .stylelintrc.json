@@ -1,5 +1,5 @@
 {
-  "extends": ["stylelint-config-rational-order", "@terminus/lint-config/style"],
+  "extends": "stylelint-config-standard",
   "ignoreFiles": [
     "**/*.js",
     "**/*.jsx",
@@ -12,6 +12,9 @@
       {
         "except": ["first-nested", "after-single-line-comment"]
       }
-    ]
+    ],
+    "at-rule-no-unknown": [true, {
+      "ignoreAtRules": ["function", "if", "each", "include", "mixin", "extend"]
+    }]
   }
 }

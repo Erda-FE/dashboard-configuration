@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-dll_file='./public/dll.js'
+dll_file='./dist/dll.js'
 
 if [ -f "$dll_file" ]; then
   echo 'dll exist😁'

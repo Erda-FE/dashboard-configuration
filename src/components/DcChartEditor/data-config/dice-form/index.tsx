@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-14 11:29:34
+ * @Last Modified time: 2021-01-14 14:32:55
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -262,7 +262,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
           groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
           orderby: getDSLOrderBy(sortDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
           // 0个维度且有1个或多个多个值，limit为1，返回最新值
-          limit: limit || (((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && (!isMapType || !isTableType) ? 1 : undefined),
+          limit: limit || (((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType && !isTableType ? 1 : undefined),
         },
     };
   }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, getDSLOrderBy, isMapType]);

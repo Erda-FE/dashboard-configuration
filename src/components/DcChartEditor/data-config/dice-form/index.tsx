@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-11 16:20:28
+ * @Last Modified time: 2021-01-14 11:29:34
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -141,7 +141,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
               ?
               isAutoPrecision && resultType === 'number'
                 ? `round_float(${aggregation}(${fieldsMap[field as string]?.key}), 2)` // 自动处理返回值精度问题，后面需自动处理
-                : `${aggregation}(${fieldsMap[field as string]?.key})}`
+                : `${aggregation}(${fieldsMap[field as string]?.key})`
               :
               isAutoPrecision && resultType === 'number'
                 ? `round_float(${fieldsMap[field as string]?.key}, 2)`

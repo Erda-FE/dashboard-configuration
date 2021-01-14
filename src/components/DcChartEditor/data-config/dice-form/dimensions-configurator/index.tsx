@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-11 15:27:49
+ * @Last Modified time: 2021-01-14 19:50:41
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
@@ -222,7 +222,7 @@ const DimensionsConfigurator = ({
           _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap[sort]?.label}` : ''}`;
         }
         if (type === 'filter' && filter?.operation) {
-          _alias = `${alias}(${filtersMap[filter.operation].name} ${filter?.value})`;
+          _alias = `${alias}(${filtersMap[filter.operation]?.name} ${filter?.value})`;
         }
 
         return (

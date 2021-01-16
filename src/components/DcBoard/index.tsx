@@ -2,13 +2,12 @@
  * @Author: licao
  * @Date: 2020-12-04 10:25:39
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-26 16:36:32
+ * @Last Modified time: 2021-01-15 13:45:48
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import { isFunction } from 'lodash';
 import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
 import { useUnmount } from 'react-use';
 // 渲染器部分
 import { useComponentWidth } from '../../common';

@@ -6,7 +6,6 @@ const vendors = [
   'react-dom',
   'lodash',
   'moment',
-  '@terminus/nusi',
   'immer',
 ];
 
@@ -15,13 +14,11 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'dll.js',
-    library: '[name]_[hash]',
   },
   plugins: [
     new webpack.DllPlugin({
       path: path.join(__dirname, 'manifest.json'),
       name: '[name]_[hash]',
-      context: __dirname,
     }),
   ],
 };

@@ -22,7 +22,7 @@ module.exports = () => {
 
   /** @type { import('webpack').Configuration } */
   const config = {
-    devtool: isProd && 'eval-cheap-module-source-map',
+    devtool: !isProd && 'eval-cheap-module-source-map',
     mode: isProd ? 'production' : 'development',
     entry: {
       index: isProd ? './src/index.ts' : './example/index.js',
@@ -39,8 +39,8 @@ module.exports = () => {
       children: false,
     },
     output: {
-      path: resolve('/dist'),
-      filename: '[name].bundle.js',
+      filename: '[name].js',
+      path: resolve('dist'),
       publicPath: '/',
     },
     module: {

@@ -2,9 +2,8 @@ const path = require('path');
 const webpack = require('webpack');
 const moment = require('moment');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 // const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
@@ -23,7 +22,7 @@ module.exports = () => {
 
   /** @type { import('webpack').Configuration } */
   const config = {
-    devtool: isProd ? '' : 'eval-cheap-module-source-map',
+    devtool: isProd && 'eval-cheap-module-source-map',
     mode: isProd ? 'production' : 'development',
     entry: {
       index: isProd ? './src/index.ts' : './example/index.js',
@@ -54,15 +53,8 @@ module.exports = () => {
             resolve('node_modules/@terminus/nusi'),
           ],
           use: [
-            ...(isProd ? [MiniCssExtractPlugin.loader] : ['style-loader']),
-            {
-              loader: 'css-loader',
-              options: {
-                modules: {
-                  localIdentName: isProd ? '[hash:base64:5]' : '[path][name]__[local]',
-                }
-              },
-            },
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+            'css-loader',
             'sass-loader',
             {
               loader: 'sass-resources-loader',
@@ -80,15 +72,8 @@ module.exports = () => {
         {
           test: /\.css$/i,
           use: [
-            ...(isProd ? [MiniCssExtractPlugin.loader] : ['style-loader']),
-            {
-              loader: 'css-loader',
-              options: {
-                modules: {
-                  localIdentName: isProd ? '[hash:base64:5]' : '[path][name]__[local]',
-                }
-              },
-            },
+            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
+            'css-loader',
           ],
         },
         {
@@ -97,15 +82,8 @@ module.exports = () => {
             resolve('node_modules/@terminus/nusi'),
           ],
           use: [
-            ...(isProd ? [MiniCssExtractPlugin.loader] : ['style-loader']),
-            {
-              loader: 'css-loader',
-              options: {
-                modules: {
-                  localIdentName: isProd ? '[hash:base64:5]' : '[path][name]__[local]',
-                }
-              },
-            },
+            ...(isProd ? [MiniCssExtractPlugin.loader] : []),
+            'css-loader',
             {
               loader: 'less-loader',
               options: {
@@ -132,6 +110,25 @@ module.exports = () => {
             },
           ]
         },
+        {
+          test: /\.svg$/,
+            include: [
+              resolve('node_modules/@terminus/nusi'),
+            ],
+            type: 'asset',
+            parser: {
+              dataUrlCondition: {
+                maxSize: 8 * 1024, // 8kb
+              },
+            },
+        },
+        {
+          test: /\.(png|jpe?g|gif)$/i,
+            include: [
+              resolve('node_modules/@terminus/nusi'),
+            ],
+            type: 'asset/resource',
+        },
       ],
     },
     resolve: {
@@ -142,7 +139,7 @@ module.exports = () => {
       type: 'filesystem',
     },
     performance: {
-      hints: isProd ? 'error' : 'warning',
+      hints: isProd ? 'error' : false,
       maxEntrypointSize: 512000,
       maxAssetSize: 512000
     },
@@ -168,14 +165,14 @@ module.exports = () => {
         ? [
           new webpack.BannerPlugin(banner),
           new TerserPlugin(),
-          new OptimizeCSSAssetsPlugin({
-            assetNameRegExp: /\.css$/g,
-            cssProcessorOptions: {
-              safe: true,
-              discardComments: { removeAll: true },
-              autoprefixer: {
-                remove: false,
-              },
+          new CssMinimizerPlugin({
+            minimizerOptions: {
+              preset: [
+                'default',
+                {
+                  discardComments: { removeAll: true },
+                },
+              ],
             },
           }),
         ]

@@ -14,8 +14,8 @@ function App() {
   });
 
   return (
-    <div>
-      <div>
+    <div style={{ padding: '20px' }}>
+      <div style={{ marginBottom: '20px' }}>
         语言：
         <button onClick={() => setLocale('zh')}>中文</button>
         <button onClick={() => setLocale('en')}>English</button>

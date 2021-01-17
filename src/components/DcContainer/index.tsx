@@ -2,11 +2,10 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-06 17:34:37
+ * @Last Modified time: 2021-01-16 20:37:12
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast } from '@terminus/nusi';
-import classnames from 'classnames';
 import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { useUpdate, DcIcon, DcEmpty } from '../../common';
@@ -300,7 +299,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   };
 
   return (
-    <div ref={viewRef} className={classnames({ 'dc-view-wrapper': true })}>
+    <div ref={viewRef} className="dc-view-wrapper">
       <If condition={!hideHeader || isEditMode}>{getHeader()}</If>
       <If condition={isEditMode && !chartEditorVisible}>
         <Tooltip title={textMap.move}>

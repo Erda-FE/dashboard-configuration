@@ -1,4 +1,4 @@
-import ReactEcharts, { Func } from 'echarts-for-react';
+import ReactEcharts from 'echarts-for-react';
 import React from 'react';
 import DashboardStore from '../../../stores/dash-board';
 import { getConfig } from '../../../config';
@@ -14,6 +14,8 @@ interface IProps {
   option: any;
   [k: string]: any;
 }
+
+type Func = (...args: any[]) => any;
 
 // 重写相关生命周期，用于注册theme
 const oldComponentDidMount = ReactEcharts.prototype.componentDidMount as Func;

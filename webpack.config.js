@@ -6,7 +6,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
-// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 // const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
 // const smp = new SpeedMeasurePlugin();
@@ -34,14 +34,12 @@ module.exports = () => {
       'react-dom': 'react-dom',
       moment: 'moment',
     } : undefined,
-    stats: {
-      assets: false,
-      children: false,
-    },
     output: {
       filename: '[name].js',
       path: resolve('dist'),
-      publicPath: '/',
+      publicPath: '/dist/',
+      library: 'DiceCharts',
+      libraryTarget: 'umd'
     },
     module: {
       rules: [
@@ -100,6 +98,7 @@ module.exports = () => {
             resolve('src'),
           ],
           use: [
+            'thread-loader',
             {
               loader: 'ts-loader',
               options: {
@@ -139,7 +138,7 @@ module.exports = () => {
       type: 'filesystem',
     },
     performance: {
-      hints: isProd ? 'error' : false,
+      hints: isProd ? 'warning' : false,
       maxEntrypointSize: 512000,
       maxAssetSize: 512000
     },
@@ -190,7 +189,14 @@ module.exports = () => {
       }),
       ...(
         isProd
-          ? []
+          ? [
+            new MiniCssExtractPlugin({
+              // Options similar to the same options in webpackOptions.output
+              // both options are optional
+              filename: '[name].css',
+              // chunkFilename: '[id].css',
+            }),
+          ]
           : [
             new webpack.DllReferencePlugin({
               context: __dirname,

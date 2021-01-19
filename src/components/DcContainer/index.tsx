@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-06 17:34:37
+ * @Last Modified time: 2021-01-19 11:16:44
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast } from '@terminus/nusi';
@@ -80,6 +80,10 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   });
   const viewRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    updater.resData((hasLoadFn ? {} : staticData) as DC.StaticData);
+  }, [hasLoadFn, staticData, updater]);
+
   const _loadData = useCallback((arg?: any, body?: any) => {
     if (!isFunction(loadData)) return;
     updater.fetchStatus(FetchStatus.FETCH);
@@ -90,7 +94,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
       ...arg,
     }, body)
       .then((res: any) => {
-        let _resData = res;
+        let _res = res;
         if (dataConvertor) {
           let convertor = dataConvertor;
           // 取已经注册的 Data Convertor
@@ -104,7 +108,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
           }
 
           try {
-            _resData = (convertor as Function)(res);
+            _res = (convertor as Function)(res);
           } catch (error) {
           console.error('catch error in dataConvertor', error); // eslint-disable-line
           }
@@ -112,7 +116,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
 
         update({
           fetchStatus: FetchStatus.SUCCESS,
-          resData: _resData,
+          resData: _res,
         });
       })
       .catch((err) => {

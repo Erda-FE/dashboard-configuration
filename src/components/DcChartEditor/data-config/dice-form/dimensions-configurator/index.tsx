@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-14 19:50:41
+ * @Last Modified time: 2021-01-25 20:07:28
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
@@ -10,6 +10,8 @@ import { produce } from 'immer';
 import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle } from 'react-use';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { DcIcon, DcInfoIcon, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
 import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, SortMap } from '../constants';
@@ -140,7 +142,15 @@ const DimensionsConfigurator = ({
     if (type === 'configFilter') {
       toggleFilterModalVisible();
     }
-  }, [dimensions, updater, metricsMap, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, updateDimension, toggleFilterModalVisible]);
+    if (type === 'updateOrder') {
+      const { dragIndex, hoverIndex } = option?.payload;
+      const newDimensions = produce(dimensions, (draft) => {
+        draft[dragIndex] = dimensions[hoverIndex];
+        draft[hoverIndex] = dimensions[dragIndex];
+      });
+      onChange(newDimensions);
+    }
+  }, [dimensions, updater, metricsMap, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, updateDimension, toggleFilterModalVisible, onChange]);
 
 
   const handleAddDimension = useCallback((val: string[]) => {
@@ -206,116 +216,120 @@ const DimensionsConfigurator = ({
   };
 
   return (
-    <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
-      {map(dimensions, ({ key, alias, type, expr, resultType, filter, aggregation, field, sort }) => {
+    // HOC 包裹
+    <DndProvider backend={HTML5Backend}>
+      <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
+        {map(dimensions, ({ key, alias, type, expr, resultType, filter, aggregation, field, sort }, index) => {
         // 表达式未填提示
-        const isUncompleted = type === 'expr' && !expr;
-        // 别名自动补全显示
-        let _alias = alias;
-        let aggregationOptions;
+          const isUncompleted = type === 'expr' && !expr;
+          // 别名自动补全显示
+          let _alias = alias;
+          let aggregationOptions;
 
-        if (['field', 'sort'].includes(type)) {
-          aggregationOptions = map(
-            typeMap[metricsMap[field as string]?.type]?.aggregations,
-            (v) => ({ value: v.aggregation, label: v.name })
-          );
-          _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap[sort]?.label}` : ''}`;
-        }
-        if (type === 'filter' && filter?.operation) {
-          _alias = `${alias}(${filtersMap[filter.operation]?.name} ${filter?.value})`;
-        }
+          if (['field', 'sort'].includes(type)) {
+            aggregationOptions = map(
+              typeMap[metricsMap[field as string]?.type]?.aggregations,
+              (v) => ({ value: v.aggregation, label: v.name })
+            );
+            _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap[sort]?.label}` : ''}`;
+          }
+          if (type === 'filter' && filter?.operation) {
+            _alias = `${alias}(${filtersMap[filter.operation]?.name} ${filter?.value})`;
+          }
 
-        return (
-          <DimensionConfigs
-            key={key}
-            type={type}
-            dimensionType={dimensionType}
-            aggregationOptions={aggregationOptions}
-            aggregation={aggregation}
-            sort={sort}
-            aggregationMap={aggregationMap}
-            onTriggerAction={(actionType, option) => handleTriggerAction(key, actionType, option)}
-          >
-            <Tag
-              className="mb8"
-              closable
-              color={isUncompleted ? 'red' : '#6a549e'}
-              afterClose={() => handleRemoveDimension(key)}
+          return (
+            <DimensionConfigs
+              key={key}
+              index={index}
+              type={type}
+              dimensionType={dimensionType}
+              aggregationOptions={aggregationOptions}
+              aggregation={aggregation}
+              sort={sort}
+              aggregationMap={aggregationMap}
+              onTriggerAction={(actionType, option) => handleTriggerAction(key, actionType, option)}
             >
-              <DcIcon className="mr4" size="small" type="down" />
-              <If condition={isUncompleted}>
-                <DcInfoIcon size="small" info={textMap['uncompleted input']} />
-              </If>
-              <If condition={type === 'expr' && !isUncompleted}><DcIcon className="mr4" type="Function" /></If>
-              <If condition={type === 'time'}><DcIcon className="mr4" type="time-circle" size="small" /></If>
-              <If condition={(['field', 'filter'] as DICE_DATA_CONFIGURATOR.DimensionMetricType[]).includes(type)}>
-                <Choose>
-                  <When condition={resultType === 'number'}><DcIcon className="mr4" type="Field-number" /></When>
-                  <When condition={resultType === 'string'}><DcIcon className="mr4" type="Field-String" /></When>
-                </Choose>
-              </If>
-              {cutStr(_alias, METRIC_DISPLAY_CHARS_LIMIT, { showTip: true })}
+              <Tag
+                className="mb8"
+                closable
+                color={isUncompleted ? 'red' : '#6a549e'}
+                afterClose={() => handleRemoveDimension(key)}
+              >
+                <DcIcon className="mr4" size="small" type="down" />
+                <If condition={isUncompleted}>
+                  <DcInfoIcon size="small" info={textMap['uncompleted input']} />
+                </If>
+                <If condition={type === 'expr' && !isUncompleted}><DcIcon className="mr4" type="Function" /></If>
+                <If condition={type === 'time'}><DcIcon className="mr4" type="time-circle" size="small" /></If>
+                <If condition={(['field', 'filter'] as DICE_DATA_CONFIGURATOR.DimensionMetricType[]).includes(type)}>
+                  <Choose>
+                    <When condition={resultType === 'number'}><DcIcon className="mr4" type="Field-number" /></When>
+                    <When condition={resultType === 'string'}><DcIcon className="mr4" type="Field-String" /></When>
+                  </Choose>
+                </If>
+                {cutStr(_alias, METRIC_DISPLAY_CHARS_LIMIT, { showTip: true })}
+              </Tag>
+            </DimensionConfigs>
+          );
+        })}
+        <Choose>
+          <When condition={selectVisible}>
+            <Cascader
+              allowClear
+              popupVisible
+              showSearch
+              size="small"
+              options={metricOptions}
+              style={{ width: 130, alignSelf: 'start' }}
+              onPopupVisibleChange={(visible: boolean) => toggleSelectVisible(visible)}
+              onChange={handleAddDimension}
+            />
+          </When>
+          <Otherwise>
+            <Tag
+              onClick={() => {
+                if (disabled) {
+                  Toast.warning(textMap['empty metric group tip']);
+                  return;
+                }
+                toggleSelectVisible();
+              }}
+              style={{ background: '#ffffff', border: '#6a549e solid 1px', lineHeight: '22px', color: '#6a549e', alignSelf: 'start' }}
+            >
+              <DcIcon type="plus" size="small" className="mr4" />{addText || textMap.add}
             </Tag>
-          </DimensionConfigs>
-        );
-      })}
-      <Choose>
-        <When condition={selectVisible}>
-          <Cascader
-            allowClear
-            popupVisible
-            showSearch
-            size="small"
-            options={metricOptions}
-            style={{ width: 130, alignSelf: 'start' }}
-            onPopupVisibleChange={(visible: boolean) => toggleSelectVisible(visible)}
-            onChange={handleAddDimension}
-          />
-        </When>
-        <Otherwise>
-          <Tag
-            onClick={() => {
-              if (disabled) {
-                Toast.warning(textMap['empty metric group tip']);
-                return;
-              }
-              toggleSelectVisible();
-            }}
-            style={{ background: '#ffffff', border: '#6a549e solid 1px', lineHeight: '22px', color: '#6a549e', alignSelf: 'start' }}
-          >
-            <DcIcon type="plus" size="small" className="mr4" />{addText || textMap.add}
-          </Tag>
-        </Otherwise>
-      </Choose>
-      <CreateExprModal
-        visible={exprModalVisible}
-        defaultValue={curDimension}
-        onCancel={handleCancelModal}
-        onOk={handleSubmitModal}
-      />
-      <CreateAliasModal
-        visible={aliasModalVisible}
-        defaultValue={curDimension}
-        isNeedUnit={dimensionType === 'value'}
-        onCancel={handleCancelModal}
-        onOk={handleSubmitModal}
-      />
-      <CreateTimeModal
-        visible={timeModalVisible}
-        defaultValue={curDimension}
-        metricsMap={metricsMap}
-        onCancel={handleCancelModal}
-        onOk={handleSubmitModal}
-      />
-      <CreateFilterModal
-        visible={filterModalVisible}
-        defaultValue={curDimension}
-        metricsMap={metricsMap}
-        typeMap={typeMap}
-        onCancel={handleCancelModal}
-        onOk={handleSubmitModal}
-      />
-    </div>
+          </Otherwise>
+        </Choose>
+        <CreateExprModal
+          visible={exprModalVisible}
+          defaultValue={curDimension}
+          onCancel={handleCancelModal}
+          onOk={handleSubmitModal}
+        />
+        <CreateAliasModal
+          visible={aliasModalVisible}
+          defaultValue={curDimension}
+          isNeedUnit={dimensionType === 'value'}
+          onCancel={handleCancelModal}
+          onOk={handleSubmitModal}
+        />
+        <CreateTimeModal
+          visible={timeModalVisible}
+          defaultValue={curDimension}
+          metricsMap={metricsMap}
+          onCancel={handleCancelModal}
+          onOk={handleSubmitModal}
+        />
+        <CreateFilterModal
+          visible={filterModalVisible}
+          defaultValue={curDimension}
+          metricsMap={metricsMap}
+          typeMap={typeMap}
+          onCancel={handleCancelModal}
+          onOk={handleSubmitModal}
+        />
+      </div>
+    </DndProvider>
   );
 };
 

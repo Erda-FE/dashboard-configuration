@@ -2,7 +2,7 @@ declare namespace DICE_DATA_CONFIGURATOR {
   /** 指标类型：时间、指定指标、自定义表达式 */
   type DimensionMetricType = 'time' | 'field' | 'expr' | 'filter' | 'sort';
   /** 维度配置注册的事件名 */
-  type DimensionConfigsActionType = 'configExpr' | 'configAlias' | 'configTime' | 'configFieldAggregation' | 'configFilter' | 'configSort';
+  type DimensionConfigsActionType = 'configExpr' | 'configAlias' | 'configTime' | 'configFieldAggregation' | 'configFilter' | 'configSort' | 'updateOrder';
   /** 指标类型 */
   type FieldType = 'bool' | 'number' | 'string';
   /** 维度类型：数值维度，类别维度=文本维度+时间维度，筛选维度 */

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import PickChartModal from './pick-chart';
+import PickChartModal from './pick-chart-modal';
 import EditorPanel from './editor-panel';
 import ChartEditorStore from '../../stores/chart-editor';
 

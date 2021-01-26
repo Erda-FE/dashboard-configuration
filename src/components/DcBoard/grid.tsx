@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:08:25
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-26 16:36:44
+ * @Last Modified time: 2021-01-26 11:00:31
  */
 import * as React from 'react';
 import { isEmpty, map } from 'lodash';
@@ -20,7 +20,7 @@ import 'react-resizable/css/styles.css';
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
-  const [isEditMode, viewMap, pureLayout] = ChartEditorStore.useStore((s) => [s.isEditMode, s.viewMap, s.pureLayout]);
+  const [isEditMode, editChartId, viewMap, pureLayout] = ChartEditorStore.useStore((s) => [s.isEditMode, s.editChartId, s.viewMap, s.pureLayout]);
   const { updateViewMap: updateChildMap, updateLayout } = ChartEditorStore;
 
   React.useEffect(() => {
@@ -50,8 +50,8 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
       cols={GRID_LAYOUT_CONFIG.cols}
       rowHeight={GRID_LAYOUT_CONFIG.rowHeight}
       containerPadding={[0, 0]}
-      isDraggable
-      draggableHandle=".dc-draggable-handle"
+      isDraggable={isEditMode && !editChartId}
+      draggableHandle=".dc-chart-header"
       isResizable={isEditMode}
       useCSSTransforms
       onLayoutChange={updateLayout}

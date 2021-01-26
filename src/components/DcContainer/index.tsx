@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-26 16:12:44
+ * @Last Modified time: 2021-01-26 17:25:09
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
@@ -214,83 +214,86 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
               >
                 <Button type="text"><DcIcon type="more" /></Button>
               </ViewDropdownOptions>
+            </div>
+          </div>
+          <If
+            condition={
+              (controls && !isEmpty(controls[0]))
+              || !isEmpty(dataConfigSelectors)
+              || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
+            }
+          >
+            <div className="dc-chart-controls-ct">
               <If
                 condition={
-                  (controls && !isEmpty(controls[0]))
-                  || !isEmpty(dataConfigSelectors)
-                  || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
+                  !isEmpty(controls[0])
+                  && controls[0].key
+                  && !isEmpty(controls[0].options)
+                  && controls[0].type === 'select'
                 }
               >
-                <div className="dc-chart-controls-ct">
-                  <If
-                    condition={
-                      !isEmpty(controls[0])
-                      && controls[0].key
-                      && !isEmpty(controls[0].options)
-                      && controls[0].type === 'select'
-                    }
-                  >
+                <Select
+                  size="small"
+                  allowClear
+                  className="my12 ml8"
+                  style={{ width: 150 }}
+                  onChange={(v: any) => {
+                    updater.staticLoadFnPayload({
+                      [controls[0].key]: v,
+                    });
+                  }}
+                >
+                  { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                </Select>
+              </If>
+              <If condition={!isEmpty(dataConfigSelectors)}>
+                {
+                  map(dataConfigSelectors, ({ key, options, componentProps }) => (
                     <Select
-                      allowClear
-                      className="my12 ml8"
-                      style={{ width: 150 }}
-                      onChange={(v: any) => {
-                        updater.staticLoadFnPayload({
-                          [controls[0].key]: v,
-                        });
-                      }}
-                    >
-                      { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                    </Select>
-                  </If>
-                  <If condition={!isEmpty(dataConfigSelectors)}>
-                    {
-                      map(dataConfigSelectors, ({ key, options, componentProps }) => (
-                        <Select
-                          key={key}
-                          className="my12 ml8"
-                          style={{ width: 150 }}
-                          onChange={(v: any) => {
-                            updater.dynamicLoadFnPayloadMap({
-                              ...dynamicLoadFnPayloadMap,
-                              [key]: JSON.parse(v),
-                            });
-                          }}
-                          {...componentProps}
-                        >
-                          { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                        </Select>
-                      ))
-                    }
-                  </If>
-                  <If condition={dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)}>
-                    <Select
-                      allowClear
+                      size="small"
+                      key={key}
                       className="my12 ml8"
                       style={{ width: 150 }}
                       onChange={(v: any) => {
                         updater.dynamicLoadFnPayloadMap({
                           ...dynamicLoadFnPayloadMap,
-                          'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v },
+                          [key]: JSON.parse(v),
                         });
                       }}
+                      {...componentProps}
                     >
-                      {
-                        map(dynamicFilterData, (item) => (
-                          <Select.Option
-                            value={item.value}
-                            key={item.value}
-                          >
-                            {item.name}
-                          </Select.Option>
-                        ))
-                      }
+                      { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
                     </Select>
-                  </If>
-                </div>
+                  ))
+                }
+              </If>
+              <If condition={dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)}>
+                <Select
+                  size="small"
+                  allowClear
+                  className="my12 ml8"
+                  style={{ width: 150 }}
+                  onChange={(v: any) => {
+                    updater.dynamicLoadFnPayloadMap({
+                      ...dynamicLoadFnPayloadMap,
+                      'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v },
+                    });
+                  }}
+                >
+                  {
+                    map(dynamicFilterData, (item) => (
+                      <Select.Option
+                        value={item.value}
+                        key={item.value}
+                      >
+                        {item.name}
+                      </Select.Option>
+                    ))
+                  }
+                </Select>
               </If>
             </div>
-          </div>
+          </If>
         </Otherwise>
       </Choose>
     </div>

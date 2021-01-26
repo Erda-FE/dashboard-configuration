@@ -13,8 +13,13 @@ $chart-prefix-cls: #{$prefix}-chart;
   border-radius: $box-radius;
 
   &:hover {
-    border: 1px dashed $color-primary;
+    // border: 1px dashed $color-primary;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.1), 0 12px 24px 0 rgba(170, 182, 206, 0.36);
     border-radius: $box-radius;
+
+    .#{$prefix}-chart-options {
+      visibility: visible;
+    }
   }
 }
 
@@ -41,7 +46,7 @@ $chart-prefix-cls: #{$prefix}-chart;
 .#{$chart-prefix-cls} {
   position: relative;
   flex: 1;
-  padding: 8px;
+  padding: 8px 24px;
   overflow: auto;
 
   .dark-row {
@@ -49,32 +54,14 @@ $chart-prefix-cls: #{$prefix}-chart;
   }
 
   &-header {
-    padding: 8px 8px 0 8px;
-    text-align: center;
+    padding: 8px 12px 0 12px;
   }
 
   &-title {
     margin: 0;
     color: $color-text;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 14px;
-  }
-
-  &-title-ct {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 28px;
-    padding: 0 8px;
-    line-height: 28px;
-
-    &.pointer {
-      cursor: pointer;
-    }
-  }
-
-  &-title-op {
-    margin-left: 4px;
   }
 }
 

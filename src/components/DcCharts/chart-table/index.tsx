@@ -36,7 +36,7 @@ const ChartTable = ({ results = [], cols = [] }: IProps) => {
   });
   return (
     <React.Fragment>
-      <section className="table-panel">
+      <section className="full-height auto-overflow">
         <Table
           rowKey="c_key"
           columns={_cols}

@@ -12,7 +12,7 @@ const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
 const updateLayout = (id: string, items: DC.PureLayoutItem[]): DC.PureLayoutItem[] => {
   if (some(items, { i: id })) return items;
 
-  const size = { w: 8, h: 9 };
+  const size = { w: 8, h: 9, minW: 4, minH: 3 };
   return [
     ...items,
     {

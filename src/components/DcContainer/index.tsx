@@ -2,10 +2,10 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-26 11:08:53
+ * @Last Modified time: 2021-01-26 16:12:44
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
-import { Tooltip, Select, Toast } from '@terminus/nusi';
+import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
 import classnames from 'classnames';
 import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
@@ -34,7 +34,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
   const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
-  const { toggleFullscreen: toggleFromEditorPureFullscreen } = ChartEditorStore;
+  const { toggleFullscreen: toggleFromEditorPureFullscreen, editView } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
   const toggleFullscreen = isPure ? togglePureFullscreen : toggleFromEditorPureFullscreen;
 
@@ -64,6 +64,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   const title = isCustomTitle ? (_title as Function)() : _title;
   const description = isFunction(_description) ? _description() : _description;
   const isCustomRender = isFunction(customRender);
+  const isShowOptions = !chartEditorVisible && !isFullscreen;
 
   const [{
     resData,
@@ -171,108 +172,125 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
 
   const getTitle = () => (
     <div className="dc-chart-title-ct pointer">
-      <h2 className="dc-chart-title">{title}</h2>
+      <h2 className="dc-chart-title px12">{title}</h2>
       <If condition={description}>
         <Tooltip title={description}>
           <DcIcon type="info-circle" className="dc-chart-title-op" />
         </Tooltip>
       </If>
-      <If condition={!chartEditorVisible && !isFullscreen}>
-        <DcIcon type="down" className="dc-chart-title-op" />
-      </If>
     </div>
   );
 
   const getHeader = () => (
-    <div className={classnames({ 'dc-chart-header': true, 'cursor-move': isEditMode && !chartEditorVisible })}>
+    <div className={classnames({
+      'dc-chart-header': true,
+      'cursor-move': isEditMode && !chartEditorVisible,
+    })}
+    >
       <Choose>
         <When condition={isCustomTitle}>
           <React.Fragment>{React.Children.only(title)}</React.Fragment>
         </When>
         <Otherwise>
-          <ViewDropdownOptions
-            view={view}
-            viewId={viewId}
-            viewRef={viewRef}
-            toggleFullscreen={toggleFullscreen}
-          >
-            {getTitle()}
-          </ViewDropdownOptions>
-          <If
-            condition={
-              (controls && !isEmpty(controls[0]))
-              || !isEmpty(dataConfigSelectors)
-              || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
-            }
-          >
-            <div className="dc-chart-controls-ct">
+          <div className="flex-box">
+            <h2 className="dc-chart-title px12">{title}</h2>
+            <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
+              <If condition={isEditMode && isShowOptions}>
+                <Tooltip title={textMap['config charts']}>
+                  <Button type="text" onClick={() => editView(viewId)}><DcIcon type="setting" /></Button>
+                </Tooltip>
+              </If>
+              <If condition={description}>
+                <Tooltip title={description}>
+                  <Button type="text"><DcIcon type="info-circle" /></Button>
+                </Tooltip>
+              </If>
+              <ViewDropdownOptions
+                view={view}
+                viewId={viewId}
+                viewRef={viewRef}
+                disabled={isFullscreen || chartEditorVisible}
+                toggleFullscreen={toggleFullscreen}
+              >
+                <Button type="text"><DcIcon type="more" /></Button>
+              </ViewDropdownOptions>
               <If
                 condition={
-                  !isEmpty(controls[0])
-                  && controls[0].key
-                  && !isEmpty(controls[0].options)
-                  && controls[0].type === 'select'
+                  (controls && !isEmpty(controls[0]))
+                  || !isEmpty(dataConfigSelectors)
+                  || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
                 }
               >
-                <Select
-                  allowClear
-                  className="my12 ml8"
-                  style={{ width: 150 }}
-                  onChange={(v: any) => {
-                    updater.staticLoadFnPayload({
-                      [controls[0].key]: v,
-                    });
-                  }}
-                >
-                  { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                </Select>
-              </If>
-              <If condition={!isEmpty(dataConfigSelectors)}>
-                {
-                  map(dataConfigSelectors, ({ key, options, componentProps }) => (
+                <div className="dc-chart-controls-ct">
+                  <If
+                    condition={
+                      !isEmpty(controls[0])
+                      && controls[0].key
+                      && !isEmpty(controls[0].options)
+                      && controls[0].type === 'select'
+                    }
+                  >
                     <Select
-                      key={key}
+                      allowClear
+                      className="my12 ml8"
+                      style={{ width: 150 }}
+                      onChange={(v: any) => {
+                        updater.staticLoadFnPayload({
+                          [controls[0].key]: v,
+                        });
+                      }}
+                    >
+                      { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                    </Select>
+                  </If>
+                  <If condition={!isEmpty(dataConfigSelectors)}>
+                    {
+                      map(dataConfigSelectors, ({ key, options, componentProps }) => (
+                        <Select
+                          key={key}
+                          className="my12 ml8"
+                          style={{ width: 150 }}
+                          onChange={(v: any) => {
+                            updater.dynamicLoadFnPayloadMap({
+                              ...dynamicLoadFnPayloadMap,
+                              [key]: JSON.parse(v),
+                            });
+                          }}
+                          {...componentProps}
+                        >
+                          { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                        </Select>
+                      ))
+                    }
+                  </If>
+                  <If condition={dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)}>
+                    <Select
+                      allowClear
                       className="my12 ml8"
                       style={{ width: 150 }}
                       onChange={(v: any) => {
                         updater.dynamicLoadFnPayloadMap({
                           ...dynamicLoadFnPayloadMap,
-                          [key]: JSON.parse(v),
+                          'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v },
                         });
                       }}
-                      {...componentProps}
                     >
-                      { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                      {
+                        map(dynamicFilterData, (item) => (
+                          <Select.Option
+                            value={item.value}
+                            key={item.value}
+                          >
+                            {item.name}
+                          </Select.Option>
+                        ))
+                      }
                     </Select>
-                  ))
-                }
-              </If>
-              <If condition={dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)}>
-                <Select
-                  allowClear
-                  className="my12 ml8"
-                  style={{ width: 150 }}
-                  onChange={(v: any) => {
-                    updater.dynamicLoadFnPayloadMap({
-                      ...dynamicLoadFnPayloadMap,
-                      'dynamic-data': { [`filter_${dynamicFilterKey.split('-')[1]}`]: v },
-                    });
-                  }}
-                >
-                  {
-                    map(dynamicFilterData, (item) => (
-                      <Select.Option
-                        value={item.value}
-                        key={item.value}
-                      >
-                        {item.name}
-                      </Select.Option>
-                    ))
-                  }
-                </Select>
+                  </If>
+                </div>
               </If>
             </div>
-          </If>
+          </div>
         </Otherwise>
       </Choose>
     </div>

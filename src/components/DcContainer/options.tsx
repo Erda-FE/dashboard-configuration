@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 17:57:36
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-26 17:07:57
+ * @Last Modified time: 2021-01-26 15:45:36
  */
 
 import React, { useCallback, useEffect, useMemo, RefObject, ReactNode, memo } from 'react';
@@ -31,13 +31,14 @@ interface IProps {
   viewId: string;
   viewRef: RefObject<Element>;
   view: any;
+  disabled?: boolean;
   children: ReactNode;
   toggleFullscreen: (v: boolean) => void;
 }
 
-const Options = ({ view, viewId, viewRef, children, toggleFullscreen }: IProps) => {
-  const [isEditMode, editChartId] = ChartEditorStore.useStore((s) => [s.isEditMode, s.editChartId]);
-  const { editView, deleteView } = ChartEditorStore;
+const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFullscreen }: IProps) => {
+  const [isEditMode] = ChartEditorStore.useStore((s) => [s.isEditMode]);
+  const { deleteView } = ChartEditorStore;
 
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
   const [isExportingData, toggleExportingDataStatus] = useToggle(false);
@@ -46,8 +47,6 @@ const Options = ({ view, viewId, viewRef, children, toggleFullscreen }: IProps) 
   useEffect(() => {
     toggleFullscreen(isFullscreen);
   }, [isFullscreen, toggleFullscreen]);
-
-  const chartEditorVisible = !!editChartId;
 
   const handleRemoveItem = useCallback(() => {
     Modal.confirm({
@@ -118,18 +117,11 @@ const Options = ({ view, viewId, viewRef, children, toggleFullscreen }: IProps) 
   }, [view, isExportingData, toggleExportingDataStatus]);
 
   const options: DC_BOARD_HEADER.Tool[] = useMemo(() => [
-    ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
-      {
-        icon: 'setting',
-        text: textMap['config charts'],
-        onClick: () => editView(viewId),
-      },
-      {
-        icon: 'delete',
-        text: textMap['remove charts'],
-        onClick: () => handleRemoveItem(),
-      },
-    ]),
+    {
+      icon: 'fullscreen',
+      text: textMap.fullscreen,
+      onClick: () => _toggleFullscreen(),
+    },
     {
       icon: 'camera',
       text: textMap['export picture'],
@@ -140,16 +132,19 @@ const Options = ({ view, viewId, viewRef, children, toggleFullscreen }: IProps) 
     //   text: textMap['export data'],
     //   onClick: () => handleExportData(),
     // },
-    {
-      icon: 'fullscreen',
-      text: textMap.fullscreen,
-      onClick: () => _toggleFullscreen(),
-    },
-  ], [isEditMode, viewId, editView, handleRemoveItem, handleSaveImg, _toggleFullscreen]);
+    ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
+      {
+        icon: 'delete',
+        text: textMap['remove charts'],
+        onClick: () => handleRemoveItem(),
+      },
+    ]),
+  ], [isEditMode, handleRemoveItem, handleSaveImg, _toggleFullscreen]);
 
   return (
     <Dropdown
-      disabled={chartEditorVisible}
+      disabled={disabled}
+      trigger={['click']}
       overlay={
         <Menu>
           {options.map((option) => (

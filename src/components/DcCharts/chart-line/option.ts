@@ -84,7 +84,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       // 轴线名位置
       nameLocation: 'center',
       // 轴线名离轴线间距
-      nameGap: 30,
+      nameGap: 35,
       // 轴线偏移
       offset: 10,
       position: yAxisIndex === 0 ? 'left' : 'right',

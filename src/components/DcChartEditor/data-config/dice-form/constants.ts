@@ -3,6 +3,7 @@ import moment from 'moment';
 import DashboardStore from '../../../../stores/dash-board';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
+const getBeforeTimeRange = (number: number, string: any) => [moment().subtract(number, string).valueOf(), moment().valueOf()];
 const getScopeTimeRange = (scope: any) => [moment().startOf(scope).valueOf(), moment().valueOf()];
 const getLastScopeTimeRange = (scope: any) => [moment()[scope](moment()[scope]() - 1).startOf(scope).valueOf(), moment()[scope](moment()[scope]() - 1).endOf(scope).valueOf()];
 
@@ -17,6 +18,22 @@ export const PAGINATION: IPagination = {
 };
 
 export const CUSTOM_TIME_RANGE_MAP = {
+  '5min': {
+    name: textMap['5min'],
+    getTimeRange: () => getBeforeTimeRange(5, 'minutes'),
+  },
+  '30min': {
+    name: textMap['30min'],
+    getTimeRange: () => getBeforeTimeRange(30, 'minutes'),
+  },
+  '1hour': {
+    name: textMap['1hour'],
+    getTimeRange: () => getBeforeTimeRange(1, 'hours'),
+  },
+  '3hour': {
+    name: textMap['3hour'],
+    getTimeRange: () => getBeforeTimeRange(3, 'hours'),
+  },
   today: {
     name: textMap.today,
     getTimeRange: () => getScopeTimeRange('day'),

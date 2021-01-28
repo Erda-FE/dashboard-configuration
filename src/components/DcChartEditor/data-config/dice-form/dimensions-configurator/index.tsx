@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-25 20:07:28
+ * @Last Modified time: 2021-01-28 17:55:45
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
@@ -10,9 +10,7 @@ import { produce } from 'immer';
 import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle } from 'react-use';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { DcIcon, DcInfoIcon, useUpdate } from '../../../../../common';
+import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
 import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, SortMap } from '../constants';
 import DashboardStore from '../../../../../stores/dash-board';
@@ -217,7 +215,7 @@ const DimensionsConfigurator = ({
 
   return (
     // HOC 包裹
-    <DndProvider backend={HTML5Backend}>
+    <DcDndProvider>
       <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
         {map(dimensions, ({ key, alias, type, expr, resultType, filter, aggregation, field, sort }, index) => {
         // 表达式未填提示
@@ -329,7 +327,7 @@ const DimensionsConfigurator = ({
           onOk={handleSubmitModal}
         />
       </div>
-    </DndProvider>
+    </DcDndProvider>
   );
 };
 

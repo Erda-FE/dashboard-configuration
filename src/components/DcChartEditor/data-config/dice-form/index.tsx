@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-23 19:36:48
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-14 14:32:55
+ * @Last Modified time: 2021-01-28 18:48:45
  */
 import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
@@ -17,6 +17,7 @@ import { getIntervalString } from './common/utils';
 import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, SQL_OPERATOR } from './constants';
 // import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn, ICreateLoadDataFn } from './data-loader';
+import SwitchChartType from '../../switch-chart-type';
 import DimensionsConfigurator from './dimensions-configurator';
 import ChartEditorStore from '../../../../stores/chart-editor';
 import DashboardStore from '../../../../stores/dash-board';
@@ -287,6 +288,10 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     });
   }, [_submitResult, dataSource, currentChartConfig, genApi, getLoadData]);
 
+  const handleUpdateChartType = (type: DC.ViewType) => {
+    _submitResult({ chartType: type });
+  };
+
   const handleUpdateSqlContent = (_dataSource: Partial<DC.SqlContent>) => {
     const sql = produce(dataSource.sql || {}, (draft) => {
       forEach(_dataSource, (v, k) => { draft[k] = v; });
@@ -306,6 +311,16 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         checkedChildren: 'SQL',
         unCheckedChildren: textMap.dsl,
         onChange: (checked: boolean) => handleUpdateDataSource({ isSqlMode: checked }),
+      },
+    },
+    {
+      label: textMap['chart type'],
+      name: 'chartType',
+      initialValue: chartType,
+      required: false,
+      type: SwitchChartType,
+      customProps: {
+        onChange: (v: DC.ViewType) => handleUpdateChartType(v),
       },
     },
     {

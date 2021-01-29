@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-15 20:02:03
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-28 17:55:45
+ * @Last Modified time: 2021-01-29 11:17:37
  */
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
@@ -250,7 +250,7 @@ const DimensionsConfigurator = ({
               <Tag
                 className="mb8"
                 closable
-                color={isUncompleted ? 'red' : '#6a549e'}
+                style={{ background: '#ffffff', border: '#6a549e solid 1px', color: '#6a549e' }}
                 afterClose={() => handleRemoveDimension(key)}
               >
                 <DcIcon className="mr4" size="small" type="down" />
@@ -292,7 +292,8 @@ const DimensionsConfigurator = ({
                 }
                 toggleSelectVisible();
               }}
-              style={{ background: '#ffffff', border: '#6a549e solid 1px', lineHeight: '22px', color: '#6a549e', alignSelf: 'start' }}
+              color="#6a549e"
+              style={{ lineHeight: '22px', alignSelf: 'start' }}
             >
               <DcIcon type="plus" size="small" className="mr4" />{addText || textMap.add}
             </Tag>

@@ -2,16 +2,36 @@
 $editor-prefix-cls: #{$prefix}-editor;
 
 .#{$editor-prefix-cls} {
+  &-wp {
+    background: $color-primary-background;
+  }
+
+  &-header {
+    background: $header-gray-background;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1), 0 6px 12px 0 rgba(170, 182, 206, 0.2), inset 0 -1px 0 0 rgba(255, 255, 255, 0.3);
+    z-index: 100;
+  }
+
+  &-footer {
+    background: $header-gray-background;
+  }
+
   &-content {
     display: flex;
   }
 
+  &-previewer {
+    z-index: 99;
+  }
+
   &-common-setting {
     width: 250px;
+    background: $color-primary-background;
   }
 
   &-data-setting {
     width: 350px;
+    background: $color-primary-background;
   }
 
   &-footer {

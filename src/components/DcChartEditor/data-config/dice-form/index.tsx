@@ -63,11 +63,11 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   // 图表信息
   const { chartType, curMapType = [], config: currentChartConfig = {} } = currentChart;
   const { dataSourceConfig } = currentChartConfig;
+  const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
   const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
   const isTableType = chartType === 'table';
   const isMapType = chartType === 'chart:map';
   const isLineType = (['chart:line', 'chart:area', 'chart:bar'] as DC.ViewType[]).includes(chartType);
-  const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
   const sqlContent = dataSource?.sql || {};
   const _submitResult = debounce(submitResult, 500);
 
@@ -321,6 +321,8 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       type: SwitchChartType,
       customProps: {
         onChange: (v: DC.ViewType) => handleUpdateChartType(v),
+        typeDimensions: dataSource.typeDimensions,
+        valueDimensions: dataSource.valueDimensions,
       },
     },
     {

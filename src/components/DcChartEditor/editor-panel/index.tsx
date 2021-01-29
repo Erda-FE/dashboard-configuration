@@ -29,7 +29,7 @@ const EditorPanel = () => {
 
   const { saveEditor, resetEditor } = ChartEditorStore;
   const info = getConfig('chartConfigMap')[viewCopy.chartType];
-  const { Configurator: CommonConfigForm = noop, Component: ChartComponent } = info;
+  const { Configurator: CommonConfigForm = noop, Component: ChartComponent } = info || {};
   const completeEditor = () => {
     saveEditor();
     resetEditor();
@@ -47,11 +47,11 @@ const EditorPanel = () => {
       <div className="dc-editor-wp v-flex-box flex-space-between full-height auto-overflow">
         <div className="dc-editor-header px16 py12 border-bottom color-text-sub white-bg fz22">{textMap['config charts']}</div>
         <div className="dc-editor-content flex-1 auto-overflow px4 py8">
-          <div className="dc-editor-common-setting v-flex-box py0 px12 auto-overflow border-radius">
-            <div className="dc-editor-setting-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
+          <div className="dc-editor-common-setting-setting v-flex-box py0 px12 auto-overflow border-radius">
+            <div className="dc-editor-common-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
               {textMap['common configuration']}
             </div>
-            <div className="auto-y-overflow flex-1">
+            <div className="dc-editor-common-setting-content auto-y-overflow px8 py4 flex-1">
               <CommonConfigForm />
             </div>
           </div>
@@ -61,10 +61,10 @@ const EditorPanel = () => {
             </DcContainer>
           </div>
           <div className="dc-editor-data-setting v-flex-box py0 px12 border-radius">
-            <div className="dc-editor-setting-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
+            <div className="dc-editor-data-setting-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
               {textMap['datasource configuration']}
             </div>
-            <div className="auto-y-overflow flex-1">
+            <div className="dc-editor-data-setting-content px8 py4 auto-y-overflow flex-1">
               <DataConfigurator />
             </div>
           </div>

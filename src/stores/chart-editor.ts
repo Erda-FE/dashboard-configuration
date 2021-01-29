@@ -2,7 +2,7 @@ import { cloneDeep, forEach, maxBy, remove, omit, some } from 'lodash';
 import { produce } from 'immer';
 import { createFlatStore } from '../cube';
 import { genUUID } from '../common/utils';
-import { CHARTS_INIT_CONFIG } from '../constants';
+import { DEFAULT_VIEW_CONFIG } from '../constants';
 
 const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
   const { y: maxY, h: maxH } = maxBy(items, ({ y, h }) => y + h) || { y: 0, h: 0 };
@@ -127,11 +127,11 @@ const chartEditorStore = createFlatStore({
       state.editChartId = undefined;
       state.isTouched = false;
     },
-    // 新增图表
+    // 新增图表组件
     addView(state, chartType: DC.ViewType) {
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;
-      state.viewCopy = CHARTS_INIT_CONFIG[chartType] as unknown as DC.View;
+      state.viewCopy = DEFAULT_VIEW_CONFIG as unknown as DC.View;
     },
     // 编辑图表
     editView(state, editChartId: string) {

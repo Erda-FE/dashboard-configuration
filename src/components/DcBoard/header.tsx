@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-26 21:25:44
+ * @Last Modified time: 2021-01-29 12:03:18
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
 import { Button, Tooltip } from '@terminus/nusi';
@@ -41,7 +41,7 @@ const DashboardHeader = ({
 }: IProps) => {
   // 编辑态
   const [isEditMode, viewMap] = ChartEditorStore.useStore((s) => [s.isEditMode, s.viewMap]);
-  const { setEditMode, setPickChartModalVisible, saveEdit, toggleFullscreen } = ChartEditorStore;
+  const { setEditMode, setPickChartModalVisible, addView, saveEdit, toggleFullscreen } = ChartEditorStore;
 
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
   const isFullscreen = useFullscreen(wrapRef, _isFullscreen, { onClose: () => _toggleFullscreen() });
@@ -123,7 +123,8 @@ const DashboardHeader = ({
       {
         icon: 'plus',
         text: textMap['add charts'],
-        onClick: () => setPickChartModalVisible(true),
+        // onClick: () => setPickChartModalVisible(true),
+        onClick: () => addView(undefined),
       },
       {
         icon: 'save',
@@ -136,7 +137,7 @@ const DashboardHeader = ({
         onClick: () => handleCancel(),
       },
     ]),
-  ], [isEditMode, handleTriggerEditMode, handleSaveDashboard, handleCancel, setPickChartModalVisible]);
+  ], [isEditMode, handleTriggerEditMode, handleSaveDashboard, handleCancel, addView]);
 
   const renderTools = (tools: DC_BOARD_HEADER.Tool[]) => tools.map(({ text, icon, onClick }) => (
     <Tooltip title={text} key={icon} >

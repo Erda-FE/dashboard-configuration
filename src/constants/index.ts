@@ -247,17 +247,18 @@ export const TEXT_EN_MAP = {
   asc: 'ASC',
 };
 
-const defaultConfig = {
+export const DEFAULT_VIEW_CONFIG = {
   description: '',
   hideHeader: true,
   hideReload: true,
   dataSourceType: 'api',
+  title: '未命名图表',
   api: {},
 };
 
 export const CHARTS_INIT_CONFIG = {
   'chart:line': {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'chart:line',
     title: 'Line Chart',
     config: {
@@ -267,27 +268,27 @@ export const CHARTS_INIT_CONFIG = {
     },
   },
   'chart:area': {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'chart:area',
     title: 'Area Chart',
   },
   'chart:bar': {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'chart:bar',
     title: 'Bar Chart',
   },
   'chart:pie': {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'chart:pie',
     title: 'Pie Chart',
   },
   'chart:funnel': {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'chart:funnel',
     title: 'Funnel Chart',
   },
   'chart:map': {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'chart:map',
     title: 'Map Chart',
     staticData: {
@@ -295,13 +296,13 @@ export const CHARTS_INIT_CONFIG = {
     },
   },
   card: {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     title: 'Number Card',
     chartType: 'card',
     config: {},
   },
   table: {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'table',
     title: 'Table',
     config: {
@@ -312,7 +313,7 @@ export const CHARTS_INIT_CONFIG = {
     },
   },
   'chart:scatter': {
-    ...defaultConfig,
+    ...DEFAULT_VIEW_CONFIG,
     chartType: 'chart:scatter',
     title: 'Scatter Chart',
   },

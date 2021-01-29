@@ -12,10 +12,6 @@ $editor-prefix-cls: #{$prefix}-editor;
     z-index: 100;
   }
 
-  &-footer {
-    background: $header-gray-background;
-  }
-
   &-content {
     display: flex;
   }
@@ -26,12 +22,30 @@ $editor-prefix-cls: #{$prefix}-editor;
 
   &-common-setting {
     width: 250px;
-    background: $color-primary-background;
   }
 
   &-data-setting {
     width: 350px;
+  }
+
+  &-common-setting,
+  &-data-setting {
     background: $color-primary-background;
+
+    &-content::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &-content::-webkit-scrollbar-track {
+      border-radius: $box-radius;
+      background: rgba(0, 0, 0, 0.06);
+    }
+
+    &-content::-webkit-scrollbar-thumb {
+      border-radius: $box-radius;
+      background: $color-dark-1;
+    }
   }
 
   &-footer {
@@ -39,5 +53,6 @@ $editor-prefix-cls: #{$prefix}-editor;
     flex-direction: row-reverse;
     justify-content: start;
     align-items: center;
+    background: $header-gray-background;
   }
 }

@@ -2,13 +2,13 @@
  * @Author: licao
  * @Date: 2020-10-26 17:38:44
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-29 17:57:37
+ * @Last Modified time: 2021-01-16 19:48:32
  */
 import React, { useCallback, useMemo } from 'react';
 import { useMount } from 'react-use';
 import { map, slice, findIndex, cloneDeep } from 'lodash';
 import { Breadcrumb, Toast } from '@terminus/nusi';
-import echarts from 'echarts';
+import { registerMap as registerEchartsMap } from 'echarts';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import client from '../../../common/utils/client';
 import { useUpdate } from '../../../common/use-hooks';
@@ -72,7 +72,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
   };
 
   const registerMap = (mapType: string, _data: any) => {
-    echarts.registerMap(mapType, _data);
+    registerEchartsMap(mapType, _data);
     updater.registeredMapType([...registeredMapType, mapType]);
     updateMaps([...mapTypes, mapType]);
   };

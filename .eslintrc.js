@@ -38,8 +38,6 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2015,
     sourceType: 'module',
-    project: ['./tsconfig.json'],
-    tsconfigRootDir: __dirname,
     ecmaFeatures: {
       jsx: true,
       impliedStrict: true

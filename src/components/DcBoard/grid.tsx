@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:08:25
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-26 11:00:31
+ * @Last Modified time: 2021-02-02 11:39:10
  */
 import * as React from 'react';
 import { isEmpty, map } from 'lodash';
@@ -15,7 +15,6 @@ import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 
 import 'react-grid-layout/css/styles.css';
-import 'react-resizable/css/styles.css';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 

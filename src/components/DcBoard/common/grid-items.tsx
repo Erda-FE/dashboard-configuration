@@ -8,7 +8,7 @@ const genGridItems = (pureLayout: DC.PureLayoutItem[], viewMap: Record<string, D
   return map(pureLayout, ({ i, ...others }: any) => {
     let ChildComp = null;
     let view = viewMap[i];
-    view = typeof view === 'function' ? view() : view;
+    view = typeof view === 'function' ? (view as Function)() : view;
 
     if (!view) {
       return null;

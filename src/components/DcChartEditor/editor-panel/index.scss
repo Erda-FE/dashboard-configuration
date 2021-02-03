@@ -39,12 +39,12 @@ $editor-prefix-cls: #{$prefix}-editor;
 
     &-content::-webkit-scrollbar-track {
       border-radius: $box-radius;
-      background: rgba(0, 0, 0, 0.06);
+      background: transparent;
     }
 
     &-content::-webkit-scrollbar-thumb {
       border-radius: $box-radius;
-      background: $color-dark-1;
+      background: rgba(0, 0, 0, 0.06);
     }
   }
 

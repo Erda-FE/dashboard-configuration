@@ -33,12 +33,13 @@ module.exports = () => {
       react: 'react',
       'react-dom': 'react-dom',
       moment: 'moment',
-      '@terminus/nusi': '@terminus/nusi'
     } : undefined,
     output: {
       filename: '[name].js',
       path: resolve('dist'),
-      publicPath: '/dist/',
+      publicPath: '/',
+      library: 'DiceCharts',
+      libraryTarget: 'umd',
     },
     module: {
       rules: [
@@ -144,6 +145,7 @@ module.exports = () => {
     optimization: {
       minimize: isProd,
       moduleIds: 'named',
+      chunkIds: 'named',
       splitChunks: {
         chunks: 'all',
         minSize: 30000,

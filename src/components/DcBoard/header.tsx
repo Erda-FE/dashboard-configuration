@@ -127,6 +127,11 @@ const DashboardHeader = ({
         onClick: () => addView(undefined),
       },
       {
+        icon: 'setting',
+        text: textMap['dashboard setting'],
+        onClick: () => handleSaveDashboard(),
+      },
+      {
         icon: 'save',
         text: textMap['save dashboard'],
         onClick: () => handleSaveDashboard(),

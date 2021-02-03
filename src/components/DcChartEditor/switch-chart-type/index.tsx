@@ -8,10 +8,17 @@ import './index.scss';
 
 interface IProps {
   value: DC.ViewType;
+  typeDimensions: DICE_DATA_CONFIGURATOR.Dimension[];
+  valueDimensions: DICE_DATA_CONFIGURATOR.Dimension[];
   onChange: (v: DC.ViewType) => void;
 }
 
-const SwitchChartType = ({ value, onChange }: IProps) => {
+const SwitchChartType = ({
+  value,
+  typeDimensions,
+  valueDimensions,
+  onChange,
+}: IProps) => {
   return (
     <div className="dc-editor-switch-chart">
       {map(basicCharts, ({ name, enName, icon }: DC.ViewDefItem, chartType) => (

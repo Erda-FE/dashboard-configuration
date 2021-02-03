@@ -185,6 +185,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     <div className={classnames({
       'dc-chart-header': true,
       'cursor-move': isEditMode && !chartEditorVisible,
+      active: isEditMode && !chartEditorVisible,
     })}
     >
       <Choose>
@@ -197,7 +198,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
             <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
               <If condition={isEditMode && isShowOptions}>
                 <Tooltip title={textMap['config charts']}>
-                  <Button type="text" onClick={() => editView(viewId)}><DcIcon type="setting" /></Button>
+                  <Button type="text" onClick={() => editView(viewId)}><DcIcon type="edit" /></Button>
                 </Tooltip>
               </If>
               <If condition={description}>

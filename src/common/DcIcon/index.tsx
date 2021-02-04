@@ -3,7 +3,6 @@ import classnames from 'classnames';
 import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { Tooltip } from '@terminus/nusi';
 
-import '../../static/iconfont.js';
 import './index.scss';
 
 interface IProps {

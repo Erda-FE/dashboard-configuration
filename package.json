@@ -17,7 +17,8 @@
   "sideEffects": [
     "*.scss",
     "*.css",
-    "*.less"
+    "*.less",
+    "./src/static/*.js"
   ],
   "scripts": {
     "prewatch": "shell/check-dll.sh",

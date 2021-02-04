@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 10:25:39
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-28 14:45:05
+ * @Last Modified time: 2021-02-04 13:57:31
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
@@ -18,8 +18,10 @@ import DcChartEditor from '../DcChartEditor';
 import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
 import ChartEditorStore from '../../stores/chart-editor';
 
-import './index.scss';
+
+import '../../static/iconfont.js';
 import '../../static/iconfont.css';
+import './index.scss';
 
 interface IProps {
   /** 指定编辑器的预览时间 */

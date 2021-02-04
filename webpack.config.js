@@ -152,7 +152,6 @@ module.exports = () => {
         minChunks: 1,
         maxAsyncRequests: 5,
         maxInitialRequests: 5,
-        name: false,
         cacheGroups: {
           vendors: {
             test: /[\\/]node_modules[\\/]/,

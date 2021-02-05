@@ -7,8 +7,9 @@
 import React, { useMemo, useEffect } from 'react';
 import { isEmpty, map } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
+import { DC } from 'src/types';
 import { genGridItems } from './common';
-import { DcEmpty, DcIcon } from '../../common';
+import { DcEmpty } from '../../common';
 import { GRID_LAYOUT_CONFIG } from '../../constants';
 import { splitLayoutAndView } from './common/utils';
 import ChartEditorStore from '../../stores/chart-editor';
@@ -18,7 +19,7 @@ import 'react-grid-layout/css/styles.css';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 
-const BoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
+const BoardGrid = ({ width, layout }: { width: any; layout: DC.Layout }) => {
   const [isEditMode, editChartId, viewMap, pureLayout] = ChartEditorStore.useStore((s) => [s.isEditMode, s.editChartId, s.viewMap, s.pureLayout]);
   const { updateViewMap: updateChildMap, updateLayout } = ChartEditorStore;
 

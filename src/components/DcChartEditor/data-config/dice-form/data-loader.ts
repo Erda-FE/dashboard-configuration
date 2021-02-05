@@ -9,17 +9,16 @@ import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy } fr
 import { getChartData } from '../../../../services/chart-editor';
 import { getFormatter } from '../../../../common/utils';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
+import { CreateLoadDataParams } from 'src/types';
 
-export interface ICreateLoadDataFn {
-  api: DC.API;
-  chartType: DC.ViewType;
-  typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  isSqlMode?: boolean;
-  customTime?: string;
-}
-
-export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensions, isSqlMode, customTime }: ICreateLoadDataFn) => async (payload: any = {}, body?: any) => {
+export const createLoadDataFn = ({
+  api,
+  chartType,
+  typeDimensions,
+  valueDimensions,
+  isSqlMode,
+  customTime,
+}: CreateLoadDataParams) => async (payload: any = {}, body?: any) => {
   // 固定时间范围查询逻辑 customTime
   let customTimeResult = {};
   if (customTime) {

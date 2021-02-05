@@ -1,150 +1,231 @@
-import { ReactElement, ReactNode } from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 
-export as namespace DC;
-interface LayoutItem {
-  view: DC.View;
+declare namespace DC {
+  type TData = number[] | string[];
+
+  type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'chart:funnel' | 'table' | 'card' | 'chart:scatter' | 'chart:map';
+
+  export type ViewDefMap = Record<ViewType, ViewDefItem>;
+  export interface IExtraData {
+    dataConfigSelectors?: any[];
+    dynamicFilterKey?: string;
+    dynamicFilterDataAPI?: API;
+    dimensions: any[];
+  }
+
+  type DataConvertor = (data: object) => object;
+  type OptionFn = (data: object, optionExtra?: object) => object;
+
+  interface ViewDefItem {
+    name: string;
+    enName: string;
+    icon: DcIconType;
+    image: React.ReactNode;
+    Component: React.ReactNode | React.FunctionComponent; // props由viewId，以及接口的返回结果组成
+    Configurator: React.ReactNode | React.FunctionComponent; // 配置器
+    mockData?: any;
+    dataSettings?: any[]; // props由form相关属性构成
+  }
+
+  interface SqlContent {
+    select?: string;
+    from?: string;
+    // 前端回填
+    fromSource?: string[];
+    where?: string;
+    groupBy?: string;
+    orderBy?: string;
+    limit?: number;
+  }
+
+  interface DatasourceConfig {
+    activedMetricGroups: string[];
+    // 维度
+    typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+    // 值
+    valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+    // 结果排序
+    sortDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+    // 结果筛选
+    resultFilters?: DICE_DATA_CONFIGURATOR.Dimension[];
+    // 自定义时间区间，可选
+    customTime?: string;
+    // sql 模式
+    isSqlMode?: boolean;
+    // sql 内容
+    sql?: SqlContent;
+    // 返回结果限制
+    limit?: number;
+  }
+
+  interface ChartConfig {
+    // 配置优先级：optionFn > option
+    option?: Option;// echarts 配置
+    /** 一些用于调整option的参数 */
+    optionProps?: {
+      [k: string]: any;
+    };
+    dataSourceConfig?: DatasourceConfig; // 数据源配置
+    // 下面的字段待清理，后端没有存
+    optionFn?: OptionFn;
+    optionExtra?: object;
+  }
+  interface Option {
+    seriesName?: string;
+    isBarChangeColor?: boolean;
+    tooltipFormatter?: Function;
+    isLabel?: boolean;
+    isConnectNulls?: boolean;
+    noAreaColor?: boolean;
+    nullDisplay?: string;
+    unitType?: string;
+    unit?: string;
+    decimal?: number;
+    yAxisNames?: string[];
+    legendFormatter?: Function;
+    timeSpan?: any;
+  }
+
+  interface MetricData {
+    name: string;
+    type: string;
+    data: TData;
+    [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
+  }
+
+  interface StaticData {
+    title: string;
+    xData: TData | TData[];
+    yData?: TData | TData[];
+    metricData: MetricData[];
+    legendData: TData[];
+    extraOption: object; // 可能需要根据返回数据调整 option
+    [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
+  }
+
+  interface API {
+    url: string;
+    method: 'get' | 'post';
+    query?: Record<string, any>;
+    body?: Record<string, any>;
+    header?: Record<string, any>;
+  }
+
+  interface View {
+    /** 指定大盘版本，识别旧版不能编辑 */
+    version?: string;
+    name: string;
+    description?: string;
+    title?: string | (() => ReactNode);
+    /** 组件类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择 */
+    chartType: ViewType;
+    /** 地图层级，需要迁到其他地方 */
+    curMapType?: any[];
+    tooltip?: any;
+    chartProps?: any;
+    /** 是否隐藏组件卡片的 Header */
+    hideHeader?: boolean;
+    /** 静态数据 */
+    staticData?: StaticData;
+    /** 动态数据 API */
+    api?: API;
+    chartQuery?: any;
+    maskMsg?: string | Element;
+    customRender?: (element: ReactElement<any>, view: any) => ReactNode;
+    /** 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用 */
+    loadData?: (query?: object, body?: object) => Promise<any>;
+    /** 数据转换，为 string 时表示使用已注册的方法 */
+    dataConvertor?: string | DataConvertor;
+    /** 组件配置项 */
+    config: ChartConfig;
+    /** 控件列表，展示在 header下面，为 string 时表示使用已注册的组件 */
+    controls?: string[] | React.Component[] | any[];
+  }
+
+  interface LayoutItem {
+    view: View;
+  }
+
+  interface PureLayoutItem {
+    w: number;
+    h: number;
+    x: number;
+    y: number;
+    i: string;
+    moved?: boolean;
+    static?: boolean;
+  }
+
+  type Layout = Array<Merge<LayoutItem, PureLayoutItem>>;
+
+  export interface BoardGridProps {
+    /** 指定编辑器的预览时间 */
+    timeSpan?: { startTimeMs: number; endTimeMs: number };
+    /** 大盘名 */
+    name?: string;
+    /** 配置信息，包含图表布局、各图表配置信息 */
+    layout: Layout;
+    /** 外部数据源表单配置器，机制待完善 */
+    APIFormComponent?: React.ReactNode;
+    /** 返回 false 来拦截 onSave */
+    beforeOnSave?: () => boolean;
+    /** 保存大盘回调 */
+    onSave?: (layout: Layout[], extra: { singleLayouts: any[]; viewMap: Record<string, View> }) => void;
+    /** 取消大盘编辑模式回调 */
+    onCancel?: () => void;
+    /** 触发大盘编辑模式回调 */
+    onEdit?: () => void;
+    /** 进入图表编辑模式回调 */
+    onEditorToggle?: (status: boolean) => void;
+  }
+
+  export interface PureBoardGridProps {
+    /** 大盘名 */
+    name?: string;
+    /** 大盘配置 */
+    layout: Layout;
+    /** 是否显示大盘全局操作栏 */
+    showOptions?: boolean;
+  }
+
+  export interface DiceDataConfigProps {
+    dataConfigMetaDataStore: Object;
+    dynamicFilterMetaDataStore: Object;
+    scope: string;
+    scopeId: string;
+    loadDataApi: Object;
+  }
 }
-interface PureLayoutItem {
-  w: number;
-  h: number;
-  x: number;
-  y: number;
-  i: string;
-  moved?: boolean;
-  static?: boolean;
-}
 
-export type ILayout = Array<Merge<LayoutItem, PureLayoutItem>>;
+/**
+ *带编辑器的大盘
+  *
+  * @export
+  * @class BoardGrid
+  * @extends {React.Component<BoardGridProps, any>}
+  */
+export class BoardGrid extends React.Component<DC.BoardGridProps, any> {}
 
-export interface ViewDefItem {
-  name: string;
-  enName: string;
-  icon: DcIconType;
-  image: React.ReactNode;
-  Component: React.ReactNode | React.FunctionComponent; // props由viewId，以及接口的返回结果组成
-  Configurator: React.ReactNode | React.FunctionComponent; // 配置器
-  mockData?: any;
-  dataSettings?: any[]; // props由form相关属性构成
-}
+/**
+ *大盘，仅渲染
+ *
+ * @export
+ * @class PureDashboard
+ * @extends {React.Component<DC.PureBoardGridProps, any>}
+ */
+export class PureBoardGrid extends React.Component<DC.PureBoardGridProps, any> {}
 
-type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'chart:funnel' | 'table' | 'card' | 'chart:scatter' | 'chart:map';
+export function registDiceDataConfigProps(v: DC.DiceDataConfigProps): void;
 
-type ViewDefMap = Record<ViewType, ViewDefItem>;
-
-interface IExtraData {
-  dataConfigSelectors?: any[];
-  dynamicFilterKey?: string;
-  dynamicFilterDataAPI?: API;
-  dimensions: any[];
-}
-
-interface API {
-  url: string;
-  method: 'get' | 'post';
-  query?: Record<string, any>;
-  body?: Record<string, any>;
-  header?: Record<string, any>;
-}
-
-export interface ChartConfig {
-  // 配置优先级：optionFn > option
-  option?: Option;// echarts 配置
-  /** 一些用于调整option的参数 */
-  optionProps?: {
-    [k: string]: any;
-  };
-  dataSourceConfig?: DatasourceConfig; // 数据源配置
-  // 下面的字段待清理，后端没有存
-  optionFn?: OptionFn;
-  optionExtra?: object;
-}
-
-interface View {
-  version?: string; // 指定大盘版本，识别旧版不能编辑
-  name: string;
-  description?: string;
-  title?: string | (() => ReactNode);
-  chartType: ViewType; // 展示类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择
-  curMapType?: any[]; // 地图层级，需要迁到其他地方
-  tooltip?: any;
-  chartProps?: any;
-  hideHeader?: boolean; // 是否隐藏Header
-  staticData?: StaticData; // 静态数据
-  api?: API; // 动态数据
-  chartQuery?: any;
-  maskMsg?: string | Element;
-  customRender?: (element: ReactElement<any>, view: any) => ReactNode; // 自定义
-  loadData?: (query?: object, body?: object) => Promise<any>; // 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用
-  dataConvertor?: string | DataConvertor; // 数据转换，为string时表示使用已注册的方法
-  config: ChartConfig;// 所有页面上的配置项
-  controls?: string[] | React.Component[] | any[]; // 控件列表，展示在header下面，为string时表示使用已注册的组件
-}
-
-type DataConvertor = (data: object) => object;
-type OptionFn = (data: object, optionExtra?: object) => object;
-
-interface SqlContent {
-  select?: string;
-  from?: string;
-  // 前端回填
-  fromSource?: string[];
-  where?: string;
-  groupBy?: string;
-  orderBy?: string;
-  limit?: number;
-}
-
-export interface DatasourceConfig {
-  activedMetricGroups: string[];
-  // 维度
+export interface CreateLoadDataParams {
+  api: DC.API;
+  chartType: DC.ViewType;
   typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  // 值
   valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  // 结果排序
-  sortDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  // 结果筛选
-  resultFilters?: DICE_DATA_CONFIGURATOR.Dimension[];
-  // 自定义时间区间，可选
-  customTime?: string;
-  // sql 模式
   isSqlMode?: boolean;
-  // sql 内容
-  sql?: SqlContent;
-  // 返回结果限制
-  limit?: number;
+  customTime?: string;
 }
 
-interface Option {
-  seriesName?: string;
-  isBarChangeColor?: boolean;
-  tooltipFormatter?: Function;
-  isLabel?: boolean;
-  isConnectNulls?: boolean;
-  noAreaColor?: boolean;
-  nullDisplay?: string;
-  unitType?: string;
-  unit?: string;
-  decimal?: number;
-  yAxisNames?: string[];
-  legendFormatter?: Function;
-  timeSpan?: any;
-}
+export function createLoadDataFn(params: CreateLoadDataParams): Function;
 
-type TData = number[] | string[];
-
-interface MetricData {
-  name: string;
-  type: string;
-  data: TData;
-  [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
-}
-
-interface StaticData {
-  title: string;
-  xData: TData | TData[];
-  yData?: TData | TData[];
-  metricData: MetricData[];
-  legendData: TData[];
-  extraOption: object; // 可能需要根据返回数据调整 option
-  [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
-}
+export function createOldLoadDataFn(params: any): Function;

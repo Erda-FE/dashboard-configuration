@@ -16,13 +16,14 @@ import { insertWhen } from '../../../../common/utils';
 import { getIntervalString } from './common/utils';
 import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, SQL_OPERATOR } from './constants';
 // import DynamicFilterDataModal from './dynamic-filter-data-modal';
-import { createLoadDataFn, ICreateLoadDataFn } from './data-loader';
+import { createLoadDataFn } from './data-loader';
 import SwitchChartType from '../../switch-chart-type';
 import DimensionsConfigurator from './dimensions-configurator';
 import ChartEditorStore from '../../../../stores/chart-editor';
 import DashboardStore from '../../../../stores/dash-board';
 
 import './index.scss';
+import { DC, CreateLoadDataParams } from 'src/types';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 
@@ -212,7 +213,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       });
   }, [fieldsMap]);
 
-  const getLoadData = useCallback((payload: Omit<ICreateLoadDataFn, 'chartType'>) => {
+  const getLoadData = useCallback((payload: Omit<CreateLoadDataParams, 'chartType'>) => {
     return createLoadDataFn({
       ...payload,
       chartType,

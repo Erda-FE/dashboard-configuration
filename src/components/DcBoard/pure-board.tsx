@@ -8,6 +8,7 @@ import React, { useRef } from 'react';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import { If } from 'tsx-control-statements/components';
+import { DC } from 'src/types';
 import PureBoardGrid from './pure-grid';
 import { useComponentWidth, DcEmpty } from '../../common';
 import DashboardHeader from './pure-header';
@@ -17,16 +18,7 @@ import './index.scss';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 
-interface IPureProps {
-  /** 大盘名 */
-  name?: string;
-  /** 大盘配置 */
-  layout: DC.ILayout;
-  /** 是否显示大盘全局操作栏 */
-  showOptions?: boolean;
-}
-
-const PureDashboard = ({ name, layout, showOptions = false }: IPureProps) => {
+const PureDashboard = ({ name, layout, showOptions = false }: DC.PureBoardGridProps) => {
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
   const [gridWidthHolder, gridWidth] = useComponentWidth();

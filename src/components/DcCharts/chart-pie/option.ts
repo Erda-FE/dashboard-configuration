@@ -2,6 +2,7 @@ import { merge, set, reduce, get, map } from 'lodash';
 import { getCustomOption } from '../common/custom-option';
 import { getCommonFormatter } from '../../../common/utils';
 import getDefaultOption from './default-option';
+import { DC } from 'src/types';
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
   const option = merge(getDefaultOption(), getCustomOption(data, config));

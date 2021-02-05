@@ -69,6 +69,7 @@ export const TEXT_ZH_MAP = {
   'empty metric group tip': '请先选择指标分组！',
   'configuration mode': '配置模式',
   time: '时间',
+  'time filter': '时间筛选器',
   'custom time metric': '自定义时间指标',
   'custom time interval': '自定义时间间隔',
   'fixed time range': '固定图表时间范围',
@@ -122,6 +123,7 @@ export const TEXT_ZH_MAP = {
   'sort method': '排序方式',
   desc: '降序',
   asc: '升序',
+  'global filter': '全局筛选器',
 };
 
 export const TEXT_EN_MAP = {
@@ -194,6 +196,7 @@ export const TEXT_EN_MAP = {
   'empty metric group tip': 'Please select metric group first!',
   'configuration mode': 'configuration mode',
   time: 'time',
+  'time filter': 'time filter',
   'custom time metric': 'custom time metric',
   'custom time interval': 'custom time interval',
   'fixed time range': 'fixed time range',
@@ -247,6 +250,7 @@ export const TEXT_EN_MAP = {
   'sort method': 'sort method',
   desc: 'DESC',
   asc: 'ASC',
+  'global filter': 'global filter',
 };
 
 export const DEFAULT_VIEW_CONFIG = {

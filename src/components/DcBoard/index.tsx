@@ -2,13 +2,14 @@
  * @Author: licao
  * @Date: 2020-12-04 10:25:39
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-04 13:57:31
+ * @Last Modified time: 2021-02-04 20:09:30
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import { isFunction } from 'lodash';
 import 'react-grid-layout/css/styles.css';
 import { useUnmount } from 'react-use';
+import { DC } from 'src/types';
 // 渲染器部分
 import { useComponentWidth } from '../../common';
 import DashboardHeader from './header';
@@ -16,33 +17,13 @@ import BoardGrid from './grid';
 // 编辑器部分
 import DcChartEditor from '../DcChartEditor';
 import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
+import { ConfigGlobalFiltersModal } from '../DcGlobalFilters';
 import ChartEditorStore from '../../stores/chart-editor';
-
 
 import '../../static/iconfont.js';
 import '../../static/iconfont.css';
 import './index.scss';
 
-interface IProps {
-  /** 指定编辑器的预览时间 */
-  timeSpan?: { startTimeMs: number; endTimeMs: number };
-  /** 大盘名 */
-  name?: string;
-  /** 配置信息，包含图表布局、各图表配置信息 */
-  layout: DC.ILayout;
-  /** 外部数据源表单配置器，机制待完善 */
-  APIFormComponent?: React.ReactNode;
-  /** 返回 false 来拦截 onSave */
-  beforeOnSave?: () => boolean;
-  /** 保存大盘回调 */
-  onSave?: (layout: DC.ILayout[], extra: { singleLayouts: any[]; viewMap: Record<string, DC.View> }) => void;
-  /** 取消大盘编辑模式回调 */
-  onCancel?: () => void;
-  /** 触发大盘编辑模式回调 */
-  onEdit?: () => void;
-  /** 进入图表编辑模式回调 */
-  onEditorToggle?: (status: boolean) => void;
-}
 
 const DcBoard = ({
   timeSpan,
@@ -54,7 +35,7 @@ const DcBoard = ({
   onSave,
   onEditorToggle,
   beforeOnSave,
-}: IProps) => {
+}: DC.BoardGridProps) => {
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
   const _onEditorToggle = useRef(onEditorToggle);
@@ -114,6 +95,7 @@ const DcBoard = ({
           <BoardGrid width={gridWidth} layout={layout} />
         </div>
       </div>
+      <ConfigGlobalFiltersModal />
       <DcChartEditor />
     </div>
   );

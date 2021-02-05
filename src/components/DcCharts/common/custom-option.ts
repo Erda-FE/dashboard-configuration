@@ -1,4 +1,5 @@
 import { isString, cloneDeep, merge } from 'lodash';
+import { DC } from 'src/types';
 import { getConfig } from '../../../config';
 
 export /**

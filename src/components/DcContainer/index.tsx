@@ -20,6 +20,7 @@ import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 
 import './index.scss';
+import { DC } from 'src/types';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 const excludeEmptyType = ['chart:map'];

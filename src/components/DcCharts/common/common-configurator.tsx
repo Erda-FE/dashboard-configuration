@@ -3,6 +3,7 @@ import { Input } from '@terminus/nusi';
 import { DcFormBuilder } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
+import { DC } from 'src/types';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 

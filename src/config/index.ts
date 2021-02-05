@@ -1,4 +1,5 @@
 import { set, get } from 'lodash';
+import { DC } from 'src/types';
 import defaultChartsMap from '../components/DcCharts';
 import { theme, themeObj as defaultTheme } from '../theme/dice';
 import { dynamicFilterMetaDataStore, dataConfigMetaDataStore } from './getDefaultStores';
@@ -117,7 +118,7 @@ export /**
  * @param {object} diceDataConfigProps
  * @returns 已注册的 Dice 数据源配置依赖的数据
  */
-const registDiceDataConfigProps = (diceDataConfigProps: object) => {
+const registDiceDataConfigProps = (diceDataConfigProps: DC.DiceDataConfigProps) => {
   regist('diceDataConfigProps', diceDataConfigProps);
   return getConfig('diceDataConfigProps');
 };

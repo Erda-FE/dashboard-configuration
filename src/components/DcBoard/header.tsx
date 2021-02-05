@@ -2,17 +2,19 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-29 12:03:18
+ * @Last Modified time: 2021-02-05 00:18:27
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
-import { Button, Tooltip } from '@terminus/nusi';
+import { Button, Tooltip, Dropdown, Menu } from '@terminus/nusi';
 import { useFullscreen, useToggle } from 'react-use';
-import { If } from 'tsx-control-statements/components';
+import { If, Choose, When, Otherwise } from 'tsx-control-statements/components';
+import { DC } from 'src/types';
 import { DcIcon } from '../../common';
 import { insertWhen } from '../../common/utils';
 import { saveImage } from '../../utils/comp';
 import DashboardStore from '../../stores/dash-board';
 import ChartEditorStore from '../../stores/chart-editor';
+import GlobalFiltersStore from '../../stores/global-filters';
 
 import './header.scss';
 
@@ -42,6 +44,7 @@ const DashboardHeader = ({
   // 编辑态
   const [isEditMode, viewMap] = ChartEditorStore.useStore((s) => [s.isEditMode, s.viewMap]);
   const { setEditMode, setPickChartModalVisible, addView, saveEdit, toggleFullscreen } = ChartEditorStore;
+  const { toggleConfigModal } = GlobalFiltersStore;
 
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
   const isFullscreen = useFullscreen(wrapRef, _isFullscreen, { onClose: () => _toggleFullscreen() });
@@ -116,6 +119,7 @@ const DashboardHeader = ({
       {
         icon: 'edit',
         text: textMap['edit mode'],
+        btnType: 'primary',
         onClick: () => handleTriggerEditMode(),
       },
     ]),
@@ -128,8 +132,26 @@ const DashboardHeader = ({
       },
       {
         icon: 'setting',
-        text: textMap['dashboard setting'],
-        onClick: () => handleSaveDashboard(),
+        customRender: () => {
+          return (
+            <Dropdown
+              trigger={['click']}
+              overlay={
+                <Menu>
+                  <Menu.Item>
+                    <a className="dc-chart-title-dp-op" onClick={() => toggleConfigModal()}>
+                      {textMap['global filter']}
+                    </a>
+                  </Menu.Item>
+                </Menu>
+              }
+            >
+              <Button type="text">
+                <DcIcon type="setting" />
+              </Button>
+            </Dropdown>
+          );
+        },
       },
       {
         icon: 'save',
@@ -142,14 +164,21 @@ const DashboardHeader = ({
         onClick: () => handleCancel(),
       },
     ]),
-  ], [isEditMode, handleTriggerEditMode, handleSaveDashboard, handleCancel, addView]);
+  ], [isEditMode, handleTriggerEditMode, addView, toggleConfigModal, handleSaveDashboard, handleCancel]);
 
-  const renderTools = (tools: DC_BOARD_HEADER.Tool[]) => tools.map(({ text, icon, onClick }) => (
-    <Tooltip title={text} key={icon} >
-      <Button type="text" onClick={onClick}>
-        <DcIcon type={icon} />
-      </Button>
-    </Tooltip>
+  const renderTools = (tools: DC_BOARD_HEADER.Tool[]) => tools.map(({ text, icon, btnType, customRender, onClick }) => (
+    <Choose>
+      <When key={icon} condition={!!customRender}>
+        {(customRender as Function)()}
+      </When>
+      <Otherwise>
+        <Tooltip title={text}>
+          <Button type={btnType || 'text'} onClick={onClick}>
+            <DcIcon type={icon} />
+          </Button>
+        </Tooltip>
+      </Otherwise>
+    </Choose>
   ));
 
   return (

@@ -1,17 +1,23 @@
 import { createFlatStore } from '../cube';
-import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
-import DcBoard from 'src/components/DcBoard';
+import DashboardStore from './dash-board';
 
-type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
-
+const textMap = DashboardStore.getState((s) => s.textMap);
 interface IState {
   configModalVisible: boolean;
-  filters: DC_GLOBAL_FILTERS.Filter[];
+  globalFilters: DC_GLOBAL_FILTERS.Filter[];
 }
 
 const initState: IState = {
-  configModalVisible: false,
-  filters: [] as DC_GLOBAL_FILTERS.Filter[],
+  configModalVisible: true,
+  globalFilters: [
+    {
+      key: 'time',
+      name: 'time',
+      type: 'time',
+      label: textMap['time filter'],
+      enable: true,
+    },
+  ] as DC_GLOBAL_FILTERS.Filter[],
 };
 
 const globalFiltersStore = createFlatStore({
@@ -20,6 +26,9 @@ const globalFiltersStore = createFlatStore({
   reducers: {
     toggleConfigModal(state, visible?: boolean) {
       state.configModalVisible = visible ?? !state.configModalVisible;
+    },
+    submitFilters(state, filters: DC_GLOBAL_FILTERS.Filter[]) {
+      state.globalFilters = filters;
     },
   },
 });

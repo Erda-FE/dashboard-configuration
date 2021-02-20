@@ -60,7 +60,8 @@
     "react-grid-layout": "^1.2.0",
     "react-use": "^15.3.8",
     "superagent": "^6.1.0",
-    "superagent-use": "^0.1.0"
+    "superagent-use": "^0.1.0",
+    "use-immer": "^0.4.2"
   },
   "devDependencies": {
     "@commitlint/cli": "^11.0.0",

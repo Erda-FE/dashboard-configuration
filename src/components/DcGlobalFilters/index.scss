@@ -1,0 +1,59 @@
+@import '../../styles/mixin';
+$dashboard-prefix-cls: #{$prefix}-global-filters-config;
+
+.#{$dashboard-prefix-cls} {
+  @include util;
+  @include font-size(12, 14, 16, 18, 20, 22, 24, 30);
+  @include space(0, 2, 4, 8, 12, 16, 20, 24, 28, 32);
+  @include width(50);
+
+  &-content {
+    .#{$prefix}-config-fields {
+      &-item {
+        display: flex;
+      }
+
+      .label {
+        width: 100px;
+        text-align: right;
+        margin-right: 12px;
+        vertical-align: top;
+
+        & > div {
+          display: flex;
+          flex-flow: row-reverse;
+        }
+      }
+    }
+  }
+
+  &-tab {
+    position: relative;
+    width: 150px;
+    height: 28px;
+    line-height: 28px;
+
+    &:hover {
+      .#{$prefix}-global-filters-options {
+        visibility: visible;
+      }
+    }
+
+    .#{$prefix}-global-filters-options {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background: $color-white;
+      visibility: hidden;
+    }
+  }
+
+  .filter-option {
+    background: transparent;
+    color: $color-text-desc;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+}

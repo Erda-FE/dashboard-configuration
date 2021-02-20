@@ -27,6 +27,7 @@ export const TEXT_ZH_MAP = {
   controls: '控件',
   'field name': '字段名',
   select: '选择框',
+  constant: '常量',
   'control data': '控件数据',
   value: '值',
   sort: '结果排序',
@@ -124,6 +125,13 @@ export const TEXT_ZH_MAP = {
   desc: '降序',
   asc: '升序',
   'global filter': '全局筛选器',
+  'filter items': '筛选项',
+  enabled: '启用',
+  disabled: '禁用',
+  input: '输入框',
+  'input keywords': '输入关键字',
+  'select datasource': '选择数据源',
+  'define constant': '指定固定值',
 };
 
 export const TEXT_EN_MAP = {
@@ -155,6 +163,7 @@ export const TEXT_EN_MAP = {
   controls: 'controls',
   'field name': 'field name',
   select: 'select',
+  constant: 'constant',
   'control data': 'control data',
   value: 'value',
   sort: 'sort',
@@ -251,6 +260,13 @@ export const TEXT_EN_MAP = {
   desc: 'DESC',
   asc: 'ASC',
   'global filter': 'global filter',
+  'filter items': 'filter items',
+  enabled: 'enabled',
+  disabled: 'disabled',
+  input: 'input',
+  'input keywords': 'input keywords',
+  'select datasource': 'select datasource',
+  'define constant': 'define constant',
 };
 
 export const DEFAULT_VIEW_CONFIG = {

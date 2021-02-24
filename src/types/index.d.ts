@@ -125,6 +125,8 @@ declare namespace DC {
     chartProps?: any;
     /** 是否隐藏组件卡片的 Header */
     hideHeader?: boolean;
+    /** 数据源类型 */
+    dataSourceType: 'api' | 'static';
     /** 静态数据 */
     staticData?: StaticData;
     /** 动态数据 API */
@@ -184,6 +186,8 @@ declare namespace DC {
     name?: string;
     /** 大盘配置 */
     layout: Layout;
+    /** 全局变量 */
+    globalVariable: Record<string, any>;
     /** 是否显示大盘全局操作栏 */
     showOptions?: boolean;
   }

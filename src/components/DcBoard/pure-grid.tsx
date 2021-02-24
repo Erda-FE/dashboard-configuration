@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:07:46
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-26 15:03:47
+ * @Last Modified time: 2021-02-23 13:56:57
  */
 import React, { useEffect } from 'react';
 import { isEmpty } from 'lodash';
@@ -13,7 +13,7 @@ import { splitLayoutAndView } from './common/utils';
 import { useUpdate } from '../../common';
 import { genGridItems } from './common';
 
-const PureBoardGrid = ({ width, layout }: { width: any; layout: DC.ILayout }) => {
+const PureBoardGrid = ({ width, layout }: { width: any; layout: DC.Layout }) => {
   const [{
     pureLayout,
     viewMap,

@@ -8,7 +8,7 @@ interface IState {
 }
 
 const initState: IState = {
-  configModalVisible: true,
+  configModalVisible: false,
   globalFilters: [
     {
       key: 'time',

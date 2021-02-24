@@ -2,9 +2,9 @@
  * @Author: licao
  * @Date: 2020-12-04 15:10:37
  * @Last Modified by: licao
- * @Last Modified time: 2020-12-26 16:36:35
+ * @Last Modified time: 2021-02-24 14:29:46
  */
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import { If } from 'tsx-control-statements/components';
@@ -18,10 +18,20 @@ import './index.scss';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 
-const PureDashboard = ({ name, layout, showOptions = false }: DC.PureBoardGridProps) => {
+const PureDashboard = ({
+  name,
+  layout,
+  showOptions = false,
+  globalVariable,
+}: DC.PureBoardGridProps) => {
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
   const [gridWidthHolder, gridWidth] = useComponentWidth();
+  const { setGlobalVariable } = DashboardStore;
+
+  useEffect(() => {
+    globalVariable && setGlobalVariable(globalVariable);
+  }, [globalVariable, setGlobalVariable]);
 
   return (
     <div

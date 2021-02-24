@@ -2,6 +2,7 @@ import { get, pick } from 'lodash';
 
 export { getFormatter, getCommonFormatter } from './formatter';
 export { cutStr } from './str-num-date';
+export { replaceVariable } from './replace-variable';
 
 /**
  * used to filter out empty fields and collect fields as object
@@ -46,18 +47,6 @@ export const insertWhen = <T=any>(condition: boolean, list: T[]): T[] => {
  * @param {number} [radix]
  * @returns
  */
-// export const generateUUID = () => {
-//   let d = new Date().getTime();
-//   // 只用8位够了
-//   const uuid = 'xxxxxxxx'.replace(/[xy]/g, (c) => {
-//     // eslint-disable-next-line
-//     const r = (d + (Math.random() * 16)) % 16 | 0;
-//     d = Math.floor(d / 16);
-//     // eslint-disable-next-line
-//     return (c === 'x' ? r : ((r & 0x7) | 0x8)).toString(16);
-//   });
-//   return uuid;
-// };
 export const genUUID = (len?: number, radix?: number) => {
   const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'.split('');
   const _radix = radix || chars.length;

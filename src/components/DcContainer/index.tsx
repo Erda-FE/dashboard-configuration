@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-26 17:25:09
+ * @Last Modified time: 2021-02-24 16:00:10
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
@@ -10,10 +10,12 @@ import classnames from 'classnames';
 import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { useUpdate, DcIcon, DcEmpty } from '../../common';
+import { replaceVariable } from '../../common/utils';
 import { getConfig } from '../../config';
 import { FetchStatus } from './constants';
 import ViewDropdownOptions from './options';
 import { ChartMask, ChartSpinMask } from '../DcCharts/common';
+import { createLoadDataFn } from '../DcChartEditor/data-config/dice-form/data-loader';
 // DcDashboard 里面发起的请求,需要提供配置
 import { getChartData } from '../../services/chart-editor';
 import ChartEditorStore from '../../stores/chart-editor';
@@ -32,9 +34,9 @@ interface IProps {
   isPure?: boolean;
 }
 const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
-  const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
-  const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
+  const [fromPureFullscreenStatus, globalVariable] = DashboardStore.useStore((s) => [s.isFullscreen, s.globalVariable]);
   const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
+  const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
   const { toggleFullscreen: toggleFromEditorPureFullscreen, editView } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
   const toggleFullscreen = isPure ? togglePureFullscreen : toggleFromEditorPureFullscreen;
@@ -42,25 +44,25 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   const {
     title: _title,
     description: _description,
+    chartType,
     hideHeader = false,
     maskMsg,
     controls = [],
-    customRender,
     config,
-    chartType,
     api,
-    loadData,
     staticData,
     dataConvertor,
     chartQuery,
+    loadData: propLoadData,
+    customRender,
   } = view;
 
   const chartEditorVisible = !!editChartId;
   const childNode = React.Children.only(children);
-  const hasLoadFn = isFunction(loadData);
   const dataConfigSelectors = get(api, ['extraData', 'dataConfigSelectors']);
   const dynamicFilterKey = get(api, ['extraData', 'dynamicFilterKey']);
   const dynamicFilterDataAPI = get(api, ['extraData', 'dynamicFilterDataAPI']);
+
   const isCustomTitle = isFunction(_title);
   const title = isCustomTitle ? (_title as Function)() : _title;
   const description = isFunction(_description) ? _description() : _description;
@@ -73,18 +75,21 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     staticLoadFnPayload,
     dynamicLoadFnPayloadMap,
     dynamicFilterData,
+    loadData,
   }, updater, update] = useUpdate({
-    resData: (hasLoadFn ? {} : staticData) as DC.StaticData,
+    resData: {},
     fetchStatus: FetchStatus.NONE,
     staticLoadFnPayload: {},
     dynamicLoadFnPayloadMap: {},
     dynamicFilterData: [],
+    loadData: propLoadData,
   });
   const viewRef = useRef<HTMLDivElement>(null);
 
+  // 初始化 static data
   useEffect(() => {
-    updater.resData((hasLoadFn ? {} : staticData) as DC.StaticData);
-  }, [hasLoadFn, staticData, updater]);
+    updater.resData((isFunction(loadData) ? {} : staticData) as DC.StaticData);
+  }, [loadData, staticData, updater]);
 
   const _loadData = useCallback((arg?: any, body?: any) => {
     if (!isFunction(loadData)) return;
@@ -149,7 +154,8 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   const loadDynamicFilterData = useCallback(() => {
     const _dynamicFilterDataAPI = get(api, ['extraData', 'dynamicFilterDataAPI']);
     if (!isEmpty(_dynamicFilterDataAPI)) {
-      const { start, end } = get(api, ['query']);
+      const start = api?.query?.start;
+      const end = api?.query?.end;
       getChartData(merge({}, _dynamicFilterDataAPI, { query: { start, end } })).then(({ data }: any) => {
         if (isEmpty(data)) return;
         const { cols, data: _data } = data;
@@ -164,12 +170,23 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     }
   }, [api, updater]);
 
+  // init loadData
   useEffect(() => {
-    if (hasLoadFn) {
+    if (!!api && !isEmpty(api) && !loadData) {
+      updater.loadData(createLoadDataFn({
+        api: replaceVariable(api, globalVariable),
+        chartType,
+        ...(get(view, 'config.dataSourceConfig') || {}),
+      }));
+    }
+  }, [api, chartType, globalVariable, loadData, updater, view]);
+
+  useEffect(() => {
+    if (isFunction(loadData)) {
       _loadData(chartQuery);
       loadDynamicFilterData();
     }
-  }, [_loadData, chartQuery, hasLoadFn, loadDynamicFilterData]);
+  }, [chartQuery, _loadData, loadDynamicFilterData, loadData]);
 
   const getTitle = () => (
     <div className="dc-chart-title-ct pointer">

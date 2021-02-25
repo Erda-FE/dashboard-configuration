@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-24 16:00:10
+ * @Last Modified time: 2021-02-25 16:25:18
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
@@ -53,7 +53,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     staticData,
     dataConvertor,
     chartQuery,
-    loadData: propLoadData,
+    loadData,
     customRender,
   } = view;
 
@@ -75,27 +75,26 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     staticLoadFnPayload,
     dynamicLoadFnPayloadMap,
     dynamicFilterData,
-    loadData,
   }, updater, update] = useUpdate({
     resData: {},
     fetchStatus: FetchStatus.NONE,
     staticLoadFnPayload: {},
     dynamicLoadFnPayloadMap: {},
     dynamicFilterData: [],
-    loadData: propLoadData,
   });
   const viewRef = useRef<HTMLDivElement>(null);
 
-  // 初始化 static data
+  // 初始化 resData
   useEffect(() => {
-    updater.resData((isFunction(loadData) ? {} : staticData) as DC.StaticData);
-  }, [loadData, staticData, updater]);
+    updater.resData((isEmpty(api) ? {} : staticData) as DC.StaticData);
+  }, [api, staticData, updater]);
 
-  const _loadData = useCallback((arg?: any, body?: any) => {
-    if (!isFunction(loadData)) return;
+  const _loadData = useCallback((params: { fn: (payload: any, body?: any) => Promise<any>; arg?: any; body?: any }) => {
+    const { arg, body, fn } = params;
+    if (!isFunction(fn)) return;
     updater.fetchStatus(FetchStatus.FETCH);
     // 调用外部传入的函数
-    loadData({
+    fn({
       ...reduce(dynamicLoadFnPayloadMap, (result, v) => ({ ...result, ...v }), {}),
       ...staticLoadFnPayload,
       ...arg,
@@ -117,7 +116,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
           try {
             _res = (convertor as Function)(res);
           } catch (error) {
-          console.error('catch error in dataConvertor', error); // eslint-disable-line
+            console.error('catch error in dataConvertor', error); // eslint-disable-line
           }
         }
 
@@ -140,7 +139,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
           });
         }
       });
-  }, [dataConvertor, dynamicLoadFnPayloadMap, loadData, staticLoadFnPayload, update, updater]);
+  }, [dataConvertor, dynamicLoadFnPayloadMap, staticLoadFnPayload, update, updater]);
 
   const _childNode = React.cloneElement(childNode, {
     ...childNode.props,
@@ -170,22 +169,20 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     }
   }, [api, updater]);
 
-  // init loadData
+  // 传了 api 但是没有 loadData，帮助生成 loadData
   useEffect(() => {
     if (!!api && !isEmpty(api) && !loadData) {
-      updater.loadData(createLoadDataFn({
+      _loadData({ fn: createLoadDataFn({
         api: replaceVariable(api, globalVariable),
         chartType,
         ...(get(view, 'config.dataSourceConfig') || {}),
-      }));
+      }) });
     }
-  }, [api, chartType, globalVariable, loadData, updater, view]);
+  }, [_loadData, api, chartType, globalVariable, loadData, view]);
 
   useEffect(() => {
-    if (isFunction(loadData)) {
-      _loadData(chartQuery);
-      loadDynamicFilterData();
-    }
+    isFunction(loadData) && _loadData({ arg: chartQuery, fn: loadData });
+    loadDynamicFilterData();
   }, [chartQuery, _loadData, loadDynamicFilterData, loadData]);
 
   const getTitle = () => (

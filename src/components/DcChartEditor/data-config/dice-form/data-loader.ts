@@ -3,13 +3,13 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-24 16:31:58
+ * @Last Modified time: 2021-02-25 12:38:00
  */
 import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { getFormatter } from '../../../../common/utils';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
-import { CreateLoadDataParams } from 'src/types';
+import { CreateLoadDataParams, DC } from 'src/types';
 
 export const createLoadDataFn = ({
   api,
@@ -142,11 +142,13 @@ export const createLoadDataFn = ({
       };
     }
     if (isMetricCardType) {
-      const { data: dataSource } = data;
-
-      return {
-        metricData: map(_valueDimensions, (item) => ({ name: item.alias, value: dataSource[0][item.key], unit: item.unit })),
-      };
+      const val = data.data[0];
+      const metricData = map(_valueDimensions, (item) => ({
+        name: item.alias,
+        value: val[item.key],
+        unit: item.unit,
+      }));
+      return { metricData };
     }
     if (isMapType) {
       const { data: dataSource } = data;

@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-25 16:25:18
+ * @Last Modified time: 2021-02-26 14:29:40
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
@@ -32,9 +32,10 @@ interface IProps {
   view: DC.View;
   children: ReactElement<any>;
   isPure?: boolean;
+  globalVariable?: Record<string, any>;
 }
-const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
-  const [fromPureFullscreenStatus, globalVariable] = DashboardStore.useStore((s) => [s.isFullscreen, s.globalVariable]);
+const DcContainer = ({ view, viewId, children, isPure, globalVariable }: IProps) => {
+  const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
   const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
   const { toggleFullscreen: toggleFromEditorPureFullscreen, editView } = ChartEditorStore;

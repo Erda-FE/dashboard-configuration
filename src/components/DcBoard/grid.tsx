@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:08:25
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-02 14:18:27
+ * @Last Modified time: 2021-02-26 14:18:57
  */
 import React, { useMemo, useEffect } from 'react';
 import { isEmpty, map } from 'lodash';
@@ -31,7 +31,7 @@ const BoardGrid = ({ width, layout }: { width: any; layout: DC.Layout }) => {
 
   // grid 组件内部会修改layout，而cube里的是不可直接更改的，所以重新生成一个对象
   const _pureLayout = map(pureLayout, (p) => ({ ...p }));
-  const children = useMemo(() => genGridItems(_pureLayout, viewMap), [_pureLayout, viewMap]);
+  const children = useMemo(() => genGridItems({ pureLayout: _pureLayout, viewMap }), [_pureLayout, viewMap]);
 
   if (isEmpty(pureLayout) || width === Infinity) {
     return (

@@ -165,6 +165,7 @@ declare namespace DC {
     timeSpan?: { startTimeMs: number; endTimeMs: number };
     /** 大盘名 */
     name?: string;
+    id?: string;
     /** 配置信息，包含图表布局、各图表配置信息 */
     layout: Layout;
     /** 外部数据源表单配置器，机制待完善 */
@@ -184,10 +185,11 @@ declare namespace DC {
   export interface PureBoardGridProps {
     /** 大盘名 */
     name?: string;
+    id?: string;
     /** 大盘配置 */
     layout: Layout;
     /** 全局变量 */
-    globalVariable: Record<string, any>;
+    globalVariable?: Record<string, any>;
     /** 是否显示大盘全局操作栏 */
     showOptions?: boolean;
   }

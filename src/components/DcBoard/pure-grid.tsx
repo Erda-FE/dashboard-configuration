@@ -2,9 +2,9 @@
  * @Author: licao
  * @Date: 2020-12-04 15:07:46
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-23 13:56:57
+ * @Last Modified time: 2021-02-26 18:20:41
  */
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { isEmpty } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import { DC } from 'src/types';
@@ -13,25 +13,22 @@ import { splitLayoutAndView } from './common/utils';
 import { useUpdate } from '../../common';
 import { genGridItems } from './common';
 
-const PureBoardGrid = ({ width, layout }: { width: any; layout: DC.Layout }) => {
-  const [{
+interface IProps {
+  width: any;
+  layout: DC.Layout;
+  globalVariable?: Record<string, any>;
+}
+
+const PureBoardGrid = ({ width, layout, globalVariable }: IProps) => {
+  const [pureLayout, viewMap] = useMemo(() => splitLayoutAndView(layout), [layout]);
+  const gridItems = useMemo(() => genGridItems({
     pureLayout,
     viewMap,
-  }, updater] = useUpdate({
-    pureLayout: [],
-    viewMap: {},
-  });
+    globalVariable,
+    isPure: true,
+  }), [globalVariable, pureLayout, viewMap]);
 
-  useEffect(() => {
-    const [a, b] = splitLayoutAndView(layout);
-    updater.pureLayout(a);
-    updater.viewMap(b);
-  }, [layout, updater]);
-
-  if (isEmpty(pureLayout) || width === Infinity) {
-    return null;
-  }
-
+  if (isEmpty(pureLayout) || width === Infinity) return null;
   const copyPureLayout = pureLayout.map((p) => ({ ...p }));
 
   return (
@@ -46,7 +43,7 @@ const PureBoardGrid = ({ width, layout }: { width: any; layout: DC.Layout }) => 
       isResizable={false}
       useCSSTransforms
     >
-      {genGridItems(copyPureLayout, viewMap, true)}
+      {gridItems}
     </ReactGridLayout>
   );
 };

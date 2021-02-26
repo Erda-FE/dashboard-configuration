@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 15:10:37
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-24 14:29:46
+ * @Last Modified time: 2021-02-26 14:22:59
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
@@ -27,11 +27,6 @@ const PureDashboard = ({
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
   const [gridWidthHolder, gridWidth] = useComponentWidth();
-  const { setGlobalVariable } = DashboardStore;
-
-  useEffect(() => {
-    globalVariable && setGlobalVariable(globalVariable);
-  }, [globalVariable, setGlobalVariable]);
 
   return (
     <div
@@ -58,7 +53,11 @@ const PureDashboard = ({
         />
         <div className="dc-dashboard-grid-wp">
           {gridWidthHolder}
-          <PureBoardGrid width={gridWidth} layout={layout} />
+          <PureBoardGrid
+            width={gridWidth}
+            layout={layout}
+            globalVariable={globalVariable}
+          />
         </div>
       </div>
     </div>

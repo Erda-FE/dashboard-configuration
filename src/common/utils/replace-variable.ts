@@ -1,4 +1,5 @@
 import produce from 'immer';
+import { isEmpty } from 'lodash';
 
 /**
  *替换字符串或对象中的 {{}} 为指定的变量
@@ -7,7 +8,8 @@ import produce from 'immer';
  * @param {Record<string, any>} variable
  * @returns {*}
  */
-function replaceVariable(source: any, variable: Record<string, any>): any {
+function replaceVariable(source: any, variable?: Record<string, any>): any {
+  if (!variable || isEmpty(variable)) return source;
   const replaceReg = /\{\{.*?\}\}/g;
   const type = typeof source;
   if (type === 'string') {

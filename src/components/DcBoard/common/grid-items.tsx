@@ -4,8 +4,15 @@ import { DC } from 'src/types';
 import DcContainer from '../../DcContainer';
 import { getConfig } from '../../../config';
 
+interface IParams {
+  pureLayout: DC.PureLayoutItem[];
+  viewMap: Record<string, DC.View>;
+  isPure?: boolean;
+  globalVariable?: Record<string, any>;
+}
+
 const chartConfigMap = getConfig('chartConfigMap');
-const genGridItems = (pureLayout: DC.PureLayoutItem[], viewMap: Record<string, DC.View>, isPure?: boolean) => {
+const genGridItems = ({ pureLayout, viewMap, isPure, globalVariable }: IParams) => {
   return map(pureLayout, ({ i, ...others }: any) => {
     let ChildComp = null;
     let view = viewMap[i];
@@ -19,7 +26,16 @@ const genGridItems = (pureLayout: DC.PureLayoutItem[], viewMap: Record<string, D
       const { chartType = '' } = view;
       const ChartNode = get(chartConfigMap, [chartType, 'Component']) as any;
       const node = ChartNode ? <ChartNode {...view.chartProps} {...view.api} /> : <></>;
-      ChildComp = <DcContainer viewId={i} view={view} isPure={isPure}>{node}</DcContainer>;
+      ChildComp = (
+        <DcContainer
+          viewId={i}
+          view={view}
+          isPure={isPure}
+          globalVariable={globalVariable}
+        >
+          {node}
+        </DcContainer>
+      );
     } else {
       // eslint-disable-next-line no-console
       console.error('layout view should be object or function');

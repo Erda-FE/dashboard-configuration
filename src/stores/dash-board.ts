@@ -7,7 +7,6 @@ interface IState {
   layout: any[];
   theme: string;
   locale: 'en' | 'zh';
-  globalVariable: Record<string, string>;
   textMap: TextType;
 }
 
@@ -16,7 +15,6 @@ const initState: IState = {
   layout: [],
   theme: 'dice',
   locale: 'zh',
-  globalVariable: {},
   textMap: TEXT_ZH_MAP,
 };
 
@@ -29,9 +27,6 @@ const dashBoardStore = createFlatStore({
     },
     reset() {
       return initState;
-    },
-    setGlobalVariable(state, globalVariable) {
-      state.globalVariable = globalVariable;
     },
     setLocale(state, key: 'en' | 'zh') {
       state.locale = key;

@@ -29,7 +29,7 @@ class AryFormatter extends Formatter {
     if (value === 0) {
       return `${this.toFixed(value, fixed)} ${aryTower[0]}`;
     }
-    if (ary && aryTower) {
+    if (ary && aryTower && value > 0) {
       let power = Math.floor(Math.log(value) / Math.log(ary));
       power = power < aryTower.length ? power : aryTower.length - 1;
       power = power > 0 ? power : 0;

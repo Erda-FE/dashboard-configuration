@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-05 00:18:27
+ * @Last Modified time: 2021-03-02 16:00:52
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
 import { Button, Tooltip, Dropdown, Menu } from '@terminus/nusi';
@@ -168,11 +168,13 @@ const DashboardHeader = ({
 
   const renderTools = (tools: DC_BOARD_HEADER.Tool[]) => tools.map(({ text, icon, btnType, customRender, onClick }) => (
     <Choose>
-      <When key={icon} condition={!!customRender}>
-        {(customRender as Function)()}
+      <When condition={!!customRender}>
+        <React.Fragment key={icon}>
+          {(customRender as Function)()}
+        </React.Fragment>
       </When>
       <Otherwise>
-        <Tooltip title={text}>
+        <Tooltip title={text} key={icon}>
           <Button type={btnType || 'text'} onClick={onClick}>
             <DcIcon type={icon} />
           </Button>

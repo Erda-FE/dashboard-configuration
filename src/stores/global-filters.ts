@@ -5,6 +5,7 @@ const textMap = DashboardStore.getState((s) => s.textMap);
 interface IState {
   configModalVisible: boolean;
   globalFilters: DC_GLOBAL_FILTERS.Filter[];
+  globalVariable: Record<string, any>;
 }
 
 const initState: IState = {
@@ -14,10 +15,11 @@ const initState: IState = {
       key: 'time',
       name: 'time',
       type: 'time',
-      label: textMap['time filter'],
-      enable: true,
+      label: textMap['select time'],
+      enable: false,
     },
   ] as DC_GLOBAL_FILTERS.Filter[],
+  globalVariable: {},
 };
 
 const globalFiltersStore = createFlatStore({
@@ -29,6 +31,9 @@ const globalFiltersStore = createFlatStore({
     },
     submitFilters(state, filters: DC_GLOBAL_FILTERS.Filter[]) {
       state.globalFilters = filters;
+    },
+    updateGlobalVariable(state, globalVariable: Record<string, any>) {
+      state.globalVariable = { ...state.globalVariable, ...globalVariable };
     },
   },
 });

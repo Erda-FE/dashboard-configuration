@@ -1,6 +1,6 @@
 declare namespace DC_GLOBAL_FILTERS {
 
-  type FilterType = 'time' | 'input' | 'select' | 'constant';
+  type FilterType = 'time' | 'search' | 'select' | 'constant';
 
   interface Filter {
     key: string;
@@ -8,9 +8,9 @@ declare namespace DC_GLOBAL_FILTERS {
     name: string;
     label?: string;
     desc?: string;
+    placeholder?: string;
+    defaultValue?: any;
     // type: FilterType;
-    // enable 优先级高于 visible
     enable: boolean;
-    visible?: boolean;
   }
 }

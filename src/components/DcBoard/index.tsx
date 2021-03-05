@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 10:25:39
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-04 20:09:30
+ * @Last Modified time: 2021-03-03 20:38:30
  */
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
@@ -14,10 +14,11 @@ import { DC } from 'src/types';
 import { useComponentWidth } from '../../common';
 import DashboardHeader from './header';
 import BoardGrid from './grid';
+import GlobalFilters from '../DcGlobalFilters';
 // 编辑器部分
 import DcChartEditor from '../DcChartEditor';
 import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
-import { ConfigGlobalFiltersModal } from '../DcGlobalFilters';
+import { ConfigGlobalFiltersModal } from '../DcGlobalFilters/config-modal';
 import ChartEditorStore from '../../stores/chart-editor';
 
 import '../../static/iconfont.js';
@@ -30,6 +31,8 @@ const DcBoard = ({
   name,
   APIFormComponent = DiceDataConfigFormComponent,
   layout,
+  globalVariable,
+  id,
   onEdit,
   onCancel,
   onSave,
@@ -90,9 +93,10 @@ const DcBoard = ({
         onCancel={onCancel}
       />
       <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
+        <GlobalFilters id={id} />
         <div className="dc-dashboard-grid-wp flex-1">
           {gridWidthHolder}
-          <BoardGrid width={gridWidth} layout={layout} />
+          <BoardGrid width={gridWidth} layout={layout} globalVariable={globalVariable} />
         </div>
       </div>
       <ConfigGlobalFiltersModal />

@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-02-26 14:29:40
+ * @Last Modified time: 2021-03-03 18:00:49
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
@@ -173,11 +173,13 @@ const DcContainer = ({ view, viewId, children, isPure, globalVariable }: IProps)
   // 传了 api 但是没有 loadData，帮助生成 loadData
   useEffect(() => {
     if (!!api && !isEmpty(api) && !loadData) {
-      _loadData({ fn: createLoadDataFn({
-        api: replaceVariable(api, globalVariable),
-        chartType,
-        ...(get(view, 'config.dataSourceConfig') || {}),
-      }) });
+      _loadData({
+        fn: createLoadDataFn({
+          api: replaceVariable(api, globalVariable),
+          chartType,
+          ...(get(view, 'config.dataSourceConfig') || {}),
+        }),
+      });
     }
   }, [_loadData, api, chartType, globalVariable, loadData, view]);
 

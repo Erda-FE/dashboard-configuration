@@ -70,7 +70,18 @@ const confirmVersion = async (version) => {
   if (!answer.confirmVersion) exit();
 }
 
-const goRelease = (version) => {
+const confirmChangelog = async (version) => {
+  const answer = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'confirmChangelog',
+      message: `可以检查生成的 changelog，确认无误后开始推送代码？`
+    }
+  ])
+  if (!answer.confirmChangelog) exit();
+}
+
+const goRelease = async (version) => {
   const npm = [
     `npm version ${version}`,
     'npm whoami --registry=https://registry.npm.terminus.io',
@@ -85,12 +96,12 @@ const goRelease = (version) => {
 
   npm.forEach(command => TIP.message(execSync(command).toString()));
   TIP.success('已发布到 https://registry.npm.terminus.io');
-  const spinner = ora(STYLE.message('开始生成 changelog...')).start()
+  const spinner = ora(STYLE.message('开始生成 changelog...')).start();
   execSync(GEN_CHANGELOG);
-  spinner.succeed(STYLE.message('已生成 changelog!'))
+  spinner.succeed(STYLE.message('已生成 changelog!'));
+  await confirmChangelog();
   git.forEach(command => TIP.message(execSync(command).toString()));
   TIP.success('更新已推送！');
-  exit();
 }
 
 const release = async () => {
@@ -99,7 +110,8 @@ const release = async () => {
     const releaseType = await selectVersionType();
     const version = semverInc(pkg.version, releaseType);
     await confirmVersion(version);
-    goRelease(version);
+    await goRelease(version);
+    exit();
   } catch (err) {
     TIP.error();
   }

@@ -50,7 +50,7 @@ interface View {
   version?: string;
   name: string;
   // 展示类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择
-  chartType: ViewType; // chart:timeline | chart:bar | chart:radar ...
+  chartType: ViewType;
   curMapType?: any[];
   tooltip?: any;
   chartProps?: any;

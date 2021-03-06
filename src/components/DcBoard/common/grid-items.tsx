@@ -9,10 +9,11 @@ interface IParams {
   viewMap: Record<string, DC.View>;
   isPure?: boolean;
   globalVariable?: Record<string, any>;
+  onBoardEvent?: DC.onBoardEvent;
 }
 
 const chartConfigMap = getConfig('chartConfigMap');
-const genGridItems = ({ pureLayout, viewMap, isPure, globalVariable }: IParams) => {
+const genGridItems = ({ pureLayout, viewMap, isPure, globalVariable, onBoardEvent }: IParams) => {
   return map(pureLayout, ({ i, ...others }: any) => {
     let ChildComp = null;
     let view = viewMap[i];
@@ -32,6 +33,7 @@ const genGridItems = ({ pureLayout, viewMap, isPure, globalVariable }: IParams) 
           view={view}
           isPure={isPure}
           globalVariable={globalVariable}
+          onBoardEvent={onBoardEvent}
         >
           {node}
         </DcContainer>

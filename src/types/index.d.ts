@@ -158,6 +158,25 @@ declare namespace DC {
     static?: boolean;
   }
 
+  interface BoardEvent {
+    /**
+     *约定的事件名
+     *
+     * @type {string}
+     * @memberof BoardEvent
+     */
+    name: string;
+    /**
+     *事件触发的值
+     *
+     * @type {*}
+     * @memberof BoardEvent
+     */
+    value: any;
+  }
+
+  type onBoardEvent = (v: BoardEvent) => void;
+
   type Layout = Array<Merge<LayoutItem, PureLayoutItem>>;
 
   export interface BoardGridProps {
@@ -196,6 +215,8 @@ declare namespace DC {
     globalVariable?: Record<string, any>;
     /** 是否显示大盘全局操作栏 */
     showOptions?: boolean;
+    /** 事件回调，需要组件支持 */
+    onBoardEvent?: DC.onBoardEvent;
   }
 
   export interface DiceDataConfigProps {

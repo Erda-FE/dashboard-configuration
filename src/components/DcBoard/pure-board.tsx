@@ -23,6 +23,7 @@ const PureDashboard = ({
   layout,
   showOptions = false,
   globalVariable,
+  onBoardEvent,
 }: DC.PureBoardGridProps) => {
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
@@ -57,6 +58,7 @@ const PureDashboard = ({
             width={gridWidth}
             layout={layout}
             globalVariable={globalVariable}
+            onBoardEvent={onBoardEvent}
           />
         </div>
       </div>

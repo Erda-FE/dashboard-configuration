@@ -133,6 +133,9 @@ export const TEXT_ZH_MAP = {
   'input keywords': '输入关键字',
   'select datasource': '选择数据源',
   'define constant': '指定固定值',
+  'table row click': '表格行点击',
+  'event name': '事件名',
+  'event value': '事件传递值',
 };
 
 export const TEXT_EN_MAP = {
@@ -269,6 +272,9 @@ export const TEXT_EN_MAP = {
   'input keywords': 'input keywords',
   'select datasource': 'select datasource',
   'define constant': 'define constant',
+  'table row click': 'table row click',
+  'event name': 'event name',
+  'event value': 'event value',
 };
 
 export const DEFAULT_VIEW_CONFIG = {

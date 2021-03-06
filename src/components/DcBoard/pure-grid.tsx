@@ -4,29 +4,30 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-02-26 18:20:41
  */
-import React, { useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { isEmpty } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
 import { DC } from 'src/types';
 import { GRID_LAYOUT_CONFIG } from '../../constants';
 import { splitLayoutAndView } from './common/utils';
-import { useUpdate } from '../../common';
 import { genGridItems } from './common';
 
 interface IProps {
   width: any;
   layout: DC.Layout;
   globalVariable?: Record<string, any>;
+  onBoardEvent?: DC.onBoardEvent;
 }
 
-const PureBoardGrid = ({ width, layout, globalVariable }: IProps) => {
+const PureBoardGrid = ({ width, layout, globalVariable, onBoardEvent }: IProps) => {
   const [pureLayout, viewMap] = useMemo(() => splitLayoutAndView(layout), [layout]);
   const gridItems = useMemo(() => genGridItems({
     pureLayout,
     viewMap,
     globalVariable,
+    onBoardEvent,
     isPure: true,
-  }), [globalVariable, pureLayout, viewMap]);
+  }), [globalVariable, onBoardEvent, pureLayout, viewMap]);
 
   if (isEmpty(pureLayout) || width === Infinity) return null;
   const copyPureLayout = pureLayout.map((p) => ({ ...p }));

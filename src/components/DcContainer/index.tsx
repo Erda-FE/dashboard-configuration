@@ -33,8 +33,9 @@ interface IProps {
   children: ReactElement<any>;
   isPure?: boolean;
   globalVariable?: Record<string, any>;
+  onBoardEvent?: DC.onBoardEvent;
 }
-const DcContainer = ({ view, viewId, children, isPure, globalVariable }: IProps) => {
+const DcContainer = ({ view, viewId, children, isPure, globalVariable, onBoardEvent }: IProps) => {
   const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
   const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
@@ -149,6 +150,7 @@ const DcContainer = ({ view, viewId, children, isPure, globalVariable }: IProps)
     api,
     isEditView: chartEditorVisible,
     loadData: _loadData,
+    onBoardEvent,
   });
 
   const loadDynamicFilterData = useCallback(() => {

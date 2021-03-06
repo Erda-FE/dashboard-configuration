@@ -17,12 +17,15 @@ const getCurrentBranch = async () => {
 };
 const STYLE = {
   message: chalk.yellow.bold,
+  success: chalk.bgGreen.bold,
+  warning: chalk.bgYellowBright.gray.bold,
 };
 const TIP = {
   message: (...msg) => console.log(STYLE.message(...msg)),
-  success: (msg) => console.log(chalk.bgGreen.bold(`👏   ${msg}`)),
-  error: (...msg) => console.log(chalk.bgRedBright.bold('⚠️  发包中断，出现问题！\n'), ...msg),
-  exit: () => console.log(chalk.bgMagentaBright.bold('👋👋👋  拜拜...\n')),
+  success: (msg) => console.log(STYLE.success(`👏   ${msg}`)),
+  warning: (msg) => console.log(STYLE.warning(`‼️  ${msg}`)),
+  error: (msg) => console.log(chalk.bgRedBright.bold('⚠️  发包中断，出现问题！\n'), msg),
+  exit: () => console.log(chalk.bgMagentaBright.bold('👋👋👋 拜拜...\n')),
 };
 const exit = () => {
   TIP.exit();
@@ -33,16 +36,18 @@ const confirmBranch = async () => {
   const branch = await getCurrentBranch();
   TIP.message('当前分支：', branch);
   if (!branch.startsWith('release')) {
-    const answer = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'currentBranch',
-        message: `当前分支不是 release 分支，是否继续发包？`,
-        default: '否',
-        choices: ['否', '是'],
-      },
-    ]);
-    if (answer.currentBranch === '否') exit();
+    TIP.warning('必须在 release 分支发包！');
+    exit();
+    // const answer = await inquirer.prompt([
+    //   {
+    //     type: 'list',
+    //     name: 'currentBranch',
+    //     message: `当前分支不是 release 分支，是否继续发包？`,
+    //     default: '否',
+    //     choices: ['否', '是'],
+    //   },
+    // ]);
+    // if (answer.currentBranch === '否') exit();
   }
 };
 
@@ -94,12 +99,16 @@ const goRelease = async (version) => {
     `git push origin refs/tags/v${version}`,
   ];
 
+  const npmSpinner = ora(STYLE.message('开始发包...')).start();
   npm.forEach(command => TIP.message(execSync(command).toString()));
+  npmSpinner.stop();
   TIP.success('已发布到 https://registry.npm.terminus.io');
-  const spinner = ora(STYLE.message('开始生成 changelog...')).start();
+
+  const changelogSpinner = ora(STYLE.message('开始生成 changelog...')).start();
   execSync(GEN_CHANGELOG);
-  spinner.succeed(STYLE.message('已生成 changelog!'));
+  changelogSpinner.succeed(STYLE.message('已生成 changelog!'));
   await confirmChangelog();
+
   git.forEach(command => TIP.message(execSync(command).toString()));
   TIP.success('更新已推送！');
 }

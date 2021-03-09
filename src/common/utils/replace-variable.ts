@@ -17,8 +17,8 @@ function replaceVariable(source: any, variable?: Record<string, any>): any {
     if (!matches?.length) return source;
     let result;
     for (let index = 0; index < matches.length; index++) {
-      const val = variable[matches[index].slice(2, -2)];
-      result = val ? source.replace(replaceReg, val) : undefined;
+      const val = variable[matches[index].slice(2, -2)] || (source.length > matches[index].length ? '' : undefined);
+      result = (val || val === '') ? source.replace(replaceReg, val) : undefined;
     }
     return result;
   } else if (type != null && type === 'object') {

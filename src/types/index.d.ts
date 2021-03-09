@@ -165,14 +165,14 @@ declare namespace DC {
      * @type {string}
      * @memberof BoardEvent
      */
-    name: string;
+    eventName: string;
     /**
      *事件触发的值
      *
      * @type {*}
      * @memberof BoardEvent
      */
-    value: any;
+    cellValue: any;
   }
 
   type onBoardEvent = (v: BoardEvent) => void;

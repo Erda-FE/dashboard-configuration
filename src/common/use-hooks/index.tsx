@@ -1,6 +1,8 @@
 import React, { useRef, useState, useLayoutEffect } from 'react';
 import { useSize, useSetState, useUnmount } from 'react-use';
 
+export { default as useUniId } from './useUniId';
+
 export const useForceUpdate = () => {
   const forceUpdate = useState(0)[1];
   return useRef(() => forceUpdate((v) => v + 1)).current;

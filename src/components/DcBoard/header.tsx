@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-03 16:19:32
  * @Last Modified by: licao
- * @Last Modified time: 2021-03-02 16:00:52
+ * @Last Modified time: 2021-03-11 14:33:40
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
 import { Button, Tooltip, Dropdown, Menu } from '@terminus/nusi';
@@ -130,29 +130,29 @@ const DashboardHeader = ({
         // onClick: () => setPickChartModalVisible(true),
         onClick: () => addView(undefined),
       },
-      {
-        icon: 'setting',
-        customRender: () => {
-          return (
-            <Dropdown
-              trigger={['click']}
-              overlay={
-                <Menu>
-                  <Menu.Item>
-                    <a className="dc-chart-title-dp-op" onClick={() => toggleConfigModal()}>
-                      {textMap['global filter']}
-                    </a>
-                  </Menu.Item>
-                </Menu>
-              }
-            >
-              <Button type="text">
-                <DcIcon type="setting" />
-              </Button>
-            </Dropdown>
-          );
-        },
-      },
+      // {
+      //   icon: 'setting',
+      //   customRender: () => {
+      //     return (
+      //       <Dropdown
+      //         trigger={['click']}
+      //         overlay={
+      //           <Menu>
+      //             <Menu.Item>
+      //               <a className="dc-chart-title-dp-op" onClick={() => toggleConfigModal()}>
+      //                 {textMap['global filter']}
+      //               </a>
+      //             </Menu.Item>
+      //           </Menu>
+      //         }
+      //       >
+      //         <Button type="text">
+      //           <DcIcon type="setting" />
+      //         </Button>
+      //       </Dropdown>
+      //     );
+      //   },
+      // },
       {
         icon: 'save',
         text: textMap['save dashboard'],

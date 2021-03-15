@@ -13,14 +13,13 @@ function replaceVariable(source: any, variable?: Record<string, any>): any {
   const replaceReg = /\{\{.*?\}\}/g;
   const type = typeof source;
   if (type === 'string') {
-    const matches = source.match(replaceReg);
-    if (!matches?.length) return source;
-    let result;
-    for (let index = 0; index < matches.length; index++) {
-      const val = variable[matches[index].slice(2, -2)] || (source.length > matches[index].length ? '' : undefined);
-      result = (val || val === '') ? source.replace(replaceReg, val) : undefined;
-    }
-    return result;
+    const matchItems = source.match(replaceReg);
+    if (!matchItems?.length) return source;
+    return matchItems.reduce((acc: string, current: string) => {
+      const val = variable[current.slice(2, -2)]
+        || (source.length > current.length ? '' : undefined);
+      return (val || val === '') ? acc.replaceAll(current, val) : undefined;
+    }, source);
   } else if (type != null && type === 'object') {
     const result = produce(source, (draft: { [x: string]: any }) => {
       for (const key in draft) {

@@ -50,7 +50,7 @@ const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) =>
       eventName: name,
       cellValue: record[value],
       record,
-      dataSource,
+      dataSource: find(dataSource, { [value]: record[value] }),
     });
   }, [dataSource, onBoardEvent, rowClick]);
 

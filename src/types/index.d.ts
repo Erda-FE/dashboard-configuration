@@ -133,7 +133,7 @@ declare namespace DC {
     api?: API;
     chartQuery?: any;
     maskMsg?: string | Element;
-    customRender?: (element: ReactElement<any>, view: any) => ReactNode;
+    customRender?: (element: ReactElement<any>, view: DC.View) => ReactNode;
     /** 动态获取数据的方法，如果界面上配置了接口，则自动生成请求调用 */
     loadData?: (query?: object, body?: object) => Promise<any>;
     /** 数据转换，为 string 时表示使用已注册的方法 */
@@ -183,10 +183,10 @@ declare namespace DC {
     /**
      *返回的原始数据
      *
-     * @type {any[]}
+     * @type {any}
      * @memberof BoardEvent
      */
-    dataSource?: any[];
+    dataSource?: any;
   }
 
   type onBoardEvent = (v: BoardEvent) => void;

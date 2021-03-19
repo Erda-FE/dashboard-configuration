@@ -173,6 +173,20 @@ declare namespace DC {
      * @memberof BoardEvent
      */
     cellValue: any;
+    /**
+     *拿到所有值集合
+     *
+     * @type {Record<string, any>}
+     * @memberof BoardEvent
+     */
+    record?: Record<string, any>;
+    /**
+     *返回的原始数据
+     *
+     * @type {any[]}
+     * @memberof BoardEvent
+     */
+    dataSource?: any[];
   }
 
   type onBoardEvent = (v: BoardEvent) => void;

@@ -61,6 +61,7 @@ export const createLoadDataFn = ({
       return {
         cols: _cols,
         metricData: map(dataSource, (item, k) => (reduce(_cols, (result, { dataIndex }) => ({ ...result, [dataIndex]: item[dataIndex], c_key: k }), {}))),
+        dataSource,
       };
     } else {
       const { data: dataSource } = data;
@@ -88,6 +89,7 @@ export const createLoadDataFn = ({
             };
           }, {})
         )),
+        dataSource,
       };
     }
   }

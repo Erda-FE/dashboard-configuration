@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-03-03 18:00:49
+ * @Last Modified time: 2021-04-22 14:07:06
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
@@ -31,13 +31,25 @@ interface IProps {
   viewId: string;
   view: DC.View;
   children: ReactElement<any>;
-  isPure?: boolean;
+  isPure?: boolean; // 由于 DcContainer 组件是 PureBoardGrid 和 BoardGrid 共用，有些 Store 中的状态需要区分
   globalVariable?: Record<string, any>;
   onBoardEvent?: DC.onBoardEvent;
 }
-const DcContainer = ({ view, viewId, children, isPure, globalVariable, onBoardEvent }: IProps) => {
+const DcContainer: React.FC<IProps> = ({
+  view,
+  viewId,
+  children,
+  isPure,
+  globalVariable,
+  onBoardEvent,
+}) => {
+  // 全屏状态区分 Pure 和非 Pure
   const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
-  const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
+  const [
+    editChartId,
+    fromEditorFullscreenStatus,
+    isEditMode,
+  ] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
   const { toggleFullscreen: toggleFromEditorPureFullscreen, editView } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
@@ -61,15 +73,15 @@ const DcContainer = ({ view, viewId, children, isPure, globalVariable, onBoardEv
 
   const chartEditorVisible = !!editChartId;
   const childNode = React.Children.only(children);
-  const dataConfigSelectors = get(api, ['extraData', 'dataConfigSelectors']);
-  const dynamicFilterKey = get(api, ['extraData', 'dynamicFilterKey']);
-  const dynamicFilterDataAPI = get(api, ['extraData', 'dynamicFilterDataAPI']);
+  // 图表控件
+  const dataConfigSelectors = get(api, 'extraData.dataConfigSelectors');
+  const dynamicFilterKey = get(api, 'extraData.dynamicFilterKey');
+  const dynamicFilterDataAPI = get(api, ['extraData.dynamicFilterDataAPI']);
 
   const isCustomTitle = isFunction(_title);
   const title = isCustomTitle ? (_title as Function)() : _title;
   const description = isFunction(_description) ? _description() : _description;
   const isCustomRender = isFunction(customRender);
-  const isShowOptions = !chartEditorVisible && !isFullscreen;
 
   const [{
     resData,
@@ -88,7 +100,7 @@ const DcContainer = ({ view, viewId, children, isPure, globalVariable, onBoardEv
 
   // 初始化 resData
   useEffect(() => {
-    updater.resData((isEmpty(api) ? {} : staticData) as DC.StaticData);
+    updater.resData(staticData as DC.StaticData);
   }, [api, staticData, updater]);
 
   const _loadData = useCallback((params: { fn: (payload: any, body?: any) => Promise<any>; arg?: any; body?: any }) => {
@@ -216,7 +228,7 @@ const DcContainer = ({ view, viewId, children, isPure, globalVariable, onBoardEv
           <div className="flex-box">
             <h2 className="dc-chart-title px12">{title}</h2>
             <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
-              <If condition={isEditMode && isShowOptions}>
+              <If condition={isEditMode && !chartEditorVisible && !isFullscreen}>
                 <Tooltip title={textMap['config charts']}>
                   <Button type="text" onClick={() => editView(viewId)}><DcIcon type="edit" /></Button>
                 </Tooltip>
@@ -226,15 +238,16 @@ const DcContainer = ({ view, viewId, children, isPure, globalVariable, onBoardEv
                   <Button type="text"><DcIcon type="info-circle" /></Button>
                 </Tooltip>
               </If>
-              <ViewDropdownOptions
-                view={view}
-                viewId={viewId}
-                viewRef={viewRef}
-                disabled={isFullscreen || chartEditorVisible}
-                toggleFullscreen={toggleFullscreen}
-              >
-                <Button type="text"><DcIcon type="more" /></Button>
-              </ViewDropdownOptions>
+              <If condition={!isFullscreen && !chartEditorVisible}>
+                <ViewDropdownOptions
+                  view={view}
+                  viewId={viewId}
+                  viewRef={viewRef}
+                  toggleFullscreen={toggleFullscreen}
+                >
+                  <Button type="text"><DcIcon type="more" /></Button>
+                </ViewDropdownOptions>
+              </If>
             </div>
           </div>
           <If

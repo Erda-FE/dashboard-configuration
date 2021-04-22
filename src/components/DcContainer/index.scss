@@ -54,7 +54,11 @@ $chart-prefix-cls: #{$prefix}-chart;
   }
 
   &-header {
-    padding: 12px 12px 0 12px;
+    padding: 8px 12px;
+
+    &.active:hover {
+      background-color: $color-primary-04;
+    }
   }
 
   &-title {

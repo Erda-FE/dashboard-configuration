@@ -29,6 +29,11 @@
     align-items: center;
   }
 
+  .wrap-flex-box {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .full-height {
     height: 100%;
   }
@@ -87,6 +92,20 @@
     color: $color-text-sub;
   }
 
+  .left-text {
+    text-align: left;
+  }
+
+  .center-text {
+    text-align: center;
+  }
+
+  .ellipsis-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .primary-border {
     border: $primary-border;
   }
@@ -112,6 +131,13 @@
 @mixin font-size($list...) {
   @each $num in $list {
     .fz#{$num} { font-size: #{$num}px; }
+  }
+}
+
+// 百分比 width
+@mixin width($list...) {
+  @each $num in $list {
+    .wd#{$num} { width: percentage($num/100); }
   }
 }
 

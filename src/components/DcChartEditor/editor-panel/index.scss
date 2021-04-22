@@ -2,8 +2,22 @@
 $editor-prefix-cls: #{$prefix}-editor;
 
 .#{$editor-prefix-cls} {
+  &-wp {
+    background: $color-primary-background;
+  }
+
+  &-header {
+    background: $header-gray-background;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.1), 0 6px 12px 0 rgba(170, 182, 206, 0.2), inset 0 -1px 0 0 rgba(255, 255, 255, 0.3);
+    z-index: 100;
+  }
+
   &-content {
     display: flex;
+  }
+
+  &-previewer {
+    z-index: 99;
   }
 
   &-common-setting {
@@ -14,10 +28,31 @@ $editor-prefix-cls: #{$prefix}-editor;
     width: 350px;
   }
 
+  &-common-setting,
+  &-data-setting {
+    background: $color-primary-background;
+
+    &-content::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    &-content::-webkit-scrollbar-track {
+      border-radius: $box-radius;
+      background: transparent;
+    }
+
+    &-content::-webkit-scrollbar-thumb {
+      border-radius: $box-radius;
+      background: rgba(0, 0, 0, 0.06);
+    }
+  }
+
   &-footer {
     display: flex;
     flex-direction: row-reverse;
     justify-content: start;
     align-items: center;
+    background: $header-gray-background;
   }
 }

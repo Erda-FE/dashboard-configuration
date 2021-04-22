@@ -2,7 +2,7 @@
  * @Author: licao
  * @Date: 2020-12-04 16:32:38
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-26 17:25:09
+ * @Last Modified time: 2021-04-22 14:07:06
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
@@ -10,16 +10,19 @@ import classnames from 'classnames';
 import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
 import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { useUpdate, DcIcon, DcEmpty } from '../../common';
+import { replaceVariable } from '../../common/utils';
 import { getConfig } from '../../config';
 import { FetchStatus } from './constants';
 import ViewDropdownOptions from './options';
 import { ChartMask, ChartSpinMask } from '../DcCharts/common';
+import { createLoadDataFn } from '../DcChartEditor/data-config/dice-form/data-loader';
 // DcDashboard 里面发起的请求,需要提供配置
 import { getChartData } from '../../services/chart-editor';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 
 import './index.scss';
+import { DC } from 'src/types';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 const excludeEmptyType = ['chart:map'];
@@ -28,12 +31,26 @@ interface IProps {
   viewId: string;
   view: DC.View;
   children: ReactElement<any>;
-  isPure?: boolean;
+  isPure?: boolean; // 由于 DcContainer 组件是 PureBoardGrid 和 BoardGrid 共用，有些 Store 中的状态需要区分
+  globalVariable?: Record<string, any>;
+  onBoardEvent?: DC.onBoardEvent;
 }
-const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
+const DcContainer: React.FC<IProps> = ({
+  view,
+  viewId,
+  children,
+  isPure,
+  globalVariable,
+  onBoardEvent,
+}) => {
+  // 全屏状态区分 Pure 和非 Pure
   const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
+  const [
+    editChartId,
+    fromEditorFullscreenStatus,
+    isEditMode,
+  ] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
-  const [editChartId, fromEditorFullscreenStatus, isEditMode] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
   const { toggleFullscreen: toggleFromEditorPureFullscreen, editView } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
   const toggleFullscreen = isPure ? togglePureFullscreen : toggleFromEditorPureFullscreen;
@@ -41,30 +58,30 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   const {
     title: _title,
     description: _description,
+    chartType,
     hideHeader = false,
     maskMsg,
     controls = [],
-    customRender,
     config,
-    chartType,
     api,
-    loadData,
     staticData,
     dataConvertor,
     chartQuery,
+    loadData,
+    customRender,
   } = view;
 
   const chartEditorVisible = !!editChartId;
   const childNode = React.Children.only(children);
-  const hasLoadFn = isFunction(loadData);
-  const dataConfigSelectors = get(api, ['extraData', 'dataConfigSelectors']);
-  const dynamicFilterKey = get(api, ['extraData', 'dynamicFilterKey']);
-  const dynamicFilterDataAPI = get(api, ['extraData', 'dynamicFilterDataAPI']);
+  // 图表控件
+  const dataConfigSelectors = get(api, 'extraData.dataConfigSelectors');
+  const dynamicFilterKey = get(api, 'extraData.dynamicFilterKey');
+  const dynamicFilterDataAPI = get(api, ['extraData.dynamicFilterDataAPI']);
+
   const isCustomTitle = isFunction(_title);
   const title = isCustomTitle ? (_title as Function)() : _title;
   const description = isFunction(_description) ? _description() : _description;
   const isCustomRender = isFunction(customRender);
-  const isShowOptions = !chartEditorVisible && !isFullscreen;
 
   const [{
     resData,
@@ -73,7 +90,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     dynamicLoadFnPayloadMap,
     dynamicFilterData,
   }, updater, update] = useUpdate({
-    resData: (hasLoadFn ? {} : staticData) as DC.StaticData,
+    resData: {},
     fetchStatus: FetchStatus.NONE,
     staticLoadFnPayload: {},
     dynamicLoadFnPayloadMap: {},
@@ -81,15 +98,17 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
   });
   const viewRef = useRef<HTMLDivElement>(null);
 
+  // 初始化 resData
   useEffect(() => {
-    updater.resData((hasLoadFn ? {} : staticData) as DC.StaticData);
-  }, [hasLoadFn, staticData, updater]);
+    updater.resData(staticData as DC.StaticData);
+  }, [api, staticData, updater]);
 
-  const _loadData = useCallback((arg?: any, body?: any) => {
-    if (!isFunction(loadData)) return;
+  const _loadData = useCallback((params: { fn: (payload: any, body?: any) => Promise<any>; arg?: any; body?: any }) => {
+    const { arg, body, fn } = params;
+    if (!isFunction(fn)) return;
     updater.fetchStatus(FetchStatus.FETCH);
     // 调用外部传入的函数
-    loadData({
+    fn({
       ...reduce(dynamicLoadFnPayloadMap, (result, v) => ({ ...result, ...v }), {}),
       ...staticLoadFnPayload,
       ...arg,
@@ -111,7 +130,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
           try {
             _res = (convertor as Function)(res);
           } catch (error) {
-          console.error('catch error in dataConvertor', error); // eslint-disable-line
+            console.error('catch error in dataConvertor', error); // eslint-disable-line
           }
         }
 
@@ -134,7 +153,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
           });
         }
       });
-  }, [dataConvertor, dynamicLoadFnPayloadMap, loadData, staticLoadFnPayload, update, updater]);
+  }, [dataConvertor, dynamicLoadFnPayloadMap, staticLoadFnPayload, update, updater]);
 
   const _childNode = React.cloneElement(childNode, {
     ...childNode.props,
@@ -143,12 +162,14 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     api,
     isEditView: chartEditorVisible,
     loadData: _loadData,
+    onBoardEvent,
   });
 
   const loadDynamicFilterData = useCallback(() => {
     const _dynamicFilterDataAPI = get(api, ['extraData', 'dynamicFilterDataAPI']);
     if (!isEmpty(_dynamicFilterDataAPI)) {
-      const { start, end } = get(api, ['query']);
+      const start = api?.query?.start;
+      const end = api?.query?.end;
       getChartData(merge({}, _dynamicFilterDataAPI, { query: { start, end } })).then(({ data }: any) => {
         if (isEmpty(data)) return;
         const { cols, data: _data } = data;
@@ -163,12 +184,23 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     }
   }, [api, updater]);
 
+  // 传了 api 但是没有 loadData，帮助生成 loadData
   useEffect(() => {
-    if (hasLoadFn) {
-      _loadData(chartQuery);
-      loadDynamicFilterData();
+    if (!!api && !isEmpty(api) && !loadData) {
+      _loadData({
+        fn: createLoadDataFn({
+          api: replaceVariable(api, globalVariable),
+          chartType,
+          ...(get(view, 'config.dataSourceConfig') || {}),
+        }),
+      });
     }
-  }, [_loadData, chartQuery, hasLoadFn, loadDynamicFilterData]);
+  }, [_loadData, api, chartType, globalVariable, loadData, view]);
+
+  useEffect(() => {
+    isFunction(loadData) && _loadData({ arg: chartQuery, fn: loadData });
+    loadDynamicFilterData();
+  }, [chartQuery, _loadData, loadDynamicFilterData, loadData]);
 
   const getTitle = () => (
     <div className="dc-chart-title-ct pointer">
@@ -185,6 +217,7 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
     <div className={classnames({
       'dc-chart-header': true,
       'cursor-move': isEditMode && !chartEditorVisible,
+      active: isEditMode && !chartEditorVisible,
     })}
     >
       <Choose>
@@ -195,9 +228,9 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
           <div className="flex-box">
             <h2 className="dc-chart-title px12">{title}</h2>
             <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
-              <If condition={isEditMode && isShowOptions}>
+              <If condition={isEditMode && !chartEditorVisible && !isFullscreen}>
                 <Tooltip title={textMap['config charts']}>
-                  <Button type="text" onClick={() => editView(viewId)}><DcIcon type="setting" /></Button>
+                  <Button type="text" onClick={() => editView(viewId)}><DcIcon type="edit" /></Button>
                 </Tooltip>
               </If>
               <If condition={description}>
@@ -205,15 +238,16 @@ const DcContainer = ({ view, viewId, children, isPure }: IProps) => {
                   <Button type="text"><DcIcon type="info-circle" /></Button>
                 </Tooltip>
               </If>
-              <ViewDropdownOptions
-                view={view}
-                viewId={viewId}
-                viewRef={viewRef}
-                disabled={isFullscreen || chartEditorVisible}
-                toggleFullscreen={toggleFullscreen}
-              >
-                <Button type="text"><DcIcon type="more" /></Button>
-              </ViewDropdownOptions>
+              <If condition={!isFullscreen && !chartEditorVisible}>
+                <ViewDropdownOptions
+                  view={view}
+                  viewId={viewId}
+                  viewRef={viewRef}
+                  toggleFullscreen={toggleFullscreen}
+                >
+                  <Button type="text"><DcIcon type="more" /></Button>
+                </ViewDropdownOptions>
+              </If>
             </div>
           </div>
           <If

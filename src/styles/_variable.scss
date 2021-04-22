@@ -1,6 +1,7 @@
 $prefix: "dc";
 
 $color-primary: #6a549e;
+$color-primary-background: #f4f3f7;
 $color-border: #e8e8e8;
 $color-white: #fff;
 $light-black: #606060;
@@ -26,6 +27,7 @@ $color-white-9: rgba(255, 255, 255, 0.9) !default;
 
 $color-primary-1: rgba($color-primary, 0.1) !default;
 $color-primary-4: rgba($color-primary, 0.4) !default;
+$color-primary-04: rgba($color-primary, 0.04) !default;
 
 // Color text
 $color-text: $color-dark-8 !default;
@@ -44,5 +46,6 @@ $border: 1px solid $color-border;
 $dark-border: 1px solid $color-dark-1;
 $dark-dotted-border: 1px dotted $color-dark-1;
 $primary-border: 1px solid $color-primary;
+$header-gray-background: rgba(252, 252, 253, 1);
 
 $box-radius: 3px;

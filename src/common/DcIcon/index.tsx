@@ -1,10 +1,12 @@
 import * as React from 'react';
 import classnames from 'classnames';
+import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { Tooltip } from '@terminus/nusi';
 
 import './index.scss';
 
 interface IProps {
+  useSymbol?: boolean;
   type: DcIconType;
   size?: 'small' | 'default';
   className?: string;
@@ -12,6 +14,7 @@ interface IProps {
 }
 
 export const DcIcon = ({
+  useSymbol = false,
   type,
   size = 'default',
   className,
@@ -28,11 +31,20 @@ export const DcIcon = ({
   }
 
   return (
-    <span
-      className={_classNames}
-      onClick={onClick}
-      {...rest}
-    />
+    <Choose>
+      <When condition={useSymbol}>
+        <svg className="dc-iconfont dc-symbol-iconfont" aria-hidden="true">
+          <use xlinkHref={`#dc-icon-${type}`} />
+        </svg>
+      </When>
+      <Otherwise>
+        <span
+          className={_classNames}
+          onClick={onClick}
+          {...rest}
+        />
+      </Otherwise>
+    </Choose>
   );
 };
 

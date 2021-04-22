@@ -6,22 +6,24 @@ const vendors = [
   'react-dom',
   'lodash',
   'moment',
-  '@terminus/nusi',
   'immer',
+  'echarts',
+  'echarts-for-react',
 ];
 
+  /** @type { import('webpack').Configuration } */
 module.exports = {
   entry: { vendor: vendors },
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'dll.js',
-    library: '[name]_[hash]',
+    library: '[name]',
   },
   plugins: [
     new webpack.DllPlugin({
       path: path.join(__dirname, 'manifest.json'),
-      name: '[name]_[hash]',
       context: __dirname,
+      name: '[name]',
     }),
   ],
 };

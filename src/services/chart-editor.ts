@@ -1,3 +1,4 @@
+import { DC } from 'src/types';
 import agent from '../common/utils/agent';
 
 export const getChartData = ({ url, query, method = 'get', body }: DC.API) => (

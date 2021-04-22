@@ -3,23 +3,22 @@
  * @Author: licao
  * @Date: 2020-11-25 10:38:15
  * @Last Modified by: licao
- * @Last Modified time: 2021-01-08 21:10:39
+ * @Last Modified time: 2021-02-25 12:38:00
  */
 import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { getFormatter } from '../../../../common/utils';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
+import { CreateLoadDataParams, DC } from 'src/types';
 
-export interface ICreateLoadDataFn {
-  api: DC.API;
-  chartType: DC.ViewType;
-  typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  isSqlMode?: boolean;
-  customTime?: string;
-}
-
-export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensions, isSqlMode, customTime }: ICreateLoadDataFn) => async (payload: any = {}, body?: any) => {
+export const createLoadDataFn = ({
+  api,
+  chartType,
+  typeDimensions,
+  valueDimensions,
+  isSqlMode,
+  customTime,
+}: CreateLoadDataParams) => async (payload: any = {}, body?: any) => {
   // 固定时间范围查询逻辑 customTime
   let customTimeResult = {};
   if (customTime) {
@@ -62,6 +61,7 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
       return {
         cols: _cols,
         metricData: map(dataSource, (item, k) => (reduce(_cols, (result, { dataIndex }) => ({ ...result, [dataIndex]: item[dataIndex], c_key: k }), {}))),
+        dataSource,
       };
     } else {
       const { data: dataSource } = data;
@@ -89,6 +89,7 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
             };
           }, {})
         )),
+        dataSource,
       };
     }
   }
@@ -143,11 +144,13 @@ export const createLoadDataFn = ({ api, chartType, typeDimensions, valueDimensio
       };
     }
     if (isMetricCardType) {
-      const { data: dataSource } = data;
-
-      return {
-        metricData: map(_valueDimensions, (item) => ({ name: item.alias, value: dataSource[0][item.key], unit: item.unit })),
-      };
+      const val = data.data[0];
+      const metricData = map(_valueDimensions, (item) => ({
+        name: item.alias,
+        value: val[item.key],
+        unit: item.unit,
+      }));
+      return { metricData };
     }
     if (isMapType) {
       const { data: dataSource } = data;

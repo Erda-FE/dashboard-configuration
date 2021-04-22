@@ -2,10 +2,10 @@
 $header-prefix-cls: #{$prefix}-dashboard-header;
 
 .#{$header-prefix-cls} {
-  padding: 0 4px;
+  padding: 0 16px;
   border-radius: $box-radius $box-radius 0 0;
   border-bottom: $dark-border;
-  background: rgba(252, 252, 253, 1);
+  background: $header-gray-background;
   height: 50px;
 
   .#{$prefix}-dashboard-tools {

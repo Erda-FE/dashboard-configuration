@@ -1,0 +1,10 @@
+@import "../../../styles/dashboard-util";
+$grid-prefix-cls: #{$prefix}-global-filter-item;
+
+.#{$grid-prefix-cls} {
+  &-label {
+    color: $color-primary;
+    background: $color-white;
+    height: 100%;
+  }
+}

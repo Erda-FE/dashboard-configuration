@@ -1,3 +1,7 @@
+## [1.1.1](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.1.0...v1.1.1) (2021-04-29)
+
+
+
 # [1.1.0](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.0.2-alpha.6...v1.1.0) (2021-04-22)
 
 

@@ -45,7 +45,7 @@
     "react-dom": ">=16.14.0"
   },
   "dependencies": {
-    "@terminus/nusi": "^3.9.20",
+    "@terminus/nusi": "^3.10.78",
     "classnames": "^2.2.6",
     "cube-state": "1.2.1",
     "dom-to-image": "^2.6.0",

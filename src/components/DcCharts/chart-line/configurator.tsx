@@ -12,8 +12,9 @@ export default () => {
   const { updateEditor } = ChartEditorStore;
   const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
   const currentChartConfig = viewCopy?.config || {};
+
   const optionProps = currentChartConfig.optionProps || {};
-  const { isLabel, isConnectNulls, nullDisplay } = optionProps;
+  const { isLabel, isConnectNulls, nullDisplay, invalidToZero } = optionProps;
 
   const updateOptionProps = (_optionProps: Record<string, any>) => {
     updateEditor({
@@ -32,20 +33,20 @@ export default () => {
       customProps: {
         defaultChecked: isLabel,
         children: textMap['show chart label'],
-        onChange(e: React.FocusEvent<HTMLInputElement>) {
+        onChange(e: React.ChangeEvent<HTMLInputElement>) {
           updateOptionProps({ isLabel: e.target.checked });
         },
       },
     },
     {
-      label: textMap['connect null'],
+      label: <DcInfoLabel text={textMap['connect null']} info={textMap['connect null tip']} />,
       name: 'isConnectNulls',
       type: Checkbox,
       required: false,
       customProps: {
         defaultChecked: isConnectNulls,
         children: textMap['connect null'],
-        onChange(e: React.FocusEvent<HTMLInputElement>) {
+        onChange(e: React.ChangeEvent<HTMLInputElement>) {
           updateOptionProps({ isConnectNulls: e.target.checked });
         },
       },
@@ -59,6 +60,18 @@ export default () => {
         defaultChecked: nullDisplay,
         onBlur(e: React.FocusEvent<HTMLInputElement>) {
           updateOptionProps({ nullDisplay: e.target.value });
+        },
+      },
+    },
+    {
+      label: <DcInfoLabel text={textMap['invalidToZero']} info={textMap['invalid to zero tip']} />,
+      name: 'invalidToZero',
+      type: Checkbox,
+      required: false,
+      customProps: {
+        defaultChecked: invalidToZero,
+        onChange(e: React.ChangeEvent<HTMLInputElement>) {
+          updateOptionProps({ invalidToZero: e.target.checked });
         },
       },
     },

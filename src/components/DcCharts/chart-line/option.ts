@@ -25,12 +25,13 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     moreThanOneDayFormat,
     preciseTooltip,
     isConnectNulls,
+    invalidToZero,
     nullDisplay,
   } = optionProps;
 
   const yAxis: any[] = [];
   const series: any[] = [];
-  const legendData: Array<{name: string}> = [];
+  const legendData: Array<{ name: string }> = [];
 
   let defaultMoreThanOneDay = false;
   // 自动处理时间格式，大于一天显示日期
@@ -38,6 +39,11 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     defaultMoreThanOneDay = time[time.length - 1] - time[0] > 24 * 3600 * 1000;
   }
   const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
+  const convertInvalidValueToZero = (dataList: any[]) => {
+    return invalidToZero
+      ? map(dataList, item => typeof item === 'number' && item > 0 ? item : 0)
+      : dataList;
+  }
 
   map(metricData, (value, i) => {
     const { axisIndex, name, tag, unit: _unit, ...rest } = value;
@@ -67,8 +73,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       },
       ...rest,
       type: value.type || 'line',
-      data: !isBarChangeColor
-        ? value.data
+      data: !isBarChangeColor // TODO: isBarChangeColor seem to be useless anymore
+        ? convertInvalidValueToZero(value.data)
         : map(value.data, (item: any, j) => {
           const sect = Math.ceil(value.data.length / changeColors.length);
           return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };

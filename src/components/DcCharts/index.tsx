@@ -1,5 +1,5 @@
 import React from 'react';
-import { set, get, map as _map } from 'lodash';
+import { set, get, map as _map, cloneDeep } from 'lodash';
 // 图表组件
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';
@@ -33,12 +33,13 @@ const basicCharts: Partial<DC.ViewDefMap> = {
       </SvgContainer>
     ),
     // Component: ChartLine,
-    Component(props) {
+    Component(props: any) {
       const metricData = get(props, 'data.metricData');
       const _metricData = _map(metricData, ((metric) => ({ ...metric, type: 'line' })));
       set(props, 'data.metricData', _metricData);
-      set(props, 'config.optionProps.noAreaColor', true);
-      return <ChartLine {...props} />;
+      const config = cloneDeep(props.config) || {}; // config property is frozen when rendering
+      set(config, 'optionProps.noAreaColor', true);
+      return <ChartLine {...props} config={config} />;
     },
     Configurator: LineConfigurator,
   },
@@ -52,12 +53,13 @@ const basicCharts: Partial<DC.ViewDefMap> = {
       </SvgContainer>
     ),
     // Component: ChartLine,
-    Component(props) {
+    Component(props: any) {
       const metricData = get(props, 'data.metricData');
       const _metricData = _map(metricData, ((metric) => ({ ...metric, type: 'line' })));
       set(props, 'data.metricData', _metricData);
-      set(props, 'config.optionProps.noAreaColor', false);
-      return <ChartLine {...props} />;
+      const config = cloneDeep(props.config) || {}; // config property is frozen when rendering
+      set(config, 'optionProps.noAreaColor', false);
+      return <ChartLine {...props} config={config} />;
     },
     Configurator: LineConfigurator,
   },

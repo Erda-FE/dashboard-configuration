@@ -1,3 +1,13 @@
+# [1.2.0](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.1.2...v1.2.0) (2021-05-07)
+
+
+### Features
+
+* add invalidToZero option in line chart config ([f8c2767](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/f8c2767710821c671af115aed7f50f631d1a6356))
+* update mock data to show option effect ([99108a2](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/99108a23e2b2b91ce74d520733f3e5d47c746338))
+
+
+
 ## [1.1.2](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.1.1...v1.1.2) (2021-05-07)
 
 

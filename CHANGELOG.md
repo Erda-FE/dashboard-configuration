@@ -1,3 +1,12 @@
+## [1.1.2](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.1.1...v1.1.2) (2021-05-07)
+
+
+### Bug Fixes
+
+* line & area chart is same for config property is frozen when rendering ([699417d](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/699417de6587fe0af0b0a61bbf1d797c8febcd14))
+
+
+
 ## [1.1.1](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.1.0...v1.1.1) (2021-04-29)
 
 

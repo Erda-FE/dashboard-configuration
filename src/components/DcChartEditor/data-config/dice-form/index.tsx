@@ -269,7 +269,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     };
   }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, getDSLOrderBy, isMapType]);
 
-  const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>) => {
+  const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>, otherProps) => {
     const newDataSource = produce(dataSource, (draft) => {
       forEach(_dataSource, (v, k) => { draft[k] = v; });
     });
@@ -285,12 +285,17 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         }
       }),
       api: _api,
+      ...otherProps,
       loadData: getLoadData({ api: _api, ...newDataSource }),
     });
   }, [_submitResult, dataSource, currentChartConfig, genApi, getLoadData]);
 
   const handleUpdateChartType = (type: DC.ViewType) => {
-    _submitResult({ chartType: type });
+    if (type === 'table') {
+      _submitResult({ chartType: type });
+    } else {
+      handleUpdateDataSource({ isSqlMode: false }, { chartType: type });
+    }
   };
 
   const handleUpdateSqlContent = (_dataSource: Partial<DC.SqlContent>) => {
@@ -308,7 +313,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       required: false,
       show: () => isTableType,
       customProps: {
-        defaultChecked: dataSource?.isSqlMode,
+        checked: dataSource?.isSqlMode,
         checkedChildren: 'SQL',
         unCheckedChildren: textMap.dsl,
         onChange: (checked: boolean) => handleUpdateDataSource({ isSqlMode: checked }),

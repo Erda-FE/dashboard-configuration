@@ -1,3 +1,12 @@
+## [1.2.1](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.0...v1.2.1) (2021-05-17)
+
+
+### Bug Fixes
+
+* reset input mode when toggle chart-type ([a9ed594](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/a9ed594a8f49bc96126c4699120be03f994f9f3f))
+
+
+
 # [1.2.0](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.1.2...v1.2.0) (2021-05-07)
 
 

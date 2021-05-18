@@ -1,3 +1,12 @@
+## [1.2.2](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.1...v1.2.2) (2021-05-18)
+
+
+### Bug Fixes
+
+* fix static data render error ([ef21d8c](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/ef21d8c8adba1b5d1998273f4e9068aab493276f))
+
+
+
 ## [1.2.1](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.0...v1.2.1) (2021-05-17)
 
 

@@ -186,7 +186,7 @@ const DcContainer: React.FC<IProps> = ({
 
   // 传了 api 但是没有 loadData，帮助生成 loadData
   useEffect(() => {
-    if (!!api && !isEmpty(api) && !loadData) {
+    if (!!api && !isEmpty(api) && !loadData && isEmpty(staticData)) {
       _loadData({
         fn: createLoadDataFn({
           api: replaceVariable(api, globalVariable),
@@ -195,7 +195,7 @@ const DcContainer: React.FC<IProps> = ({
         }),
       });
     }
-  }, [_loadData, api, chartType, globalVariable, loadData, view]);
+  }, [_loadData, api, chartType, globalVariable, loadData, staticData, view]);
 
   useEffect(() => {
     isFunction(loadData) && _loadData({ arg: chartQuery, fn: loadData });

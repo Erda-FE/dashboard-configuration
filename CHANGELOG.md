@@ -1,3 +1,12 @@
+## [1.2.3](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.2...v1.2.3) (2021-05-21)
+
+
+### Bug Fixes
+
+* add api org prefix ([1c142c1](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/1c142c1c78bdbdf26e22c887aa29194428980290))
+
+
+
 ## [1.2.2](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.1...v1.2.2) (2021-05-18)
 
 

@@ -24,7 +24,6 @@ import DashboardStore from '../../stores/dash-board';
 import './index.scss';
 import { DC } from 'src/types';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 const excludeEmptyType = ['chart:map'];
 
 interface IProps {
@@ -54,6 +53,7 @@ const DcContainer: React.FC<IProps> = ({
   const { toggleFullscreen: toggleFromEditorPureFullscreen, editView } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
   const toggleFullscreen = isPure ? togglePureFullscreen : toggleFromEditorPureFullscreen;
+  const textMap = DashboardStore.getState((s) => s.textMap);
 
   const {
     title: _title,

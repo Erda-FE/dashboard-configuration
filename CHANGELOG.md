@@ -1,3 +1,12 @@
+## [1.2.4](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.3...v1.2.4) (2021-05-31)
+
+
+### Bug Fixes
+
+* internationalization bug ([cf780cc](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/cf780cc445b3560ddc8f5f9815bcc7af95ce9e4d))
+
+
+
 ## [1.2.3](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.2...v1.2.3) (2021-05-21)
 
 

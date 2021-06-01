@@ -1,3 +1,12 @@
+## [1.2.5](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.4...v1.2.5) (2021-06-01)
+
+
+### Bug Fixes
+
+* upgrade deprecated usage ([0d82ccc](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/commits/0d82ccc114aec51e9bce437fba636f1bb0f328fa))
+
+
+
 ## [1.2.4](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.3...v1.2.4) (2021-05-31)
 
 

@@ -9,7 +9,6 @@ import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'l
 import { produce } from 'immer';
 import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle } from 'react-use';
-import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
 import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, SortMap } from '../constants';

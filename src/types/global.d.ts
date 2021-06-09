@@ -7,3 +7,9 @@ B) extends infer O
 type ValueOf<T extends Record<string, any>, K> = K extends keyof T ? T[K] : never;
 
 type ComponentOptions = Array<{ value: string; label: string }>;
+
+declare let If: React.FunctionComponent<{ condition: boolean }>;
+declare let For: React.FunctionComponent<{ each: string; index: string; of: any[] }>;
+declare let Choose: React.FunctionComponent;
+declare let When: React.FunctionComponent<{ condition: boolean }>;
+declare let Otherwise: React.FunctionComponent;

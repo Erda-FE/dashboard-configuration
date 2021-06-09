@@ -6,7 +6,8 @@ module.exports = {
   },
   extends: [
     'eslint-config-ali/react',
-    'eslint-config-ali/typescript'
+    'eslint-config-ali/typescript',
+    "plugin:jsx-control-statements/recommended"
   ],
   parser: 'babel-eslint',
   plugins: [
@@ -14,7 +15,8 @@ module.exports = {
     'eslint-plugin-react-hooks',
     'import',
     'compat',
-    'jsx-a11y'
+    'jsx-a11y',
+    "jsx-control-statements"
   ],
   overrides: [
     {
@@ -66,6 +68,7 @@ module.exports = {
     'import/no-named-as-default-member': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'no-console': 2,
-    '@typescript-eslint/ban-ts-ignore': 'off'
+    '@typescript-eslint/ban-ts-ignore': 'off',
+    "react/jsx-no-undef": [2, { "allowGlobals": true }]
   },
 };

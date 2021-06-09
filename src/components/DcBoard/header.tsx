@@ -7,7 +7,6 @@
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
 import { Button, Tooltip, Dropdown, Menu } from '@terminus/nusi';
 import { useFullscreen, useToggle } from 'react-use';
-import { If, Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { DC } from 'src/types';
 import { DcIcon } from '../../common';
 import { insertWhen } from '../../common/utils';

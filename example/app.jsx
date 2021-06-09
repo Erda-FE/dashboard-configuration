@@ -23,7 +23,7 @@ function App() {
         <button onClick={() => setTheme('dice')}>Dice</button>
         <button onClick={() => setTheme('dark')}>Dark</button>
       </div>
-      <BoardGrid layout={layout} onSave={(saveLayout: any) => { console.log(saveLayout); }} />
+      <BoardGrid layout={layout} onSave={(saveLayout) => { console.log(saveLayout); }} />
       <PureBoardGrid layout={layout} showOptions />
       {/* {'>>>>>>>>>>>>>>>>>>>>>>>>>>>sasasa'}
       <PureBoardGrid layout={layout2} showOptions /> */}

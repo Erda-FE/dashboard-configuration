@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Empty } from '@terminus/nusi';
-import { If } from 'tsx-control-statements/components';
 
 interface IProps {
   condition?: any;

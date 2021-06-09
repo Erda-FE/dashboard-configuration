@@ -1,6 +1,5 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { Tooltip } from '@terminus/nusi';
 
 import './index.scss';

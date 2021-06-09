@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { Menu, Dropdown } from '@terminus/nusi';
 import { map } from 'lodash';
-import { If, Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
 import DashboardStore from '../../../../../stores/dash-board';

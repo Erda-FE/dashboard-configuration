@@ -137,7 +137,7 @@
 // 百分比 width
 @mixin width($list...) {
   @each $num in $list {
-    .wd#{$num} { width: percentage($num/100); }
+    .wd#{$num} { width: math.div($num, 100); }
   }
 }
 

@@ -1,12 +1,12 @@
 {
-  "name": "dashboard-configurator",
-  "version": "1.0.10",
+  "name": "@erda-ui/dashboard-configurator",
+  "version": "1.0.0",
   "description": "Dice Charts with Echart",
   "main": "./src/index.ts",
   "types": "./src/types/index.d.ts",
   "repository": {
     "type": "git",
-    "url": "https://gittar.app.terminus.io/terminus-dice/dashboard-configurator"
+    "url": "https://github.com/Erda-FE/dashboard-configuration.git"
   },
   "keywords": [
     "dice",

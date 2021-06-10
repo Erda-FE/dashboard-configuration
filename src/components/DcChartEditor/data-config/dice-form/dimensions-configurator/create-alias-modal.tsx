@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { map } from 'lodash';
 import { Input, Select, Col } from '@terminus/nusi';
-import { Choose, When } from 'tsx-control-statements/components';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 import { UNIT_INF_MAP } from '../constants';

@@ -9,7 +9,6 @@ import { useMount } from 'react-use';
 import { map, slice, findIndex, cloneDeep } from 'lodash';
 import { Breadcrumb, Toast } from '@terminus/nusi';
 import { registerMap as registerEchartsMap } from 'echarts';
-import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import client from '../../../common/utils/client';
 import { useUpdate } from '../../../common/use-hooks';
 import { ChartSizeMe } from '../common';

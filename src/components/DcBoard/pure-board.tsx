@@ -7,7 +7,6 @@
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import { If } from 'tsx-control-statements/components';
 import { DC } from 'src/types';
 import PureBoardGrid from './pure-grid';
 import { useComponentWidth, DcEmpty } from '../../common';

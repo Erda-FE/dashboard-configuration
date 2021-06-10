@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Drawer, Button, Popover } from '@terminus/nusi';
-import { Choose, When, Otherwise } from 'tsx-control-statements/components';
 import { getConfig } from '../../../config';
 import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';

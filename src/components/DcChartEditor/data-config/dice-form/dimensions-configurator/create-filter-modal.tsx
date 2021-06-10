@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { map, isUndefined } from 'lodash';
-import { Choose, When } from 'tsx-control-statements/components';
 import { Input, InputNumber, Select, Switch } from '@terminus/nusi';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';

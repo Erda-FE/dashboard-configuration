@@ -8,7 +8,6 @@ import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
 import { Tooltip, Select, Toast, Button } from '@terminus/nusi';
 import classnames from 'classnames';
 import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
-import { Choose, When, Otherwise, If } from 'tsx-control-statements/components';
 import { useUpdate, DcIcon, DcEmpty } from '../../common';
 import { replaceVariable } from '../../common/utils';
 import { getConfig } from '../../config';

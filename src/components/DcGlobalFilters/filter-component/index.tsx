@@ -1,7 +1,6 @@
 import * as React from 'react';
 import TimeSelector from './TimeSelector';
 import { Search } from '@terminus/nusi';
-import { If, Choose, When } from 'tsx-control-statements/components';
 
 import './index.scss';
 

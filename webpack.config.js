@@ -15,7 +15,7 @@ const resolve = pathname => path.resolve(__dirname, pathname);
 const gitRevisionPlugin = new GitRevisionPlugin();
 const banner = `commit: ${gitRevisionPlugin.commithash().slice(0, 6)}
 branch: ${gitRevisionPlugin.branch()}
-buildTime: ${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}`;
+buildTime: ${moment(Date.now()).format('YYYY-MM-DD HH:mm:ss')}`;
 
 module.exports = () => {
   const isProd = process.env.NODE_ENV === 'production';
@@ -92,7 +92,8 @@ module.exports = () => {
           ],
         },
         {
-          test: /\.(tsx?|jsx?)$/,
+          test: /\.(j|t)sx?$/,
+          use: "babel-loader?cacheDirectory",
           include: [
             resolve('example'),
             resolve('src'),
@@ -100,11 +101,17 @@ module.exports = () => {
           use: [
             'thread-loader',
             {
-              loader: 'ts-loader',
+              loader: 'babel-loader',
               options: {
-                transpileOnly: true,
-                happyPackMode: true,
-                getCustomTransformers: path.join(__dirname, 'webpack_ts.loader.js'),
+                plugins: [
+                  'jsx-control-statements',
+                  '@babel/plugin-transform-runtime'
+                ],
+                presets: [
+                  "@babel/preset-env",
+                  '@babel/preset-react',
+                  '@babel/preset-typescript',
+                ],
               },
             },
           ]

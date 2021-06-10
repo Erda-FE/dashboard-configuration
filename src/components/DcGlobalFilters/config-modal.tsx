@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Button, Modal, Tabs, Title, Dropdown, Menu, Tooltip, Input, Toast } from '@terminus/nusi';
 import { useImmer } from 'use-immer';
 import { remove, find, findIndex, map } from 'lodash';
-import { If } from 'tsx-control-statements/components';
 import { DcIcon, DcInfoIcon } from '../../common';
 import { insertWhen, genUUID } from '../../common/utils';
 import DashboardStore from '../../stores/dash-board';

@@ -269,7 +269,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     };
   }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, getDSLOrderBy, isMapType]);
 
-  const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>, otherProps) => {
+  const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>, otherProps?: object) => {
     const newDataSource = produce(dataSource, (draft) => {
       forEach(_dataSource, (v, k) => { draft[k] = v; });
     });
@@ -308,7 +308,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   function customFilter(inputValue: string, path: any) {
     return path.some(
       (option: any) =>
-        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+        option.name.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
   }
 
@@ -320,7 +320,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       (index === 0
         ? node
         : [
-          <span className={`${prefixCls}-menu-item-keyword`} key="seperator">
+          <span className={`${prefixCls}-menu-item-keyword`} key="separator">
             {matchedArr.shift()}
           </span>,
           node,
@@ -329,12 +329,12 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   function defaultRenderFilteredOption(inputValue: string, path: any, prefixCls: string, names: any) {
     return path.map((option: any, index: number) => {
-      const label = option[names.label];
-      const lowerCaseLabel = label.toLowerCase();
+      const name = option[names.name];
+      const lowerCaseName = name.toLowerCase();
       const node =
-        lowerCaseLabel.indexOf(inputValue.toLowerCase()) > -1
-          ? highlightKeyword(label, inputValue, prefixCls)
-          : label;
+        lowerCaseName.indexOf(inputValue.toLowerCase()) > -1
+          ? highlightKeyword(name, inputValue, prefixCls)
+          : name;
       return index === 0 ? node : [' / ', node];
     });
   }
@@ -457,7 +457,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: dataSource?.activedMetricGroups,
       customProps: {
         allowClear: false,
-        // showSearch: true,
         showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
         options: metaGroups,
         onChange: (v: string[]) => {

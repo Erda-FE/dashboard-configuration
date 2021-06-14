@@ -305,6 +305,40 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     handleUpdateDataSource({ sql });
   };
 
+  function customFilter(inputValue: string, path: any) {
+    return path.some(
+      (option: any) =>
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    );
+  }
+
+  function highlightKeyword(str: string, keyword: string, prefixCls: string) {
+    const reg = new RegExp(keyword, 'ig');
+    const result = str.matchAll(reg);
+    const matchedArr = Array.from(result, (x: any) => x[0]);
+    return str.split(reg).map((node: any, index: number) =>
+      (index === 0
+        ? node
+        : [
+          <span className={`${prefixCls}-menu-item-keyword`} key="seperator">
+            {matchedArr.shift()}
+          </span>,
+          node,
+        ]));
+  }
+
+  function defaultRenderFilteredOption(inputValue: string, path: any, prefixCls: string, names: any) {
+    return path.map((option: any, index: number) => {
+      const label = option[names.label];
+      const lowerCaseLabel = label.toLowerCase();
+      const node =
+        lowerCaseLabel.indexOf(inputValue.toLowerCase()) > -1
+          ? highlightKeyword(label, inputValue, prefixCls)
+          : label;
+      return index === 0 ? node : [' / ', node];
+    });
+  }
+
   const fieldsList = [
     {
       label: textMap['configuration mode'],
@@ -423,7 +457,8 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: dataSource?.activedMetricGroups,
       customProps: {
         allowClear: false,
-        showSearch: true,
+        // showSearch: true,
+        showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
         options: metaGroups,
         onChange: (v: string[]) => {
           handleUpdateDataSource({ activedMetricGroups: v });

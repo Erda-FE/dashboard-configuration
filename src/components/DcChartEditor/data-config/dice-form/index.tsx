@@ -308,7 +308,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   function customFilter(inputValue: string, path: any) {
     return path.some(
       (option: any) =>
-        option.name.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
     );
   }
 
@@ -329,12 +329,12 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   function defaultRenderFilteredOption(inputValue: string, path: any, prefixCls: string, names: any) {
     return path.map((option: any, index: number) => {
-      const name = option[names.name];
-      const lowerCaseName = name.toLowerCase();
+      const label = option[names.label];
+      const lowerCaseName = label.toLowerCase();
       const node =
         lowerCaseName.indexOf(inputValue.toLowerCase()) > -1
-          ? highlightKeyword(name, inputValue, prefixCls)
-          : name;
+          ? highlightKeyword(label, inputValue, prefixCls)
+          : label;
       return index === 0 ? node : [' / ', node];
     });
   }
@@ -385,7 +385,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: sqlContent.fromSource,
       customProps: {
         allowClear: false,
-        showSearch: true,
+        showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
         options: metaGroups,
         onChange: (v: string[]) => {
           _getMetaData(v).then((res?: Array<{ metric: string }>) => {

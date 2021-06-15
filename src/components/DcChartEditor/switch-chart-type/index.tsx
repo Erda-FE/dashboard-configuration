@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { map } from 'lodash';
+import { Tooltip } from '@terminus/nusi';
 import classnames from 'classnames';
 import { DcIcon } from '../../../common';
 import basicCharts from '../../DcCharts';
@@ -22,18 +23,21 @@ const SwitchChartType = ({
   return (
     <div className="dc-editor-switch-chart">
       {map(basicCharts, ({ name, enName, icon }: DC.ViewDefItem, chartType) => (
-        <div
-          className={classnames({
-            'dc-editor-switch-chart-item': true,
-            'center-flex-box': true,
-            active: value === chartType,
-          })}
-          onClick={() => { onChange(chartType as DC.ViewType); }}
-        >
-          <DcIcon type={icon} useSymbol />
-        </div>
-      ))}
-    </div>
+        <Tooltip title={name}>
+          <div
+            className={classnames({
+              'dc-editor-switch-chart-item': true,
+              'center-flex-box': true,
+              active: value === chartType,
+            })}
+            onClick={() => { onChange(chartType as DC.ViewType); }}
+          >
+            <DcIcon type={icon} useSymbol />
+          </div>
+        </Tooltip>
+      ))
+      }
+    </div >
   );
 };
 

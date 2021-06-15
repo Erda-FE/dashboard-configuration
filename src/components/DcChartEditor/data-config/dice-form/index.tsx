@@ -21,7 +21,7 @@ import SwitchChartType from '../../switch-chart-type';
 import DimensionsConfigurator from './dimensions-configurator';
 import ChartEditorStore from '../../../../stores/chart-editor';
 import DashboardStore from '../../../../stores/dash-board';
-
+import { customFilter, defaultRenderFilteredOption } from '../../../../utils/cascaderFilter';
 import './index.scss';
 import { DC, CreateLoadDataParams } from 'src/types';
 
@@ -166,7 +166,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const getDSLGroupBy = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
     return isMapType
-    // 地图下钻产生的值 => 需要获取图表信息
+      // 地图下钻产生的值 => 需要获取图表信息
       ? [mapLevel]
       : isEmpty(dimensions)
         ? undefined
@@ -304,40 +304,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     });
     handleUpdateDataSource({ sql });
   };
-
-  function customFilter(inputValue: string, path: any) {
-    return path.some(
-      (option: any) =>
-        option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
-    );
-  }
-
-  function highlightKeyword(str: string, keyword: string, prefixCls: string) {
-    const reg = new RegExp(keyword, 'ig');
-    const result = str.matchAll(reg);
-    const matchedArr = Array.from(result, (x: any) => x[0]);
-    return str.split(reg).map((node: any, index: number) =>
-      (index === 0
-        ? node
-        : [
-          <span className={`${prefixCls}-menu-item-keyword`} key="separator">
-            {matchedArr.shift()}
-          </span>,
-          node,
-        ]));
-  }
-
-  function defaultRenderFilteredOption(inputValue: string, path: any, prefixCls: string, names: any) {
-    return path.map((option: any, index: number) => {
-      const label = option[names.label];
-      const lowerCaseName = label.toLowerCase();
-      const node =
-        lowerCaseName.indexOf(inputValue.toLowerCase()) > -1
-          ? highlightKeyword(label, inputValue, prefixCls)
-          : label;
-      return index === 0 ? node : [' / ', node];
-    });
-  }
 
   const fieldsList = [
     {

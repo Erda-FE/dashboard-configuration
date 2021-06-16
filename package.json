@@ -1,8 +1,8 @@
 {
   "name": "@erda-ui/dashboard-configurator",
-  "version": "1.0.0",
+  "version": "1.0.10",
   "description": "Dice Charts with Echart",
-  "main": "./src/index.ts",
+  "main": "./dist/index.js",
   "types": "./src/types/index.d.ts",
   "repository": {
     "type": "git",
@@ -155,7 +155,7 @@
     }
   },
   "files": [
-    "src",
+    "dist",
     "README.md",
     "package.json",
     "CHANGELOG.md"

@@ -149,43 +149,43 @@ module.exports = () => {
       maxEntrypointSize: 512000,
       maxAssetSize: 512000
     },
-    optimization: {
-      minimize: isProd,
-      moduleIds: 'named',
-      chunkIds: 'named',
-      splitChunks: {
-        chunks: 'all',
-        minSize: 30000,
-        minChunks: 1,
-        maxAsyncRequests: 5,
-        maxInitialRequests: 5,
-        cacheGroups: {
-          vendors: {
-            test: /[\\/]node_modules[\\/]/,
-            reuseExistingChunk: true,
-            priority: -10,
-          },
-        },
-      },
-      minimizer: isProd
-        ? [
-          new webpack.BannerPlugin(banner),
-          new TerserPlugin(),
-          new CssMinimizerPlugin({
-            minimizerOptions: {
-              preset: [
-                'default',
-                {
-                  discardComments: { removeAll: true },
-                },
-              ],
-            },
-          }),
-        ]
-        : [
-          new webpack.HotModuleReplacementPlugin(),
-        ],
-    },
+    // optimization: {
+    //   minimize: isProd,
+    //   moduleIds: 'named',
+    //   chunkIds: 'named',
+    //   splitChunks: {
+    //     chunks: 'all',
+    //     minSize: 30000,
+    //     minChunks: 1,
+    //     maxAsyncRequests: 5,
+    //     maxInitialRequests: 5,
+    //     cacheGroups: {
+    //       vendors: {
+    //         test: /[\\/]node_modules[\\/]/,
+    //         reuseExistingChunk: true,
+    //         priority: -10,
+    //       },
+    //     },
+    //   },
+    //   minimizer: isProd
+    //     ? [
+    //       new webpack.BannerPlugin(banner),
+    //       new TerserPlugin(),
+    //       new CssMinimizerPlugin({
+    //         minimizerOptions: {
+    //           preset: [
+    //             'default',
+    //             {
+    //               discardComments: { removeAll: true },
+    //             },
+    //           ],
+    //         },
+    //       }),
+    //     ]
+    //     : [
+    //       new webpack.HotModuleReplacementPlugin(),
+    //     ],
+    // },
     plugins: [
       // new BundleAnalyzerPlugin(),
       new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /(zh-cn)|es/),

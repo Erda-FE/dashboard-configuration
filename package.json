@@ -1,9 +1,9 @@
 {
   "name": "@erda-ui/dashboard-configurator",
-  "version": "1.0.10",
+  "version": "1.0.14",
   "description": "Dice Charts with Echart",
   "main": "./dist/index.js",
-  "types": "./src/types/index.d.ts",
+  "types": "./dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/Erda-FE/dashboard-configuration.git"

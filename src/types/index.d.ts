@@ -242,6 +242,7 @@ declare namespace DC {
   }
 }
 
+export default DC;
 /**
  *带编辑器的大盘
   *

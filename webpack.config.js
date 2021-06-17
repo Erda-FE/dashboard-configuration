@@ -7,6 +7,7 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
 // const smp = new SpeedMeasurePlugin();
@@ -118,22 +119,22 @@ module.exports = () => {
         },
         {
           test: /\.svg$/,
-            include: [
-              resolve('node_modules/@terminus/nusi'),
-            ],
-            type: 'asset',
-            parser: {
-              dataUrlCondition: {
-                maxSize: 8 * 1024, // 8kb
-              },
+          include: [
+            resolve('node_modules/@terminus/nusi'),
+          ],
+          type: 'asset',
+          parser: {
+            dataUrlCondition: {
+              maxSize: 8 * 1024, // 8kb
             },
+          },
         },
         {
           test: /\.(png|jpe?g|gif)$/i,
-            include: [
-              resolve('node_modules/@terminus/nusi'),
-            ],
-            type: 'asset/resource',
+          include: [
+            resolve('node_modules/@terminus/nusi'),
+          ],
+          type: 'asset/resource',
         },
       ],
     },
@@ -149,43 +150,43 @@ module.exports = () => {
       maxEntrypointSize: 512000,
       maxAssetSize: 512000
     },
-    // optimization: {
-    //   minimize: isProd,
-    //   moduleIds: 'named',
-    //   chunkIds: 'named',
-    //   splitChunks: {
-    //     chunks: 'all',
-    //     minSize: 30000,
-    //     minChunks: 1,
-    //     maxAsyncRequests: 5,
-    //     maxInitialRequests: 5,
-    //     cacheGroups: {
-    //       vendors: {
-    //         test: /[\\/]node_modules[\\/]/,
-    //         reuseExistingChunk: true,
-    //         priority: -10,
-    //       },
-    //     },
-    //   },
-    //   minimizer: isProd
-    //     ? [
-    //       new webpack.BannerPlugin(banner),
-    //       new TerserPlugin(),
-    //       new CssMinimizerPlugin({
-    //         minimizerOptions: {
-    //           preset: [
-    //             'default',
-    //             {
-    //               discardComments: { removeAll: true },
-    //             },
-    //           ],
-    //         },
-    //       }),
-    //     ]
-    //     : [
-    //       new webpack.HotModuleReplacementPlugin(),
-    //     ],
-    // },
+    optimization: {
+      minimize: isProd,
+      moduleIds: 'named',
+      chunkIds: 'named',
+      // splitChunks: {
+      //   chunks: 'all',
+      //   minSize: 30000,
+      //   minChunks: 1,
+      //   maxAsyncRequests: 5,
+      //   maxInitialRequests: 5,
+      //   cacheGroups: {
+      //     vendors: {
+      //       test: /[\\/]node_modules[\\/]/,
+      //       reuseExistingChunk: true,
+      //       priority: -10,
+      //     },
+      //   },
+      // },
+      minimizer: isProd
+        ? [
+          new webpack.BannerPlugin(banner),
+          new TerserPlugin(),
+          new CssMinimizerPlugin({
+            minimizerOptions: {
+              preset: [
+                'default',
+                {
+                  discardComments: { removeAll: true },
+                },
+              ],
+            },
+          }),
+        ]
+        : [
+          new webpack.HotModuleReplacementPlugin(),
+        ],
+    },
     plugins: [
       // new BundleAnalyzerPlugin(),
       new webpack.ContextReplacementPlugin(/moment[\\\/]locale$/, /(zh-cn)|es/),
@@ -203,6 +204,14 @@ module.exports = () => {
               filename: '[name].css',
               // chunkFilename: '[id].css',
             }),
+            new CopyWebpackPlugin({
+              patterns: [
+                {
+                  from: './src/types/index.d.ts',
+                  to: './',
+                },
+              ]
+            })
           ]
           : [
             new webpack.DllReferencePlugin({

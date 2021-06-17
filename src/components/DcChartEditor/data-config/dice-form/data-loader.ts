@@ -5,7 +5,7 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-02-25 12:38:00
  */
-import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy } from 'lodash';
+import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy, isNumber } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { getFormatter } from '../../../../common/utils';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
@@ -205,7 +205,7 @@ export const createLoadDataFn = ({
       const time = map(uniqBy(dataSource, timeDimension.key), (item) => item[timeDimension.key]);
       const groups = chunk(dataSource, time.length);
       const metricData = map(groups, (group) => {
-        const nameItem: any = find(group, (item: any) => !!item[valueDimension.key]) || {};
+        const nameItem: any = find(group, (item: any) => !!item[valueDimension.key] || (isNumber(item[valueDimension.key]) && Object.values(item).every((value) => value !== null))) || {};
         return {
           data: map(group, (item: any) => item[valueDimension.key]),
           name: reduce(otherDimensions, (name, { key }, index) => `${name}${nameItem[key]}${index !== otherDimensions.length - 1 ? ' / ' : ''}`, ''),

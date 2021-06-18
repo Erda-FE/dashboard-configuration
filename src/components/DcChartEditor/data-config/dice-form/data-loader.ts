@@ -205,7 +205,7 @@ export const createLoadDataFn = ({
       const time = map(uniqBy(dataSource, timeDimension.key), (item) => item[timeDimension.key]);
       const groups = chunk(dataSource, time.length);
       const metricData = map(groups, (group) => {
-        const nameItem: any = find(group, (item: any) => !!item[valueDimension.key] || isNumber(item[valueDimension.key])) || {};
+        const nameItem: any = find(group, (item: any) => (!!item[valueDimension.key] || isNumber(item[valueDimension.key])) && Object.values(item).every((value) => value !== null)) || {};
         return {
           data: map(group, (item: any) => item[valueDimension.key]),
           name: reduce(otherDimensions, (name, { key }, index) => `${name}${nameItem[key]}${index !== otherDimensions.length - 1 ? ' / ' : ''}`, ''),

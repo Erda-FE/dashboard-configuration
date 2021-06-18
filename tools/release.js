@@ -89,8 +89,8 @@ const confirmChangelog = async (version) => {
 const goRelease = async (version) => {
   const npm = [
     `npm version ${version}`,
-    'npm whoami --registry=https://registry.npm.terminus.io',
-    'npm publish --registry=https://registry.npm.terminus.io',
+    'npm whoami --registry=https://registry.npmjs.org',
+    'npm publish --registry=https://registry.npmjs.org',
   ];
   const git = [
     'git add --all',
@@ -102,7 +102,7 @@ const goRelease = async (version) => {
   const npmSpinner = ora(STYLE.message('开始发包...')).start();
   npm.forEach(command => TIP.message(execSync(command).toString()));
   npmSpinner.stop();
-  TIP.success('已发布到 https://registry.npm.terminus.io');
+  TIP.success('已发布到 https://registry.npmjs.org');
 
   const changelogSpinner = ora(STYLE.message('开始生成 changelog...')).start();
   execSync(GEN_CHANGELOG);

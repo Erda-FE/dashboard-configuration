@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { map } from 'lodash';
-import { Tooltip } from '@terminus/nusi';
+import { Popover } from '@terminus/nusi';
 import classnames from 'classnames';
 import { DcIcon } from '../../../common';
 import basicCharts from '../../DcCharts';
@@ -23,7 +23,7 @@ const SwitchChartType = ({
   return (
     <div className="dc-editor-switch-chart">
       {map(basicCharts, ({ name, enName, icon }: DC.ViewDefItem, chartType) => (
-        <Tooltip title={name}>
+        <Popover content={name} footer={false}>
           <div
             className={classnames({
               'dc-editor-switch-chart-item': true,
@@ -34,7 +34,7 @@ const SwitchChartType = ({
           >
             <DcIcon type={icon} useSymbol />
           </div>
-        </Tooltip>
+        </Popover>
       ))
       }
     </div >

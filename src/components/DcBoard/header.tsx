@@ -7,7 +7,7 @@
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
 import { Button, Tooltip, Dropdown, Menu } from '@terminus/nusi';
 import { useFullscreen, useToggle } from 'react-use';
-import { DC } from 'src/types';
+import DC from 'src/types';
 import { DcIcon } from '../../common';
 import { insertWhen } from '../../common/utils';
 import { saveImage } from '../../utils/comp';

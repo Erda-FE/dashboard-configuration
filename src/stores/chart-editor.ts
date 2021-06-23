@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import { createFlatStore } from '../cube';
 import { genUUID } from '../common/utils';
 import { DEFAULT_VIEW_CONFIG } from '../constants';
-import { DC } from 'src/types';
+import DC from 'src/types';
 
 const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
   const { y: maxY, h: maxH } = maxBy(items, ({ y, h }) => y + h) || { y: 0, h: 0 };

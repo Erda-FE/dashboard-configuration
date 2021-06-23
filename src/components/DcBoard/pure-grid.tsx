@@ -7,7 +7,7 @@
 import React, { useMemo } from 'react';
 import { isEmpty } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
-import { DC } from 'src/types';
+import DC from 'src/types';
 import { GRID_LAYOUT_CONFIG } from '../../constants';
 import { splitLayoutAndView } from './common/utils';
 import { genGridItems } from './common';

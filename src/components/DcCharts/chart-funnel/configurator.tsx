@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Input } from '@terminus/nusi';
 import produce from 'immer';
+import DC from 'src/types';
 import { CommonConfigurator } from '../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';

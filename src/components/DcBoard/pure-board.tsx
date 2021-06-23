@@ -7,7 +7,7 @@
 import React, { useRef, useEffect } from 'react';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import { DC } from 'src/types';
+import DC from 'src/types';
 import PureBoardGrid from './pure-grid';
 import { useComponentWidth, DcEmpty } from '../../common';
 import DashboardHeader from './pure-header';

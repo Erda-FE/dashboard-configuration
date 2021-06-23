@@ -1,5 +1,6 @@
 import { map, merge, isEmpty } from 'lodash';
 import moment from 'moment';
+import DC from 'src/types';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
 import { getCustomOption } from '../common/custom-option';
@@ -41,9 +42,9 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
   const convertInvalidValueToZero = (dataList: any[]) => {
     return invalidToZero
-      ? map(dataList, item => typeof item === 'number' && item > 0 ? item : 0)
+      ? map(dataList, (item) => (typeof item === 'number' && item > 0 ? item : 0))
       : dataList;
-  }
+  };
 
   map(metricData, (value, i) => {
     const { axisIndex, name, tag, unit: _unit, ...rest } = value;

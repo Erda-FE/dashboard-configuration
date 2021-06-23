@@ -23,7 +23,7 @@ import ChartEditorStore from '../../../../stores/chart-editor';
 import DashboardStore from '../../../../stores/dash-board';
 
 import './index.scss';
-import { DC, CreateLoadDataParams } from 'src/types';
+import DC, { CreateLoadDataParams } from 'src/types';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
 

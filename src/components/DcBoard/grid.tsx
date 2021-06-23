@@ -7,7 +7,7 @@
 import React, { useMemo, useEffect } from 'react';
 import { isEmpty, map } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
-import { DC } from 'src/types';
+import DC from 'src/types';
 import { genGridItems } from './common';
 import { DcEmpty } from '../../common';
 import { GRID_LAYOUT_CONFIG } from '../../constants';

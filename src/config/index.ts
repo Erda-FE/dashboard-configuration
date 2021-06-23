@@ -1,5 +1,5 @@
 import { set, get } from 'lodash';
-import { DC } from 'src/types';
+import DC from 'src/types';
 import defaultChartsMap from '../components/DcCharts';
 import { theme, themeObj as defaultTheme } from '../theme/dice';
 import { dynamicFilterMetaDataStore, dataConfigMetaDataStore } from './getDefaultStores';

@@ -19,9 +19,8 @@ import { createLoadDataFn } from '../DcChartEditor/data-config/dice-form/data-lo
 import { getChartData } from '../../services/chart-editor';
 import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
-
 import './index.scss';
-import { DC } from 'src/types';
+import DC from 'src/types';
 
 const excludeEmptyType = ['chart:map'];
 

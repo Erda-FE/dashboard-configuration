@@ -71,7 +71,7 @@ const CreateAliasModal = ({ defaultValue, isNeedUnit, ...rest }: IProps) => {
       },
     },
     {
-      label: textMap['unit config'],
+      label: textMap['source data unit config'],
       type: UnitConfig,
       name: 'unit',
       show: () => isNeedUnit,

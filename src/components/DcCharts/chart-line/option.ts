@@ -10,7 +10,12 @@ const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { metricData = [], xData, time, valueNames = [] } = data;
-  const { optionProps = {} } = config;
+  const { optionProps = {}, dataSourceConfig = {} } = config;
+  const { typeDimensions, valueDimensions } = dataSourceConfig;
+
+  // 多个维度，多个数值
+  const isMultipleTypeAndMultipleValue = (typeDimensions?.length || 0) > 1 && (valueDimensions?.length || 0) > 1;
+
   const {
     seriesName,
     isBarChangeColor,
@@ -45,14 +50,25 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       ? map(dataList, (item) => (typeof item === 'number' && item > 0 ? item : 0))
       : dataList;
   };
-
   map(metricData, (value, i) => {
-    const { axisIndex, name, tag, unit: _unit, ...rest } = value;
+    const { axisIndex, name, tag, alias = '', unit: _unit, ...rest } = value;
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
     const yAxisIndex = axisIndex || 0;
     const areaColor = areaColors[i];
+
+    const normalSeriesData = isMultipleTypeAndMultipleValue
+      ? convertInvalidValueToZero(value.data).map((x) => ({ value: x, category: name, alias }))
+      : convertInvalidValueToZero(value.data);
+
+    const seriesData = !isBarChangeColor // TODO: isBarChangeColor seem to be useless anymore
+      ? normalSeriesData
+      : map(value.data, (item: any, j) => {
+        const sect = Math.ceil(value.data.length / changeColors.length);
+        return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
+      });
+
     series.push({
       name: value.tag || seriesName || value.name || value.key,
       yAxisIndex,
@@ -74,12 +90,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       },
       ...rest,
       type: value.type || 'line',
-      data: !isBarChangeColor // TODO: isBarChangeColor seem to be useless anymore
-        ? convertInvalidValueToZero(value.data)
-        : map(value.data, (item: any, j) => {
-          const sect = Math.ceil(value.data.length / changeColors.length);
-          return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
-        }),
+      data: seriesData,
     });
     // y 轴单位类型
     const curUnitType = (_unit?.type || customUnitType || '');
@@ -115,26 +126,23 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
 
   const lgFormatter = (name: string) => {
     const defaultName = legendFormatter ? legendFormatter(name) : name;
-    return cutStr(defaultName, 20);
+    return cutStr(defaultName, 40);
   };
   const haveTwoYAxis = yAxis.length > 1;
   const getTTUnitType = (i: number) => {
     const curYAxis = yAxis[i] || yAxis[yAxis.length - 1];
     return [curYAxis.unitType, curYAxis.unit];
   };
-  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 20)} : ${(preciseTooltip || isNaN(unit.value)) ? (isNaN(unit.value) ? (nullDisplay || '--') : unit.value) : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
+  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 40)} : ${(preciseTooltip || isNaN(unit.value)) ? (isNaN(unit.value) ? (nullDisplay || '--') : unit.value) : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
   const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
-  let defaultTTFormatter = (param: any[]) => `${param[0].name}<br/>${genTTArray(param).join('')}`;
 
-  if (time) {
-    defaultTTFormatter = (param) => {
-      // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
-      // const endTime = time[param[0].dataIndex + 1];
-      // if (!endTime) {
-      //   return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;
-      // }
-      // return `${formatTime(param[0].name)} 到 ${formatTime(endTime)}<br/>${genTTArray(param).join('')}`;
-      return `${formatTime(param[0].name)}<br />${genTTArray(param).join('')}`;
+  const formatTooltipTitle = (title: any) => (time ? formatTime(title) : title);
+  let defaultTTFormatter = (param: any[]) => `${formatTooltipTitle(param[0].name)}<br />${genTTArray(param).join('')}`;
+
+  // 多个维度，多个数值
+  if (isMultipleTypeAndMultipleValue) {
+    defaultTTFormatter = (param: any) => {
+      return `${formatTooltipTitle(param[0].name)}<br />${genTTArray(param.map((x: any) => ({ ...x, seriesName: `${x.data.category}(${x.data.alias})` }))).join('')}`;
     };
   }
 

@@ -1,4 +1,4 @@
-import { map, merge, isEmpty, get } from 'lodash';
+import { map, merge, isEmpty } from 'lodash';
 import moment from 'moment';
 import DC from 'src/types';
 import { areaColors } from '../../../theme/dice';
@@ -14,7 +14,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { typeDimensions, valueDimensions } = dataSourceConfig;
 
   // 多个维度，多个数值
-  const isMultipleTypeAndMultipleValue = get(typeDimensions, 'length', 0) > 1 && get(valueDimensions, 'length', 0) > 1;
+  const isMultipleTypeAndMultipleValue = (typeDimensions?.length || 0) > 1 && (valueDimensions?.length || 0) > 1;
 
   const {
     seriesName,

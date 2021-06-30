@@ -1,6 +1,7 @@
 import { merge, set, map, max, min } from 'lodash';
 import { getCustomOption } from '../common/custom-option';
 import getDefaultOption from './default-option';
+import DC from 'src/types';
 
 export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: string) => {
   const option = merge(getDefaultOption(), getCustomOption(data, config));

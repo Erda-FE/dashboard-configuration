@@ -1,5 +1,6 @@
 import { map, merge, isEmpty, get } from 'lodash';
 import moment from 'moment';
+import DC from 'src/types';
 import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
 import { getCustomOption } from '../common/custom-option';

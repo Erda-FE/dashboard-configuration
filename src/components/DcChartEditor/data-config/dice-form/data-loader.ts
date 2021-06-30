@@ -9,7 +9,7 @@ import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy, isN
 import { getChartData } from '../../../../services/chart-editor';
 import { getFormatter } from '../../../../common/utils';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
-import { CreateLoadDataParams, DC } from 'src/types';
+import DC, { CreateLoadDataParams } from 'src/types';
 
 export const createLoadDataFn = ({
   api,

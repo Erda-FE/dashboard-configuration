@@ -1,17 +1,17 @@
 import { get } from 'lodash';
-import { DC } from 'src/types';
+import DC from 'src/types';
 import agent from '../common/utils/agent';
 
 
 export const getOrgFromPath = () => {
-  return get(location.pathname.split('/'),'[1]') || '-';
-}
+  return get(location.pathname.split('/'), '[1]') || '-';
+};
 
 export const setApiWithOrg = (api: string) => {
   return api.startsWith('/api/')
-    ? api.replace('/api/',`/api/${getOrgFromPath()}/`)
+    ? api.replace('/api/', `/api/${getOrgFromPath()}/`)
     : api;
-}
+};
 
 export const getChartData = ({ url, query, method = 'get', body }: DC.API) => (
   agent[method.toLowerCase()](setApiWithOrg(url))

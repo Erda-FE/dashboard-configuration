@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { map } from 'lodash';
 import { Popover } from '@terminus/nusi';
+import DC from 'src/types';
 import classnames from 'classnames';
 import { DcIcon } from '../../../common';
 import basicCharts from '../../DcCharts';

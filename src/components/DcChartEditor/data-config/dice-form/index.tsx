@@ -25,14 +25,13 @@ import { customFilter, defaultRenderFilteredOption } from '../../../../utils/cas
 import './index.scss';
 import DC, { CreateLoadDataParams } from 'src/types';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 interface IProps {
   currentChart: DC.View;
   submitResult: (payload: Partial<DC.View>) => void;
 }
 
 const DiceForm = ({ submitResult, currentChart }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const timeSpan = ChartEditorStore.useStore((s) => s.timeSpan);
   // const [isFetchingMetaGroups] = useLoading(dataConfigMetaDataStore, ['getMetaGroups']);
   // 配置所需的数据，宿主注入

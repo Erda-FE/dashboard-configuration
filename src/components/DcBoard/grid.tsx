@@ -18,8 +18,6 @@ import GlobalFiltersStore from '../../stores/global-filters';
 
 import 'react-grid-layout/css/styles.css';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 interface IProps {
   width: any;
   layout: DC.Layout;
@@ -27,6 +25,7 @@ interface IProps {
 }
 
 const BoardGrid = ({ width, layout, globalVariable }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const [
     isEditMode,
     editChartId,

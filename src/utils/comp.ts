@@ -5,6 +5,7 @@ import domtoimage from 'dom-to-image';
 import { Toast } from '@terminus/nusi';
 import DashboardStore from '../stores/dash-board';
 
+// FIXME:修复国际化bug
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 export const formItemLayout = {

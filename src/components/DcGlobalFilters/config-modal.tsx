@@ -10,6 +10,7 @@ import GlobalFiltersStore from '../../stores/global-filters';
 import './config-modal.scss';
 import { IconType } from '@terminus/nusi/es/notification';
 
+// FIXME:修复国际化bug
 const textMap = DashboardStore.getState((s) => s.textMap);
 
 interface FilterOption {

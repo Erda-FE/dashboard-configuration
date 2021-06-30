@@ -5,7 +5,6 @@ import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 import { TIME_INTERVALS, TIME_FORMATS, TIME_FIELDS_UNITS } from '../constants';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 const { Group: InputGroup } = Input;
 
 interface IProps {
@@ -56,6 +55,7 @@ const CustomTimeField = ({ value, onChange, options }: any) => (
 );
 
 const CreateTimeModal = ({ defaultValue, metricsMap, ...rest }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const fields = [
     {
       label: textMap['custom time metric'],

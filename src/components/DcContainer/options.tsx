@@ -20,7 +20,6 @@ import { exportChartData } from '../../services/chart-editor';
 
 import './index.scss';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 const { Item: MenuItem } = Menu;
 
 // 临时：匹配不同格式指标名
@@ -37,6 +36,7 @@ interface IProps {
 }
 
 const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFullscreen }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const [isEditMode] = ChartEditorStore.useStore((s) => [s.isEditMode]);
   const { deleteView } = ChartEditorStore;
 
@@ -55,11 +55,11 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
       cancelText: textMap.cancel,
       onOk() { deleteView(viewId); },
     });
-  }, [deleteView, view.title, viewId]);
+  }, [deleteView, textMap, view.title, viewId]);
 
   const handleSaveImg = useCallback(() => {
     saveImage(viewRef.current, view.title || textMap['unnamed dashboard']);
-  }, [view.title, viewRef]);
+  }, [textMap, view.title, viewRef]);
 
   const handleExportData = useCallback(() => {
     // 如果正在导出
@@ -114,7 +114,7 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
         toggleExportingDataStatus();
       });
     }
-  }, [view, isExportingData, toggleExportingDataStatus]);
+  }, [isExportingData, view, textMap, toggleExportingDataStatus]);
 
   const options: DC_BOARD_HEADER.Tool[] = useMemo(() => [
     {
@@ -139,7 +139,7 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
         onClick: () => handleRemoveItem(),
       },
     ]),
-  ], [isEditMode, handleRemoveItem, handleSaveImg, _toggleFullscreen]);
+  ], [textMap, isEditMode, _toggleFullscreen, handleSaveImg, handleRemoveItem]);
 
   return (
     <Dropdown

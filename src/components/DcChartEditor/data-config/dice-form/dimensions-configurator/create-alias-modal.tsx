@@ -7,9 +7,8 @@ import { UNIT_INF_MAP } from '../constants';
 
 const { Group: InputGroup } = Input;
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
-const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit; [k: string]: any }) => {
+const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit;[k: string]: any }) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const { type, unit } = value || {};
   return (
     <InputGroup size={size}>
@@ -59,6 +58,7 @@ interface IProps {
 }
 
 const CreateAliasModal = ({ defaultValue, isNeedUnit, ...rest }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const fields = [
     {
       label: textMap.alias,

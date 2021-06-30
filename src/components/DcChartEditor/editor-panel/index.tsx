@@ -11,9 +11,8 @@ import './index.scss';
 
 const noop = () => null;
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 const EditorPanel = () => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const [
     viewCopy,
     editChartId,

@@ -9,7 +9,6 @@ import { DIMENSIONS_CONFIGS, SPECIAL_METRIC_TYPE, COMMON_DIMENSIONS_CONFIGS } fr
 
 import './index.scss';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 const { Item: MenuItem, Divider: MenuDivider, SubMenu } = Menu;
 
 interface IProps {
@@ -40,6 +39,7 @@ const DimensionConfigs = ({
   aggregationMap,
   onTriggerAction,
 }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   // 拖拽交互相关
   const dimensionsWrapperRef = useRef<any>(null);
   // drop 必须操作 DOM 元素

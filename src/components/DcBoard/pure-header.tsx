@@ -14,7 +14,6 @@ import DashboardStore from '../../stores/dash-board';
 
 import './header.scss';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 
 interface IProps {
   wrapRef: RefObject<Element>;
@@ -27,6 +26,7 @@ const DashboardHeader = ({
   contentRef,
   dashboardName,
 }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const { toggleFullscreen } = DashboardStore;
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
   const isFullscreen = useFullscreen(wrapRef, _isFullscreen, { onClose: () => _toggleFullscreen() });

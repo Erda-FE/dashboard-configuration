@@ -2,6 +2,7 @@ import { map } from 'lodash';
 import moment from 'moment';
 import DashboardStore from '../../../../stores/dash-board';
 
+// FIXME: 需要修复国际化bug
 const textMap = DashboardStore.getState((s) => s.textMap);
 const getBeforeTimeRange = (number: number, string: any) => [moment().subtract(number, string).valueOf(), moment().valueOf()];
 const getScopeTimeRange = (scope: any) => [moment().startOf(scope).valueOf(), moment().valueOf()];

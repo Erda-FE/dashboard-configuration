@@ -5,7 +5,6 @@ import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 
 const { Group: InputGroup } = Input;
-const textMap = DashboardStore.getState((s) => s.textMap);
 
 interface IProps {
   defaultValue: DICE_DATA_CONFIGURATOR.Dimension;
@@ -59,6 +58,7 @@ const FilterInput = ({ value, onChange, fieldType, options }: IFilterInputProps)
 );
 
 const CreateFilterModal = ({ defaultValue, metricsMap, typeMap, ...rest }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const { field } = defaultValue;
   const fieldType = metricsMap[field as string]?.type;
   const options = map(typeMap[fieldType]?.filters, (v) => ({ value: v.operation, label: v.name }));

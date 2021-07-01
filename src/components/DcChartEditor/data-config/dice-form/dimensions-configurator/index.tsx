@@ -19,7 +19,7 @@ import CreateAliasModal from './create-alias-modal';
 import CreateTimeModal from './create-time-modal';
 import CreateFilterModal from './create-filter-modal';
 import DimensionConfigs from './dimension-configs';
-
+import { customFilter, defaultRenderFilteredOption } from '../../../../../utils/cascader-filter';
 import './index.scss';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
@@ -217,7 +217,7 @@ const DimensionsConfigurator = ({
     <DcDndProvider>
       <div className="dc-dice-metric-group dark-dotted-border pa4 border-radius">
         {map(dimensions, ({ key, alias, type, expr, resultType, filter, aggregation, field, sort }, index) => {
-        // 表达式未填提示
+          // 表达式未填提示
           const isUncompleted = type === 'expr' && !expr;
           // 别名自动补全显示
           let _alias = alias;
@@ -274,7 +274,7 @@ const DimensionsConfigurator = ({
             <Cascader
               allowClear
               popupVisible
-              showSearch
+              showSearch={{ filter: customFilter, render: defaultRenderFilteredOption }}
               size="small"
               options={metricOptions}
               style={{ width: 130, alignSelf: 'start' }}

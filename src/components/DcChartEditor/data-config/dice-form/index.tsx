@@ -21,7 +21,7 @@ import SwitchChartType from '../../switch-chart-type';
 import DimensionsConfigurator from './dimensions-configurator';
 import ChartEditorStore from '../../../../stores/chart-editor';
 import DashboardStore from '../../../../stores/dash-board';
-
+import { customFilter, defaultRenderFilteredOption } from '../../../../utils/cascader-filter';
 import './index.scss';
 import DC, { CreateLoadDataParams } from 'src/types';
 
@@ -164,7 +164,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const getDSLGroupBy = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
     return isMapType
-    // 地图下钻产生的值 => 需要获取图表信息
+      // 地图下钻产生的值 => 需要获取图表信息
       ? [mapLevel]
       : isEmpty(dimensions)
         ? undefined
@@ -267,7 +267,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     };
   }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, getDSLOrderBy, isMapType]);
 
-  const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>, otherProps) => {
+  const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>, otherProps?: object) => {
     const newDataSource = produce(dataSource, (draft) => {
       forEach(_dataSource, (v, k) => { draft[k] = v; });
     });
@@ -349,7 +349,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: sqlContent.fromSource,
       customProps: {
         allowClear: false,
-        showSearch: true,
+        showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
         options: metaGroups,
         onChange: (v: string[]) => {
           _getMetaData(v).then((res?: Array<{ metric: string }>) => {
@@ -421,7 +421,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: dataSource?.activedMetricGroups,
       customProps: {
         allowClear: false,
-        showSearch: true,
+        showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
         options: metaGroups,
         onChange: (v: string[]) => {
           handleUpdateDataSource({ activedMetricGroups: v });

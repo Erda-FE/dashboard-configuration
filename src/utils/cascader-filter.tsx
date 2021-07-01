@@ -2,12 +2,12 @@ import * as React from 'react';
 
 interface CascaderOptionType {
   value?: string | number;
-  label?: React.ReactNode;
+  label?: string;
   disabled?: boolean;
   isLeaf?: boolean;
   loading?: boolean;
   children?: CascaderOptionType[];
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 interface FilledFieldNamesType {
@@ -18,17 +18,16 @@ interface FilledFieldNamesType {
 
 export function customFilter(inputValue: string, path: CascaderOptionType[]) {
   return path.some(
-    (option: any) =>
-      option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1
+    (option: CascaderOptionType) =>
+      (option?.label || '').toLowerCase().indexOf(inputValue.toLowerCase()) > -1
   );
 }
-
 
 function highlightKeyword(str: string, keyword: string, prefixCls: string | undefined) {
   const reg = new RegExp(keyword, 'ig');
   const result = str.matchAll(reg);
-  const matchedArr = Array.from(result, (x: any) => x[0]);
-  return str.split(reg).map((node: any, index: number) =>
+  const matchedArr = Array.from(result, (x: string[]) => x[0]);
+  return str.split(reg).map((node: string, index: number) =>
     (index === 0
       ? node
       : [
@@ -40,8 +39,8 @@ function highlightKeyword(str: string, keyword: string, prefixCls: string | unde
 }
 
 export function defaultRenderFilteredOption(inputValue: string, path: CascaderOptionType[], prefixCls: string | undefined, names: FilledFieldNamesType) {
-  return path.map((option: any, index: number) => {
-    const label = option[names.label];
+  return path.map((option: CascaderOptionType, index: number) => {
+    const label = option[names.label] as string;
     const lowerCaseName = label.toLowerCase();
     const node =
       lowerCaseName.indexOf(inputValue.toLowerCase()) > -1

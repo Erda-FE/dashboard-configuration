@@ -19,7 +19,7 @@ import CreateAliasModal from './create-alias-modal';
 import CreateTimeModal from './create-time-modal';
 import CreateFilterModal from './create-filter-modal';
 import DimensionConfigs from './dimension-configs';
-import { customFilter, defaultRenderFilteredOption } from '../../../../../utils/cascaderFilter';
+import { customFilter, defaultRenderFilteredOption } from '../../../../../utils/cascader-filter';
 import './index.scss';
 
 const textMap = DashboardStore.getState((s) => s.textMap);

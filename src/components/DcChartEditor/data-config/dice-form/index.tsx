@@ -21,7 +21,7 @@ import SwitchChartType from '../../switch-chart-type';
 import DimensionsConfigurator from './dimensions-configurator';
 import ChartEditorStore from '../../../../stores/chart-editor';
 import DashboardStore from '../../../../stores/dash-board';
-import { customFilter, defaultRenderFilteredOption } from '../../../../utils/cascaderFilter';
+import { customFilter, defaultRenderFilteredOption } from '../../../../utils/cascader-filter';
 import './index.scss';
 import DC, { CreateLoadDataParams } from 'src/types';
 

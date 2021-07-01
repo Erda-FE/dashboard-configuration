@@ -14,7 +14,7 @@ import MetricConfigurator from './chart-metric/configurator';
 import TableConfigurator from './chart-table/configurator';
 import MapConfigurator from './chart-map/configurator';
 import FunnelConfigurator from './chart-funnel/configurator';
-import { DC } from 'src/types';
+import DC from 'src/types';
 
 const SvgContainer = ({ children }: any) => (
   <svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="90" height="90">

@@ -51,7 +51,7 @@ $editor-prefix-cls: #{$prefix}-editor;
   &-footer {
     display: flex;
     flex-direction: row-reverse;
-    justify-content: start;
+    justify-content: flex-start;
     align-items: center;
     background: $header-gray-background;
   }

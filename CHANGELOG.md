@@ -1,3 +1,12 @@
+# github
+## [1.0.21](https://github.com/Erda-FE/dashboard-configuration/pull/5)(2021-07-01)
+
+### Feature
+
+* display multi-dimensions and multi=values in the chart([a6094e3](https://github.com/Erda-FE/dashboard-configuration/commit/a6094e33aeccea6c56a22e0d95fcf9f5dd894447))
+
+
+
 ## [1.2.5](https://gittar.app.terminus.io/terminus-dice/dashboard-configurator/compare/v1.2.4...v1.2.5) (2021-06-01)
 
 

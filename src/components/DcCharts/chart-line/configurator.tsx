@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Checkbox, Input } from '@terminus/nusi';
 import produce from 'immer';
+import DC from 'src/types';
 import { CommonConfigurator } from '../common';
 import { DcInfoLabel } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
@@ -64,7 +65,7 @@ export default () => {
       },
     },
     {
-      label: <DcInfoLabel text={textMap['invalidToZero']} info={textMap['invalid to zero tip']} />,
+      label: <DcInfoLabel text={textMap.invalidToZero} info={textMap['invalid to zero tip']} />,
       name: 'invalidToZero',
       type: Checkbox,
       required: false,

@@ -1,5 +1,7 @@
 import * as React from 'react';
 import { map } from 'lodash';
+import { Popover } from '@terminus/nusi';
+import DC from 'src/types';
 import classnames from 'classnames';
 import { DcIcon } from '../../../common';
 import basicCharts from '../../DcCharts';
@@ -22,18 +24,21 @@ const SwitchChartType = ({
   return (
     <div className="dc-editor-switch-chart">
       {map(basicCharts, ({ name, enName, icon }: DC.ViewDefItem, chartType) => (
-        <div
-          className={classnames({
-            'dc-editor-switch-chart-item': true,
-            'center-flex-box': true,
-            active: value === chartType,
-          })}
-          onClick={() => { onChange(chartType as DC.ViewType); }}
-        >
-          <DcIcon type={icon} useSymbol />
-        </div>
-      ))}
-    </div>
+        <Popover content={name} footer={false}>
+          <div
+            className={classnames({
+              'dc-editor-switch-chart-item': true,
+              'center-flex-box': true,
+              active: value === chartType,
+            })}
+            onClick={() => { onChange(chartType as DC.ViewType); }}
+          >
+            <DcIcon type={icon} useSymbol />
+          </div>
+        </Popover>
+      ))
+      }
+    </div >
   );
 };
 

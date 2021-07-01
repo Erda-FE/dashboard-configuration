@@ -5,11 +5,11 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-02-25 12:38:00
  */
-import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy, isNumber } from 'lodash';
+import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy, isNumber, forEach } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { getFormatter } from '../../../../common/utils';
 import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
-import { CreateLoadDataParams, DC } from 'src/types';
+import DC, { CreateLoadDataParams } from 'src/types';
 
 export const createLoadDataFn = ({
   api,
@@ -205,7 +205,7 @@ export const createLoadDataFn = ({
       const time = map(uniqBy(dataSource, timeDimension.key), (item) => item[timeDimension.key]);
       const groups = chunk(dataSource, time.length);
       const metricData = map(groups, (group) => {
-        const nameItem: any = find(group, (item: any) => !!item[valueDimension.key] || isNumber(item[valueDimension.key])) || {};
+        const nameItem: any = find(group, (item: any) => (!!item[valueDimension.key] || isNumber(item[valueDimension.key])) && Object.values(item).every((value) => value !== null)) || {};
         return {
           data: map(group, (item: any) => item[valueDimension.key]),
           name: reduce(otherDimensions, (name, { key }, index) => `${name}${nameItem[key]}${index !== otherDimensions.length - 1 ? ' / ' : ''}`, ''),
@@ -221,5 +221,34 @@ export const createLoadDataFn = ({
     }
   }
 
+  // 多个维度，多个数值
+  if (typeDimensionsLen > 1 && valueDimensionsLen > 1) {
+    if (isLineType) {
+      const { data: dataSource } = data;
+      const timeDimension = find(_typeDimensions, { type: 'time' });
+      if (!timeDimension) return {};
+
+      const otherDimensions = dropWhile(_typeDimensions, { type: 'time' });
+      const time = map(uniqBy(dataSource, timeDimension.key), (item) => item[timeDimension.key]);
+      const metricData: any = [];
+      const groups = chunk(dataSource, time.length);
+      forEach(groups, (group) => {
+        forEach(_valueDimensions, (valueDimension) => {
+          const nameItem: any = find(group, (item: any) => (!!item[valueDimension.key] || isNumber(item[valueDimension.key])) && Object.values(item).every((value) => value !== null)) || {};
+          metricData.push({
+            data: map(group, (item: any) => item[valueDimension.key]),
+            name: reduce(otherDimensions, (name, { key }, index) => `${name}${nameItem[key]}${index !== otherDimensions.length - 1 ? ' / ' : ''}`, ''),
+            ...valueDimension,
+          });
+        });
+      });
+
+      return {
+        metricData,
+        time,
+        valueNames: _valueDimensions.map((x) => x.alias),
+      };
+    }
+  }
   return {};
 };

@@ -141,9 +141,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
           case 'field':
             expr = aggregation
               ?
-              isAutoPrecision && resultType === 'number'
-                ? `round_float(${aggregation}(${fieldsMap[field as string]?.key}), 2)` // 自动处理返回值精度问题，后面需自动处理
-                : `${aggregation}(${fieldsMap[field as string]?.key})`
+              `round_float(${aggregation}(${fieldsMap[field as string]?.key}), 2)` // 自动处理返回值精度问题，后面需自动处理
               :
               isAutoPrecision && resultType === 'number'
                 ? `round_float(${fieldsMap[field as string]?.key}, 2)`

@@ -170,7 +170,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
         height: 25,
         start: 0,
         end: (xData && xData.length > 10) ? 500 / xData.length : 25,
-        labelFormatter: (_: any, value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm'),
+        labelFormatter: time ? (_: any, value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm') : null,
       }
       : false,
     grid: {

@@ -60,7 +60,7 @@ export const createLoadDataFn = ({
 
       return {
         cols: _cols,
-        metricData: map(dataSource, (item, k) => (reduce(_cols, (result, { dataIndex }) => ({ ...result, [dataIndex]: item[dataIndex], c_key: k }), {}))),
+        metricData: map(dataSource, (item, k) => (reduce(_cols, (result, { dataIndex }) => ({ ...result, [dataIndex]: item[dataIndex], c_key: k }), { ...item }))),
         dataSource,
       };
     } else {
@@ -87,7 +87,7 @@ export const createLoadDataFn = ({
               [dataIndex]: getFormattedVal(item[dataIndex]),
               c_key: i,
             };
-          }, {})
+          }, { ...item })
         )),
         dataSource,
       };

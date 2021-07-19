@@ -65,9 +65,10 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const { chartType, curMapType = [], config: currentChartConfig = {} } = currentChart;
   const { dataSourceConfig } = currentChartConfig;
   const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
-  const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[curMapType.length - 1], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
-  const isTableType = chartType === 'table';
-  const isMapType = chartType === 'chart:map';
+  const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[Math.max(curMapType.length - 1, 0)], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
+  const chartTypeRef = useRef(chartType);
+  const isTableType = chartTypeRef.current === 'table';
+  const isMapType = chartTypeRef.current === 'chart:map';
   const isLineType = (['chart:line', 'chart:area', 'chart:bar'] as DC.ViewType[]).includes(chartType);
   const sqlContent = dataSource?.sql || {};
   const _submitResult = debounce(submitResult, 500);
@@ -185,7 +186,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
           }
           return val;
         });
-  }, [fieldsMap, isMapType, mapLevel]);
+  }, [fieldsMap, mapLevel]);
 
   const getDSLOrderBy = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
     return isEmpty(dimensions)
@@ -214,9 +215,9 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const getLoadData = useCallback((payload: Omit<CreateLoadDataParams, 'chartType'>) => {
     return createLoadDataFn({
       ...payload,
-      chartType,
+      chartType: chartTypeRef.current,
     } as any);
-  }, [chartType]);
+  }, []);
 
   const getSqlString = (sql?: DC.SqlContent) => {
     if (!sql) return '';
@@ -289,8 +290,10 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   }, [_submitResult, dataSource, currentChartConfig, genApi, getLoadData]);
 
   const handleUpdateChartType = (type: DC.ViewType) => {
+    chartTypeRef.current = type;
     if (type === 'table') {
       _submitResult({ chartType: type });
+      handleUpdateDataSource({}, { chartType: type });
     } else {
       handleUpdateDataSource({ isSqlMode: false }, { chartType: type });
     }

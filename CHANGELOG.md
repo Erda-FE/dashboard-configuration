@@ -1,4 +1,24 @@
 # github
+## [1.0.23](https://github.com/Erda-FE/dashboard-configuration/pull/9)(2021-07-13)
+
+### Bugfix
+
+* add origin data into table record([29e9236](https://github.com/Erda-FE/dashboard-configuration/pull/9/commits/29e9236758eedcbf3e3fe234d0d557cd886fb7ab))
+
+
+
+# github
+## [1.0.22](https://github.com/Erda-FE/dashboard-configuration/pull/8)(2021-07-02)
+
+### Bugfix
+
+* display normal content when xAxis is not time in bar chart([f986604](https://github.com/Erda-FE/dashboard-configuration/pull/6/commits/f986604fd242050b6a4d4bdfd750dc7fe9fbe190))
+* add round_float to latest value([a8dd003](https://github.com/Erda-FE/dashboard-configuration/pull/7/commits/a8dd003d0d20f45f565bd687019a22660d4c26ed))
+* cascader supporting both upper and lower case([29cb4fd](https://github.com/Erda-FE/dashboard-configuration/pull/8/commits/29cb4fd7b0a071b02082cc03e1b47bf8159079a1))
+
+
+
+# github
 ## [1.0.21](https://github.com/Erda-FE/dashboard-configuration/pull/5)(2021-07-01)
 
 ### Feature

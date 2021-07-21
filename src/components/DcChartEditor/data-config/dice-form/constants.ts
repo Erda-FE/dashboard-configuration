@@ -136,14 +136,6 @@ interface DimensionConfig {
   options?: Array<{ value: string; label: string }>;
 }
 
-export const COMMON_DIMENSIONS_CONFIGS: DimensionConfig[] = [
-  {
-    key: 'alias',
-    label: textMap['field config'],
-    actionKey: 'configAlias',
-  },
-];
-
 // eslint-disable-next-line no-shadow
 enum SORT_TYPE {
   desc = 'DESC',

@@ -5,7 +5,7 @@ import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
 import DashboardStore from '../../../../../stores/dash-board';
 import { DcInfoIcon } from '../../../../../common';
-import { DIMENSIONS_CONFIGS, SPECIAL_METRIC_TYPE, COMMON_DIMENSIONS_CONFIGS } from '../constants';
+import { DIMENSIONS_CONFIGS, SPECIAL_METRIC_TYPE } from '../constants';
 
 import './index.scss';
 
@@ -40,6 +40,13 @@ const DimensionConfigs = ({
   onTriggerAction,
 }: IProps) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
+  const COMMON_DIMENSIONS_CONFIGS = [
+    {
+      key: 'alias',
+      label: textMap['field config'],
+      actionKey: 'configAlias',
+    },
+  ];
   // 拖拽交互相关
   const dimensionsWrapperRef = useRef<any>(null);
   // drop 必须操作 DOM 元素

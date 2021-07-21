@@ -22,9 +22,6 @@ import DimensionConfigs from './dimension-configs';
 import { customFilter, defaultRenderFilteredOption } from '../../../../../utils/cascader-filter';
 import './index.scss';
 
-// FIXME:修复国际化bug
-const textMap = DashboardStore.getState((s) => s.textMap);
-const DEFAULT_TIME_ALIAS = textMap[SPECIAL_METRIC_TYPE.time];
 const METRIC_DISPLAY_CHARS_LIMIT = 20;
 
 interface IProps {
@@ -50,6 +47,8 @@ const DimensionsConfigurator = ({
   disabled = false,
   onChange,
 }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
+  const DEFAULT_TIME_ALIAS = textMap[SPECIAL_METRIC_TYPE.time];
   const [selectVisible, toggleSelectVisible] = useToggle(false);
   const [exprModalVisible, toggleExprModalVisible] = useToggle(false);
   const [aliasModalVisible, toggleAliasModalVisible] = useToggle(false);

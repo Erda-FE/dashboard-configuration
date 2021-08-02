@@ -228,7 +228,7 @@ const DimensionsConfigurator = ({
               typeMap[metricsMap[field as string]?.type]?.aggregations,
               (v) => ({ value: v.aggregation, label: v.name })
             );
-            _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap[sort]?.label}` : ''}`;
+            _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap(textMap)[sort]?.label}` : ''}`;
           }
           if (type === 'filter' && filter?.operation) {
             _alias = `${alias}(${filtersMap[filter.operation]?.name} ${filter?.value})`;

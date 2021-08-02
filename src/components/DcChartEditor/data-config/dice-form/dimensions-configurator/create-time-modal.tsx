@@ -15,24 +15,27 @@ interface IProps {
   onOk: (v: any) => void;
 }
 
-const CustomTimeInput = ({ value, onChange }: any) => (
-  <InputGroup compact size="small">
-    <InputNumber
-      value={value?.value}
-      min={1}
-      precision={0}
-      size="small"
-      onChange={(v) => onChange({ ...value, value: v })}
-    />
-    <Select
-      allowClear
-      value={value?.unit}
-      size="small"
-      options={TIME_INTERVALS}
-      onChange={(v) => onChange({ ...value, unit: v })}
-    />
-  </InputGroup>
-);
+const CustomTimeInput = ({ value, onChange }: any) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
+  return (
+    <InputGroup compact size="small">
+      <InputNumber
+        value={value?.value}
+        min={1}
+        precision={0}
+        size="small"
+        onChange={(v) => onChange({ ...value, value: v })}
+      />
+      <Select
+        allowClear
+        value={value?.unit}
+        size="small"
+        options={TIME_INTERVALS(textMap)}
+        onChange={(v) => onChange({ ...value, unit: v })}
+      />
+    </InputGroup>
+  );
+};
 
 const CustomTimeField = ({ value, onChange, options }: any) => (
   <InputGroup compact size="small">

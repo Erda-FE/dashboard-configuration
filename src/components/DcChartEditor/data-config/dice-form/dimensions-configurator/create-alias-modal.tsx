@@ -17,8 +17,8 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
           allowClear
           value={type}
           size={size}
-          options={map(UNIT_INF_MAP, (item) => ({ label: item.name, value: item.value }))}
-          onChange={(v) => onChange({ ...value, type: v, unit: UNIT_INF_MAP[v]?.defaultUnit })}
+          options={map(UNIT_INF_MAP(textMap), (item) => ({ label: item.name, value: item.value }))}
+          onChange={(v) => onChange({ ...value, type: v, unit: UNIT_INF_MAP(textMap)[v]?.defaultUnit })}
         />
       </Col>
       <Col span={8}>
@@ -34,11 +34,11 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
               }}
             />
           </When>
-          <When condition={!!UNIT_INF_MAP[type || '']?.units}>
+          <When condition={!!UNIT_INF_MAP(textMap)[type || '']?.units}>
             <Select
               value={unit}
               size={size}
-              options={map(UNIT_INF_MAP[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
+              options={map(UNIT_INF_MAP(textMap)[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
               onChange={(v) => onChange({ ...value, unit: v })}
             />
           </When>

@@ -90,7 +90,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const getTimeRange = useCallback((_customTime?: string) => {
     if (_customTime) {
-      const [start, end] = CUSTOM_TIME_RANGE_MAP[_customTime].getTimeRange();
+      const [start, end] = CUSTOM_TIME_RANGE_MAP(textMap)[_customTime].getTimeRange();
       return { start, end };
     }
     const { startTimeMs, endTimeMs } = timeSpan;
@@ -98,7 +98,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       start: startTimeMs,
       end: endTimeMs,
     };
-  }, [timeSpan]);
+  }, [timeSpan, textMap]);
 
   const getDefaultFilter = useCallback(() => {
     return reduce(curMetric?.filters, (result, { tag, op, value }) => ({
@@ -523,7 +523,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: dataSource?.customTime,
       required: false,
       customProps: {
-        options: map(CUSTOM_TIME_RANGE_MAP, ({ name: label }, value) => ({ label, value })),
+        options: map(CUSTOM_TIME_RANGE_MAP(textMap), ({ name: label }, value) => ({ label, value })),
         allowClear: true,
         onChange: (v: string) => handleUpdateDataSource({ customTime: v }),
       },

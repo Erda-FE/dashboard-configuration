@@ -45,6 +45,7 @@ const RowEventConfig = ({ value, options, onChange }: RowEventConfigProps) => {
 
 export default () => {
   const { updateEditor } = ChartEditorStore;
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
   const currentChartConfig = viewCopy?.config || {};
   const valueDimensions = get(currentChartConfig, 'dataSourceConfig.valueDimensions') || [];

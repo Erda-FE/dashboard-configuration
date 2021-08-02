@@ -86,7 +86,7 @@ const DimensionConfigs = ({
   drag(drop(dimensionsWrapperRef));
 
   const child = React.Children.only(children);
-  let configs = DIMENSIONS_CONFIGS[type];
+  let configs = DIMENSIONS_CONFIGS(textMap)[type];
   let selectedKeys;
 
   if (['value', 'type'].includes(dimensionType)) {

@@ -1,8 +1,7 @@
 import { map } from 'lodash';
 import moment from 'moment';
-import DashboardStore from '../../../../stores/dash-board';
+import { TextType } from 'src/stores/dash-board';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 const getBeforeTimeRange = (number: number, string: any) => [moment().subtract(number, string).valueOf(), moment().valueOf()];
 const getScopeTimeRange = (scope: any) => [moment().startOf(scope).valueOf(), moment().valueOf()];
 const getLastScopeTimeRange = (scope: any) => [moment()[scope](moment()[scope]() - 1).startOf(scope).valueOf(), moment()[scope](moment()[scope]() - 1).endOf(scope).valueOf()];
@@ -17,7 +16,7 @@ export const PAGINATION: IPagination = {
   pageSizeOptions: ['15', '30', '45', '60'],
 };
 
-export const CUSTOM_TIME_RANGE_MAP = {
+export const customTimeRangeMap = (textMap: TextType) => ({
   '5min': {
     name: textMap['5min'],
     getTimeRange: () => getBeforeTimeRange(5, 'minutes'),
@@ -66,7 +65,7 @@ export const CUSTOM_TIME_RANGE_MAP = {
     name: textMap['last year'],
     getTimeRange: () => getLastScopeTimeRange('year'),
   },
-};
+});
 
 export const TIME_FORMATS = [
   {
@@ -135,26 +134,19 @@ interface DimensionConfig {
   options?: Array<{ value: string; label: string }>;
 }
 
-export const COMMON_DIMENSIONS_CONFIGS: DimensionConfig[] = [
-  {
-    key: 'alias',
-    label: textMap['field config'],
-    actionKey: 'configAlias',
-  },
-];
-
 // eslint-disable-next-line no-shadow
 enum SORT_TYPE {
   desc = 'DESC',
   asc = 'ASC'
 }
 
-export const SortMap = {
+export const sortMap = (textMap: TextType) => ({
   [SORT_TYPE.desc]: { value: SORT_TYPE.desc, label: textMap.desc },
   [SORT_TYPE.asc]: { value: SORT_TYPE.asc, label: textMap.asc },
-};
+});
 
-export const DIMENSIONS_CONFIGS: Record<SPECIAL_METRIC_TYPE, DimensionConfig[]> = {
+
+export const dimensionsConfigs = (textMap: TextType) => ({
   [SPECIAL_METRIC_TYPE.expr]: [
     {
       key: SPECIAL_METRIC_TYPE.expr,
@@ -177,10 +169,10 @@ export const DIMENSIONS_CONFIGS: Record<SPECIAL_METRIC_TYPE, DimensionConfig[]> 
       key: SPECIAL_METRIC_TYPE.sort,
       label: textMap['sort method'],
       type: 'sub',
-      options: map(SortMap, (item) => item),
+      options: map(sortMap, (item) => item),
     },
   ],
-};
+});
 
 // eslint-disable-next-line no-shadow
 export enum UNIT_TYPE {
@@ -192,7 +184,7 @@ export enum UNIT_TYPE {
   CUSTOM = 'CUSTOM',
 }
 
-export const UNIT_INF_MAP = {
+export const unitInfMap = (textMap: TextType) => ({
   [UNIT_TYPE.NUMBER]: {
     name: textMap['number conversion'],
     value: UNIT_TYPE.NUMBER,
@@ -227,9 +219,9 @@ export const UNIT_INF_MAP = {
     value: UNIT_TYPE.CUSTOM,
     defaultUnit: '',
   },
-};
+});
 
-export const TIME_INTERVALS = [
+export const timeIntervals = (textMap: TextType) => ([
   {
     label: textMap.second,
     value: 's',
@@ -254,7 +246,7 @@ export const TIME_INTERVALS = [
   //   label: textMap.month,
   //   value: 'M',
   // },
-];
+]);
 
 export const TIME_FIELDS_UNITS = [
   { label: 'ns', value: 'ns' },

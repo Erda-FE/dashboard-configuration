@@ -5,9 +5,8 @@ import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 import DC from 'src/types';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 export default ({ fields: extraFields = [] }: { fields?: any[] }) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const { updateEditor } = ChartEditorStore;
   const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
   const { title, description } = viewCopy || {};

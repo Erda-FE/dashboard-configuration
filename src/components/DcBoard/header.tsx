@@ -17,8 +17,6 @@ import GlobalFiltersStore from '../../stores/global-filters';
 
 import './header.scss';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 interface IProps {
   wrapRef: RefObject<Element>;
   contentRef: RefObject<Element>;
@@ -40,6 +38,7 @@ const DashboardHeader = ({
   onSave,
   onCancel,
 }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   // 编辑态
   const [isEditMode, viewMap] = ChartEditorStore.useStore((s) => [s.isEditMode, s.viewMap]);
   const { setEditMode, setPickChartModalVisible, addView, saveEdit, toggleFullscreen } = ChartEditorStore;

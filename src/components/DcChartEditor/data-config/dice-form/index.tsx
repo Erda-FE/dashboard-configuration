@@ -14,7 +14,7 @@ import { getConfig } from '../../../../config';
 import { DcFormBuilder, DcInfoLabel } from '../../../../common';
 import { insertWhen } from '../../../../common/utils';
 import { getIntervalString } from './common/utils';
-import { CUSTOM_TIME_RANGE_MAP, MAP_LEVEL, MAP_ALIAS, SQL_OPERATOR } from './constants';
+import { customTimeRangeMap, MAP_LEVEL, MAP_ALIAS, SQL_OPERATOR } from './constants';
 // import DynamicFilterDataModal from './dynamic-filter-data-modal';
 import { createLoadDataFn } from './data-loader';
 import SwitchChartType from '../../switch-chart-type';
@@ -25,14 +25,13 @@ import { customFilter, defaultRenderFilteredOption } from '../../../../utils/cas
 import './index.scss';
 import DC, { CreateLoadDataParams } from 'src/types';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 interface IProps {
   currentChart: DC.View;
   submitResult: (payload: Partial<DC.View>) => void;
 }
 
 const DiceForm = ({ submitResult, currentChart }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const timeSpan = ChartEditorStore.useStore((s) => s.timeSpan);
   // const [isFetchingMetaGroups] = useLoading(dataConfigMetaDataStore, ['getMetaGroups']);
   // 配置所需的数据，宿主注入
@@ -91,7 +90,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const getTimeRange = useCallback((_customTime?: string) => {
     if (_customTime) {
-      const [start, end] = CUSTOM_TIME_RANGE_MAP[_customTime].getTimeRange();
+      const [start, end] = customTimeRangeMap(textMap)[_customTime].getTimeRange();
       return { start, end };
     }
     const { startTimeMs, endTimeMs } = timeSpan;
@@ -99,7 +98,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       start: startTimeMs,
       end: endTimeMs,
     };
-  }, [timeSpan]);
+  }, [timeSpan, textMap]);
 
   const getDefaultFilter = useCallback(() => {
     return reduce(curMetric?.filters, (result, { tag, op, value }) => ({
@@ -524,7 +523,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: dataSource?.customTime,
       required: false,
       customProps: {
-        options: map(CUSTOM_TIME_RANGE_MAP, ({ name: label }, value) => ({ label, value })),
+        options: map(customTimeRangeMap(textMap), ({ name: label }, value) => ({ label, value })),
         allowClear: true,
         onChange: (v: string) => handleUpdateDataSource({ customTime: v }),
       },

@@ -11,7 +11,7 @@ import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle } from 'react-use';
 import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
-import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, SortMap } from '../constants';
+import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, sortMap } from '../constants';
 import DashboardStore from '../../../../../stores/dash-board';
 import { genDefaultDimension } from '../common/utils';
 import CreateExprModal from './create-expr-modal';
@@ -22,8 +22,6 @@ import DimensionConfigs from './dimension-configs';
 import { customFilter, defaultRenderFilteredOption } from '../../../../../utils/cascader-filter';
 import './index.scss';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-const DEFAULT_TIME_ALIAS = textMap[SPECIAL_METRIC_TYPE.time];
 const METRIC_DISPLAY_CHARS_LIMIT = 20;
 
 interface IProps {
@@ -49,6 +47,8 @@ const DimensionsConfigurator = ({
   disabled = false,
   onChange,
 }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
+  const DEFAULT_TIME_ALIAS = textMap[SPECIAL_METRIC_TYPE.time];
   const [selectVisible, toggleSelectVisible] = useToggle(false);
   const [exprModalVisible, toggleExprModalVisible] = useToggle(false);
   const [aliasModalVisible, toggleAliasModalVisible] = useToggle(false);
@@ -228,7 +228,7 @@ const DimensionsConfigurator = ({
               typeMap[metricsMap[field as string]?.type]?.aggregations,
               (v) => ({ value: v.aggregation, label: v.name })
             );
-            _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap[sort]?.label}` : ''}`;
+            _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${sortMap(textMap)[sort]?.label}` : ''}`;
           }
           if (type === 'filter' && filter?.operation) {
             _alias = `${alias}(${filtersMap[filter.operation]?.name} ${filter?.value})`;

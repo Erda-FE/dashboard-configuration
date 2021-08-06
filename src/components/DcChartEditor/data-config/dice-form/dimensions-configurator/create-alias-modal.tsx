@@ -3,13 +3,12 @@ import { map } from 'lodash';
 import { Input, Select, Col } from '@terminus/nusi';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
-import { UNIT_INF_MAP } from '../constants';
+import { unitInfMap } from '../constants';
 
 const { Group: InputGroup } = Input;
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
-const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit; [k: string]: any }) => {
+const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit;[k: string]: any }) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const { type, unit } = value || {};
   return (
     <InputGroup size={size}>
@@ -18,8 +17,8 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
           allowClear
           value={type}
           size={size}
-          options={map(UNIT_INF_MAP, (item) => ({ label: item.name, value: item.value }))}
-          onChange={(v) => onChange({ ...value, type: v, unit: UNIT_INF_MAP[v]?.defaultUnit })}
+          options={map(unitInfMap(textMap), (item) => ({ label: item.name, value: item.value }))}
+          onChange={(v) => onChange({ ...value, type: v, unit: unitInfMap(textMap)[v]?.defaultUnit })}
         />
       </Col>
       <Col span={8}>
@@ -35,11 +34,11 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
               }}
             />
           </When>
-          <When condition={!!UNIT_INF_MAP[type || '']?.units}>
+          <When condition={!!unitInfMap(textMap)[type || '']?.units}>
             <Select
               value={unit}
               size={size}
-              options={map(UNIT_INF_MAP[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
+              options={map(unitInfMap(textMap)[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
               onChange={(v) => onChange({ ...value, unit: v })}
             />
           </When>
@@ -59,6 +58,7 @@ interface IProps {
 }
 
 const CreateAliasModal = ({ defaultValue, isNeedUnit, ...rest }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const fields = [
     {
       label: textMap.alias,

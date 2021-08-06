@@ -5,8 +5,6 @@ import domtoimage from 'dom-to-image';
 import { Toast } from '@terminus/nusi';
 import DashboardStore from '../stores/dash-board';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 export const formItemLayout = {
   labelCol: {
     span: 4,
@@ -82,6 +80,7 @@ export function saveImage(
     errorMsg?: string;
   },
 ) {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   if (loadingMessage) {
     return;
   }

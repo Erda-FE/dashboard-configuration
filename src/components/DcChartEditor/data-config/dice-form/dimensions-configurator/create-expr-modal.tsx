@@ -3,8 +3,6 @@ import { Input } from '@terminus/nusi';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 interface IProps {
   defaultValue: DICE_DATA_CONFIGURATOR.Dimension;
   visible: boolean;
@@ -13,6 +11,7 @@ interface IProps {
 }
 
 const CreateExprModal = ({ defaultValue, ...rest }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const fields = [
     {
       label: textMap.expr,

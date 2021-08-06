@@ -7,8 +7,6 @@ import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 import DC from 'src/types';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 interface RowEventConfigProps {
   value?: DC_COMPONENT_TABLE.IRowClick;
   options: DICE_DATA_CONFIGURATOR.Dimension[];
@@ -17,6 +15,7 @@ interface RowEventConfigProps {
 
 // 指定表格行点击事件，用于外部嵌入大盘约定与外部的事件及数据
 const RowEventConfig = ({ value, options, onChange }: RowEventConfigProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const [eName, setEName] = useState<string | undefined>(value?.name);
   const [eValue, setEValue] = useState<string | undefined>(value?.value);
 
@@ -46,6 +45,7 @@ const RowEventConfig = ({ value, options, onChange }: RowEventConfigProps) => {
 
 export default () => {
   const { updateEditor } = ChartEditorStore;
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
   const currentChartConfig = viewCopy?.config || {};
   const valueDimensions = get(currentChartConfig, 'dataSourceConfig.valueDimensions') || [];

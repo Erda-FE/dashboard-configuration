@@ -5,11 +5,10 @@ import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
 import DashboardStore from '../../../../../stores/dash-board';
 import { DcInfoIcon } from '../../../../../common';
-import { DIMENSIONS_CONFIGS, SPECIAL_METRIC_TYPE, COMMON_DIMENSIONS_CONFIGS } from '../constants';
+import { dimensionsConfigs, SPECIAL_METRIC_TYPE } from '../constants';
 
 import './index.scss';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 const { Item: MenuItem, Divider: MenuDivider, SubMenu } = Menu;
 
 interface IProps {
@@ -40,6 +39,14 @@ const DimensionConfigs = ({
   aggregationMap,
   onTriggerAction,
 }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
+  const COMMON_dimensionsConfigs = [
+    {
+      key: 'alias',
+      label: textMap['field config'],
+      actionKey: 'configAlias',
+    },
+  ];
   // 拖拽交互相关
   const dimensionsWrapperRef = useRef<any>(null);
   // drop 必须操作 DOM 元素
@@ -79,11 +86,11 @@ const DimensionConfigs = ({
   drag(drop(dimensionsWrapperRef));
 
   const child = React.Children.only(children);
-  let configs = DIMENSIONS_CONFIGS[type];
+  let configs = dimensionsConfigs(textMap)[type];
   let selectedKeys;
 
   if (['value', 'type'].includes(dimensionType)) {
-    configs = [...configs, ...COMMON_DIMENSIONS_CONFIGS];
+    configs = [...configs, ...COMMON_dimensionsConfigs];
   }
 
   // 维度不需要聚合方法

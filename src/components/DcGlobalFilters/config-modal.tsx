@@ -4,13 +4,11 @@ import { useImmer } from 'use-immer';
 import { remove, find, findIndex, map } from 'lodash';
 import { DcIcon, DcInfoIcon } from '../../common';
 import { insertWhen, genUUID } from '../../common/utils';
-import DashboardStore from '../../stores/dash-board';
+import DashboardStore, { TextType } from '../../stores/dash-board';
 import GlobalFiltersStore from '../../stores/global-filters';
 
 import './config-modal.scss';
 import { IconType } from '@terminus/nusi/es/notification';
-
-const textMap = DashboardStore.getState((s) => s.textMap);
 
 interface FilterOption {
   icon?: IconType;
@@ -65,6 +63,7 @@ const TabPaneOptionsName = ({
   removeFilter: (id: string) => void;
   updateFilter: (id: string, filter: Partial<DC_GLOBAL_FILTERS.Filter>) => void;
 }) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const filterOptions: FilterOption[] = [
     ...insertWhen<FilterOption>(enable, [
       {
@@ -127,7 +126,7 @@ export enum FilterType {
   CONSTANT = 'constant',
 }
 
-const newFilterOptionMap = {
+const newFilterOptionMap = (textMap: TextType) => ({
   [FilterType.SEARCH]: {
     name: textMap['input keywords'],
     prefix: 'search',
@@ -136,15 +135,16 @@ const newFilterOptionMap = {
     name: textMap['select datasource'],
     prefix: 'filter',
   },
-};
+});
 
 // 生成默认唯一 filter name
-const genDefaultFilterName = (type: DC_GLOBAL_FILTERS.FilterType) => {
-  return `${newFilterOptionMap[type]?.prefix}_${genUUID(3)}`;
+const genDefaultFilterName = (type: DC_GLOBAL_FILTERS.FilterType, textMap: TextType) => {
+  return `${newFilterOptionMap(textMap)[type]?.prefix}_${genUUID(3)}`;
 };
 
 export const ConfigGlobalFiltersModal = () => {
   const [visible, globalFilters] = GlobalFiltersStore.useStore((s) => [s.configModalVisible, s.globalFilters]);
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const { toggleConfigModal, submitFilters } = GlobalFiltersStore;
   const [filters, updateFilters] = useImmer(globalFilters);
   const getFieldsList = ({ name, label, desc, key, placeholder }: DC_GLOBAL_FILTERS.Filter): IField[] => [
@@ -204,7 +204,7 @@ export const ConfigGlobalFiltersModal = () => {
 
   const addFilter = (type: DC_GLOBAL_FILTERS.FilterType) => {
     updateFilters((draft) => {
-      const key = genDefaultFilterName(type);
+      const key = genDefaultFilterName(type, textMap);
       draft.push({
         key,
         name: key,

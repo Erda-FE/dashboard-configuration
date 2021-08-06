@@ -3,9 +3,8 @@ import { Select, Input, InputNumber } from '@terminus/nusi';
 import { map, filter } from 'lodash';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
-import { TIME_INTERVALS, TIME_FORMATS, TIME_FIELDS_UNITS } from '../constants';
+import { timeIntervals, TIME_FORMATS, TIME_FIELDS_UNITS } from '../constants';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 const { Group: InputGroup } = Input;
 
 interface IProps {
@@ -16,24 +15,27 @@ interface IProps {
   onOk: (v: any) => void;
 }
 
-const CustomTimeInput = ({ value, onChange }: any) => (
-  <InputGroup compact size="small">
-    <InputNumber
-      value={value?.value}
-      min={1}
-      precision={0}
-      size="small"
-      onChange={(v) => onChange({ ...value, value: v })}
-    />
-    <Select
-      allowClear
-      value={value?.unit}
-      size="small"
-      options={TIME_INTERVALS}
-      onChange={(v) => onChange({ ...value, unit: v })}
-    />
-  </InputGroup>
-);
+const CustomTimeInput = ({ value, onChange }: any) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
+  return (
+    <InputGroup compact size="small">
+      <InputNumber
+        value={value?.value}
+        min={1}
+        precision={0}
+        size="small"
+        onChange={(v) => onChange({ ...value, value: v })}
+      />
+      <Select
+        allowClear
+        value={value?.unit}
+        size="small"
+        options={timeIntervals(textMap)}
+        onChange={(v) => onChange({ ...value, unit: v })}
+      />
+    </InputGroup>
+  );
+};
 
 const CustomTimeField = ({ value, onChange, options }: any) => (
   <InputGroup compact size="small">
@@ -56,6 +58,7 @@ const CustomTimeField = ({ value, onChange, options }: any) => (
 );
 
 const CreateTimeModal = ({ defaultValue, metricsMap, ...rest }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const fields = [
     {
       label: textMap['custom time metric'],

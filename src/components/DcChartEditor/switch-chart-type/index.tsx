@@ -5,6 +5,7 @@ import DC from 'src/types';
 import classnames from 'classnames';
 import { DcIcon } from '../../../common';
 import basicCharts from '../../DcCharts';
+import DashboardStore from '../../../stores/dash-board';
 
 import './index.scss';
 
@@ -21,10 +22,11 @@ const SwitchChartType = ({
   valueDimensions,
   onChange,
 }: IProps) => {
+  const locale = DashboardStore.useStore((s) => s.locale);
   return (
     <div className="dc-editor-switch-chart">
       {map(basicCharts, ({ name, enName, icon }: DC.ViewDefItem, chartType) => (
-        <Popover content={name} footer={false}>
+        <Popover content={locale === 'en' ? enName : name} footer={false}>
           <div
             className={classnames({
               'dc-editor-switch-chart-item': true,

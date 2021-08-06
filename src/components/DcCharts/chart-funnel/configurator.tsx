@@ -6,9 +6,8 @@ import { CommonConfigurator } from '../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
-
 export default () => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const { updateEditor } = ChartEditorStore;
   const viewCopy = ChartEditorStore.useStore((s) => s.viewCopy as DC.View);
   const currentChartConfig = viewCopy?.config || {};

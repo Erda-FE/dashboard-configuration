@@ -15,7 +15,6 @@ import DashboardStore from '../../stores/dash-board';
 
 import './index.scss';
 
-const textMap = DashboardStore.getState((s) => s.textMap);
 
 const PureDashboard = ({
   name,
@@ -24,6 +23,7 @@ const PureDashboard = ({
   globalVariable,
   onBoardEvent,
 }: DC.PureBoardGridProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
   const [gridWidthHolder, gridWidth] = useComponentWidth();

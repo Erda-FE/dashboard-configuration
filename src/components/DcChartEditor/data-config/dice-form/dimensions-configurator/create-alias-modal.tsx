@@ -3,7 +3,7 @@ import { map } from 'lodash';
 import { Input, Select, Col } from '@terminus/nusi';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
-import { UNIT_INF_MAP } from '../constants';
+import { unitInfMap } from '../constants';
 
 const { Group: InputGroup } = Input;
 
@@ -17,8 +17,8 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
           allowClear
           value={type}
           size={size}
-          options={map(UNIT_INF_MAP(textMap), (item) => ({ label: item.name, value: item.value }))}
-          onChange={(v) => onChange({ ...value, type: v, unit: UNIT_INF_MAP(textMap)[v]?.defaultUnit })}
+          options={map(unitInfMap(textMap), (item) => ({ label: item.name, value: item.value }))}
+          onChange={(v) => onChange({ ...value, type: v, unit: unitInfMap(textMap)[v]?.defaultUnit })}
         />
       </Col>
       <Col span={8}>
@@ -34,11 +34,11 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
               }}
             />
           </When>
-          <When condition={!!UNIT_INF_MAP(textMap)[type || '']?.units}>
+          <When condition={!!unitInfMap(textMap)[type || '']?.units}>
             <Select
               value={unit}
               size={size}
-              options={map(UNIT_INF_MAP(textMap)[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
+              options={map(unitInfMap(textMap)[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
               onChange={(v) => onChange({ ...value, unit: v })}
             />
           </When>

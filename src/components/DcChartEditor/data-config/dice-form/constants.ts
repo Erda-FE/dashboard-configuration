@@ -16,7 +16,7 @@ export const PAGINATION: IPagination = {
   pageSizeOptions: ['15', '30', '45', '60'],
 };
 
-export const CUSTOM_TIME_RANGE_MAP = (textMap: TextType) => ({
+export const customTimeRangeMap = (textMap: TextType) => ({
   '5min': {
     name: textMap['5min'],
     getTimeRange: () => getBeforeTimeRange(5, 'minutes'),
@@ -140,13 +140,13 @@ enum SORT_TYPE {
   asc = 'ASC'
 }
 
-export const SortMap = (textMap: TextType) => ({
+export const sortMap = (textMap: TextType) => ({
   [SORT_TYPE.desc]: { value: SORT_TYPE.desc, label: textMap.desc },
   [SORT_TYPE.asc]: { value: SORT_TYPE.asc, label: textMap.asc },
 });
 
 
-export const DIMENSIONS_CONFIGS = (textMap: TextType) => ({
+export const dimensionsConfigs = (textMap: TextType) => ({
   [SPECIAL_METRIC_TYPE.expr]: [
     {
       key: SPECIAL_METRIC_TYPE.expr,
@@ -169,7 +169,7 @@ export const DIMENSIONS_CONFIGS = (textMap: TextType) => ({
       key: SPECIAL_METRIC_TYPE.sort,
       label: textMap['sort method'],
       type: 'sub',
-      options: map(SortMap, (item) => item),
+      options: map(sortMap, (item) => item),
     },
   ],
 });
@@ -184,7 +184,7 @@ export enum UNIT_TYPE {
   CUSTOM = 'CUSTOM',
 }
 
-export const UNIT_INF_MAP = (textMap: TextType) => ({
+export const unitInfMap = (textMap: TextType) => ({
   [UNIT_TYPE.NUMBER]: {
     name: textMap['number conversion'],
     value: UNIT_TYPE.NUMBER,
@@ -221,7 +221,7 @@ export const UNIT_INF_MAP = (textMap: TextType) => ({
   },
 });
 
-export const TIME_INTERVALS = (textMap: TextType) => ([
+export const timeIntervals = (textMap: TextType) => ([
   {
     label: textMap.second,
     value: 's',

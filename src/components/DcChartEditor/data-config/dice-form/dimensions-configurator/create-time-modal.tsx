@@ -3,7 +3,7 @@ import { Select, Input, InputNumber } from '@terminus/nusi';
 import { map, filter } from 'lodash';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
-import { TIME_INTERVALS, TIME_FORMATS, TIME_FIELDS_UNITS } from '../constants';
+import { timeIntervals, TIME_FORMATS, TIME_FIELDS_UNITS } from '../constants';
 
 const { Group: InputGroup } = Input;
 
@@ -30,7 +30,7 @@ const CustomTimeInput = ({ value, onChange }: any) => {
         allowClear
         value={value?.unit}
         size="small"
-        options={TIME_INTERVALS(textMap)}
+        options={timeIntervals(textMap)}
         onChange={(v) => onChange({ ...value, unit: v })}
       />
     </InputGroup>

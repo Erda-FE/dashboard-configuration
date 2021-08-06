@@ -8,7 +8,7 @@
 import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy, isNumber, forEach } from 'lodash';
 import { getChartData } from '../../../../services/chart-editor';
 import { getFormatter } from '../../../../common/utils';
-import { MAP_ALIAS, CUSTOM_TIME_RANGE_MAP } from './constants';
+import { MAP_ALIAS, customTimeRangeMap } from './constants';
 import DC, { CreateLoadDataParams } from 'src/types';
 import DashboardStore from '../../../../stores/dash-board';
 
@@ -24,7 +24,7 @@ export const createLoadDataFn = ({
   // 固定时间范围查询逻辑 customTime
   let customTimeResult = {};
   if (customTime) {
-    const [a, b] = CUSTOM_TIME_RANGE_MAP(textMap)[customTime].getTimeRange();
+    const [a, b] = customTimeRangeMap(textMap)[customTime].getTimeRange();
     customTimeResult = {
       start: a,
       end: b,

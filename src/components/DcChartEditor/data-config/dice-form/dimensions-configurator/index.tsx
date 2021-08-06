@@ -11,7 +11,7 @@ import { Toast, Cascader, Tag } from '@terminus/nusi';
 import { useToggle } from 'react-use';
 import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
-import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, SortMap } from '../constants';
+import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, sortMap } from '../constants';
 import DashboardStore from '../../../../../stores/dash-board';
 import { genDefaultDimension } from '../common/utils';
 import CreateExprModal from './create-expr-modal';
@@ -228,7 +228,7 @@ const DimensionsConfigurator = ({
               typeMap[metricsMap[field as string]?.type]?.aggregations,
               (v) => ({ value: v.aggregation, label: v.name })
             );
-            _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${SortMap(textMap)[sort]?.label}` : ''}`;
+            _alias = `${alias}${aggregation ? `-${aggregationMap[aggregation]?.name}` : ''}${sort ? `-${sortMap(textMap)[sort]?.label}` : ''}`;
           }
           if (type === 'filter' && filter?.operation) {
             _alias = `${alias}(${filtersMap[filter.operation]?.name} ${filter?.value})`;

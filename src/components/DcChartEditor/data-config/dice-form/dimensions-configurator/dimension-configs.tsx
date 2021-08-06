@@ -5,7 +5,7 @@ import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
 import DashboardStore from '../../../../../stores/dash-board';
 import { DcInfoIcon } from '../../../../../common';
-import { DIMENSIONS_CONFIGS, SPECIAL_METRIC_TYPE } from '../constants';
+import { dimensionsConfigs, SPECIAL_METRIC_TYPE } from '../constants';
 
 import './index.scss';
 
@@ -40,7 +40,7 @@ const DimensionConfigs = ({
   onTriggerAction,
 }: IProps) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
-  const COMMON_DIMENSIONS_CONFIGS = [
+  const COMMON_dimensionsConfigs = [
     {
       key: 'alias',
       label: textMap['field config'],
@@ -86,11 +86,11 @@ const DimensionConfigs = ({
   drag(drop(dimensionsWrapperRef));
 
   const child = React.Children.only(children);
-  let configs = DIMENSIONS_CONFIGS(textMap)[type];
+  let configs = dimensionsConfigs(textMap)[type];
   let selectedKeys;
 
   if (['value', 'type'].includes(dimensionType)) {
-    configs = [...configs, ...COMMON_DIMENSIONS_CONFIGS];
+    configs = [...configs, ...COMMON_dimensionsConfigs];
   }
 
   // 维度不需要聚合方法

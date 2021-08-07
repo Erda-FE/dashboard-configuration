@@ -4,6 +4,8 @@ import { BoardGrid, PureBoardGrid, setLocale, getLocale, getTheme, setTheme } fr
 import layout from './mock/data';
 // import layout2 from './mock/data2';
 import { useMount } from 'react-use';
+import { Button } from 'antd';
+import './app.css'
 
 function App() {
   console.log('current locale:', getLocale());
@@ -17,16 +19,14 @@ function App() {
     <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
         语言：
-        <button onClick={() => setLocale('zh')}>中文</button>
-        <button onClick={() => setLocale('en')}>English</button>
+        <Button style={{ marginRight: 12 }} onClick={() => setLocale('zh')}>中文</Button>
+        <Button style={{ marginRight: 12 }} onClick={() => setLocale('en')}>English</Button>
         主题：
-        <button onClick={() => setTheme('dice')}>Dice</button>
-        <button onClick={() => setTheme('dark')}>Dark</button>
+        <Button style={{ marginRight: 12 }} onClick={() => setTheme('dice')}>Dice</Button>
+        <Button style={{ marginRight: 12 }} onClick={() => setTheme('dark')}>Dark</Button>
       </div>
       <BoardGrid layout={layout} onSave={(saveLayout) => { console.log(saveLayout); }} />
       <PureBoardGrid layout={layout} showOptions />
-      {/* {'>>>>>>>>>>>>>>>>>>>>>>>>>>>sasasa'}
-      <PureBoardGrid layout={layout2} showOptions /> */}
     </div>
   );
 }

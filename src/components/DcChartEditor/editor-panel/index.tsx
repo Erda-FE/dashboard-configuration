@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Drawer, Button, Popover } from '@terminus/nusi';
+import { Drawer, Popover } from '@terminus/nusi';
+import { Button } from 'antd';
 import { getConfig } from '../../../config';
 import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';

@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo, RefObject, ReactNode, memo } from 'react';
-import { Modal, Menu, Toast, Dropdown } from '@terminus/nusi';
+import { Dropdown, Menu, Modal } from 'antd';
 import { get } from 'lodash';
 import { useFullscreen, useToggle } from 'react-use';
 import { getConfig } from '../../config';

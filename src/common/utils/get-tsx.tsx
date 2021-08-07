@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Tooltip } from '@terminus/nusi';
+import { Tooltip } from 'antd';
 
 export function wrapWithTooltip(title: string, children: string, key?: string) {
   const k = key ? { key } : {};

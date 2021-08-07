@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Tooltip} from '@terminus/nusi'
+import { Tooltip } from 'antd';
 
 interface ICutOptions {
   suffix?: string;

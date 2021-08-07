@@ -5,8 +5,7 @@
  * @Last Modified time: 2021-03-11 14:33:40
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
-import { Tooltip } from '@terminus/nusi';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import { useFullscreen, useToggle } from 'react-use';
 import DC from 'src/types';
 import { DcIcon } from '../../common';

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Modal, Row, Col } from '@terminus/nusi';
+import { Modal } from '@terminus/nusi';
+import { Col, Row } from 'antd';
 import { map } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { map, isUndefined } from 'lodash';
-import { Select, Input } from 'antd';
-import { InputNumber, Switch } from '@terminus/nusi';
+import { Select, Input, InputNumber, Switch } from 'antd';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 

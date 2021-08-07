@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { map } from 'lodash';
-import { Input, Col } from '@terminus/nusi';
-import { Select } from 'antd';
+import { Col } from '@terminus/nusi';
+import { Select, Input } from 'antd';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 import { unitInfMap } from '../constants';

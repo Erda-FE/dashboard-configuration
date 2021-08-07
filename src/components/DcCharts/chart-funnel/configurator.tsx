@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Input } from '@terminus/nusi';
+import { Input } from 'antd';
 import produce from 'immer';
 import DC from 'src/types';
 import { CommonConfigurator } from '../common';

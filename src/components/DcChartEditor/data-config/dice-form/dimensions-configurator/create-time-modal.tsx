@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Select } from 'antd';
-import { Input, InputNumber } from '@terminus/nusi';
+import { Select, Input } from 'antd';
+import { InputNumber } from '@terminus/nusi';
 import { map, filter } from 'lodash';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';

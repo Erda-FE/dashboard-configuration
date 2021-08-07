@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Input } from '@terminus/nusi';
+import { Input } from 'antd';
 import { DcFormBuilder } from '../../../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';

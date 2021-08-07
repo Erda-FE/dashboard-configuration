@@ -2,12 +2,12 @@ import * as React from 'react';
 
 interface CascaderOptionType {
   value?: string | number;
-  label?: string;
+  label?: React.ReactNode;
   disabled?: boolean;
   isLeaf?: boolean;
   loading?: boolean;
   children?: CascaderOptionType[];
-  [key: string]: unknown;
+  [key: string]: any;
 }
 
 interface FilledFieldNamesType {

@@ -7,7 +7,8 @@
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
 import { produce } from 'immer';
-import { Toast, Cascader, Tag } from '@terminus/nusi';
+import { Toast, Tag } from '@terminus/nusi';
+import { Cascader } from 'antd';
 import { useToggle } from 'react-use';
 import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
@@ -150,7 +151,7 @@ const DimensionsConfigurator = ({
   }, [dimensions, updater, metricsMap, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, updateDimension, toggleFilterModalVisible, onChange]);
 
 
-  const handleAddDimension = useCallback((val: string[]) => {
+  const handleAddDimension = useCallback((val: Array<string|number>) => {
     toggleSelectVisible();
     const [metricField, field] = val;
     const isExpr = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr];

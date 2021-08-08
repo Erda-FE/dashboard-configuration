@@ -1,8 +1,9 @@
 import * as React from 'react';
 import TimeSelector from './TimeSelector';
-import { Search } from '@terminus/nusi';
-
+import { Input } from 'antd';
 import './index.scss';
+
+const { Search } = Input;
 
 type IProps = Merge<{
   className: string;
@@ -23,7 +24,6 @@ const FilterComp = ({ className, type, label, placeholder, defaultValue, onChang
           <Search
             allowClear
             placeholder={placeholder}
-            onHandleSearch={() => {}}
           />
         </When>
       </Choose>

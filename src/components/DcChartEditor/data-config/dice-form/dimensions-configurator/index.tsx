@@ -7,8 +7,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
 import { produce } from 'immer';
-import { Toast, Tag } from '@terminus/nusi';
-import { Cascader } from 'antd';
+import { Cascader, Tag, message } from 'antd';
 import { useToggle } from 'react-use';
 import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
@@ -251,7 +250,7 @@ const DimensionsConfigurator = ({
                 className="mb8"
                 closable
                 style={{ background: '#ffffff', border: '#6a549e solid 1px', color: '#6a549e' }}
-                afterClose={() => handleRemoveDimension(key)}
+                onClose={() => handleRemoveDimension(key)}
               >
                 <DcIcon className="mr4" size="small" type="down" />
                 <If condition={isUncompleted}>
@@ -287,13 +286,12 @@ const DimensionsConfigurator = ({
             <Tag
               onClick={() => {
                 if (disabled) {
-                  Toast.warning(textMap['empty metric group tip']);
+                  message.warning(textMap['empty metric group tip']);
                   return;
                 }
                 toggleSelectVisible();
               }}
-              color="#6a549e"
-              style={{ lineHeight: '22px', alignSelf: 'start' }}
+              style={{ lineHeight: '22px', alignSelf: 'start', background: '#ffffff', border: '#6a549e solid 1px', color: '#6a549e' }}
             >
               <DcIcon type="plus" size="small" className="mr4" />{addText || textMap.add}
             </Tag>

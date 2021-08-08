@@ -1,4 +1,4 @@
-import { Spin } from '@terminus/nusi';
+import { Spin } from 'antd';
 import React from 'react';
 
 import './index.scss';

@@ -5,8 +5,7 @@
  * @Last Modified time: 2021-04-22 14:07:06
  */
 import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
-import { Toast } from '@terminus/nusi';
-import { Button, Tooltip, Select } from 'antd';
+import { Button, Tooltip, Select, message } from 'antd';
 import classnames from 'classnames';
 import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
 import { useUpdate, DcIcon, DcEmpty } from '../../common';
@@ -140,7 +139,7 @@ const DcContainer: React.FC<IProps> = ({
       })
       .catch((err) => {
         if (err.status === 400) {
-          Toast.warning(textMap['config err'], 1);
+          message.warning(textMap['config err'], 1);
           update({
             resData: undefined,
             fetchStatus: FetchStatus.SUCCESS,

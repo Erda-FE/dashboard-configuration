@@ -6,7 +6,7 @@
  */
 
 import React, { useCallback, useEffect, useMemo, RefObject, ReactNode, memo } from 'react';
-import { Dropdown, Menu, Modal } from 'antd';
+import { Dropdown, Menu, Modal, message } from 'antd';
 import { get } from 'lodash';
 import { useFullscreen, useToggle } from 'react-use';
 import { getConfig } from '../../config';
@@ -92,7 +92,7 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
     };
 
     if (metricName) {
-      const _exportingData = Toast.loading(textMap['exporting data'], 0);
+      const _exportingData = message.loading(textMap['exporting data'], 0);
       toggleExportingDataStatus();
       exportChartData(metricName, _query, payload).then((res: Blob) => {
         const blob = new Blob([res]);
@@ -109,7 +109,7 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
         _exportingData();
         toggleExportingDataStatus();
       }).catch(() => {
-        Toast.error(textMap['export data error']);
+        message.error(textMap['export data error']);
         _exportingData();
         toggleExportingDataStatus();
       });

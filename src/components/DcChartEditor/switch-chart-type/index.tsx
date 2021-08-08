@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { map } from 'lodash';
-import { Popover } from '@terminus/nusi';
+import { Popover } from 'antd';
 import DC from 'src/types';
 import classnames from 'classnames';
 import { DcIcon } from '../../../common';
@@ -26,7 +26,7 @@ const SwitchChartType = ({
   return (
     <div className="dc-editor-switch-chart">
       {map(basicCharts, ({ name, enName, icon }: DC.ViewDefItem, chartType) => (
-        <Popover content={locale === 'en' ? enName : name} footer={false}>
+        <Popover content={locale === 'en' ? enName : name}>
           <div
             className={classnames({
               'dc-editor-switch-chart-item': true,

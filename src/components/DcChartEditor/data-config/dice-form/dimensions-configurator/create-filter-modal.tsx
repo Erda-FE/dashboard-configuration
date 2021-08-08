@@ -25,6 +25,7 @@ interface IFilterInputProps {
 const FilterInput = ({ value, onChange, fieldType, options }: IFilterInputProps) => (
   <InputGroup compact size="small">
     <Select
+      style={{ minWidth: 80 }}
       allowClear
       value={value?.operation}
       size="small"

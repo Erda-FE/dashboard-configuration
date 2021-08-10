@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { Title } from '@terminus/nusi';
-import { Button, Tooltip, Input, Dropdown, Menu, Tabs, Modal, message } from 'antd';
+import { Title, Menu } from '@terminus/nusi';
+import { Button, Tooltip, Input, Dropdown, Tabs, Modal, message } from 'antd';
 import { useImmer } from 'use-immer';
 import { remove, find, findIndex, map } from 'lodash';
 import { DcIcon, DcInfoIcon } from '../../common';

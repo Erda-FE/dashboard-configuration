@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown } from 'antd';
+import { Menu } from '@terminus/nusi';
 import { map } from 'lodash';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
@@ -151,6 +152,7 @@ const DimensionConfigs = ({
   return (
     <Dropdown
       trigger={['click']}
+      // getPopupContainer={(e) => e.parentElement}
       overlay={
         <Menu
           onClick={handleClick}

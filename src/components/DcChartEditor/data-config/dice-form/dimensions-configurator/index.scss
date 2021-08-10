@@ -14,3 +14,12 @@ $dice-metric-group-prefix-cls: #{$prefix}-dice-metric-group;
     color: $color-text-desc;
   }
 }
+
+.field-config-select {
+  min-width: 100px;
+  .ant-select-dropdown {
+    width: max-content;
+  }
+}
+
+

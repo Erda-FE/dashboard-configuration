@@ -523,7 +523,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: dataSource?.customTime,
       required: false,
       customProps: {
-        style: { minWidth: 80 },
+        style: { width: '100%' },
         options: map(customTimeRangeMap(textMap), ({ name: label }, value) => ({ label, value })),
         allowClear: true,
         onChange: (v: string) => handleUpdateDataSource({ customTime: v }),

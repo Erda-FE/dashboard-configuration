@@ -48,6 +48,12 @@ interface IState {
    * @memberof IState
    */
   editorContextMap: Record<string, any>;
+  canSave: boolean;
+  requiredField: {
+    chartType: boolean;
+    activedMetricGroups: boolean;
+    valueDimensions: boolean;
+  } | undefined;
 }
 
 const initState: IState = {
@@ -61,6 +67,12 @@ const initState: IState = {
   viewCopy: undefined, // 修改时用于恢复的复制对象
   timeSpan: { startTimeMs: 0, endTimeMs: 0 },
   editorContextMap: {},
+  canSave: false,
+  requiredField: {
+    chartType: true,
+    activedMetricGroups: true,
+    valueDimensions: true,
+  },
 };
 
 const chartEditorStore = createFlatStore({
@@ -147,6 +159,20 @@ const chartEditorStore = createFlatStore({
           ...state.viewMap[viewId],
           ...rest,
         };
+      }
+    },
+    checkBeforeSave(state, view) {
+      const {
+        chartType,
+        config,
+      } = view;
+      const { activedMetricGroups, valueDimensions } = config?.dataSourceConfig || {};
+      if (chartType && activedMetricGroups?.length && valueDimensions?.length) {
+        state.canSave = true;
+        state.requiredField = undefined;
+      } else {
+        state.canSave = false;
+        state.requiredField = { chartType: !!chartType, activedMetricGroups: !!activedMetricGroups?.length, valueDimensions: !!valueDimensions?.length };
       }
     },
     saveEdit(state) {

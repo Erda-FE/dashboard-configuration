@@ -46,9 +46,9 @@ const DcContainer: React.FC<IProps> = ({
     editChartId,
     fromEditorFullscreenStatus,
     isEditMode,
-  ] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode]);
+  ] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode, s.canSave]);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
-  const { toggleFullscreen: toggleFromEditorPureFullscreen, editView } = ChartEditorStore;
+  const { toggleFullscreen: toggleFromEditorPureFullscreen, editView, checkBeforeSave } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
   const toggleFullscreen = isPure ? togglePureFullscreen : toggleFromEditorPureFullscreen;
   const textMap = DashboardStore.getState((s) => s.textMap);
@@ -104,6 +104,7 @@ const DcContainer: React.FC<IProps> = ({
   const _loadData = useCallback((params: { fn: (payload: any, body?: any) => Promise<any>; arg?: any; body?: any }) => {
     const { arg, body, fn } = params;
     if (!isFunction(fn)) return;
+    checkBeforeSave(view);
     updater.fetchStatus(FetchStatus.FETCH);
     // 调用外部传入的函数
     fn({
@@ -139,7 +140,6 @@ const DcContainer: React.FC<IProps> = ({
       })
       .catch((err) => {
         if (err.status === 400) {
-          Toast.warning(textMap['config err'], 1);
           update({
             resData: undefined,
             fetchStatus: FetchStatus.SUCCESS,
@@ -151,7 +151,7 @@ const DcContainer: React.FC<IProps> = ({
           });
         }
       });
-  }, [dataConvertor, dynamicLoadFnPayloadMap, staticLoadFnPayload, update, updater]);
+  }, [dataConvertor, dynamicLoadFnPayloadMap, staticLoadFnPayload, update, updater, view]);
 
   const _childNode = React.cloneElement(childNode, {
     ...childNode.props,

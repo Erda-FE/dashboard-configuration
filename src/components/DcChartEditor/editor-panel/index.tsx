@@ -3,7 +3,7 @@ import { Drawer, Button, Popover } from '@terminus/nusi';
 import { getConfig } from '../../../config';
 import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';
-
+import { keys } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
@@ -17,20 +17,36 @@ const EditorPanel = () => {
     viewCopy,
     editChartId,
     isTouched,
+    canSave,
+    requiredField,
   ] = ChartEditorStore.useStore((s) => [
     s.viewCopy,
     s.editChartId,
     s.isTouched,
+    s.canSave,
+    s.requiredField,
   ]);
 
   if (!viewCopy || !editChartId) return null;
-
+  const TipMap = {
+    chartType: textMap['chart type'],
+    activedMetricGroups: textMap['metrics group'],
+    valueDimensions: textMap.value,
+  };
   const { saveEditor, resetEditor } = ChartEditorStore;
   const info = getConfig('chartConfigMap')[viewCopy.chartType];
   const { Configurator: CommonConfigForm = noop, Component: ChartComponent } = info || {};
   const completeEditor = () => {
     saveEditor();
     resetEditor();
+  };
+  const submitTip = () => {
+    let tip = '';
+    if (requiredField) {
+      tip = keys(requiredField).map((item) =>
+        (requiredField[item] ? '' : ` '${TipMap[item]}'`)).join('');
+    }
+    return tip ? `${textMap['please complete']}${ tip}` : textMap['please complete data'];
   };
 
   return (
@@ -68,7 +84,20 @@ const EditorPanel = () => {
           </div>
         </div>
         <div className="dc-editor-footer px12 py8">
-          <Button onClick={completeEditor} type="primary">{textMap.ok}</Button>
+          <Choose>
+            <When condition={canSave}>
+              <Button onClick={completeEditor} type="primary">{textMap.ok}</Button>
+            </When>
+            <Otherwise>
+              <Popover
+                placement="topRight"
+                content={submitTip()}
+                footer={false}
+              >
+                <Button onClick={completeEditor} type="primary" disabled={!canSave}>{textMap.ok}</Button>
+              </Popover>
+            </Otherwise>
+          </Choose>
           <Choose>
             <When condition={isTouched}>
               <Popover

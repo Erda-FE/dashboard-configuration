@@ -77,6 +77,23 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     handleGetMetaData(dataSourceConfig?.activedMetricGroups);
   });
 
+  const removeEmptyArray = (data: any[]): any[] => {
+    return data.map((item) => {
+      const { children, ...rest } = item;
+      if (!children?.length) {
+        return {
+          ...rest,
+        };
+      } else {
+        return {
+          ...rest,
+          children: removeEmptyArray(children),
+        };
+      }
+    });
+  };
+  const _metaGroups = removeEmptyArray(metaGroups);
+
   const _getMetaData = (_activedMetricGroups: string[]) => getMetaData({
     scope,
     scopeId,
@@ -323,7 +340,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       label: textMap['chart type'],
       name: 'chartType',
       initialValue: chartType,
-      required: false,
       type: SwitchChartType,
       customProps: {
         onChange: (v: DC.ViewType) => handleUpdateChartType(v),
@@ -424,7 +440,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       customProps: {
         allowClear: false,
         showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
-        options: metaGroups,
+        options: _metaGroups,
         onChange: (v: string[]) => {
           handleUpdateDataSource({ activedMetricGroups: v });
           !dataSource?.isSqlMode && handleGetMetaData(v);
@@ -453,7 +469,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       label: <DcInfoLabel text={textMap.value} info={textMap['valueDimensions info']} />,
       name: 'valueDimensions',
       initialValue: dataSource?.valueDimensions,
-      required: false,
       show: () => !dataSource.isSqlMode,
       type: DimensionsConfigurator,
       customProps: {

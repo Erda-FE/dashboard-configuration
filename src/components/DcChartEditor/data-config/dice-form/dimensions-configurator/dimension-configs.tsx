@@ -152,7 +152,6 @@ const DimensionConfigs = ({
   return (
     <Dropdown
       trigger={['click']}
-      // getPopupContainer={(e) => e.parentElement}
       overlay={
         <Menu
           onClick={handleClick}

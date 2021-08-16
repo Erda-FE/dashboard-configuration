@@ -4,6 +4,7 @@ import { createFlatStore } from '../cube';
 import { genUUID } from '../common/utils';
 import { DEFAULT_VIEW_CONFIG } from '../constants';
 import DC from 'src/types';
+import DashboardStore from '../stores/dash-board';
 
 const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
   const { y: maxY, h: maxH } = maxBy(items, ({ y, h }) => y + h) || { y: 0, h: 0 };
@@ -142,9 +143,10 @@ const chartEditorStore = createFlatStore({
     },
     // 新增图表组件
     addView(state, chartType: DC.ViewType) {
+      const textMap = DashboardStore.getState((s) => s.textMap);
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;
-      state.viewCopy = DEFAULT_VIEW_CONFIG as unknown as DC.View;
+      state.viewCopy = { ...DEFAULT_VIEW_CONFIG, title: textMap['unnamed chart'] } as unknown as DC.View;
     },
     // 编辑图表
     editView(state, editChartId: string) {

@@ -21,6 +21,9 @@ $data-config-prefix-cls: #{$prefix}-dice-metrics-form;
   }
 }
 
-.pk-form-explain {
+.dc-dice-metrics-form {
+
+  .pk-form-explain {
   display: none;
+  }
 }

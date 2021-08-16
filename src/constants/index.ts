@@ -79,6 +79,7 @@ export const TEXT_ZH_MAP = {
   'custom time interval': '自定义时间间隔',
   'fixed time range': '固定图表时间范围',
   expr: '表达式',
+  'unnamed chart': '未命名图表',
   'expr input': '表达式录入',
   'please complete': '请补全',
   'please complete data': '请补全数据',
@@ -285,6 +286,7 @@ export const TEXT_EN_MAP = {
   'table row click': 'table row click',
   'event name': 'event name',
   'event value': 'event value',
+  'unnamed chart': 'unnamed chart',
 };
 
 export const DEFAULT_VIEW_CONFIG = {

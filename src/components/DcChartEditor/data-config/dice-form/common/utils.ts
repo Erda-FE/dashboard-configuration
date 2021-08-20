@@ -24,10 +24,10 @@ export const getIntervalString = (interval: DICE_DATA_CONFIGURATOR.TimeInterval)
       intervalString = String(value) + unit;
       break;
     case 'd':
-      intervalString = String(value * 24) + unit;
+      intervalString = `${String(value * 24)}h`;
       break;
     case 'W':
-      intervalString = String(value * 24 * 7) + unit;
+      intervalString = `${String(value * 24 * 7)}h`;
       break;
     default:
       break;

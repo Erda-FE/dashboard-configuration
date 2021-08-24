@@ -247,9 +247,8 @@ const DimensionsConfigurator = ({
               onTriggerAction={(actionType, option) => handleTriggerAction(key, actionType, option)}
             >
               <Tag
-                className="mb8"
+                className="mb8 dimensions-config-tag2"
                 closable
-                style={{ background: '#ffffff', border: '#6a549e solid 1px', color: '#6a549e' }}
                 onClose={() => handleRemoveDimension(key)}
               >
                 <DcIcon className="mr4" size="small" type="down" />
@@ -291,7 +290,7 @@ const DimensionsConfigurator = ({
                 }
                 toggleSelectVisible();
               }}
-              style={{ lineHeight: '22px', alignSelf: 'start', background: '#ffffff', border: '#6a549e solid 1px', color: '#6a549e' }}
+              className="dimensions-config-tag"
             >
               <DcIcon type="plus" size="small" className="mr4" />{addText || textMap.add}
             </Tag>

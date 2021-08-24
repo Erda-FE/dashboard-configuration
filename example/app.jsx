@@ -19,11 +19,11 @@ function App() {
     <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
         语言：
-        <Button style={{ marginRight: 12 }} onClick={() => setLocale('zh')}>中文</Button>
-        <Button style={{ marginRight: 12 }} onClick={() => setLocale('en')}>English</Button>
+        <Button className="mr12" onClick={() => setLocale('zh')}>中文</Button>
+        <Button className="mr12" onClick={() => setLocale('en')}>English</Button>
         主题：
-        <Button style={{ marginRight: 12 }} onClick={() => setTheme('dice')}>Dice</Button>
-        <Button style={{ marginRight: 12 }} onClick={() => setTheme('dark')}>Dark</Button>
+        <Button className="mr12" onClick={() => setTheme('dice')}>Dice</Button>
+        <Button className="mr12" onClick={() => setTheme('dark')}>Dark</Button>
       </div>
       <BoardGrid layout={layout} onSave={(saveLayout) => { console.log(saveLayout); }} />
       <PureBoardGrid layout={layout} showOptions />

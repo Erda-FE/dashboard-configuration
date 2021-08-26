@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { Modal } from 'antd';
 import { DcFormBuilder } from '..';
+import DashboardStore from '../../stores/dash-board';
 
 interface IProps {
   title?: React.ReactNode;
@@ -11,6 +12,7 @@ interface IProps {
 }
 
 const DcFormModal = ({ title, visible, fields, onCancel, onOk }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const ref = useRef(null as any);
 
   const handleSubmit = () => {
@@ -26,6 +28,8 @@ const DcFormModal = ({ title, visible, fields, onCancel, onOk }: IProps) => {
       title={title}
       visible={visible}
       maskClosable
+      okText={textMap.ok}
+      cancelText={textMap.cancel}
       onCancel={onCancel}
       onOk={handleSubmit}
     >

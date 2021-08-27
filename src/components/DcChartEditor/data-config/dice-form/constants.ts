@@ -169,7 +169,7 @@ export const dimensionsConfigs = (textMap: TextType) => ({
       key: SPECIAL_METRIC_TYPE.sort,
       label: textMap['sort method'],
       type: 'sub',
-      options: map(sortMap, (item) => item),
+      options: map(sortMap(textMap), (item) => item),
     },
   ],
 });

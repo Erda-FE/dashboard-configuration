@@ -7,7 +7,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { useMount } from 'react-use';
 import { map, slice, findIndex, cloneDeep } from 'lodash';
-import { Breadcrumb, Toast } from '@terminus/nusi';
+import { message, Breadcrumb } from 'antd';
 import { registerMap as registerEchartsMap } from 'echarts';
 import client from '../../../common/utils/client';
 import { useUpdate } from '../../../common/use-hooks';
@@ -46,7 +46,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     // 初始化全国地图
     client('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '' })
       .then((res) => registerMap('中华人民共和国', res))
-      .catch((err) => { Toast.error(err); });
+      .catch((err) => { message.error(err); });
   });
 
   const loadMapDataSource = (_mapTypes: string[]) => {
@@ -99,7 +99,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     const adcode = adcodeMap.get(mapType);
     client(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`, { referrer: '' })
       .then((res) => registerMap(mapType, res))
-      .catch((err) => { Toast.error(err); });
+      .catch((err) => { message.error(err); });
   };
 
   return (

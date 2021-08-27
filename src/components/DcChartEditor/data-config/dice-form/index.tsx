@@ -8,7 +8,7 @@ import React, { useMemo, useCallback, useRef } from 'react';
 import { useMount } from 'react-use';
 import { map, forEach, find, reduce, isEmpty, keyBy, debounce, isNumber } from 'lodash';
 import produce from 'immer';
-import { Switch, Cascader, Input, InputNumber, Select } from '@terminus/nusi';
+import { Cascader, Input, Select, InputNumber, Switch } from 'antd';
 import { getConfig } from '../../../../config';
 // import { useLoading } from '../../../../common/stores/loading';
 import { DcFormBuilder, DcInfoLabel } from '../../../../common';
@@ -538,6 +538,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       initialValue: dataSource?.customTime,
       required: false,
       customProps: {
+        style: { width: '100%' },
         options: map(customTimeRangeMap(textMap), ({ name: label }, value) => ({ label, value })),
         allowClear: true,
         onChange: (v: string) => handleUpdateDataSource({ customTime: v }),

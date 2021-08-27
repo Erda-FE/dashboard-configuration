@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { map, isUndefined } from 'lodash';
-import { Input, InputNumber, Select, Switch } from '@terminus/nusi';
+import { Select, Input, InputNumber, Switch } from 'antd';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 
@@ -25,6 +25,7 @@ interface IFilterInputProps {
 const FilterInput = ({ value, onChange, fieldType, options }: IFilterInputProps) => (
   <InputGroup compact size="small">
     <Select
+      style={{ minWidth: 120, maxWidth: 320 }}
       allowClear
       value={value?.operation}
       size="small"

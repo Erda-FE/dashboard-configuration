@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { Modal } from '@terminus/nusi';
+import { Modal } from 'antd';
 import { DcFormBuilder } from '..';
 
 interface IProps {
@@ -22,7 +22,6 @@ const DcFormModal = ({ title, visible, fields, onCancel, onOk }: IProps) => {
 
   return (
     <Modal
-      size="small"
       destroyOnClose
       title={title}
       visible={visible}

@@ -1,7 +1,7 @@
 import React, { FocusEvent, useState, useEffect } from 'react';
 import produce from 'immer';
 import { get, map } from 'lodash';
-import { Select, Input } from '@terminus/nusi';
+import { Select, Input } from 'antd';
 import { CommonConfigurator } from '../common';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';

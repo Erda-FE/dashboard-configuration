@@ -5,6 +5,7 @@
  * @Last Modified time: 2021-03-03 20:38:30
  */
 import React, { useRef, useEffect } from 'react';
+import { ConfigProvider } from 'antd';
 import classnames from 'classnames';
 import { isFunction } from 'lodash';
 import 'react-grid-layout/css/styles.css';
@@ -24,7 +25,8 @@ import ChartEditorStore from '../../stores/chart-editor';
 import '../../static/iconfont.js';
 import '../../static/iconfont.css';
 import './index.scss';
-
+import DashboardStore from '../../stores/dash-board';
+import { localeMap } from '../../utils/locale';
 
 const DcBoard = ({
   timeSpan,
@@ -42,7 +44,7 @@ const DcBoard = ({
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
   const _onEditorToggle = useRef(onEditorToggle);
-
+  const locale = DashboardStore.getState((s) => s.locale);
   const [isEditMode, editChartId] = ChartEditorStore.useStore((s) => [s.isEditMode, s.editChartId]);
   const { reset: resetDrawer, updateState, updateEditorContextMap } = ChartEditorStore;
   const chartEditorVisible = !!editChartId;
@@ -72,9 +74,10 @@ const DcBoard = ({
   }, [APIFormComponent, updateEditorContextMap]);
 
   return (
-    <div
-      ref={boardRef}
-      className={
+    <ConfigProvider locale={localeMap[locale]}>
+      <div
+        ref={boardRef}
+        className={
         classnames({
           'dc-dashboard': true,
           'dark-border': true,
@@ -82,26 +85,27 @@ const DcBoard = ({
           active: isEditMode,
         })
       }
-    >
-      <DashboardHeader
-        wrapRef={boardRef}
-        contentRef={boardContentRef}
-        dashboardName={name}
-        afterEdit={onEdit}
-        beforeSave={beforeOnSave}
-        onSave={onSave}
-        onCancel={onCancel}
-      />
-      <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
-        <GlobalFilters id={id} />
-        <div className="dc-dashboard-grid-wp flex-1">
-          {gridWidthHolder}
-          <BoardGrid width={gridWidth} layout={layout} globalVariable={globalVariable} />
+      >
+        <DashboardHeader
+          wrapRef={boardRef}
+          contentRef={boardContentRef}
+          dashboardName={name}
+          afterEdit={onEdit}
+          beforeSave={beforeOnSave}
+          onSave={onSave}
+          onCancel={onCancel}
+        />
+        <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
+          <GlobalFilters id={id} />
+          <div className="dc-dashboard-grid-wp flex-1">
+            {gridWidthHolder}
+            <BoardGrid width={gridWidth} layout={layout} globalVariable={globalVariable} />
+          </div>
         </div>
+        <ConfigGlobalFiltersModal />
+        <DcChartEditor />
       </div>
-      <ConfigGlobalFiltersModal />
-      <DcChartEditor />
-    </div>
+    </ConfigProvider>
   );
 };
 

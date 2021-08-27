@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Checkbox } from '@terminus/nusi';
+import { Checkbox } from 'antd';
 import produce from 'immer';
 import { CommonConfigurator } from '../common';
 import ChartEditorStore from '../../../stores/chart-editor';

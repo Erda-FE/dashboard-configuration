@@ -2,8 +2,8 @@
  * 数据表格
  */
 import React, { useCallback } from 'react';
-import { Table } from '@terminus/nusi';
-import { map, get, find } from 'lodash';
+import { Table } from 'antd';
+import { map, get } from 'lodash';
 
 interface IProps {
   results: Array<{ [k: string]: any }>;

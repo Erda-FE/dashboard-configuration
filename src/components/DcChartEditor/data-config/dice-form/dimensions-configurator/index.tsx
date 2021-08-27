@@ -7,7 +7,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
 import { produce } from 'immer';
-import { Toast, Cascader, Tag } from '@terminus/nusi';
+import { Cascader, Tag, message } from 'antd';
 import { useToggle } from 'react-use';
 import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
 import { insertWhen, cutStr } from '../../../../../common/utils';
@@ -150,7 +150,7 @@ const DimensionsConfigurator = ({
   }, [dimensions, updater, metricsMap, toggleExprModalVisible, toggleAliasModalVisible, toggleTimeModalVisible, updateDimension, toggleFilterModalVisible, onChange]);
 
 
-  const handleAddDimension = useCallback((val: string[]) => {
+  const handleAddDimension = useCallback((val: Array<string|number>) => {
     toggleSelectVisible();
     const [metricField, field] = val;
     const isExpr = metricField === SPECIAL_METRIC[SPECIAL_METRIC_TYPE.expr];
@@ -247,10 +247,9 @@ const DimensionsConfigurator = ({
               onTriggerAction={(actionType, option) => handleTriggerAction(key, actionType, option)}
             >
               <Tag
-                className="mb8"
+                className="mb8 dimensions-config-tag2"
                 closable
-                style={{ background: '#ffffff', border: '#6a549e solid 1px', color: '#6a549e' }}
-                afterClose={() => handleRemoveDimension(key)}
+                onClose={() => handleRemoveDimension(key)}
               >
                 <DcIcon className="mr4" size="small" type="down" />
                 <If condition={isUncompleted}>
@@ -286,13 +285,12 @@ const DimensionsConfigurator = ({
             <Tag
               onClick={() => {
                 if (disabled) {
-                  Toast.warning(textMap['empty metric group tip']);
+                  message.warning(textMap['empty metric group tip']);
                   return;
                 }
                 toggleSelectVisible();
               }}
-              color="#6a549e"
-              style={{ lineHeight: '22px', alignSelf: 'start' }}
+              className="dimensions-config-tag"
             >
               <DcIcon type="plus" size="small" className="mr4" />{addText || textMap.add}
             </Tag>

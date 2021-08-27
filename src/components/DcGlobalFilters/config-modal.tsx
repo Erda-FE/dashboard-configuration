@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { Button, Modal, Tabs, Title, Dropdown, Menu, Tooltip, Input, Toast } from '@terminus/nusi';
+import { Title, Menu } from '@terminus/nusi';
+import { Button, Tooltip, Input, Dropdown, Tabs, Modal, message } from 'antd';
 import { useImmer } from 'use-immer';
 import { remove, find, findIndex, map } from 'lodash';
 import { DcIcon, DcInfoIcon } from '../../common';
@@ -8,7 +9,8 @@ import DashboardStore, { TextType } from '../../stores/dash-board';
 import GlobalFiltersStore from '../../stores/global-filters';
 
 import './config-modal.scss';
-import { IconType } from '@terminus/nusi/es/notification';
+
+type IconType = 'success' | 'info' | 'error' | 'warning';
 
 interface FilterOption {
   icon?: IconType;
@@ -158,7 +160,7 @@ export const ConfigGlobalFiltersModal = () => {
         onChange(e: React.FocusEvent<HTMLInputElement>) {
           const val = e.target.value;
           if (!val) {
-            Toast.warning('筛选项名称不能为空！');
+            message.warning('筛选项名称不能为空！');
             updateFilter(key, { name });
             return;
           }

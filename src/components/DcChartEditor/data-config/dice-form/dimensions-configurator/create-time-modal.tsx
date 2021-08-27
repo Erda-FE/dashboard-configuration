@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Select, Input, InputNumber } from '@terminus/nusi';
+import { Select, Input, InputNumber } from 'antd';
 import { map, filter } from 'lodash';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
@@ -24,10 +24,12 @@ const CustomTimeInput = ({ value, onChange }: any) => {
         min={1}
         precision={0}
         size="small"
+        style={{ width: 160 }}
         onChange={(v) => onChange({ ...value, value: v })}
       />
       <Select
         allowClear
+        style={{ width: 64 }}
         value={value?.unit}
         size="small"
         options={timeIntervals(textMap)}
@@ -44,6 +46,7 @@ const CustomTimeField = ({ value, onChange, options }: any) => (
       allowClear
       value={value?.value}
       size="small"
+      style={{ width: 160 }}
       options={options}
       onChange={(v) => onChange({ ...value, value: v })}
     />
@@ -51,6 +54,7 @@ const CustomTimeField = ({ value, onChange, options }: any) => (
       allowClear
       value={value?.unit}
       size="small"
+      style={{ width: 64 }}
       options={TIME_FIELDS_UNITS}
       onChange={(v) => onChange({ ...value, unit: v })}
     />
@@ -86,6 +90,7 @@ const CreateTimeModal = ({ defaultValue, metricsMap, ...rest }: IProps) => {
       customProps: {
         options: TIME_FORMATS,
         allowClear: true,
+        style: { width: 224 },
       },
     },
   ];

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Drawer, Button, Popover } from '@terminus/nusi';
+import { Popconfirm, Button, Drawer, Popover } from 'antd';
 import { getConfig } from '../../../config';
 import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';
@@ -92,7 +92,6 @@ const EditorPanel = () => {
               <Popover
                 placement="topRight"
                 content={submitTip()}
-                footer={false}
               >
                 <Button onClick={completeEditor} type="primary" disabled={!canSave}>{textMap.ok}</Button>
               </Popover>
@@ -100,16 +99,16 @@ const EditorPanel = () => {
           </Choose>
           <Choose>
             <When condition={isTouched}>
-              <Popover
+              <Popconfirm
                 okText={textMap.ok}
                 cancelText={textMap.cancel}
                 placement="top"
                 trigger="click"
-                content={textMap['confirm to drop data']}
-                onOk={resetEditor}
+                title={textMap['confirm to drop data']}
+                onConfirm={resetEditor}
               >
                 <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
-              </Popover>
+              </Popconfirm>
             </When>
             <Otherwise>
               <Button style={{ marginRight: 8 }} onClick={resetEditor}>{textMap.cancel}</Button>

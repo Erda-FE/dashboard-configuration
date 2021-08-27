@@ -1,6 +1,6 @@
 import * as React from 'react';
 import classnames from 'classnames';
-import { Tooltip } from '@terminus/nusi';
+import { Tooltip } from 'antd';
 
 import './index.scss';
 

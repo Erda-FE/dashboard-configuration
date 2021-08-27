@@ -5,7 +5,7 @@
  * @Last Modified time: 2021-03-11 14:33:40
  */
 import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
-import { Button, Tooltip, Dropdown, Menu } from '@terminus/nusi';
+import { Button, Tooltip } from 'antd';
 import { useFullscreen, useToggle } from 'react-use';
 import DC from 'src/types';
 import { DcIcon } from '../../common';
@@ -173,9 +173,7 @@ const DashboardHeader = ({
       </When>
       <Otherwise>
         <Tooltip title={text} key={icon}>
-          <Button type={btnType || 'text'} onClick={onClick}>
-            <DcIcon type={icon} />
-          </Button>
+          <Button type={btnType || 'default'} onClick={onClick} icon={<DcIcon type={icon} />} />
         </Tooltip>
       </Otherwise>
     </Choose>

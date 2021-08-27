@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 // import { forEach, replace } from 'lodash';
 import domtoimage from 'dom-to-image';
-import { Toast } from '@terminus/nusi';
+import { message as Toast } from 'antd';
 import DashboardStore from '../stores/dash-board';
 
 export const formItemLayout = {

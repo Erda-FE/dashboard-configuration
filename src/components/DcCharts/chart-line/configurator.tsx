@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Checkbox, Input } from '@terminus/nusi';
+import { Input, Checkbox } from 'antd';
 import produce from 'immer';
 import DC from 'src/types';
 import { CommonConfigurator } from '../common';

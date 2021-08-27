@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DatePicker } from '@terminus/nusi';
+import { DatePicker } from 'antd';
 import moment, { Moment } from 'moment';
 import { getTimeRanges, getTimeSpan, ITimeSpan } from './utils';
 

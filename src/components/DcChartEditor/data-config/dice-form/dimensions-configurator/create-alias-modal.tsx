@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { map } from 'lodash';
-import { Input, Select, Col } from '@terminus/nusi';
+import { Select, Input, Col } from 'antd';
 import { DcFormModal } from '../../../../../common';
 import DashboardStore from '../../../../../stores/dash-board';
 import { unitInfMap } from '../constants';
@@ -17,6 +17,7 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
           allowClear
           value={type}
           size={size}
+          className="field-config-select"
           options={map(unitInfMap(textMap), (item) => ({ label: item.name, value: item.value }))}
           onChange={(v) => onChange({ ...value, type: v, unit: unitInfMap(textMap)[v]?.defaultUnit })}
         />

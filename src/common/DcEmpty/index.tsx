@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Empty } from '@terminus/nusi';
+import { Empty } from 'antd';
 
 interface IProps {
   condition?: any;

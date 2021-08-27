@@ -47,6 +47,7 @@
   "dependencies": {
     "@babel/runtime": "^7.14.0",
     "@terminus/nusi": "^3.10.78",
+    "antd": "^4.15.4",
     "classnames": "^2.2.6",
     "cube-state": "1.2.1",
     "dom-to-image": "^2.6.0",

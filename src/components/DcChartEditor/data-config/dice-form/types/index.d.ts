@@ -25,6 +25,11 @@ declare namespace DICE_DATA_CONFIGURATOR {
     unit: string;
   }
 
+  interface I18n {
+    zh: string;
+    en: string;
+  }
+
   interface ValueDimension {
     /**
      *列表唯一 key
@@ -47,6 +52,17 @@ declare namespace DICE_DATA_CONFIGURATOR {
      * @memberof ValueDimension
      */
     alias: string;
+    /**
+     *国际化
+     *
+     * @type {object}
+     * @memberof ValueDimension
+     */
+    i18n?: {
+      alias?: I18n;
+      title?: I18n;
+      description?: I18n;
+    };
     /**
      *指标，type 为 field 时必须
      *

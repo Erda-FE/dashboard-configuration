@@ -70,7 +70,7 @@ export const createLoadDataFn = ({
       const _valueDimensionMap = keyBy(_valueDimensions, 'key');
       const cols = map([..._typeDimensions, ..._valueDimensions], ({ key, alias, i18n }) => ({
         dataIndex: key,
-        title: i18n ? i18n.alias && i18n.alias[locale] : alias,
+        title: i18n?.alias?.[locale] ?? alias,
       }));
 
       return {
@@ -109,7 +109,7 @@ export const createLoadDataFn = ({
         metricData: map(_valueDimensions, (dimension) => {
           return {
             data: map(dataSource, (item) => item[dimension.key]),
-            name: dimension.i18n ? dimension.i18n.alias && dimension.i18n.alias[locale] : dimension.alias,
+            name: dimension?.i18n?.alias?.[locale] ?? dimension?.alias,
             ...dimension,
           };
         }),
@@ -122,7 +122,7 @@ export const createLoadDataFn = ({
   if (typeDimensionsLen === 0 && valueDimensionsLen > 0) {
     if (isBarType) {
       const { data: dataSource } = data;
-      const xData = map(_valueDimensions, (item) => (item.i18n ? item.i18n?.alias && item.i18n.alias[locale] : item.alias));
+      const xData = map(_valueDimensions, (item) => (item?.i18n?.alias?.[locale] ?? item?.alias));
 
       return {
         metricData: [{
@@ -139,16 +139,16 @@ export const createLoadDataFn = ({
         metricData: [{
           name: '',
           sort: 'none',
-          data: map(_valueDimensions, (item) => ({ name: item.i18n ? item.i18n.alias && item.i18n.alias[locale] : item.alias, value: dataSource[0][item.key] })),
+          data: map(_valueDimensions, (item) => ({ name: item?.i18n?.alias?.[locale] ?? item.alias, value: dataSource[0][item.key] })),
         }],
-        legendData: map(_valueDimensions, (item) => (item.i18n ? item.i18n.alias && item.i18n.alias[locale] : item.alias)),
+        legendData: map(_valueDimensions, (item) => (item?.i18n?.alias?.[locale] ?? item?.alias)),
         unit: _valueDimensions[0].unit,
       };
     }
     if (isMetricCardType) {
       const val = data.data[0];
       const metricData = map(_valueDimensions, (item) => ({
-        name: item.i18n ? item.i18n.alias && item.i18n.alias[locale] : item.alias,
+        name: item?.i18n?.alias?.[locale] ?? item?.alias,
         value: val[item.key],
         unit: item.unit,
       }));
@@ -159,7 +159,7 @@ export const createLoadDataFn = ({
 
       return {
         metricData: map(_valueDimensions, (item) => ({
-          name: item.i18n ? item.i18n.alias && item.i18n.alias[locale] : item.alias,
+          name: item?.i18n?.alias?.[locale] ?? item?.alias,
           data: map(dataSource, (dataItem) => ({
             name: dataItem[MAP_ALIAS],
             value: dataItem[item.key],
@@ -178,9 +178,9 @@ export const createLoadDataFn = ({
       return {
         metricData: [{
           name: alias,
-          data: map(dataSource, (item) => ({ name: i18n ? i18n[typeKey] && i18n[typeKey][locale] : item[typeKey], value: item[valueKey] })),
+          data: map(dataSource, (item) => ({ name: i18n?.[typeKey]?.[locale] ?? item[typeKey], value: item[valueKey] })),
         }],
-        legendData: map(dataSource, (item) => (i18n ? i18n[typeKey] && i18n[typeKey][locale] : item[typeKey])),
+        legendData: map(dataSource, (item) => (i18n?.[typeKey]?.[locale] ?? item[typeKey])),
         unit,
       };
     }
@@ -190,8 +190,8 @@ export const createLoadDataFn = ({
       const { key: valueKey, unit, i18n } = _valueDimensions[0];
 
       return {
-        metricData: map(dataSource, (item) => ({ name: i18n ? i18n[typeKey] && i18n[typeKey][locale] : item[typeKey], value: item[valueKey], unit })),
-        legendData: map(dataSource, (item) => (i18n ? i18n[typeKey] && i18n[typeKey][locale] : item[typeKey])),
+        metricData: map(dataSource, (item) => ({ name: i18n?.[typeKey]?.[locale] ?? item[typeKey], value: item[valueKey], unit })),
+        legendData: map(dataSource, (item) => (i18n?.[typeKey]?.[locale] ?? item[typeKey])),
       };
     }
   }
@@ -207,7 +207,7 @@ export const createLoadDataFn = ({
       const otherDimensions = dropWhile(_typeDimensions, { type: 'time' });
       const time = map(uniqBy(dataSource, timeDimension.key), (item) => item[timeDimension.key]);
       const groups = chunk(dataSource, time.length);
-      const alias = valueDimension.i18n ? valueDimension.i18n.alias && valueDimension.i18n.alias[locale] : valueDimension.alias;
+      const alias = valueDimension?.i18n?.alias?.[locale] ?? valueDimension?.alias;
       const metricData = map(groups, (group) => {
         const nameItem: any = find(group, (item: any) => (!!item[valueDimension.key] || isNumber(item[valueDimension.key])) && Object.values(item).every((value) => value !== null)) || {};
         return {
@@ -244,7 +244,7 @@ export const createLoadDataFn = ({
             data: map(group, (item: any) => item[valueDimension.key]),
             name: reduce(otherDimensions, (name, { key }, index) => `${name}${nameItem[key]}${index !== otherDimensions.length - 1 ? ' / ' : ''}`, ''),
             ...valueDimension,
-            alias: valueDimension.i18n ? valueDimension.i18n.alias && valueDimension.i18n.alias[locale] : valueDimension.alias,
+            alias: valueDimension?.i18n?.alias?.[locale] ?? valueDimension?.alias,
           });
         });
       });
@@ -252,7 +252,7 @@ export const createLoadDataFn = ({
       return {
         metricData,
         time,
-        valueNames: _valueDimensions.map((x) => (x.i18n ? x.i18n.alias && x.i18n.alias[locale] : x.alias)),
+        valueNames: _valueDimensions.map((x) => (x?.i18n?.alias?.[locale] ?? x.alias)),
       };
     }
   }

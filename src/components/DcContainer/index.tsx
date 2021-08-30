@@ -225,7 +225,7 @@ const DcContainer: React.FC<IProps> = ({
         </When>
         <Otherwise>
           <div className="flex-box">
-            <h2 className="dc-chart-title px12">{i18n ? i18n.title && i18n.title[locale] : title} </h2>
+            <h2 className="dc-chart-title px12">{i18n?.title?.[locale] ?? title} </h2>
             <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
               <If condition={isEditMode && !chartEditorVisible && !isFullscreen}>
                 <Tooltip title={textMap['config charts']}>
@@ -233,7 +233,7 @@ const DcContainer: React.FC<IProps> = ({
                 </Tooltip>
               </If>
               <If condition={description}>
-                <Tooltip title={i18n ? i18n.description && i18n.description[locale] : description}>
+                <Tooltip title={i18n?.description?.[locale] ?? description}>
                   <Button type="text"><DcIcon type="info-circle" /></Button>
                 </Tooltip>
               </If>

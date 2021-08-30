@@ -13,6 +13,11 @@ declare namespace DC {
     dimensions: any[];
   }
 
+  interface I18n {
+    zh: string;
+    en: string;
+  }
+
   type DataConvertor = (data: object) => object;
   type OptionFn = (data: object, optionExtra?: object) => object;
 
@@ -117,6 +122,10 @@ declare namespace DC {
     name: string;
     description?: string;
     title?: string | (() => ReactNode);
+    i18n?: {
+      title?: I18n;
+      description?: I18n;
+    };
     /** 组件类型，图表或其他，界面配置时内置为chart:xxx类型; 注册了其他组件后可选择 */
     chartType: ViewType;
     /** 地图层级，需要迁到其他地方 */

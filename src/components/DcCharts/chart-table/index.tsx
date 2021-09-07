@@ -22,6 +22,7 @@ const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) =>
     let r = {
       ...col,
       key: col.dataIndex,
+      ellipsis: true,
     };
     if (index === 0 && isOverLimit) {
       r = {
@@ -63,6 +64,7 @@ const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) =>
           columns={_cols}
           dataSource={results}
           rowClassName={(_, index) => (index % 2 === 1 ? 'dark-row' : '')}
+          scroll={{ x: '100%' }}
           // scroll={isOverLimit ? { x: fixedWidth + cols.length * 200  } : { }}
           pagination={false}
         />

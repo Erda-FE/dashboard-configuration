@@ -150,6 +150,13 @@ declare namespace DICE_DATA_CONFIGURATOR {
       value: any;
     };
     sort?: 'DESC' | 'ASC';
+    /**
+     *表格列宽
+     *
+     * @type {number}
+     * @memberof Dimension
+     */
+    width?: number;
   }
 
   interface AggregationInfo {

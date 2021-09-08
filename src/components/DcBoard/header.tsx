@@ -92,6 +92,7 @@ const DashboardHeader = ({
     ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
       {
         icon: 'fullscreen',
+        btnType: 'text',
         text: textMap.fullscreen,
         onClick: () => _toggleFullscreen(),
       },
@@ -99,6 +100,7 @@ const DashboardHeader = ({
     ...insertWhen<DC_BOARD_HEADER.Tool>(isFullscreen, [
       {
         icon: 'fullscreen-exit',
+        btnType: 'text',
         text: textMap['exit fullscreen'],
         onClick: () => _toggleFullscreen(),
       },
@@ -106,6 +108,7 @@ const DashboardHeader = ({
     ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode && !isFullscreen, [
       {
         icon: 'camera',
+        btnType: 'text',
         text: textMap['export picture'],
         onClick: () => handleSaveImg(),
       },
@@ -124,6 +127,7 @@ const DashboardHeader = ({
     ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
       {
         icon: 'plus',
+        btnType: 'text',
         text: textMap['add charts'],
         // onClick: () => setPickChartModalVisible(true),
         onClick: () => addView(undefined),
@@ -153,11 +157,13 @@ const DashboardHeader = ({
       // },
       {
         icon: 'save',
+        btnType: 'text',
         text: textMap['save dashboard'],
         onClick: () => handleSaveDashboard(),
       },
       {
         icon: 'close',
+        btnType: 'text',
         text: textMap['exit edit mode'],
         onClick: () => handleCancel(),
       },

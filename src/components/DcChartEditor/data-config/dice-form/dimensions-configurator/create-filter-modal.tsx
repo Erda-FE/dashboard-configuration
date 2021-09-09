@@ -42,7 +42,7 @@ const FilterInput = ({ value, onChange, fieldType, options }: IFilterInputProps)
       </When>
       <When condition={fieldType === 'string'}>
         <Input
-          style={{ width: 300 }}
+          style={{ width: 160 }}
           value={value?.value}
           size="small"
           onChange={(e: React.FocusEvent<HTMLInputElement>) => onChange({ ...value, value: e.target.value })}

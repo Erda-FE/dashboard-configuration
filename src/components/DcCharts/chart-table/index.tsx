@@ -4,10 +4,11 @@
 import React, { useCallback } from 'react';
 import { Table } from 'antd';
 import { map, get } from 'lodash';
+import { Copy } from '../../../common/utils/copy';
 
 interface IProps {
   results: Array<{ [k: string]: any }>;
-  cols: Array<{ title: string; dataIndex: string; unit?: string; render?: any }>;
+  cols: Array<{ title: string; dataIndex: string; unit?: string; copy?: boolean; render?: any }>;
   dataSource?: any[];
   [k: string]: any;
 }
@@ -37,6 +38,19 @@ const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) =>
         render: (v: any) => `${v}${col.unit}`,
       };
     }
+
+    if (col.copy) {
+      r = {
+        ...r,
+        render: (v: any) =>
+          (
+            <Copy className="cursor-copy">
+              {v}
+            </Copy>
+          ),
+      };
+    }
+
     return r;
   });
 

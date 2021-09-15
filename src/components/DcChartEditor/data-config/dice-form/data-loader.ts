@@ -58,7 +58,7 @@ export const createLoadDataFn = ({
   if (isTableType) {
     if (isSqlMode) {
       const { data: dataSource, cols } = data;
-      const _cols = map(cols, (col) => ({ dataIndex: col.key, title: col.key, width: col.width }));
+      const _cols = map(cols, (col) => ({ dataIndex: col.key, title: col.key, width: col.width, copy: col.copy }));
 
       return {
         cols: _cols,
@@ -68,10 +68,11 @@ export const createLoadDataFn = ({
     } else {
       const { data: dataSource } = data;
       const _valueDimensionMap = keyBy(_valueDimensions, 'key');
-      const cols = map([..._typeDimensions, ..._valueDimensions], ({ key, alias, i18n, width }) => ({
+      const cols = map([..._typeDimensions, ..._valueDimensions], ({ key, alias, i18n, width, copy }) => ({
         dataIndex: key,
         title: i18n?.alias?.[locale] ?? alias,
         width,
+        copy,
       }));
 
       return {

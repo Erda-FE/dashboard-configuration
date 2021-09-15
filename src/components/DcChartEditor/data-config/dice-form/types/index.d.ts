@@ -157,6 +157,7 @@ declare namespace DICE_DATA_CONFIGURATOR {
      * @memberof Dimension
      */
     width?: number;
+    copy?: boolean;
   }
 
   interface AggregationInfo {

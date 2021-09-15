@@ -142,6 +142,9 @@ export const TEXT_ZH_MAP = {
   'table row click': '表格行点击',
   'event name': '事件名',
   'event value': '事件传递值',
+  copy: '复制',
+  succeed: '成功',
+  failed: '失败',
 };
 
 export const TEXT_EN_MAP = {
@@ -287,6 +290,9 @@ export const TEXT_EN_MAP = {
   'event name': 'event name',
   'event value': 'event value',
   'unnamed chart': 'unnamed chart',
+  copy: 'copy',
+  succeed: 'succeed',
+  failed: 'failed',
 };
 
 export const DEFAULT_VIEW_CONFIG = {

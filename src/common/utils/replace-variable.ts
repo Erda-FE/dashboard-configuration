@@ -18,7 +18,7 @@ function replaceVariable(source: any, variable?: Record<string, any>): any {
     return matchItems.reduce((acc: string, current: string) => {
       const val = variable[current.slice(2, -2)]
         || (source.length > current.length ? '' : undefined);
-      return (val || val === '') ? acc.replaceAll(current, val) : undefined;
+      return (val || val === '') ? acc.replace(current, val) : undefined;
     }, source);
   } else if (type != null && type === 'object') {
     const result = produce(source, (draft: { [x: string]: any }) => {

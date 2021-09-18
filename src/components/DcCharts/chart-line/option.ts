@@ -51,11 +51,11 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       : dataList;
   };
   map(metricData, (value, i) => {
-    const { name, tag, alias = '', unit: _unit, ...rest } = value;
+    const { axisIndex, name, tag, alias = '', unit: _unit, ...rest } = value;
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
-    const yAxisIndex = i || 0;
+    const yAxisIndex = axisIndex || 0;
     const areaColor = areaColors[i];
 
     const normalSeriesData = isMultipleTypeAndMultipleValue
@@ -104,8 +104,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       // 轴线名离轴线间距
       nameGap: 35,
       // 轴线偏移
-      offset: 10,
-      position: yAxisIndex === 0 ? 'left' : 'right',
+      offset: 30 * Math.floor(yAxisIndex / 2),
+      position: yAxisIndex % 2 === 0 ? 'left' : 'right',
       // 不显示刻度
       axisTick: {
         show: false,

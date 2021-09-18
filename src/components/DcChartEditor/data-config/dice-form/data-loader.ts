@@ -106,13 +106,13 @@ export const createLoadDataFn = ({
       const { type, key } = _typeDimensions[0];
       const time = type === 'time' ? map(dataSource, (item) => item[key]) : undefined;
       const xData = (['field', 'expr'] as DICE_DATA_CONFIGURATOR.DimensionMetricType[]).includes(type) ? map(dataSource, (item) => item[key]) : undefined;
-
       return {
-        metricData: map(_valueDimensions, (dimension) => {
+        metricData: map(_valueDimensions, (dimension, dimensionIndex) => {
           return {
             data: map(dataSource, (item) => item[dimension.key]),
             name: dimension?.i18n?.alias?.[locale] ?? dimension?.alias,
             ...dimension,
+            axisIndex: dimensionIndex,
           };
         }),
         xData,
@@ -239,7 +239,7 @@ export const createLoadDataFn = ({
       const metricData: any = [];
       const groups = chunk(dataSource, time.length);
       forEach(groups, (group) => {
-        forEach(_valueDimensions, (valueDimension) => {
+        forEach(_valueDimensions, (valueDimension, dimensionIndex) => {
           const nameItem: any = find(group, (item: any) => (!!item[valueDimension.key] || isNumber(item[valueDimension.key])) && Object.values(item).every((value) => value !== null)) || {};
 
           metricData.push({
@@ -247,6 +247,7 @@ export const createLoadDataFn = ({
             name: reduce(otherDimensions, (name, { key }, index) => `${name}${nameItem[key]}${index !== otherDimensions.length - 1 ? ' / ' : ''}`, ''),
             ...valueDimension,
             alias: valueDimension?.i18n?.alias?.[locale] ?? valueDimension?.alias,
+            axisIndex: dimensionIndex,
           });
         });
       });

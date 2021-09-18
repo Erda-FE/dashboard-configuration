@@ -29,6 +29,7 @@ const dashBoardStore = createFlatStore({
       return initState;
     },
     setLocale(state, key: 'en' | 'zh') {
+      localStorage.setItem('dashboardLang', key);
       state.locale = key;
       state.textMap = key === 'en' ? TEXT_EN_MAP : TEXT_ZH_MAP;
     },

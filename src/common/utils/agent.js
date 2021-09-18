@@ -22,6 +22,7 @@ export function getCookies(key) {
  */
 function setHeader(req) {
   req.set('Accept', 'application/vnd.dice+json;version=1.0');
+  req.set('Lang', localStorage.getItem('dashboardLang') === 'zh' ? 'zh-CN' : 'en-US');
   if (!['GET', 'HEAD', 'OPTIONS', 'TRACE'].includes(req.method)) {
     const token = getCookies('OPENAPI-CSRF-TOKEN');
     if (token) {

@@ -4,6 +4,7 @@ import DC from 'src/types';
 import getDefaultOption from './default-option';
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
+  const { option: _option = {} } = config;
   const option = merge(getDefaultOption(), getCustomOption(data, config));
   const { metricData = [], legendData = [] } = data || {};
   const unit = get(config, ['optionProps', 'unit']);
@@ -21,5 +22,5 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     type: 'funnel',
   }));
 
-  return merge(option, { series, tooltip: { formatter: `{a} <br/>{b} : {c}${unit || '%'}` } });
+  return merge(option, { series, tooltip: { formatter: `{a} <br/>{b} : {c}${unit || '%'}` } }, _option);
 }

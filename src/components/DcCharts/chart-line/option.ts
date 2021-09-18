@@ -10,7 +10,7 @@ const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { metricData = [], xData, time, valueNames = [] } = data;
-  const { optionProps = {}, dataSourceConfig = {} } = config;
+  const { optionProps = {}, dataSourceConfig = {}, option = {} } = config;
   const { typeDimensions, valueDimensions } = dataSourceConfig;
 
   // 多个维度，多个数值
@@ -51,11 +51,11 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       : dataList;
   };
   map(metricData, (value, i) => {
-    const { axisIndex, name, tag, alias = '', unit: _unit, ...rest } = value;
+    const { name, tag, alias = '', unit: _unit, ...rest } = value;
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
-    const yAxisIndex = axisIndex || 0;
+    const yAxisIndex = i || 0;
     const areaColor = areaColors[i];
 
     const normalSeriesData = isMultipleTypeAndMultipleValue
@@ -179,5 +179,5 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     series,
   };
 
-  return merge(getDefaultOption(), computedOption, getCustomOption(data, config));
+  return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option);
 }

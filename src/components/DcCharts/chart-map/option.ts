@@ -4,6 +4,7 @@ import getDefaultOption from './default-option';
 import DC from 'src/types';
 
 export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: string) => {
+  const { option: _option } = config;
   const option = merge(getDefaultOption(), getCustomOption(data, config));
   const { metricData = [{}], legendData = [] } = data || {};
 
@@ -35,5 +36,5 @@ export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: 
     };
   });
 
-  return merge(option, { series }, { visualMap: { min: minVal, max: maxVal } });
+  return merge(option, { series }, { visualMap: { min: minVal, max: maxVal } }, _option);
 };

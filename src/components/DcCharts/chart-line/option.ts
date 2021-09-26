@@ -34,6 +34,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     invalidToZero,
     nullDisplay,
     showAllTooltip = false,
+    useBrush = false,
   } = optionProps;
 
   const yAxis: any[] = [];
@@ -179,7 +180,23 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       right: haveTwoYAxis ? 40 : 5,
     },
     series,
+    time,
   };
+
+  if (useBrush) {
+    return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option,
+      {
+        brush: {
+          toolbox: [''],
+          throttleType: 'debounce',
+        },
+        series: [{
+          itemStyle: {
+            color: '#6CB38B',
+          },
+        }],
+      });
+  }
 
   return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option);
 }

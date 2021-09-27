@@ -89,6 +89,7 @@ declare namespace DC {
     yAxisNames?: string[];
     legendFormatter?: Function;
     timeSpan?: any;
+    yAxis?: object[];
   }
 
   interface MetricData {

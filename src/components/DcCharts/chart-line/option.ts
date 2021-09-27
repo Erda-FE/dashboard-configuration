@@ -51,11 +51,12 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       : dataList;
   };
   map(metricData, (value, i) => {
+    const yIndex = option?.yAxis?.[i] ? i : 0;
     const { axisIndex, name, tag, alias = '', unit: _unit, ...rest } = value;
     if (tag || name) {
       legendData.push({ name: tag || name });
     }
-    const yAxisIndex = axisIndex || 0;
+    const yAxisIndex = yIndex || 0;
     const areaColor = areaColors[i];
 
     const normalSeriesData = isMultipleTypeAndMultipleValue

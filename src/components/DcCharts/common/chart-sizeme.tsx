@@ -56,13 +56,17 @@ export default ({ style, option, onBoardEvent, ...rest }: IProps) => {
   const onEvents = {};
   if (onBoardEvent && useBrush) {
     Object.assign(onEvents, {
+      click: (params) => {
+        const timeGap = time[1] - time[0];
+        onBoardEvent?.({ start: time[params?.dataIndex], end: Number(time[params?.dataIndex]) + timeGap });
+      },
       brushSelected: (params) => {
         const brushComponent = params.batch[0];
         for (let sIdx = 0; sIdx < brushComponent?.selected.length; sIdx++) {
           const { dataIndex } = brushComponent?.selected[sIdx];
           const start = time?.[dataIndex[0]];
           const end = time?.[dataIndex[dataIndex.length - 1]];
-          onBoardEvent({ start, end });
+          onBoardEvent?.({ start, end });
         }
       },
 

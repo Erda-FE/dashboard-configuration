@@ -6,6 +6,7 @@ import { cutStr, getFormatter } from '../../../common/utils';
 import { getCustomOption } from '../common/custom-option';
 import getDefaultOption from './default-option';
 
+
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
@@ -100,6 +101,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     // y 轴基准单位
     const curUnit = (_unit?.unit || customUnit || '');
     yAxis[yAxisIndex] = {
+      show: yAxisIndex === 0,
       // 轴线名
       name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || name || '',
       // 轴线名位置
@@ -149,9 +151,15 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     };
   }
 
+  const brushFormatter = (param: object[]) => {
+    const { value = '', dataIndex = 0, seriesName: _seriesName = '', axisValue = '' } = param?.[0];
+    const timeGap = time?.[1] - time?.[0];
+    return `开始时间：${moment(Number(axisValue)).format('YYYY-MM-DD HH:mm:ss')}<br />结束时间：${moment(Number(axisValue) + Number(timeGap)).format('YYYY-MM-DD HH:mm:ss')}<br />${_seriesName}: ${value}  `;
+  };
+
   const computedOption = {
     tooltip: {
-      formatter: tooltipFormatter || defaultTTFormatter,
+      formatter: (useBrush && brushFormatter) || tooltipFormatter || defaultTTFormatter,
     },
     legend: {
       data: legendData,
@@ -189,12 +197,20 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
         brush: {
           toolbox: [''],
           throttleType: 'debounce',
+          xAxisIndex: 0,
         },
         series: [{
           itemStyle: {
             color: '#6CB38B',
           },
+          cursor: 'pointer',
         }],
+        emphasis: {
+          itemStyle: {
+            color: '#6CB3AB',
+            backgroundColor: '#999',
+          },
+        },
       });
   }
 

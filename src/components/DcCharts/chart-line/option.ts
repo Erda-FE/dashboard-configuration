@@ -33,6 +33,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     isConnectNulls,
     invalidToZero,
     nullDisplay,
+    showAllTooltip = false,
   } = optionProps;
 
   const yAxis: any[] = [];
@@ -134,7 +135,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     const curYAxis = yAxis[i] || yAxis[yAxis.length - 1];
     return [curYAxis.unitType, curYAxis.unit];
   };
-  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${cutStr(unit.seriesName, 40)} : ${(preciseTooltip || isNaN(unit.value)) ? (isNaN(unit.value) ? (nullDisplay || '--') : unit.value) : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
+  const genTTArray = (param: any[]) => param.map((unit, i) => `<span style='color: ${unit.color}'>${showAllTooltip ? unit.seriesName : cutStr(unit.seriesName, 40)} : ${(preciseTooltip || isNaN(unit.value)) ? (isNaN(unit.value) ? (nullDisplay || '--') : unit.value) : getFormatter(...getTTUnitType(i)).format(unit.value, 2)}</span><br/>`);
   const formatTime = (timeStr: string) => moment(Number(timeStr)).format(moreThanOneDay ? 'M月D日 HH:mm' : 'HH:mm');
 
   const formatTooltipTitle = (title: any) => (time ? formatTime(title) : title);

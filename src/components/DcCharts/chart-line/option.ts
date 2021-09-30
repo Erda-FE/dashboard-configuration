@@ -5,6 +5,7 @@ import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
 import { getCustomOption } from '../common/custom-option';
 import getDefaultOption from './default-option';
+import DashboardStore from '../../../stores/dash-board';
 
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
@@ -13,6 +14,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { metricData = [], xData, time, valueNames = [] } = data;
   const { optionProps = {}, dataSourceConfig = {}, option = {} } = config;
   const { typeDimensions, valueDimensions } = dataSourceConfig;
+  const textMap = DashboardStore.getState((s) => s.textMap);
 
   // 多个维度，多个数值
   const isMultipleTypeAndMultipleValue = (typeDimensions?.length || 0) > 1 && (valueDimensions?.length || 0) > 1;
@@ -154,7 +156,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const brushFormatter = (param: object[]) => {
     const { value = '', dataIndex = 0, seriesName: _seriesName = '', axisValue = '' } = param?.[0];
     const timeGap = time?.[1] - time?.[0];
-    return `开始时间：${moment(Number(axisValue)).format('YYYY-MM-DD HH:mm:ss')}<br />结束时间：${moment(Number(axisValue) + Number(timeGap)).format('YYYY-MM-DD HH:mm:ss')}<br />${_seriesName}: ${value}  `;
+    return `${textMap['start time']}: ${moment(Number(axisValue)).format('YYYY-MM-DD HH:mm:ss')}<br />${textMap['end time']}: ${moment(Number(axisValue) + Number(timeGap)).format('YYYY-MM-DD HH:mm:ss')}<br />${_seriesName}: ${value}  `;
   };
 
   const computedOption = {
@@ -176,7 +178,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       },
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
-    dataZoom: ((xData && xData.length > 10) || (time && time.length > 100))
+    dataZoom: (((xData && xData.length > 10) || (time && time.length > 100))) && !useBrush
       ? {
         height: 25,
         start: 0,

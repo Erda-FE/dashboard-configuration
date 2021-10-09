@@ -36,7 +36,6 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     isConnectNulls,
     invalidToZero,
     nullDisplay,
-    showAllTooltip = false,
     useBrush = false,
     showAllTooltip = false,
   } = optionProps;

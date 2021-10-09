@@ -38,6 +38,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     nullDisplay,
     showAllTooltip = false,
     useBrush = false,
+    showAllTooltip = false,
   } = optionProps;
 
   const yAxis: any[] = [];

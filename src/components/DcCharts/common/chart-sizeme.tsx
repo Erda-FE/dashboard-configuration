@@ -84,8 +84,7 @@ export default ({ style, option, onBoardEvent, ...rest }: IProps) => {
         },
       });
     }
-  }, []);
-
+  }, [time]);
 
   return (
     <ReactEcharts

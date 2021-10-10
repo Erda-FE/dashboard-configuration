@@ -53,7 +53,7 @@
     "dom-to-image": "^2.6.0",
     "echarts": "^4.9.0",
     "echarts-for-react": "^2.0.16",
-    "immer": "^8.0.0",
+    "immer": "^9.0.6",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "react-dnd": "^11.1.3",

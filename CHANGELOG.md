@@ -1,4 +1,118 @@
+
 # github
+## [1.0.38](https://github.com/Erda-FE/dashboard-configuration/pull/30)(2021-09-29)
+
+### Feature
+
+* add param to display complete tooltip([5e5287f](https://github.com/Erda-FE/dashboard-configuration/commit/5e5287f3cb1240488834c75db6250cfc01a11a09))
+
+## [1.0.37](https://github.com/Erda-FE/dashboard-configuration/pull/29)(2021-09-27)
+
+### Bugfix
+
+* fix that display one y axis as default config([8dcb0a4](https://github.com/Erda-FE/dashboard-configuration/commit/8dcb0a47042fde4638670e59a1a1f68972d4bdf8))
+
+
+## [1.0.36](https://github.com/Erda-FE/dashboard-configuration/pull/28)(2021-09-18)
+
+### Bugfix
+
+* fix that display multiple y axes if there are more than one y axis([5ae0cb3](https://github.com/Erda-FE/dashboard-configuration/commit/5ae0cb3f771b0eb8f26251ee381371938e364f8d))
+
+
+## [1.0.35](https://github.com/Erda-FE/dashboard-configuration/pull/27)(2021-09-18)
+
+### Bugfix
+
+* add language to head request and accept options to config chart([04685ff](https://github.com/Erda-FE/dashboard-configuration/commit/04685ff6f22a4b135021a0d96eea29394f28ea30))
+
+
+## [1.0.34](https://github.com/Erda-FE/dashboard-configuration/pull/26)(2021-09-18)
+
+### Bugfix
+
+* fix that collapse page in safari under v13.1([184623f](https://github.com/Erda-FE/dashboard-configuration/commit/184623f0bed50257d9cc9afc81fa0d6fb8bb7b88))
+
+### Feature
+* add copy to table cell([a25ff59](https://github.com/Erda-FE/dashboard-configuration/commit/a25ff599cd87a7a19dde50f3d738fbc1dfa6fd8b)
+
+
+## [1.0.33](https://github.com/Erda-FE/dashboard-configuration/pull/22)(2021-09-09)
+
+### Bugfix
+
+* fix the width of input in modal([a6d6ccc](https://github.com/Erda-FE/dashboard-configuration/commit/a6d6ccc4a8b68df68333e9d34bd264e2b03b1371))
+
+
+
+## [1.0.32](https://github.com/Erda-FE/dashboard-configuration/pull/21)(2021-09-09)
+
+### Chore
+
+* upgrade cube state to v1.5.3([616bd71](https://github.com/Erda-FE/dashboard-configuration/commit/616bd71f3e0282d72ac4ea8f4905348cbbec9709))
+
+
+## [1.0.31](https://github.com/Erda-FE/dashboard-configuration/pull/20)(2021-09-08)
+
+### Bugfix
+
+* fix that update button type from default to text([8b997b5](https://github.com/Erda-FE/dashboard-configuration/commit/8b997b5372849e9c86bd0a5f04bfb9bb16be1bef))
+
+
+## [1.0.30](https://github.com/Erda-FE/dashboard-configuration/pull/19)(2021-09-08)
+
+### Bugfix
+
+* fix that cell of table supports ellipsis([05ef9c6](https://github.com/Erda-FE/dashboard-configuration/commit/05ef9c6c9643cf073a5bc66e0de9ea5ac02e0881))
+
+
+
+## [1.0.29](https://github.com/Erda-FE/dashboard-configuration/pull/18)(2021-08-30)
+
+### Bugfix
+
+* i18n dashboard([537324f](https://github.com/Erda-FE/dashboard-configuration/commit/537324f6793759dc7122312966d0989bb383ea4b))
+
+
+## [1.0.28](https://github.com/Erda-FE/dashboard-configuration/pull/17)(2021-08-27)
+
+### Bugfix
+
+* fix that i18n 'cancel' and 'ok' in Modal([687f393](https://github.com/Erda-FE/dashboard-configuration/commit/687f393a0f7ef83d75acb8e959821a3760550872))
+
+
+
+## [1.0.27](https://github.com/Erda-FE/dashboard-configuration/pull/16)(2021-08-20)
+
+### Bugfix
+
+* fix that it's unit will not convert to 'hour' if choose week or day in time interval([8d7880e](https://github.com/Erda-FE/dashboard-configuration/commit/8d7880e230832629984923383e618f413212e552))
+
+
+## [1.0.26](https://github.com/Erda-FE/dashboard-configuration/pull/15)(2021-08-16)
+
+### Bugfix
+
+* fix that add the namespace to form explain to avoid covering other style([845d130](https://github.com/Erda-FE/dashboard-configuration/commit/845d1308f1e0d8485a7b2973167252bf8f7b5722))
+* fix that i18n the default title of chart([837ca06](https://github.com/Erda-FE/dashboard-configuration/commit/837ca065266497a5410bf070dae61a217cc93e9b))
+* use antd to replace nusi (There still remaining Menu、FormBuilder、Title component unreplaced)([035b400](https://github.com/Erda-FE/dashboard-configuration/commit/837ca065266497a5410bf070dae61a217cc93e9b))
+
+
+## [1.0.25](https://github.com/Erda-FE/dashboard-configuration/pull/12)(2021-08-12)
+
+### Bugfix
+
+* choose chart type before saving chart(It will not be saved unless chose chart type)([ef8aae5](https://github.com/Erda-FE/dashboard-configuration/commit/ef8aae52fc9f03cc846201b83817b05aabd5ae90))
+* fix Chinese and English switching([536e557](https://github.com/Erda-FE/dashboard-configuration/commit/536e557f34123df9dcb277865ecedb4bd2f05edc))
+
+
+## [1.0.24](https://github.com/Erda-FE/dashboard-configuration/pull/10)(2021-07-20)
+
+### Bugfix
+
+* fix when switching types, the data is not up to date([930075d](https://github.com/Erda-FE/dashboard-configuration/commit/930075d467e23ee1b82a02eae77b99accb6e0f02))
+
+
 ## [1.0.23](https://github.com/Erda-FE/dashboard-configuration/pull/9)(2021-07-13)
 
 ### Bugfix
@@ -7,7 +121,6 @@
 
 
 
-# github
 ## [1.0.22](https://github.com/Erda-FE/dashboard-configuration/pull/8)(2021-07-02)
 
 ### Bugfix

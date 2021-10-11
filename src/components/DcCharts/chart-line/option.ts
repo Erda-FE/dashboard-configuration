@@ -50,7 +50,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     defaultMoreThanOneDay = time[time.length - 1] - time[0] > 24 * 3600 * 1000;
   }
   const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
-  const isLessOneMinute = (time[time.length - 1] - time[0]) / time.length < 60 * 1000;
+  const isLessOneMinute = (time?.[time?.length - 1] - time?.[0]) / (time?.length - 1) < 60 * 1000;
+
   const convertInvalidValueToZero = (dataList: any[]) => {
     return invalidToZero
       ? map(dataList, (item) => (typeof item === 'number' && item > 0 ? item : 0))
@@ -156,8 +157,19 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
 
   const brushFormatter = (param: DC.BrushTooltip[]) => {
     const { value = '', seriesName: _seriesName = '', axisValue = '' } = param?.[0];
+    const isOneBar = time?.length === 1;
     const timeGap = time?.[1] - time?.[0];
-    return `${textMap['start time']}: ${moment(Number(axisValue)).format('YYYY-MM-DD HH:mm:ss')}<br />${textMap['end time']}: ${moment(Number(axisValue) + Number(timeGap)).format('YYYY-MM-DD HH:mm:ss')}<br />${_seriesName}: ${value}  `;
+    return `${textMap['start time']}: ${moment(Number(axisValue)).format('YYYY-MM-DD HH:mm:ss')}<br />${textMap['end time']}: ${moment(Number(axisValue) + Number(isOneBar ? 0 : timeGap)).format('YYYY-MM-DD HH:mm:ss')}<br />${_seriesName}: ${value}  `;
+  };
+
+  const axisLabelFormatter = () => {
+    if (moreThanOneDay) {
+      if (moreThanOneDayFormat) {
+        return moreThanOneDayFormat;
+      }
+      return isLessOneMinute ? 'M/D HH:mm:ss' : 'M/D HH:mm';
+    }
+    return isLessOneMinute ? 'HH:mm:ss' : 'HH:mm';
   };
 
   const computedOption = {
@@ -174,7 +186,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
         axisLabel: {
           formatter: xData
             ? (value: string) => value
-            : (value: string) => moment(Number(value)).format(moreThanOneDay ? (moreThanOneDayFormat || 'M/D HH:mm') : (isLessOneMinute ? 'HH:mm:ss' : 'HH:mm')),
+            : (value: string) => moment(Number(value)).format(axisLabelFormatter()),
         },
       },
     ],
@@ -194,7 +206,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     time,
   };
 
-  if (useBrush) {
+  if (useBrush && time?.length > 1) {
     return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option,
       {
         brush: {

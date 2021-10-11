@@ -50,7 +50,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     defaultMoreThanOneDay = time[time.length - 1] - time[0] > 24 * 3600 * 1000;
   }
   const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
-  const isLessOneMinute = (time?.[time?.length - 1] - time?.[0]) / (time?.length - 1) < 60 * 1000;
+  const isLessOneMinute = time?.length === 1 || (time?.[time?.length - 1] - time?.[0]) / (time?.length - 1) < 60 * 1000;
 
   const convertInvalidValueToZero = (dataList: any[]) => {
     return invalidToZero
@@ -206,14 +206,16 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     time,
   };
 
-  if (useBrush && time?.length > 1) {
-    return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option,
+  if (useBrush) {
+    const canBrushOption = time?.length > 1 ? { brush: {
+      toolbox: [''],
+      throttleType: 'debounce',
+      throttleDelay: 300,
+      xAxisIndex: 0,
+    } } : {};
+
+    return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option, canBrushOption,
       {
-        brush: {
-          toolbox: [''],
-          throttleType: 'debounce',
-          xAxisIndex: 0,
-        },
         series: [{
           itemStyle: {
             color: '#6CB38B',

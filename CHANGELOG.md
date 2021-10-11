@@ -1,11 +1,14 @@
 
 # github
-
-## [1.0.39](https://github.com/Erda-FE/dashboard-configuration/pull/31)(2021-10-11)
-
+## [1.0.40](https://github.com/Erda-FE/dashboard-configuration/pull/31)(2021-10-11)
+beta version
 ### Feature
 
 * support brush bar chart to get time range([aeb2bfa](https://github.com/Erda-FE/dashboard-configuration/commit/aeb2bfa91ac255c0c8d7a7a2928bc804a4821960))
+
+
+## [1.0.39](https://github.com/Erda-FE/dashboard-configuration/pull/31)(2021-9-30)
+beta version
 
 ## [1.0.38](https://github.com/Erda-FE/dashboard-configuration/pull/30)(2021-09-29)
 

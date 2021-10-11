@@ -153,8 +153,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     };
   }
 
-  const brushFormatter = (param: object[]) => {
-    const { value = '', dataIndex = 0, seriesName: _seriesName = '', axisValue = '' } = param?.[0];
+  const brushFormatter = (param: DC.BrushTooltip[]) => {
+    const { value = '', seriesName: _seriesName = '', axisValue = '' } = param?.[0];
     const timeGap = time?.[1] - time?.[0];
     return `${textMap['start time']}: ${moment(Number(axisValue)).format('YYYY-MM-DD HH:mm:ss')}<br />${textMap['end time']}: ${moment(Number(axisValue) + Number(timeGap)).format('YYYY-MM-DD HH:mm:ss')}<br />${_seriesName}: ${value}  `;
   };

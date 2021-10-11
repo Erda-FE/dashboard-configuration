@@ -4,7 +4,7 @@ import getDefaultOption from './default-option';
 import DC from 'src/types';
 
 export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: string) => {
-  const { option: _option } = config;
+  const { option: _option = {} } = config || {};
   const option = merge(getDefaultOption(), getCustomOption(data, config));
   const { metricData = [{}], legendData = [] } = data || {};
 

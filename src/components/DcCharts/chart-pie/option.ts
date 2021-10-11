@@ -5,7 +5,7 @@ import getDefaultOption from './default-option';
 import DC from 'src/types';
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
-  const { option: _option = {} } = config;
+  const { option: _option = {} } = config || {};
   const option = merge(getDefaultOption(), getCustomOption(data, config));
   const { metricData = [], legendData = [], unit } = data || {};
   const isShowTotal = get(config, ['optionProps', 'isShowTotal']);

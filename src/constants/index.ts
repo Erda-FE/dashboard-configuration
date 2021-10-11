@@ -145,6 +145,8 @@ export const TEXT_ZH_MAP = {
   copy: '复制',
   succeed: '成功',
   failed: '失败',
+  'start time': '开始时间',
+  'end time': '结束时间',
 };
 
 export const TEXT_EN_MAP = {
@@ -293,6 +295,8 @@ export const TEXT_EN_MAP = {
   copy: 'copy',
   succeed: 'succeed',
   failed: 'failed',
+  'start time': 'start time',
+  'end time': 'end time',
 };
 
 export const DEFAULT_VIEW_CONFIG = {

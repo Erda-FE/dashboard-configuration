@@ -5,6 +5,8 @@ import { areaColors } from '../../../theme/dice';
 import { cutStr, getFormatter } from '../../../common/utils';
 import { getCustomOption } from '../common/custom-option';
 import getDefaultOption from './default-option';
+import DashboardStore from '../../../stores/dash-board';
+
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
@@ -12,6 +14,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { metricData = [], xData, time, valueNames = [] } = data;
   const { optionProps = {}, dataSourceConfig = {}, option = {} } = config;
   const { typeDimensions, valueDimensions } = dataSourceConfig;
+  const textMap = DashboardStore.getState((s) => s.textMap);
 
   // 多个维度，多个数值
   const isMultipleTypeAndMultipleValue = (typeDimensions?.length || 0) > 1 && (valueDimensions?.length || 0) > 1;
@@ -33,6 +36,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     isConnectNulls,
     invalidToZero,
     nullDisplay,
+    useBrush = false,
     showAllTooltip = false,
   } = optionProps;
 
@@ -99,6 +103,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     // y 轴基准单位
     const curUnit = (_unit?.unit || customUnit || '');
     yAxis[yAxisIndex] = {
+      show: yAxisIndex === 0,
       // 轴线名
       name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || name || '',
       // 轴线名位置
@@ -148,9 +153,15 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     };
   }
 
+  const brushFormatter = (param: DC.BrushTooltip[]) => {
+    const { value = '', seriesName: _seriesName = '', axisValue = '' } = param?.[0];
+    const timeGap = time?.[1] - time?.[0];
+    return `${textMap['start time']}: ${moment(Number(axisValue)).format('YYYY-MM-DD HH:mm:ss')}<br />${textMap['end time']}: ${moment(Number(axisValue) + Number(timeGap)).format('YYYY-MM-DD HH:mm:ss')}<br />${_seriesName}: ${value}  `;
+  };
+
   const computedOption = {
     tooltip: {
-      formatter: tooltipFormatter || defaultTTFormatter,
+      formatter: (useBrush && brushFormatter) || tooltipFormatter || defaultTTFormatter,
     },
     legend: {
       data: legendData,
@@ -167,7 +178,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       },
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
-    dataZoom: ((xData && xData.length > 10) || (time && time.length > 100))
+    dataZoom: (((xData && xData.length > 10) || (time && time.length > 100))) && !useBrush
       ? {
         height: 25,
         start: 0,
@@ -179,7 +190,31 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       right: haveTwoYAxis ? 40 : 5,
     },
     series,
+    time,
   };
+
+  if (useBrush) {
+    return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option,
+      {
+        brush: {
+          toolbox: [''],
+          throttleType: 'debounce',
+          xAxisIndex: 0,
+        },
+        series: [{
+          itemStyle: {
+            color: '#6CB38B',
+          },
+          cursor: 'pointer',
+        }],
+        emphasis: {
+          itemStyle: {
+            color: '#6CB3AB',
+            backgroundColor: '#999',
+          },
+        },
+      });
+  }
 
   return merge(getDefaultOption(), computedOption, getCustomOption(data, config), option);
 }

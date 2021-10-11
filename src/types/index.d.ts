@@ -109,6 +109,12 @@ declare namespace DC {
     [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
   }
 
+  interface BrushTooltip {
+    value: string;
+    seriesName: string;
+    axisValue: string;
+  }
+
   interface API {
     url: string;
     method: 'get' | 'post';

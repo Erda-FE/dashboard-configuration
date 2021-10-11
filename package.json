@@ -1,7 +1,7 @@
 {
   "name": "@erda-ui/dashboard-configurator",
-  "version": "1.0.31",
-  "description": "Dice Charts with Echart",
+  "version": "1.0.38",
+  "description": "Erda dashboard configurator powered by Echart",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "repository": {
@@ -9,7 +9,7 @@
     "url": "https://github.com/Erda-FE/dashboard-configuration.git"
   },
   "keywords": [
-    "dice",
+    "erda",
     "charts",
     "react",
     "Echarts"
@@ -38,7 +38,7 @@
     "watch": "NODE_ENV=development ./node_modules/.bin/webpack --watch",
     "web": "./node_modules/.bin/webpack serve --config webpack.server.js"
   },
-  "author": "dice",
+  "author": "erda-FE",
   "license": "ISC",
   "peerDependencies": {
     "react": ">=16.14.0",
@@ -49,12 +49,10 @@
     "@terminus/nusi": "^3.10.78",
     "antd": "^4.15.4",
     "classnames": "^2.2.6",
-    "cube-state": "1.5.3",
+    "cube-state": "^1.5.6",
     "dom-to-image": "^2.6.0",
     "echarts": "^4.9.0",
     "echarts-for-react": "^2.0.16",
-    "eslint-plugin-react-hooks": "^4.2.0",
-    "git-revision-webpack-plugin": "^3.0.6",
     "immer": "^8.0.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
@@ -102,12 +100,14 @@
     "eslint": "^7.17.0",
     "eslint-config-ali": "^11.4.1",
     "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-compat": "^3.9.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-jsx-control-statements": "^2.2.1",
     "eslint-plugin-react": "^7.22.0",
     "eslint-plugin-typescript": "^0.14.0",
+    "git-revision-webpack-plugin": "^3.0.6",
     "html-webpack-plugin": "^5.0.0-beta.5",
     "husky": "^4.3.7",
     "inquirer": "^8.0.0",

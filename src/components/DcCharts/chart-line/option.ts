@@ -50,6 +50,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     defaultMoreThanOneDay = time[time.length - 1] - time[0] > 24 * 3600 * 1000;
   }
   const moreThanOneDay = isMoreThanOneDay || defaultMoreThanOneDay;
+  const isLessOneMinute = (time[time.length - 1] - time[0]) / time.length < 60 * 1000;
   const convertInvalidValueToZero = (dataList: any[]) => {
     return invalidToZero
       ? map(dataList, (item) => (typeof item === 'number' && item > 0 ? item : 0))
@@ -173,7 +174,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
         axisLabel: {
           formatter: xData
             ? (value: string) => value
-            : (value: string) => moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm'),
+            : (value: string) => moment(Number(value)).format(moreThanOneDay ? (moreThanOneDayFormat || 'M/D HH:mm') : (isLessOneMinute ? 'HH:mm:ss' : 'HH:mm')),
         },
       },
     ],

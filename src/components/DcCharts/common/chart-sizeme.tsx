@@ -45,15 +45,13 @@ ReactEcharts.prototype.componentDidUpdate = function (...arg) {
   oldComponentDidUpdate.call(this, ...arg);
 };
 
-export default ({ style, option, onBoardEvent, ...rest }: IProps) => {
+export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps) => {
   const theme = DashboardStore.useStore((s) => s.theme);
   const { optionProps = {} } = rest?.config || {};
   const ref = React.useRef(null);
   const { useBrush = true } = optionProps;
   const { time = [] } = option || {};
 
-
-  const onEvents = {};
   if (onBoardEvent && useBrush) {
     Object.assign(onEvents, {
       click: (params: {dataIndex: number}) => {

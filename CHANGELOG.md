@@ -1,5 +1,11 @@
 
 # github
+## [1.0.41](https://github.com/Erda-FE/dashboard-configuration/pull/28)(2021-10-21)
+
+### Bugfix
+
+* fix that onEvents don't work([5bc5595](https://github.com/Erda-FE/dashboard-configuration/pull/35/commits/5bc55956dc8163bb1f2d421cc516982effb2d0e0))
+
 ## [1.0.40](https://github.com/Erda-FE/dashboard-configuration/pull/31)(2021-10-11)
 beta version
 ### Feature

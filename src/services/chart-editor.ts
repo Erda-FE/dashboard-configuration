@@ -1,6 +1,7 @@
 import { get } from 'lodash';
 import DC from 'src/types';
 import agent from '../common/utils/agent';
+import produce from 'immer';
 
 
 export const getOrgFromPath = () => {
@@ -13,12 +14,22 @@ export const setApiWithOrg = (api: string) => {
     : api;
 };
 
-export const getChartData = ({ url, query, method = 'get', body }: DC.API) => (
-  agent[method.toLowerCase()](setApiWithOrg(url))
-    .query(query)
-    .send(body)
-    .then((response: any) => response.body)
-);
+export const getChartData = ({ url, query, method = 'get', body }: DC.API) => {
+  const resultBody = produce(body, (draft: { [x: string]: any }) => {
+    for (const key in draft) {
+      if (Object.prototype.hasOwnProperty.call(draft, key)) {
+        draft[key] = draft[key].filter((item: string) => item);
+      }
+    }
+  });
+
+  return (
+    agent[method.toLowerCase()](setApiWithOrg(url))
+      .query(query)
+      .send(resultBody)
+      .then((response: any) => response.body)
+  );
+};
 
 interface IExportChartDataQuery {
   start: number;

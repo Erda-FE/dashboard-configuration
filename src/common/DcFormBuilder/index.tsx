@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormBuilder } from '@terminus/nusi';
+import FormBuilder from '../form-builder';
 
 const { Fields } = FormBuilder;
 
@@ -7,10 +7,9 @@ export const DcFormBuilder = React.forwardRef(({ fields }: { fields: any }, ref)
   return (
     <FormBuilder
       size="small"
-      fieldSize="small"
       wrappedComponentRef={ref}
     >
-      <Fields numOfRowsLimit={1} fields={fields} />
+      <Fields fields={fields} />
     </FormBuilder>
   );
 });

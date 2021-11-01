@@ -13,3 +13,7 @@ declare let For: React.FunctionComponent<{ each: string; index: string; of: any[
 declare let Choose: React.FunctionComponent;
 declare let When: React.FunctionComponent<{ condition: boolean }>;
 declare let Otherwise: React.FunctionComponent;
+
+interface Obj<T extends any> {
+  [k: string]: T;
+}

@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { Title, Menu } from '@terminus/nusi';
-import { Button, Tooltip, Input, Dropdown, Tabs, Modal, message } from 'antd';
+import { Button, Tooltip, Input, Dropdown, Tabs, Modal, Menu, message } from 'antd';
 import { useImmer } from 'use-immer';
 import { remove, find, findIndex, map } from 'lodash';
 import { DcIcon, DcInfoIcon } from '../../common';
@@ -263,7 +262,7 @@ export const ConfigGlobalFiltersModal = () => {
       onOk={handleSubmit}
     >
       <div className="mb12 px12 flex-box">
-        <Title title={textMap['filter items']} level={2} />
+        <div>{textMap['filter items']}</div>
         <Dropdown
           trigger={['click']}
           placement="bottomRight"
@@ -309,9 +308,9 @@ export const ConfigGlobalFiltersModal = () => {
                 >
                   <If condition={type !== 'time'}>
                     <div className="auto-overflow">
-                      <Title title="通用设置" level={2} />
+                      <div>通用设置</div>
                       <ConfigFields fields={getFieldsList(filter)} />
-                      <Title title="数据源设置" level={2} />
+                      <div>数据源设置</div>
                       {/* <ConfigFields fields={getFieldsList(filter)} /> */}
                     </div>
                   </If>

@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
-import { Dropdown } from 'antd';
-import { Menu } from '@terminus/nusi';
+import { Dropdown, Menu } from 'antd';
 import { map } from 'lodash';
 import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core';

@@ -1,6 +1,13 @@
 
 # github
-## [1.0.41](https://github.com/Erda-FE/dashboard-configuration/pull/28)(2021-10-21)
+## [1.0.42](https://github.com/Erda-FE/dashboard-configuration/pull/37)(2021-10-28)
+
+### Bugfix
+
+* fix that filter useful data to request body([1ece5403](https://github.com/Erda-FE/dashboard-configuration/pull/37/commits/1ece5403f6191fc2cb01f71aa7a9b0cbfd532d12))
+
+
+## [1.0.41](https://github.com/Erda-FE/dashboard-configuration/pull/35)(2021-10-21)
 
 ### Bugfix
 

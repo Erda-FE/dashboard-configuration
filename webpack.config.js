@@ -1,3 +1,4 @@
+const os = require('os');
 const path = require('path');
 const webpack = require('webpack');
 const moment = require('moment');
@@ -136,7 +137,9 @@ module.exports = () => {
       minimizer: isProd
         ? [
           new webpack.BannerPlugin(banner),
-          new TerserPlugin(),
+          new TerserPlugin({
+            parallel: os.cpus().length,
+          }),
           new CssMinimizerPlugin({
             minimizerOptions: {
               preset: [

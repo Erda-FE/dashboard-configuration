@@ -81,6 +81,7 @@ const DcContainer: React.FC<IProps> = ({
   const title = isCustomTitle ? (_title as Function)() : _title;
   const description = isFunction(_description) ? _description() : _description;
   const isCustomRender = isFunction(customRender);
+  const isProd = process.env.NODE_ENV === 'production';
 
   const [{
     resData,
@@ -140,6 +141,9 @@ const DcContainer: React.FC<IProps> = ({
         });
       })
       .catch((err) => {
+        if (!isProd) {
+          console.error('catch error in getChartData', err); // eslint-disable-line
+        }
         if (err.status === 400) {
           update({
             resData: undefined,

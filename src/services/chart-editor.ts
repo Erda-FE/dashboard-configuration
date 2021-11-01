@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, isArray } from 'lodash';
 import DC from 'src/types';
 import agent from '../common/utils/agent';
 import produce from 'immer';
@@ -18,7 +18,9 @@ export const getChartData = ({ url, query, method = 'get', body }: DC.API) => {
   const resultBody = produce(body, (draft: { [x: string]: any }) => {
     for (const key in draft) {
       if (Object.prototype.hasOwnProperty.call(draft, key)) {
-        draft[key] = draft[key].filter((item: string) => item);
+        if (isArray(draft[key])) {
+          draft[key] = draft[key]?.filter((item: string) => item);
+        }
       }
     }
   });

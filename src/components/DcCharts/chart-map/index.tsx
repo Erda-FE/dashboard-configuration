@@ -9,7 +9,7 @@ import { useMount } from 'react-use';
 import { map, slice, findIndex, cloneDeep } from 'lodash';
 import { message, Breadcrumb } from 'antd';
 import { registerMap as registerEchartsMap } from 'echarts';
-import client from '../../../common/utils/client';
+import agent from '../../../common/utils/agent';
 import { useUpdate } from '../../../common/use-hooks';
 import { ChartSizeMe } from '../common';
 import { adcodeMap } from '../../../constants/adcode-map';
@@ -44,7 +44,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   useMount(() => {
     // 初始化全国地图
-    client('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '' })
+    agent('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '' })
       .then((res) => registerMap('中华人民共和国', res))
       .catch((err) => { message.error(err); });
   });
@@ -97,7 +97,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     }
 
     const adcode = adcodeMap.get(mapType);
-    client(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`, { referrer: '' })
+    agent(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`, { referrer: '' })
       .then((res) => registerMap(mapType, res))
       .catch((err) => { message.error(err); });
   };

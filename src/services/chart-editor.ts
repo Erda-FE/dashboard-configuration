@@ -1,10 +1,10 @@
 import { get } from 'lodash';
 import DC from 'src/types';
-import agent from '../common/utils/agent';
 import produce from 'immer';
+import agent from 'common/utils/agent';
 
 
-export const getOrgFromPath = () => {
+const getOrgFromPath = () => {
   return get(location.pathname.split('/'), '[1]') || '-';
 };
 
@@ -15,20 +15,19 @@ export const setApiWithOrg = (api: string) => {
 };
 
 export const getChartData = ({ url, query, method = 'get', body }: DC.API) => {
-  const resultBody = produce(body, (draft: { [x: string]: any }) => {
+  const resultBody = produce(body, (draft: Obj<any[]>) => {
     for (const key in draft) {
       if (Object.prototype.hasOwnProperty.call(draft, key)) {
-        draft[key] = draft[key].filter((item: string) => item);
+        draft[key] = draft[key].filter((item: string) => item); // remove undefined and null
       }
     }
   });
 
-  return (
-    agent[method.toLowerCase()](setApiWithOrg(url))
-      .query(query)
-      .send(resultBody)
-      .then((response: any) => response.body)
-  );
+  return agent(setApiWithOrg(url), {
+    method: method.toUpperCase(),
+    query,
+    body: resultBody,
+  });
 };
 
 interface IExportChartDataQuery {
@@ -48,10 +47,9 @@ interface IExportChartDataPayload {
 
 // 临时加个导出图表数据的 service，后续要支持配置
 export const exportChartData = (metric: string, query: IExportChartDataQuery, payload: IExportChartDataPayload) => {
-  return agent.post(setApiWithOrg(`/api/metrics/${metric}/export`))
-    .responseType('blob')
-    .query(query)
-    .send(payload)
-    // return blob stream
-    .then((res: any) => res.body);
+  return agent(setApiWithOrg(setApiWithOrg(`/api/metrics/${metric}/export`)), {
+    method: 'POST',
+    query,
+    body: payload,
+  });
 };

@@ -1,6 +1,7 @@
 {
   "name": "@erda-ui/dashboard-configurator",
   "version": "2.0.0-beta",
+  "version": "1.0.42",
   "description": "Erda dashboard configurator powered by Echart",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

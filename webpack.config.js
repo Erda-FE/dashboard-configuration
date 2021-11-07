@@ -1,3 +1,4 @@
+const os = require('os');
 const path = require('path');
 const webpack = require('webpack');
 const moment = require('moment');
@@ -34,6 +35,8 @@ module.exports = () => {
       react: 'react',
       'react-dom': 'react-dom',
       moment: 'moment',
+      antd: 'antd',
+      'react-dnd': 'react-dnd',
     } : undefined,
     output: {
       filename: '[name].js',
@@ -49,7 +52,6 @@ module.exports = () => {
           include: [
             resolve('example'),
             resolve('src'),
-            resolve('node_modules/@terminus/nusi'),
           ],
           use: [
             isProd ? MiniCssExtractPlugin.loader : 'style-loader',
@@ -76,23 +78,6 @@ module.exports = () => {
           ],
         },
         {
-          test: /\.less$/i,
-          include: [
-            resolve('node_modules/@terminus/nusi'),
-          ],
-          use: [
-            ...(isProd ? [MiniCssExtractPlugin.loader] : []),
-            'css-loader',
-            {
-              loader: 'less-loader',
-              options: {
-                sourceMap: false,
-                javascriptEnabled: true,
-              },
-            },
-          ],
-        },
-        {
           test: /\.(j|t)sx?$/,
           use: "babel-loader?cacheDirectory",
           include: [
@@ -116,25 +101,6 @@ module.exports = () => {
               },
             },
           ]
-        },
-        {
-          test: /\.svg$/,
-          include: [
-            resolve('node_modules/@terminus/nusi'),
-          ],
-          type: 'asset',
-          parser: {
-            dataUrlCondition: {
-              maxSize: 8 * 1024, // 8kb
-            },
-          },
-        },
-        {
-          test: /\.(png|jpe?g|gif)$/i,
-          include: [
-            resolve('node_modules/@terminus/nusi'),
-          ],
-          type: 'asset/resource',
         },
       ],
     },
@@ -171,7 +137,9 @@ module.exports = () => {
       minimizer: isProd
         ? [
           new webpack.BannerPlugin(banner),
-          new TerserPlugin(),
+          new TerserPlugin({
+            parallel: os.cpus().length,
+          }),
           new CssMinimizerPlugin({
             minimizerOptions: {
               preset: [

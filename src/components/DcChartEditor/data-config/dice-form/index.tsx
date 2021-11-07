@@ -323,19 +323,20 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   };
 
   const fieldsList = [
-    {
-      label: textMap['configuration mode'],
-      type: Switch,
-      name: 'isSqlMode',
-      required: false,
-      show: () => isTableType,
-      customProps: {
-        checked: dataSource?.isSqlMode,
-        checkedChildren: 'SQL',
-        unCheckedChildren: textMap.dsl,
-        onChange: (checked: boolean) => handleUpdateDataSource({ isSqlMode: checked }),
+    ...insertWhen(!!isTableType, [
+      {
+        label: textMap['configuration mode'],
+        type: Switch,
+        name: 'isSqlMode',
+        required: false,
+        customProps: {
+          checked: dataSource?.isSqlMode,
+          checkedChildren: 'SQL',
+          unCheckedChildren: textMap.dsl,
+          onChange: (checked: boolean) => handleUpdateDataSource({ isSqlMode: checked }),
+        },
       },
-    },
+    ]),
     {
       label: textMap['chart type'],
       name: 'chartType',
@@ -347,184 +348,176 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         valueDimensions: dataSource.valueDimensions,
       },
     },
-    {
-      label: 'SELECT',
-      name: 'SELECT',
-      type: Input,
-      initialValue: sqlContent.select,
-      show: () => dataSource.isSqlMode,
-      customProps: {
-        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
-          handleUpdateSqlContent({ select: e.target.value });
+    ...insertWhen(!!dataSource.isSqlMode, [
+      {
+        label: 'SELECT',
+        name: 'SELECT',
+        type: Input,
+        initialValue: sqlContent.select,
+        customProps: {
+          onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+            handleUpdateSqlContent({ select: e.target.value });
+          },
         },
       },
-    },
-    {
-      label: 'FROM',
-      type: Cascader,
-      name: 'FROM',
-      show: () => dataSource.isSqlMode,
-      initialValue: sqlContent.fromSource,
-      customProps: {
-        allowClear: false,
-        showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
-        options: metaGroups,
-        onChange: (v: string[]) => {
-          _getMetaData(v).then((res?: Array<{ metric: string }>) => {
-            handleUpdateSqlContent({
-              from: res ? res[0]?.metric : '',
-              fromSource: v,
+      {
+        label: 'FROM',
+        type: Cascader,
+        name: 'FROM',
+        initialValue: sqlContent.fromSource,
+        customProps: {
+          allowClear: false,
+          showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
+          options: metaGroups,
+          onChange: (v: string[]) => {
+            _getMetaData(v).then((res?: Array<{ metric: string }>) => {
+              handleUpdateSqlContent({
+                from: res ? res[0]?.metric : '',
+                fromSource: v,
+              });
             });
-          });
+          },
         },
       },
-    },
-    {
-      label: 'WHERE',
-      name: 'WHERE',
-      type: Input,
-      required: false,
-      initialValue: sqlContent.where,
-      show: () => dataSource.isSqlMode,
-      customProps: {
-        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
-          handleUpdateSqlContent({ where: e.target.value });
+      {
+        label: 'WHERE',
+        name: 'WHERE',
+        type: Input,
+        required: false,
+        initialValue: sqlContent.where,
+        customProps: {
+          onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+            handleUpdateSqlContent({ where: e.target.value });
+          },
         },
       },
-    },
-    {
-      label: 'GROUP BY',
-      name: 'GROUP BY',
-      type: Input,
-      required: false,
-      initialValue: sqlContent.groupBy,
-      show: () => dataSource.isSqlMode,
-      customProps: {
-        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
-          handleUpdateSqlContent({ groupBy: e.target.value });
+      {
+        label: 'GROUP BY',
+        name: 'GROUP BY',
+        type: Input,
+        required: false,
+        initialValue: sqlContent.groupBy,
+        customProps: {
+          onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+            handleUpdateSqlContent({ groupBy: e.target.value });
+          },
         },
       },
-    },
-    {
-      label: 'ORDER BY',
-      name: 'ORDER BY',
-      type: Input,
-      required: false,
-      initialValue: sqlContent.orderBy,
-      show: () => dataSource.isSqlMode,
-      customProps: {
-        onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
-          handleUpdateSqlContent({ orderBy: e.target.value });
+      {
+        label: 'ORDER BY',
+        name: 'ORDER BY',
+        type: Input,
+        required: false,
+        initialValue: sqlContent.orderBy,
+        customProps: {
+          onBlur: (e: React.FocusEvent<HTMLInputElement>) => {
+            handleUpdateSqlContent({ orderBy: e.target.value });
+          },
         },
       },
-    },
-    {
-      label: 'LIMIT',
-      name: 'LIMIT',
-      type: InputNumber,
-      required: false,
-      initialValue: sqlContent.limit,
-      show: () => dataSource.isSqlMode,
-      customProps: {
-        min: 1,
-        precision: 0,
-        onChange: (v: number) => handleUpdateSqlContent({ limit: v }),
-      },
-    },
-    {
-      label: textMap['metrics group'],
-      type: Cascader,
-      name: 'activedMetricGroups',
-      show: () => !dataSource.isSqlMode,
-      initialValue: dataSource?.activedMetricGroups,
-      customProps: {
-        allowClear: false,
-        showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
-        options: _metaGroups,
-        onChange: (v: string[]) => {
-          handleUpdateDataSource({ activedMetricGroups: v });
-          !dataSource?.isSqlMode && handleGetMetaData(v);
+      {
+        label: 'LIMIT',
+        name: 'LIMIT',
+        type: InputNumber,
+        required: false,
+        initialValue: sqlContent.limit,
+        customProps: {
+          min: 1,
+          precision: 0,
+          onChange: (v: number) => handleUpdateSqlContent({ limit: v }),
         },
       },
-    },
-    {
-      label: isLineType ? <DcInfoLabel text={textMap.dimensions} info={textMap['typeDimensions info']} /> : textMap.dimensions,
-      name: 'typeDimensions',
-      initialValue: dataSource?.typeDimensions,
-      required: false,
-      show: () => !dataSource.isSqlMode,
-      type: DimensionsConfigurator,
-      customProps: {
-        type: 'type',
-        addText: textMap['add metric'],
-        disabled: isEmpty(dataSource.activedMetricGroups),
-        metricsMap: fieldsMap,
-        typeMap,
-        aggregationMap,
-        filtersMap,
-        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ typeDimensions: v }),
+    ]),
+    ...insertWhen(!dataSource.isSqlMode, [
+      {
+        label: textMap['metrics group'],
+        type: Cascader,
+        name: 'activedMetricGroups',
+        initialValue: dataSource?.activedMetricGroups,
+        customProps: {
+          allowClear: false,
+          showSearch: { filter: customFilter, render: defaultRenderFilteredOption },
+          options: _metaGroups,
+          onChange: (v: string[]) => {
+            handleUpdateDataSource({ activedMetricGroups: v });
+            !dataSource?.isSqlMode && handleGetMetaData(v);
+          },
+        },
       },
-    },
-    {
-      label: <DcInfoLabel text={textMap.value} info={textMap['valueDimensions info']} />,
-      name: 'valueDimensions',
-      initialValue: dataSource?.valueDimensions,
-      show: () => !dataSource.isSqlMode,
-      type: DimensionsConfigurator,
-      customProps: {
-        type: 'value',
-        addText: textMap['add value'],
-        disabled: isEmpty(dataSource.activedMetricGroups),
-        metricsMap: fieldsMap,
-        typeMap,
-        aggregationMap,
-        filtersMap,
-        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ valueDimensions: v }),
+      {
+        label: isLineType ? <DcInfoLabel text={textMap.dimensions} info={textMap['typeDimensions info']} /> : textMap.dimensions,
+        name: 'typeDimensions',
+        initialValue: dataSource?.typeDimensions,
+        required: false,
+        type: DimensionsConfigurator,
+        customProps: {
+          type: 'type',
+          addText: textMap['add metric'],
+          disabled: isEmpty(dataSource.activedMetricGroups),
+          metricsMap: fieldsMap,
+          typeMap,
+          aggregationMap,
+          filtersMap,
+          onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ typeDimensions: v }),
+        },
       },
-    },
-    {
-      label: textMap['result filter'],
-      name: 'resultFilters',
-      initialValue: dataSource?.resultFilters,
-      required: false,
-      show: () => !dataSource.isSqlMode,
-      type: DimensionsConfigurator,
-      customProps: {
-        type: 'filter',
-        addText: textMap['add filter'],
-        disabled: isEmpty(dataSource.activedMetricGroups),
-        metricsMap: fieldsMap,
-        typeMap,
-        aggregationMap,
-        filtersMap,
-        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ resultFilters: v }),
+      {
+        label: <DcInfoLabel text={textMap.value} info={textMap['valueDimensions info']} />,
+        name: 'valueDimensions',
+        initialValue: dataSource?.valueDimensions,
+        type: DimensionsConfigurator,
+        customProps: {
+          type: 'value',
+          addText: textMap['add value'],
+          disabled: isEmpty(dataSource.activedMetricGroups),
+          metricsMap: fieldsMap,
+          typeMap,
+          aggregationMap,
+          filtersMap,
+          onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ valueDimensions: v }),
+        },
       },
-    },
-    {
-      label: textMap.sort,
-      name: 'sortDimensions',
-      initialValue: dataSource?.sortDimensions,
-      required: false,
-      show: () => !dataSource.isSqlMode,
-      type: DimensionsConfigurator,
-      customProps: {
-        type: 'sort',
-        addText: textMap['add sort'],
-        disabled: isEmpty(dataSource.activedMetricGroups),
-        metricsMap: fieldsMap,
-        typeMap,
-        aggregationMap,
-        filtersMap,
-        onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ sortDimensions: v }),
+      {
+        label: textMap['result filter'],
+        name: 'resultFilters',
+        initialValue: dataSource?.resultFilters,
+        required: false,
+        type: DimensionsConfigurator,
+        customProps: {
+          type: 'filter',
+          addText: textMap['add filter'],
+          disabled: isEmpty(dataSource.activedMetricGroups),
+          metricsMap: fieldsMap,
+          typeMap,
+          aggregationMap,
+          filtersMap,
+          onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ resultFilters: v }),
+        },
       },
-    },
+      {
+        label: textMap.sort,
+        name: 'sortDimensions',
+        initialValue: dataSource?.sortDimensions,
+        required: false,
+        type: DimensionsConfigurator,
+        customProps: {
+          type: 'sort',
+          addText: textMap['add sort'],
+          disabled: isEmpty(dataSource.activedMetricGroups),
+          metricsMap: fieldsMap,
+          typeMap,
+          aggregationMap,
+          filtersMap,
+          onChange: (v: DICE_DATA_CONFIGURATOR.Dimension[]) => handleUpdateDataSource({ sortDimensions: v }),
+        },
+      },
+    ]),
     {
       label: textMap['result limit'],
       name: 'limit',
       type: InputNumber,
       required: false,
       initialValue: dataSource?.limit,
-      show: () => !dataSource.isSqlMode,
       customProps: {
         min: 1,
         precision: 0,

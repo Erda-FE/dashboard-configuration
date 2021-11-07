@@ -2,6 +2,7 @@ import * as React from 'react';
 import { map } from 'lodash';
 import { Select, Input, Col } from 'antd';
 import { DcFormModal } from '../../../../../common';
+import { insertWhen } from '../../../../../common/utils';
 import DashboardStore from '../../../../../stores/dash-board';
 import { unitInfMap } from '../constants';
 
@@ -71,14 +72,16 @@ const CreateAliasModal = ({ defaultValue, isNeedUnit, ...rest }: IProps) => {
         maxLength: 50,
       },
     },
-    {
-      label: textMap['source data unit config'],
-      type: UnitConfig,
-      name: 'unit',
-      show: () => isNeedUnit,
-      required: false,
-      initialValue: defaultValue.unit,
-    },
+    ...insertWhen(!!isNeedUnit, [
+      {
+        label: textMap['source data unit config'],
+        type: UnitConfig,
+        name: 'unit',
+        required: false,
+        initialValue: defaultValue.unit,
+      },
+    ]),
+
   ];
 
   return (

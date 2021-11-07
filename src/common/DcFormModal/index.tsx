@@ -16,10 +16,13 @@ const DcFormModal = ({ title, visible, fields, onCancel, onOk }: IProps) => {
   const ref = useRef(null as any);
 
   const handleSubmit = () => {
-    ref.current?.validateFieldsAndScroll((errors: any, values: any) => {
-      if (errors) return;
+    ref.current?.validateFieldsAndScroll((values: any) => {
       onOk && onOk(values);
     });
+    // ref.current?.validateFieldsAndScroll((errors: any, values: any) => {
+    //   if (errors) return;
+    //   onOk && onOk(values);
+    // });
   };
 
   return (

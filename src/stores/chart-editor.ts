@@ -70,9 +70,9 @@ const initState: IState = {
   editorContextMap: {},
   canSave: false,
   requiredField: {
-    chartType: true,
-    activedMetricGroups: true,
-    valueDimensions: true,
+    chartType: false,
+    activedMetricGroups: false,
+    valueDimensions: false,
   },
 };
 
@@ -141,6 +141,11 @@ const chartEditorStore = createFlatStore({
       state.editChartId = undefined;
       state.isTouched = false;
       state.canSave = false;
+      state.requiredField = {
+        chartType: false,
+        activedMetricGroups: false,
+        valueDimensions: false,
+      };
     },
     // 新增图表组件
     addView(state, chartType: DC.ViewType) {
@@ -148,6 +153,13 @@ const chartEditorStore = createFlatStore({
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;
       state.viewCopy = { ...DEFAULT_VIEW_CONFIG, title: textMap['unnamed chart'] } as unknown as DC.View;
+
+      state.canSave = false;
+      state.requiredField = {
+        chartType: false,
+        activedMetricGroups: false,
+        valueDimensions: false,
+      };
     },
     // 编辑图表
     editView(state, editChartId: string) {
@@ -172,7 +184,11 @@ const chartEditorStore = createFlatStore({
       const { activedMetricGroups, valueDimensions } = config?.dataSourceConfig || {};
       if (chartType && activedMetricGroups?.length && valueDimensions?.length) {
         state.canSave = true;
-        state.requiredField = undefined;
+        state.requiredField = {
+          chartType: true,
+          activedMetricGroups: true,
+          valueDimensions: true,
+        };
       } else {
         state.canSave = false;
         state.requiredField = { chartType: !!chartType, activedMetricGroups: !!activedMetricGroups?.length, valueDimensions: !!valueDimensions?.length };

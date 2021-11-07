@@ -3,7 +3,6 @@ import { Popconfirm, Button, Drawer, Popover } from 'antd';
 import { getConfig } from '../../../config';
 import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';
-import { keys } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
@@ -41,12 +40,13 @@ const EditorPanel = () => {
     resetEditor();
   };
   const submitTip = () => {
-    let tip = '';
-    if (requiredField) {
-      tip = keys(requiredField).map((item) =>
-        (requiredField[item] ? '' : ` '${TipMap[item]}'`)).join('');
+    for (const item of ['chartType', 'activedMetricGroups', 'valueDimensions']) {
+      if (!requiredField?.[item]) {
+        return `${textMap['please complete']} ${TipMap[item]}`;
+      }
     }
-    return tip ? `${textMap['please complete']}${ tip}` : textMap['please complete data'];
+
+    return '';
   };
 
   return (

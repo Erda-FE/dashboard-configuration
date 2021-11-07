@@ -140,6 +140,7 @@ const chartEditorStore = createFlatStore({
       state.viewCopy = undefined;
       state.editChartId = undefined;
       state.isTouched = false;
+      state.canSave = false;
     },
     // 新增图表组件
     addView(state, chartType: DC.ViewType) {

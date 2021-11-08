@@ -1,5 +1,5 @@
 import produce from 'immer';
-import { isEmpty } from 'lodash';
+import { isEmpty, isNil } from 'lodash';
 
 /**
  *替换字符串或对象中的 {{}} 为指定的变量
@@ -16,9 +16,14 @@ function replaceVariable(source: any, variable?: Record<string, any>): any {
     const matchItems = source.match(replaceReg);
     if (!matchItems?.length) return source;
     return matchItems.reduce((acc: string, current: string) => {
-      const val = variable[current.slice(2, -2)]
+      let val;
+      if (variable[current.slice(2, -2)] === 0) {
+        val = 0;
+      } else {
+        val = variable[current.slice(2, -2)]
         || (source.length > current.length ? '' : undefined);
-      return (val || val === '') ? acc.replace(current, val) : undefined;
+      }
+      return isNil(val) ? undefined : acc.replace(current, val);
     }, source);
   } else if (type != null && type === 'object') {
     const result = produce(source, (draft: { [x: string]: any }) => {

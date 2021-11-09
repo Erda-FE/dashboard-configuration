@@ -9,6 +9,7 @@ import DashboardStore from '../../../stores/dash-board';
 import './index.scss';
 
 const noop = () => null;
+const REQUIRED_FIELDS = ['chartType', 'activedMetricGroups', 'valueDimensions'];
 
 const EditorPanel = () => {
   const textMap = DashboardStore.getState((s) => s.textMap);
@@ -40,7 +41,7 @@ const EditorPanel = () => {
     resetEditor();
   };
   const submitTip = () => {
-    for (const item of ['chartType', 'activedMetricGroups', 'valueDimensions']) {
+    for (const item of REQUIRED_FIELDS) {
       if (!requiredField?.[item]) {
         return `${textMap['please complete']} ${TipMap[item]}`;
       }

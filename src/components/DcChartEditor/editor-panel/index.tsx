@@ -10,7 +10,7 @@ import './index.scss';
 
 const noop = () => null;
 const REQUIRED_FIELDS = ['chartType', 'activedMetricGroups', 'valueDimensions'];
-
+const REQUIRED_SQL_FIELDS = ['chartType', 'select', 'from'];
 const EditorPanel = () => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const [
@@ -32,6 +32,8 @@ const EditorPanel = () => {
     chartType: textMap['chart type'],
     activedMetricGroups: textMap['metrics group'],
     valueDimensions: textMap.value,
+    select: 'SELECT',
+    from: 'FROM',
   };
   const { saveEditor, resetEditor } = ChartEditorStore;
   const info = getConfig('chartConfigMap')[viewCopy.chartType];
@@ -41,7 +43,8 @@ const EditorPanel = () => {
     resetEditor();
   };
   const submitTip = () => {
-    for (const item of REQUIRED_FIELDS) {
+    const requiredFields = viewCopy?.config?.dataSourceConfig?.isSqlMode ? REQUIRED_SQL_FIELDS : REQUIRED_FIELDS;
+    for (const item of requiredFields) {
       if (!requiredField?.[item]) {
         return `${textMap['please complete']} ${TipMap[item]}`;
       }

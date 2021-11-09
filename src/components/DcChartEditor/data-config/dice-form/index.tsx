@@ -340,6 +340,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     {
       label: textMap['chart type'],
       name: 'chartType',
+      required: true,
       initialValue: chartType,
       type: SwitchChartType,
       customProps: {
@@ -432,6 +433,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       {
         label: textMap['metrics group'],
         type: Cascader,
+        required: true,
         name: 'activedMetricGroups',
         initialValue: dataSource?.activedMetricGroups,
         customProps: {
@@ -464,6 +466,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       {
         label: <DcInfoLabel text={textMap.value} info={textMap['valueDimensions info']} />,
         name: 'valueDimensions',
+        required: true,
         initialValue: dataSource?.valueDimensions,
         type: DimensionsConfigurator,
         customProps: {

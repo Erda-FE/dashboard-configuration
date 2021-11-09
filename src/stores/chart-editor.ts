@@ -190,34 +190,17 @@ const chartEditorStore = createFlatStore({
         config,
       } = view;
       const { activedMetricGroups, valueDimensions, isSqlMode = false, sql } = config?.dataSourceConfig || {};
-      if (!isSqlMode && chartType && activedMetricGroups?.length && valueDimensions?.length) {
-        state.canSave = true;
-        state.requiredField = {
-          chartType: true,
-          activedMetricGroups: true,
-          valueDimensions: true,
-          select: false,
-          from: false,
-        };
-      } else if (isSqlMode && sql?.select && sql.from) {
-        state.canSave = true;
-        state.requiredField = {
-          chartType: false,
-          activedMetricGroups: false,
-          valueDimensions: false,
-          select: true,
-          from: true,
-        };
-      } else {
-        state.canSave = false;
-        state.requiredField = {
-          chartType: !!chartType,
-          activedMetricGroups: !!activedMetricGroups?.length,
-          valueDimensions: !!valueDimensions?.length,
-          select: sql?.select,
-          from: sql?.from,
-        };
-      }
+
+      const sqlModeCanSave = isSqlMode && chartType && sql?.select && sql.from;
+      const notSqlModeCanSave = !isSqlMode && chartType && activedMetricGroups?.length > 0 && valueDimensions?.length > 0;
+      state.canSave = sqlModeCanSave || notSqlModeCanSave;
+      state.requiredField = {
+        chartType: !!chartType,
+        activedMetricGroups: !!activedMetricGroups?.length,
+        valueDimensions: !!valueDimensions?.length,
+        select: sql?.select,
+        from: sql?.from,
+      };
     },
     saveEdit(state) {
       chartEditorStore.setEditMode(false);

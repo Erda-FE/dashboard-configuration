@@ -323,6 +323,18 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   };
 
   const fieldsList = [
+    {
+      label: textMap['chart type'],
+      name: 'chartType',
+      required: true,
+      initialValue: chartType,
+      type: SwitchChartType,
+      customProps: {
+        onChange: (v: DC.ViewType) => handleUpdateChartType(v),
+        typeDimensions: dataSource.typeDimensions,
+        valueDimensions: dataSource.valueDimensions,
+      },
+    },
     ...insertWhen(!!isTableType, [
       {
         label: textMap['configuration mode'],
@@ -337,18 +349,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         },
       },
     ]),
-    {
-      label: textMap['chart type'],
-      name: 'chartType',
-      required: true,
-      initialValue: chartType,
-      type: SwitchChartType,
-      customProps: {
-        onChange: (v: DC.ViewType) => handleUpdateChartType(v),
-        typeDimensions: dataSource.typeDimensions,
-        valueDimensions: dataSource.valueDimensions,
-      },
-    },
     ...insertWhen(!!dataSource.isSqlMode, [
       {
         label: 'SELECT',

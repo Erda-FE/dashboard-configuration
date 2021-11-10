@@ -323,6 +323,18 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   };
 
   const fieldsList = [
+    {
+      label: textMap['chart type'],
+      name: 'chartType',
+      required: true,
+      initialValue: chartType,
+      type: SwitchChartType,
+      customProps: {
+        onChange: (v: DC.ViewType) => handleUpdateChartType(v),
+        typeDimensions: dataSource.typeDimensions,
+        valueDimensions: dataSource.valueDimensions,
+      },
+    },
     ...insertWhen(!!isTableType, [
       {
         label: textMap['configuration mode'],
@@ -337,17 +349,6 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         },
       },
     ]),
-    {
-      label: textMap['chart type'],
-      name: 'chartType',
-      initialValue: chartType,
-      type: SwitchChartType,
-      customProps: {
-        onChange: (v: DC.ViewType) => handleUpdateChartType(v),
-        typeDimensions: dataSource.typeDimensions,
-        valueDimensions: dataSource.valueDimensions,
-      },
-    },
     ...insertWhen(!!dataSource.isSqlMode, [
       {
         label: 'SELECT',
@@ -432,6 +433,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       {
         label: textMap['metrics group'],
         type: Cascader,
+        required: true,
         name: 'activedMetricGroups',
         initialValue: dataSource?.activedMetricGroups,
         customProps: {
@@ -464,6 +466,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       {
         label: <DcInfoLabel text={textMap.value} info={textMap['valueDimensions info']} />,
         name: 'valueDimensions',
+        required: true,
         initialValue: dataSource?.valueDimensions,
         type: DimensionsConfigurator,
         customProps: {

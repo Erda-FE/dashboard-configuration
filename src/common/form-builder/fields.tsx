@@ -108,9 +108,11 @@ export const Fields: React.MemoExoticComponent<
                 colSpan,
                 ...rest
               } = item;
+
+              const labelStr = typeof label === 'object' ? label?.props?.text : label;
               const afterAddRequiredRules =
                 required && !some(rules, (rule) => has(rule, 'required'))
-                  ? [{ required: true, message: `${label} 不能为空` }, ...rules]
+                  ? [{ required: true, message: `${labelStr} 不能为空` }, ...rules]
                   : rules;
               const isRealReadOnly =
                 (itemReadonly !== undefined

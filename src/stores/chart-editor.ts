@@ -54,6 +54,8 @@ interface IState {
     chartType: boolean;
     activedMetricGroups: boolean;
     valueDimensions: boolean;
+    select: boolean;
+    from: boolean;
   } | undefined;
 }
 
@@ -70,9 +72,11 @@ const initState: IState = {
   editorContextMap: {},
   canSave: false,
   requiredField: {
-    chartType: true,
-    activedMetricGroups: true,
-    valueDimensions: true,
+    chartType: false,
+    activedMetricGroups: false,
+    valueDimensions: false,
+    select: false,
+    from: false,
   },
 };
 
@@ -140,6 +144,14 @@ const chartEditorStore = createFlatStore({
       state.viewCopy = undefined;
       state.editChartId = undefined;
       state.isTouched = false;
+      state.canSave = false;
+      state.requiredField = {
+        chartType: false,
+        activedMetricGroups: false,
+        valueDimensions: false,
+        select: false,
+        from: false,
+      };
     },
     // 新增图表组件
     addView(state, chartType: DC.ViewType) {
@@ -147,6 +159,15 @@ const chartEditorStore = createFlatStore({
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;
       state.viewCopy = { ...DEFAULT_VIEW_CONFIG, title: textMap['unnamed chart'] } as unknown as DC.View;
+
+      state.canSave = false;
+      state.requiredField = {
+        chartType: false,
+        activedMetricGroups: false,
+        valueDimensions: false,
+        select: false,
+        from: false,
+      };
     },
     // 编辑图表
     editView(state, editChartId: string) {
@@ -168,14 +189,18 @@ const chartEditorStore = createFlatStore({
         chartType,
         config,
       } = view;
-      const { activedMetricGroups, valueDimensions } = config?.dataSourceConfig || {};
-      if (chartType && activedMetricGroups?.length && valueDimensions?.length) {
-        state.canSave = true;
-        state.requiredField = undefined;
-      } else {
-        state.canSave = false;
-        state.requiredField = { chartType: !!chartType, activedMetricGroups: !!activedMetricGroups?.length, valueDimensions: !!valueDimensions?.length };
-      }
+      const { activedMetricGroups, valueDimensions, isSqlMode = false, sql } = config?.dataSourceConfig || {};
+
+      const sqlModeCanSave = isSqlMode && chartType && sql?.select && sql.from;
+      const notSqlModeCanSave = !isSqlMode && chartType && activedMetricGroups?.length > 0 && valueDimensions?.length > 0;
+      state.canSave = sqlModeCanSave || notSqlModeCanSave;
+      state.requiredField = {
+        chartType: !!chartType,
+        activedMetricGroups: !!activedMetricGroups?.length,
+        valueDimensions: !!valueDimensions?.length,
+        select: sql?.select,
+        from: sql?.from,
+      };
     },
     saveEdit(state) {
       chartEditorStore.setEditMode(false);

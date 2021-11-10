@@ -3,14 +3,14 @@ import { Popconfirm, Button, Drawer, Popover } from 'antd';
 import { getConfig } from '../../../config';
 import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';
-import { keys } from 'lodash';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
 
 import './index.scss';
 
 const noop = () => null;
-
+const REQUIRED_FIELDS = ['chartType', 'activedMetricGroups', 'valueDimensions'];
+const REQUIRED_SQL_FIELDS = ['chartType', 'select', 'from'];
 const EditorPanel = () => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const [
@@ -32,6 +32,8 @@ const EditorPanel = () => {
     chartType: textMap['chart type'],
     activedMetricGroups: textMap['metrics group'],
     valueDimensions: textMap.value,
+    select: 'SELECT',
+    from: 'FROM',
   };
   const { saveEditor, resetEditor } = ChartEditorStore;
   const info = getConfig('chartConfigMap')[viewCopy.chartType];
@@ -41,12 +43,14 @@ const EditorPanel = () => {
     resetEditor();
   };
   const submitTip = () => {
-    let tip = '';
-    if (requiredField) {
-      tip = keys(requiredField).map((item) =>
-        (requiredField[item] ? '' : ` '${TipMap[item]}'`)).join('');
+    const requiredFields = viewCopy?.config?.dataSourceConfig?.isSqlMode ? REQUIRED_SQL_FIELDS : REQUIRED_FIELDS;
+    for (const item of requiredFields) {
+      if (!requiredField?.[item]) {
+        return `${textMap['please complete']} ${TipMap[item]}`;
+      }
     }
-    return tip ? `${textMap['please complete']}${ tip}` : textMap['please complete data'];
+
+    return '';
   };
 
   return (

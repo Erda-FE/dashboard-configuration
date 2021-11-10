@@ -1,5 +1,32 @@
+# [2.0.0](https://github.com/Erda-FE/dashboard-configuration/pull/42)(2021-11-10)
+### Feature (same with [2.0.0-beta])
+* replace nusi with antd, remove nusi totally. nusi style is not applied at all, so repalce Title with div directly.
+* replace superagent with native fetch, move to dev dependency for tools still use it.
+* update & remove useless packages
+* run audit fix
+* update readme
 
-# github
+### Fix
+* check required fields before submit
+
+
+# [2.0.0-beta](https://github.com/Erda-FE/dashboard-configuration/pull/38)(2021-11-07)
+### Feature
+* replace nusi with antd, remove nusi totally. nusi style is not applied at all, so repalce Title with div directly.
+* replace superagent with native fetch, move to dev dependency for tools still use it.
+* update & remove useless packages
+* run audit fix
+* update readme
+
+
+## [1.0.44](https://github.com/Erda-FE/dashboard-configuration/pull/40)(2021-11-01)
+
+### Bugfix
+
+* fix that check isArray in request body([67984ce](https://github.com/Erda-FE/dashboard-configuration/pull/40/commits/67984cec5f829f96d4ec78660385f725d7b30730))
+
+## 1.0.43 the same as 1.0.42
+
 ## [1.0.42](https://github.com/Erda-FE/dashboard-configuration/pull/37)(2021-10-28)
 
 ### Bugfix

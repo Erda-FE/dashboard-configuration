@@ -1,5 +1,5 @@
 import qs from 'querystringify';
-
+import { pickBy, isNil } from 'lodash';
 /**
  * 获取cookies对象，传入key时获取单个字段
  * @param 需要获取的cookie key
@@ -38,7 +38,8 @@ function getHeaders(method: string) {
 const client = (url: string, { method, body, query, ...restConfig }: Record<string, any>) => {
   const defaultMethod = body ? 'POST' : 'GET';
   const _method = (method || defaultMethod).toUpperCase();
-  const queryStr = qs.stringify(query);
+  const resultRequest = pickBy(query, (item) => !isNil(item));
+  const queryStr = qs.stringify(resultRequest);
   const config: Record<string, any> = {
     method: _method,
     ...restConfig,

@@ -1,3 +1,8 @@
+# [2.0.2](https://github.com/Erda-FE/dashboard-configuration/pull/46)(2021-11-18)
+### Fix
+* fix i18n impact erda-ui error, remove ConfigProvider from dashboard when is production env
+
+
 # [2.0.1](https://github.com/Erda-FE/dashboard-configuration/pull/44)(2021-11-16)
 ### Fix
 * filter query meaning value

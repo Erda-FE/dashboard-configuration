@@ -1,3 +1,8 @@
+# [2.0.3](https://github.com/Erda-FE/dashboard-configuration/pull/48)(2021-11-18)
+### Fix
+* display no mask which reminds user get data failed when didn't complete required fields
+* line chart selected by default when add chart
+
 # [2.0.2](https://github.com/Erda-FE/dashboard-configuration/pull/46)(2021-11-18)
 ### Fix
 * fix i18n impact erda-ui error, remove ConfigProvider from dashboard when is production env

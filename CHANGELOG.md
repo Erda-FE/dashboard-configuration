@@ -1,3 +1,7 @@
+# [2.0.1](https://github.com/Erda-FE/dashboard-configuration/pull/44)(2021-11-16)
+### Fix
+* filter query meaning value
+
 # [2.0.0](https://github.com/Erda-FE/dashboard-configuration/pull/42)(2021-11-10)
 ### Feature (same with [2.0.0-beta])
 * replace nusi with antd, remove nusi totally. nusi style is not applied at all, so repalce Title with div directly.

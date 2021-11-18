@@ -21,6 +21,7 @@ import ChartEditorStore from '../../stores/chart-editor';
 import DashboardStore from '../../stores/dash-board';
 import './index.scss';
 import DC from 'src/types';
+import { REQUIRED_FIELDS, REQUIRED_SQL_FIELDS } from '../../../src/constants/index';
 
 const excludeEmptyType = ['chart:map'];
 
@@ -46,7 +47,8 @@ const DcContainer: React.FC<IProps> = ({
     editChartId,
     fromEditorFullscreenStatus,
     isEditMode,
-  ] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode, s.canSave]);
+    requiredField,
+  ] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode, s.requiredField]);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
   const { toggleFullscreen: toggleFromEditorPureFullscreen, editView, checkBeforeSave } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
@@ -337,10 +339,18 @@ const DcContainer: React.FC<IProps> = ({
   );
 
   const getViewMask = (msg?: string | Element) => {
+    const requiredFields = view?.config?.dataSourceConfig?.isSqlMode ? REQUIRED_SQL_FIELDS : REQUIRED_FIELDS;
+
+    const isLoseRequiredFields = requiredFields.some((item) => !requiredField?.[item]);
+
+
     let _msg = msg;
     let viewMask;
     if (_msg === FetchStatus.FETCH) {
       viewMask = <ChartSpinMask message={`${textMap.loading}...`} />;
+    } else if (isLoseRequiredFields) {
+      _msg = '';
+      return;
     } else {
       switch (_msg) {
         case FetchStatus.MOCK:

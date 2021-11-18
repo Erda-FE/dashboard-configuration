@@ -5,12 +5,10 @@ import DataConfigurator from '../data-config';
 import DcContainer from '../../DcContainer';
 import ChartEditorStore from '../../../stores/chart-editor';
 import DashboardStore from '../../../stores/dash-board';
-
+import { REQUIRED_FIELDS, REQUIRED_SQL_FIELDS } from '../../../../src/constants/index';
 import './index.scss';
 
 const noop = () => null;
-const REQUIRED_FIELDS = ['chartType', 'activedMetricGroups', 'valueDimensions'];
-const REQUIRED_SQL_FIELDS = ['chartType', 'select', 'from'];
 const EditorPanel = () => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const [

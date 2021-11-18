@@ -375,3 +375,6 @@ export const GRID_LAYOUT_CONFIG = {
   cols: 24,
   rowHeight: 30,
 };
+
+export const REQUIRED_FIELDS = ['chartType', 'activedMetricGroups', 'valueDimensions'];
+export const REQUIRED_SQL_FIELDS = ['chartType', 'select', 'from'];

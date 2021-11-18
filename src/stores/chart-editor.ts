@@ -158,8 +158,8 @@ const chartEditorStore = createFlatStore({
       const textMap = DashboardStore.getState((s) => s.textMap);
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;
-      state.viewCopy = { ...DEFAULT_VIEW_CONFIG, title: textMap['unnamed chart'] } as unknown as DC.View;
 
+      state.viewCopy = { ...DEFAULT_VIEW_CONFIG, title: textMap['unnamed chart'], chartType: 'chart:line' } as unknown as DC.View;
       state.canSave = false;
       state.requiredField = {
         chartType: false,

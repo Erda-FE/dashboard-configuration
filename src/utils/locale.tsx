@@ -5,10 +5,10 @@ import { ConfigProvider } from 'antd';
 
 export const localeMap = { zh: zhCN, en: enUS };
 
-export const Wrapper = ({ children, locale }) => {
+export const Wrapper = ({ children, locale }: {children: React.ReactElement; locale: string}) => {
   if (process.env.NODE_ENV === 'production') {
     return <>{children}</>;
   } else {
-    <ConfigProvider locale={localeMap[locale]}> {children}</ConfigProvider>;
+    return <ConfigProvider locale={localeMap[locale]}> {children}</ConfigProvider>;
   }
 };

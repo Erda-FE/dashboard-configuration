@@ -14,7 +14,7 @@ import { useComponentWidth, DcEmpty } from '../../common';
 import DashboardHeader from './pure-header';
 import DashboardStore from '../../stores/dash-board';
 import './index.scss';
-import { localeMap } from '../../utils/locale';
+import { Wrapper } from '../../utils/locale';
 
 const PureDashboard = ({
   name,
@@ -29,7 +29,7 @@ const PureDashboard = ({
   const [gridWidthHolder, gridWidth] = useComponentWidth();
 
   return (
-    <ConfigProvider locale={localeMap[locale]}>
+    <Wrapper locale={locale}>
       <div
         ref={boardRef}
         className={
@@ -63,7 +63,7 @@ const PureDashboard = ({
           </div>
         </div>
       </div>
-    </ConfigProvider>
+    </Wrapper>
   );
 };
 

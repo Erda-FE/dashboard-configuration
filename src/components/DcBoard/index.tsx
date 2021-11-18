@@ -26,7 +26,7 @@ import '../../static/iconfont.js';
 import '../../static/iconfont.css';
 import './index.scss';
 import DashboardStore from '../../stores/dash-board';
-import { localeMap } from '../../utils/locale';
+import { Wrapper } from '../../utils/locale';
 
 const DcBoard = ({
   timeSpan,
@@ -74,7 +74,7 @@ const DcBoard = ({
   }, [APIFormComponent, updateEditorContextMap]);
 
   return (
-    <ConfigProvider locale={localeMap[locale]}>
+    <Wrapper locale={locale}>
       <div
         ref={boardRef}
         className={
@@ -105,7 +105,7 @@ const DcBoard = ({
         <ConfigGlobalFiltersModal />
         <DcChartEditor />
       </div>
-    </ConfigProvider>
+    </Wrapper>
   );
 };
 

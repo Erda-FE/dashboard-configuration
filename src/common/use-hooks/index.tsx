@@ -8,7 +8,7 @@ export const useForceUpdate = () => {
   return useRef(() => forceUpdate((v) => v + 1)).current;
 };
 
-export const useForceUpdateWithCallback = (cb: () => void): () => void => {
+export const useForceUpdateWithCallback = (cb: () => void): (() => void) => {
   const [value, setValue] = useState(0);
   const isUpdating = useRef(0);
   useLayoutEffect(() => {
@@ -36,14 +36,17 @@ type UpdateFn<T> = (patch: Partial<T> | ((prevState: T) => Partial<T>)) => void;
 type UpdatePartFn<U> = (patch: U | Function) => void;
 
 type UpdaterFn<T> = {
-  [K in keyof T]: UpdatePartFn<T[K]>
+  [K in keyof T]: UpdatePartFn<T[K]>;
 };
 
 type NullableValue<T> = {
-  [K in keyof T]: T[K] extends null ? null | Obj // 初始状态里对象值可能是null
-    : T[K] extends never[] ? any[] // 初始值是空数组，则认为可放任意结构数组
-      : T[K] extends { [p: string]: never } ? Obj // 初始值是空对象，不限制内部结构，是object类型即可
-        : T[K]
+  [K in keyof T]: T[K] extends null
+    ? null | Obj // 初始状态里对象值可能是null
+    : T[K] extends never[]
+    ? any[] // 初始值是空数组，则认为可放任意结构数组
+    : T[K] extends { [p: string]: never }
+    ? Obj // 初始值是空对象，不限制内部结构，是object类型即可
+    : T[K];
 };
 
 type ResetFn = () => void;
@@ -54,7 +57,7 @@ type ResetFn = () => void;
  * @return [state, updateAll, updater]
  */
 export const useUpdate = <T extends object>(
-  initState: NullableValue<T>
+  initState: NullableValue<T>,
 ): [NullableValue<T>, UpdaterFn<NullableValue<T>>, UpdateFn<NullableValue<T>>, ResetFn] => {
   const [state, _update] = useSetState<NullableValue<T>>(initState || {});
   // 使用ref，避免updater的更新方法中，在闭包里使用上次的state

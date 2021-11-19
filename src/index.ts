@@ -1,4 +1,4 @@
-import { getLocale, setLocale, getTheme, setTheme } from './stores/dash-board';
+import { getLocale, getTheme, setLocale, setTheme } from './stores/dash-board';
 import BoardGrid from './components/DcBoard';
 import PureBoardGrid from './components/DcBoard/pure-board';
 

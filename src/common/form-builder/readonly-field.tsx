@@ -12,7 +12,7 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import React from 'react';
-import { isPlainObject, isFunction } from 'lodash';
+import { isFunction, isPlainObject } from 'lodash';
 
 interface IProps {
   renderData?: React.ReactNode;
@@ -28,10 +28,10 @@ const ReadonlyField = ({ renderData, style, className, value }: IProps) => {
         ? renderData(value)
         : renderData
       : isPlainObject(value)
-        ? JSON.stringify(value)
-        : value
-          ? value.toString()
-          : '-';
+      ? JSON.stringify(value)
+      : value
+      ? value.toString()
+      : '-';
   }, [renderData, value]);
 
   return (

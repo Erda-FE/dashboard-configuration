@@ -3,12 +3,12 @@
 const inquirer = require('inquirer');
 const chalk = require('chalk');
 const ora = require('ora');
-const execSync  = require('child_process').execSync;
+const execSync = require('child_process').execSync;
 const semverInc = require('semver/functions/inc');
 const pkg = require('../package.json');
 
 const GET_BRANCH_CMD = "git branch | awk '/\\*/ { print $2; }'";
-const UPDATE_SUB_MODULES = "git pull --recurse-submodules";
+const UPDATE_SUB_MODULES = 'git pull --recurse-submodules';
 const GEN_CHANGELOG = 'npm run changelog';
 
 const getCurrentBranch = async () => {
@@ -58,33 +58,33 @@ const selectVersionType = async () => {
       name: 'releaseType',
       message: '请选择发包版本类型：',
       default: 'patch',
-      choices: ['patch', 'minor', 'major']
-    }
+      choices: ['patch', 'minor', 'major'],
+    },
   ]);
   return answer.releaseType;
-}
+};
 
 const confirmVersion = async (version) => {
   const answer = await inquirer.prompt([
     {
       type: 'confirm',
       name: 'confirmVersion',
-      message: `即将发布版本 ${version}，是否继续？`
-    }
-  ])
+      message: `即将发布版本 ${version}，是否继续？`,
+    },
+  ]);
   if (!answer.confirmVersion) exit();
-}
+};
 
 const confirmChangelog = async (version) => {
   const answer = await inquirer.prompt([
     {
       type: 'confirm',
       name: 'confirmChangelog',
-      message: `可以检查生成的 changelog，确认无误后开始推送代码？`
-    }
-  ])
+      message: `可以检查生成的 changelog，确认无误后开始推送代码？`,
+    },
+  ]);
   if (!answer.confirmChangelog) exit();
-}
+};
 
 const goRelease = async (version) => {
   const npm = [
@@ -100,7 +100,7 @@ const goRelease = async (version) => {
   ];
 
   const npmSpinner = ora(STYLE.message('开始发包...')).start();
-  npm.forEach(command => TIP.message(execSync(command).toString()));
+  npm.forEach((command) => TIP.message(execSync(command).toString()));
   npmSpinner.stop();
   TIP.success('已发布到 https://registry.npmjs.org');
 
@@ -109,9 +109,9 @@ const goRelease = async (version) => {
   changelogSpinner.succeed(STYLE.message('已生成 changelog!'));
   await confirmChangelog();
 
-  git.forEach(command => TIP.message(execSync(command).toString()));
+  git.forEach((command) => TIP.message(execSync(command).toString()));
   TIP.success('更新已推送！');
-}
+};
 
 const release = async () => {
   try {

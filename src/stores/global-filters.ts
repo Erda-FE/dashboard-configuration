@@ -2,6 +2,7 @@ import { createFlatStore } from '../cube';
 import DashboardStore from './dash-board';
 
 const textMap = DashboardStore.getState((s) => s.textMap);
+
 interface IState {
   configModalVisible: boolean;
   globalFilters: DC_GLOBAL_FILTERS.Filter[];
@@ -37,6 +38,5 @@ const globalFiltersStore = createFlatStore({
     },
   },
 });
-
 
 export default globalFiltersStore;

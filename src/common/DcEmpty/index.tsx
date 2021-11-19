@@ -6,11 +6,7 @@ interface IProps {
   className?: string;
 }
 
-const DcEmpty = ({
-  condition = true,
-  className,
-  ...emptyProps
-}: Merge<typeof Empty.defaultProps, IProps>) => (
+const DcEmpty = ({ condition = true, className, ...emptyProps }: Merge<typeof Empty.defaultProps, IProps>) => (
   <If condition={condition}>
     <div className={`dc-empty-holder center-flex-box${className ? ` ${className}` : ''}`}>
       <Empty {...emptyProps} />

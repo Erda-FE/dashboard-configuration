@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Input } from 'antd';
-import { registDataConvertor, registControl, registChartOption, registTheme } from '../src';
+import { registChartOption, registControl, registDataConvertor, registTheme } from '../src';
 import { ajaxConvertor } from './mock/ajax-data';
 import { darkTheme } from './theme';
 import App from './app';
@@ -28,12 +28,17 @@ const prepare = () => {
       const { value } = e.target;
       onChange({ ctr2: value });
     };
-    return <Input value={`所有控件数据：${Object.values(query).join(',')}`} onChange={handleChange} style={{ width: '300px' }} />;
+    return (
+      <Input
+        value={`所有控件数据：${Object.values(query).join(',')}`}
+        onChange={handleChange}
+        style={{ width: '300px' }}
+      />
+    );
   });
 
   const fullTheme = registTheme('dark', darkTheme);
   console.log('fullTheme:', fullTheme);
-
 
   registChartOption('line', {
     grid: {

@@ -14,9 +14,7 @@ const devServer = {
   progress: false,
   historyApiFallback: true,
   watchContentBase: true,
-  allowedHosts: [
-    frontUrl,
-  ],
+  allowedHosts: [frontUrl],
   watchOptions: {
     ignored: /node_modules/,
   },

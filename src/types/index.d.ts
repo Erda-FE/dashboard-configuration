@@ -3,9 +3,19 @@ import React, { ReactElement, ReactNode } from 'react';
 declare namespace DC {
   type TData = number[] | string[];
 
-  type ViewType = 'chart:line' | 'chart:area' | 'chart:bar' | 'chart:pie' | 'chart:funnel' | 'table' | 'card' | 'chart:scatter' | 'chart:map';
+  type ViewType =
+    | 'chart:line'
+    | 'chart:area'
+    | 'chart:bar'
+    | 'chart:pie'
+    | 'chart:funnel'
+    | 'table'
+    | 'card'
+    | 'chart:scatter'
+    | 'chart:map';
 
   export type ViewDefMap = Record<ViewType, ViewDefItem>;
+
   export interface IExtraData {
     dataConfigSelectors?: any[];
     dynamicFilterKey?: string;
@@ -65,7 +75,7 @@ declare namespace DC {
 
   interface ChartConfig {
     // 配置优先级：optionFn > option
-    option?: Option;// echarts 配置
+    option?: Option; // echarts 配置
     /** 一些用于调整option的参数 */
     optionProps?: {
       [k: string]: any;
@@ -75,6 +85,7 @@ declare namespace DC {
     optionFn?: OptionFn;
     optionExtra?: object;
   }
+
   interface Option {
     seriesName?: string;
     isBarChangeColor?: boolean;
@@ -96,6 +107,7 @@ declare namespace DC {
     name: string;
     type: string;
     data: TData;
+
     [prop: string]: any; // 其他数据，有loadData时可能用于dataConvertor
   }
 
@@ -259,13 +271,14 @@ declare namespace DC {
 }
 
 export default DC;
+
 /**
  *带编辑器的大盘
-  *
-  * @export
-  * @class BoardGrid
-  * @extends {React.Component<BoardGridProps, any>}
-  */
+ *
+ * @export
+ * @class BoardGrid
+ * @extends {React.Component<BoardGridProps, any>}
+ */
 export class BoardGrid extends React.Component<DC.BoardGridProps, any> {}
 
 /**

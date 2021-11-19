@@ -1,17 +1,9 @@
 const path = require('path');
 const webpack = require('webpack');
 
-const vendors = [
-  'react',
-  'react-dom',
-  'lodash',
-  'moment',
-  'immer',
-  'echarts',
-  'echarts-for-react',
-];
+const vendors = ['react', 'react-dom', 'lodash', 'moment', 'immer', 'echarts', 'echarts-for-react'];
 
-  /** @type { import('webpack').Configuration } */
+/** @type { import('webpack').Configuration } */
 module.exports = {
   entry: { vendor: vendors },
   output: {
@@ -27,4 +19,3 @@ module.exports = {
     }),
   ],
 };
-

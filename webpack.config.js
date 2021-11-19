@@ -5,14 +5,14 @@ const moment = require('moment');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 const GitRevisionPlugin = require('git-revision-webpack-plugin');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 // const SpeedMeasurePlugin = require('speed-measure-webpack-plugin');
 
 // const smp = new SpeedMeasurePlugin();
-const resolve = pathname => path.resolve(__dirname, pathname);
+const resolve = (pathname) => path.resolve(__dirname, pathname);
 
 const gitRevisionPlugin = new GitRevisionPlugin();
 const banner = `commit: ${gitRevisionPlugin.commithash().slice(0, 6)}
@@ -29,15 +29,17 @@ module.exports = () => {
     entry: {
       index: isProd ? './src/index.ts' : './example/index.js',
     },
-    externals: isProd ? {
-      lodash: 'lodash',
-      echarts: 'echarts',
-      react: 'react',
-      'react-dom': 'react-dom',
-      moment: 'moment',
-      antd: 'antd',
-      'react-dnd': 'react-dnd',
-    } : undefined,
+    externals: isProd
+      ? {
+          lodash: 'lodash',
+          echarts: 'echarts',
+          react: 'react',
+          'react-dom': 'react-dom',
+          moment: 'moment',
+          antd: 'antd',
+          'react-dnd': 'react-dnd',
+        }
+      : undefined,
     output: {
       filename: '[name].js',
       path: resolve('dist'),
@@ -49,10 +51,7 @@ module.exports = () => {
       rules: [
         {
           test: /\.scss$/i,
-          include: [
-            resolve('example'),
-            resolve('src'),
-          ],
+          include: [resolve('example'), resolve('src')],
           use: [
             isProd ? MiniCssExtractPlugin.loader : 'style-loader',
             'css-loader',
@@ -72,35 +71,22 @@ module.exports = () => {
         },
         {
           test: /\.css$/i,
-          use: [
-            isProd ? MiniCssExtractPlugin.loader : 'style-loader',
-            'css-loader',
-          ],
+          use: [isProd ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader'],
         },
         {
           test: /\.(j|t)sx?$/,
-          use: "babel-loader?cacheDirectory",
-          include: [
-            resolve('example'),
-            resolve('src'),
-          ],
+          use: 'babel-loader?cacheDirectory',
+          include: [resolve('example'), resolve('src')],
           use: [
             'thread-loader',
             {
               loader: 'babel-loader',
               options: {
-                plugins: [
-                  'jsx-control-statements',
-                  '@babel/plugin-transform-runtime'
-                ],
-                presets: [
-                  "@babel/preset-env",
-                  '@babel/preset-react',
-                  '@babel/preset-typescript',
-                ],
+                plugins: ['jsx-control-statements', '@babel/plugin-transform-runtime'],
+                presets: ['@babel/preset-env', '@babel/preset-react', '@babel/preset-typescript'],
               },
             },
-          ]
+          ],
         },
       ],
     },
@@ -114,7 +100,7 @@ module.exports = () => {
     performance: {
       hints: isProd ? 'warning' : false,
       maxEntrypointSize: 512000,
-      maxAssetSize: 512000
+      maxAssetSize: 512000,
     },
     optimization: {
       minimize: isProd,
@@ -136,24 +122,22 @@ module.exports = () => {
       // },
       minimizer: isProd
         ? [
-          new webpack.BannerPlugin(banner),
-          new TerserPlugin({
-            parallel: os.cpus().length,
-          }),
-          new CssMinimizerPlugin({
-            minimizerOptions: {
-              preset: [
-                'default',
-                {
-                  discardComments: { removeAll: true },
-                },
-              ],
-            },
-          }),
-        ]
-        : [
-          new webpack.HotModuleReplacementPlugin(),
-        ],
+            new webpack.BannerPlugin(banner),
+            new TerserPlugin({
+              parallel: os.cpus().length,
+            }),
+            new CssMinimizerPlugin({
+              minimizerOptions: {
+                preset: [
+                  'default',
+                  {
+                    discardComments: { removeAll: true },
+                  },
+                ],
+              },
+            }),
+          ]
+        : [new webpack.HotModuleReplacementPlugin()],
     },
     plugins: [
       // new BundleAnalyzerPlugin(),
@@ -163,9 +147,8 @@ module.exports = () => {
           NODE_ENV: JSON.stringify(process.env.NODE_ENV), // because webpack just do a string replace, so a pair of quotes is needed
         },
       }),
-      ...(
-        isProd
-          ? [
+      ...(isProd
+        ? [
             new MiniCssExtractPlugin({
               // Options similar to the same options in webpackOptions.output
               // both options are optional
@@ -178,10 +161,10 @@ module.exports = () => {
                   from: './src/types/index.d.ts',
                   to: './',
                 },
-              ]
-            })
+              ],
+            }),
           ]
-          : [
+        : [
             new webpack.DllReferencePlugin({
               context: __dirname,
               manifest: require('./manifest.json'),
@@ -191,8 +174,7 @@ module.exports = () => {
               hash: false,
               minify: false,
             }),
-          ]
-      ),
+          ]),
     ],
   };
 

@@ -26,7 +26,11 @@ const walker = ({ root, dealFile, recursive = true }) => {
       const subPath = path.resolve(`${root}/${item}`);
       if (!item.includes('.') && recursive) {
         // console.log('目录:', item);
-        return walker({ root: subPath, dealFile, recursive });
+        return walker({
+          root: subPath,
+          dealFile,
+          recursive,
+        });
       }
       const filePath = subPath;
       files += 1;

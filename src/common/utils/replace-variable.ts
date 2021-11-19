@@ -20,8 +20,7 @@ function replaceVariable(source: any, variable?: Record<string, any>): any {
       if (variable[current.slice(2, -2)] === 0) {
         val = 0;
       } else {
-        val = variable[current.slice(2, -2)]
-        || (source.length > current.length ? '' : undefined);
+        val = variable[current.slice(2, -2)] || (source.length > current.length ? '' : undefined);
       }
       return isNil(val) ? undefined : acc.replace(current, val);
     }, source);

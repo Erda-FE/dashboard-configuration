@@ -5,7 +5,10 @@ const data = {
   metricData: [
     {
       name: '',
-      data: map([], ({ title, value, name }) => ({ name: title || name, value })),
+      data: map([], ({ title, value, name }) => ({
+        name: title || name,
+        value,
+      })),
     },
     // {
     //   name: '访问来源',
@@ -49,14 +52,16 @@ export default [
             x: 'center',
             y: 'bottom',
           },
-          series: [{
-            radius: ['50%', '70%'],
-            label: {
-              normal: {
-                formatter: '{b}:  {c}  {d}%',
+          series: [
+            {
+              radius: ['50%', '70%'],
+              label: {
+                normal: {
+                  formatter: '{b}:  {c}  {d}%',
+                },
               },
             },
-          }],
+          ],
         },
       },
     },

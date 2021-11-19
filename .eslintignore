@@ -3,3 +3,4 @@ mock/*
 test/*
 tools
 node_modules
+src/static/*

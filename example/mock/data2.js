@@ -1,6 +1,3 @@
-
 import pieLayout from './pie-data';
 
-export default [
-  ...pieLayout,
-];
+export default [...pieLayout];

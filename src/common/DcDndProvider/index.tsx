@@ -4,7 +4,7 @@
  * @Last Modified by:   licao
  * @Last Modified time: 2021-01-28 17:53:58
  */
-import { DndProvider, createDndContext } from 'react-dnd';
+import { createDndContext, DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import React, { useRef } from 'react';
 

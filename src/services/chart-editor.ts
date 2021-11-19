@@ -3,15 +3,12 @@ import DC from 'src/types';
 import produce from 'immer';
 import agent from 'common/utils/agent';
 
-
 const getOrgFromPath = () => {
   return get(location.pathname.split('/'), '[1]') || '-';
 };
 
 export const setApiWithOrg = (api: string) => {
-  return api.startsWith('/api/')
-    ? api.replace('/api/', `/api/${getOrgFromPath()}/`)
-    : api;
+  return api.startsWith('/api/') ? api.replace('/api/', `/api/${getOrgFromPath()}/`) : api;
 };
 
 export const getChartData = ({ url, query, method = 'get', body }: DC.API) => {

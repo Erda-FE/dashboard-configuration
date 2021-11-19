@@ -25,6 +25,7 @@ export interface IContextType {
   parentReadonly?: boolean;
   setFieldsInfo: (k: string, v: IFieldType[]) => void;
 }
+
 export interface IFormExtendType<T = any> extends FormInstance {
   validateFieldsAndScroll?: (scb: (values: T) => void, fcb?: (err?: Obj<ErrorEvent>) => void) => void;
   fieldsInfo?: { [key: string]: IFieldType[] };

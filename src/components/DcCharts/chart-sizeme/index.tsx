@@ -50,13 +50,5 @@ ReactEcharts.prototype.componentDidUpdate = function (...arg) {
 export default ({ style, option, ...rest }: IProps) => {
   const theme = DashboardStore.useStore((s) => s.theme);
 
-  return (
-    <ReactEcharts
-      {...rest}
-      notMerge
-      option={option}
-      theme={theme}
-      style={{ ...style, height: '100%' }}
-    />
-  );
+  return <ReactEcharts {...rest} notMerge option={option} theme={theme} style={{ ...style, height: '100%' }} />;
 };

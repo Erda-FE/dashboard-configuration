@@ -42,38 +42,40 @@ const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) =>
     if (col.copy) {
       r = {
         ...r,
-        render: (v: any) =>
-          (
-            <Copy className="cursor-copy">
-              {v}
-            </Copy>
-          ),
+        render: (v: any) => <Copy className="cursor-copy">{v}</Copy>,
       };
     }
 
     return r;
   });
 
-  const handleRowClick = useCallback((record: Record<string, any>) => {
-    if (typeof onBoardEvent !== 'function') {
-      // eslint-disable-next-line no-console
-      console.error('props "onBoardEvent" must be a function!');
-      return;
-    }
-    const { name, value } = rowClick || {};
-    name && value && onBoardEvent({
-      eventName: name,
-      cellValue: record[value],
-      record,
-      dataSource,
-    });
-  }, [dataSource, onBoardEvent, rowClick]);
+  const handleRowClick = useCallback(
+    (record: Record<string, any>) => {
+      if (typeof onBoardEvent !== 'function') {
+        // eslint-disable-next-line no-console
+        console.error('props "onBoardEvent" must be a function!');
+        return;
+      }
+      const { name, value } = rowClick || {};
+      name &&
+        value &&
+        onBoardEvent({
+          eventName: name,
+          cellValue: record[value],
+          record,
+          dataSource,
+        });
+    },
+    [dataSource, onBoardEvent, rowClick],
+  );
 
   return (
     <React.Fragment>
       <section className="full-height auto-overflow">
         <Table
-          onRow={(record) => ({ onClick: rowClick?.name && rowClick?.value ? () => handleRowClick(record) : undefined })}
+          onRow={(record) => ({
+            onClick: rowClick?.name && rowClick?.value ? () => handleRowClick(record) : undefined,
+          })}
           rowKey="c_key"
           columns={_cols}
           dataSource={results}

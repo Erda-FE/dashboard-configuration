@@ -20,7 +20,10 @@ interface IProps {
   sort?: 'DESC' | 'ASC';
   aggregationMap?: Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>;
   aggregationOptions?: ComponentOptions;
-  onTriggerAction: (type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType, option?: { payload?: any; isUpdateDirectly?: boolean }) => void;
+  onTriggerAction: (
+    type: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType,
+    option?: { payload?: any; isUpdateDirectly?: boolean },
+  ) => void;
 }
 
 interface DragItem {
@@ -128,7 +131,10 @@ const DimensionConfigs = ({
       onTriggerAction('configFieldAggregation', {
         payload: {
           aggregation: _val === aggregation ? undefined : _val,
-          resultType: _val === aggregation ? undefined : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[_val as string]?.result_type,
+          resultType:
+            _val === aggregation
+              ? undefined
+              : (aggregationMap as Record<string, DICE_DATA_CONFIGURATOR.AggregationInfo>)[_val as string]?.result_type,
         },
         isUpdateDirectly: true,
       });
@@ -152,35 +158,34 @@ const DimensionConfigs = ({
     <Dropdown
       trigger={['click']}
       overlay={
-        <Menu
-          onClick={handleClick}
-          defaultOpenKeys={[SPECIAL_METRIC_TYPE.field]}
-          selectedKeys={selectedKeys}
-        >
-          {
-            map(configs, ({ label, info, actionKey, key, type: menuItemType, options }) => (
-              <Choose key={key}>
-                <When condition={menuItemType === 'divider'}>
-                  <MenuDivider />
-                </When>
-                <When condition={menuItemType === 'sub'}>
-                  <SubMenu key={key} title={label}>
-                    {map(options, (option) => (
-                      <MenuItem key={option.value}>{option.label}</MenuItem>
-                    ))}
-                  </SubMenu>
-                </When>
-                <Otherwise>
-                  <MenuItem key={key} onClick={() => onTriggerAction(actionKey as DICE_DATA_CONFIGURATOR.DimensionConfigsActionType)}>
-                    <span className="dc-editor-dimension-config">
-                      {label}
-                      <If condition={!!info}><DcInfoIcon info={info as string} /></If>
-                    </span>
-                  </MenuItem>
-                </Otherwise>
-              </Choose>
-            ))
-          }
+        <Menu onClick={handleClick} defaultOpenKeys={[SPECIAL_METRIC_TYPE.field]} selectedKeys={selectedKeys}>
+          {map(configs, ({ label, info, actionKey, key, type: menuItemType, options }) => (
+            <Choose key={key}>
+              <When condition={menuItemType === 'divider'}>
+                <MenuDivider />
+              </When>
+              <When condition={menuItemType === 'sub'}>
+                <SubMenu key={key} title={label}>
+                  {map(options, (option) => (
+                    <MenuItem key={option.value}>{option.label}</MenuItem>
+                  ))}
+                </SubMenu>
+              </When>
+              <Otherwise>
+                <MenuItem
+                  key={key}
+                  onClick={() => onTriggerAction(actionKey as DICE_DATA_CONFIGURATOR.DimensionConfigsActionType)}
+                >
+                  <span className="dc-editor-dimension-config">
+                    {label}
+                    <If condition={!!info}>
+                      <DcInfoIcon info={info as string} />
+                    </If>
+                  </span>
+                </MenuItem>
+              </Otherwise>
+            </Choose>
+          ))}
         </Menu>
       }
     >

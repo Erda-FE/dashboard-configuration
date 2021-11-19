@@ -2,7 +2,14 @@ declare namespace DICE_DATA_CONFIGURATOR {
   /** 指标类型：时间、指定指标、自定义表达式 */
   type DimensionMetricType = 'time' | 'field' | 'expr' | 'filter' | 'sort';
   /** 维度配置注册的事件名 */
-  type DimensionConfigsActionType = 'configExpr' | 'configAlias' | 'configTime' | 'configFieldAggregation' | 'configFilter' | 'configSort' | 'updateOrder';
+  type DimensionConfigsActionType =
+    | 'configExpr'
+    | 'configAlias'
+    | 'configTime'
+    | 'configFieldAggregation'
+    | 'configFilter'
+    | 'configSort'
+    | 'updateOrder';
   /** 指标类型 */
   type FieldType = 'bool' | 'number' | 'string';
   /** 维度类型：数值维度，类别维度=文本维度+时间维度，筛选维度 */
@@ -116,18 +123,18 @@ declare namespace DICE_DATA_CONFIGURATOR {
      *时间间隔 1s、1D，可选，type 为 time 时可指定
      *
      * @type {({
-      *     value: number;
-      *     unit: 's' | 'm' | 'h' | 'D' | 'W'
-      *   })}
-      * @memberof Dimension
-      */
+     *     value: number;
+     *     unit: 's' | 'm' | 'h' | 'D' | 'W'
+     *   })}
+     * @memberof Dimension
+     */
     timeInterval?: TimeInterval;
     /**
-      *时间格式，可选，type 为 time 时可指定
-      *
-      * @type {string}
-      * @memberof Dimension
-      */
+     *时间格式，可选，type 为 time 时可指定
+     *
+     * @type {string}
+     * @memberof Dimension
+     */
     timeFormat?: string;
     /**
      *自定义时间字段，可选，type 为 time 时可指定

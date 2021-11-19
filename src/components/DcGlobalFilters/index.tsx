@@ -16,16 +16,9 @@ const DcGlobalFilters = () => {
 
   return (
     <div className="dc-global-filters wrap-flex-box mb8">
-      {
-        displayFilters.map(({ key, name, ...rest }) => (
-          <FilterComp
-            key={key}
-            className="mr12"
-            onChange={(val: any) => handleChange(name, val)}
-            {...rest}
-          />
-        ))
-      }
+      {displayFilters.map(({ key, name, ...rest }) => (
+        <FilterComp key={key} className="mr12" onChange={(val: any) => handleChange(name, val)} {...rest} />
+      ))}
     </div>
   );
 };

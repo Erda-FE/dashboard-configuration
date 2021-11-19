@@ -14,18 +14,13 @@ import DashboardStore from '../../stores/dash-board';
 
 import './header.scss';
 
-
 interface IProps {
   wrapRef: RefObject<Element>;
   contentRef: RefObject<Element>;
   dashboardName?: string;
 }
 
-const DashboardHeader = ({
-  wrapRef,
-  contentRef,
-  dashboardName,
-}: IProps) => {
+const DashboardHeader = ({ wrapRef, contentRef, dashboardName }: IProps) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const { toggleFullscreen } = DashboardStore;
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
@@ -39,37 +34,41 @@ const DashboardHeader = ({
     saveImage(contentRef.current, dashboardName || textMap['unnamed dashboard']);
   }, [contentRef, dashboardName]);
 
-  const leftTools = useMemo(() => [
-    ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
-      {
-        icon: 'fullscreen',
-        text: textMap.fullscreen,
-        onClick: () => _toggleFullscreen(),
-      },
-    ]),
-    ...insertWhen<DC_BOARD_HEADER.Tool>(isFullscreen, [
-      {
-        icon: 'fullscreen-exit',
-        text: textMap['exit fullscreen'],
-        onClick: () => _toggleFullscreen(),
-      },
-    ]),
-    ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
-      {
-        icon: 'camera',
-        text: textMap['export picture'],
-        onClick: () => handleSaveImg(),
-      },
-    ]),
-  ], [isFullscreen, handleSaveImg, _toggleFullscreen]);
+  const leftTools = useMemo(
+    () => [
+      ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
+        {
+          icon: 'fullscreen',
+          text: textMap.fullscreen,
+          onClick: () => _toggleFullscreen(),
+        },
+      ]),
+      ...insertWhen<DC_BOARD_HEADER.Tool>(isFullscreen, [
+        {
+          icon: 'fullscreen-exit',
+          text: textMap['exit fullscreen'],
+          onClick: () => _toggleFullscreen(),
+        },
+      ]),
+      ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
+        {
+          icon: 'camera',
+          text: textMap['export picture'],
+          onClick: () => handleSaveImg(),
+        },
+      ]),
+    ],
+    [isFullscreen, handleSaveImg, _toggleFullscreen],
+  );
 
-  const renderTools = (tools: DC_BOARD_HEADER.Tool[]) => tools.map(({ text, icon, onClick }) => (
-    <Tooltip title={text} key={icon} >
-      <Button type="text" onClick={onClick}>
-        <DcIcon type={icon} />
-      </Button>
-    </Tooltip>
-  ));
+  const renderTools = (tools: DC_BOARD_HEADER.Tool[]) =>
+    tools.map(({ text, icon, onClick }) => (
+      <Tooltip title={text} key={icon}>
+        <Button type="text" onClick={onClick}>
+          <DcIcon type={icon} />
+        </Button>
+      </Tooltip>
+    ));
 
   return (
     <>

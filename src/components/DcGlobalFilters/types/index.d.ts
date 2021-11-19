@@ -1,5 +1,4 @@
 declare namespace DC_GLOBAL_FILTERS {
-
   type FilterType = 'time' | 'search' | 'select' | 'constant';
 
   interface Filter {

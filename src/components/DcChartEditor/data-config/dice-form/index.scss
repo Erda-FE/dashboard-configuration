@@ -1,4 +1,4 @@
-@import "../../../../styles/variable";
+@import '../../../../styles/variable';
 $data-config-prefix-cls: #{$prefix}-dice-metrics-form;
 
 .#{$data-config-prefix-cls} {
@@ -22,8 +22,7 @@ $data-config-prefix-cls: #{$prefix}-dice-metrics-form;
 }
 
 .dc-dice-metrics-form {
-
   .pk-form-explain {
-  display: none;
+    display: none;
   }
 }

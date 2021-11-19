@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Button, Tooltip, Input, Dropdown, Tabs, Modal, Menu, message } from 'antd';
+import { Button, Dropdown, Input, Menu, message, Modal, Tabs, Tooltip } from 'antd';
 import { useImmer } from 'use-immer';
-import { remove, find, findIndex, map } from 'lodash';
+import { find, findIndex, map, remove } from 'lodash';
 import { DcIcon, DcInfoIcon } from '../../common';
-import { insertWhen, genUUID } from '../../common/utils';
+import { genUUID, insertWhen } from '../../common/utils';
 import DashboardStore, { TextType } from '../../stores/dash-board';
 import GlobalFiltersStore from '../../stores/global-filters';
 
@@ -104,13 +104,7 @@ const TabPaneOptionsName = ({
       <div className="dc-global-filters-options">
         {filterOptions.map(({ icon, tip, onClick }) => (
           <Tooltip title={tip} key={icon}>
-            <Button
-              className="filter-option"
-              size="small"
-              type="text"
-              key={icon}
-              onClick={onClick}
-            >
+            <Button className="filter-option" size="small" type="text" key={icon} onClick={onClick}>
               <DcIcon type={icon} />
             </Button>
           </Tooltip>
@@ -223,11 +217,7 @@ export const ConfigGlobalFiltersModal = () => {
 
   const updateFilter = (key: string, filter: Partial<DC_GLOBAL_FILTERS.Filter>) => {
     updateFilters((draft) => {
-      draft.splice(
-        findIndex(draft, { key }),
-        1,
-        { ...find(draft, { key }) as DC_GLOBAL_FILTERS.Filter, ...filter }
-      );
+      draft.splice(findIndex(draft, { key }), 1, { ...(find(draft, { key }) as DC_GLOBAL_FILTERS.Filter), ...filter });
     });
   };
 
@@ -289,35 +279,33 @@ export const ConfigGlobalFiltersModal = () => {
           // tab 滑动
           style={{ height: 280 }}
         >
-          {
-            filters.map((filter) => {
-              const { type, name, label, enable, key } = filter;
-              return (
-                <Tabs.TabPane
-                  key={key}
-                  tab={
-                    <TabPaneOptionsName
-                      name={label || name}
-                      id={key}
-                      enable={enable}
-                      disableDelete={type === 'time'}
-                      removeFilter={removeFilter}
-                      updateFilter={updateFilter}
-                    />
-                  }
-                >
-                  <If condition={type !== 'time'}>
-                    <div className="auto-overflow">
-                      <div>通用设置</div>
-                      <ConfigFields fields={getFieldsList(filter)} />
-                      <div>数据源设置</div>
-                      {/* <ConfigFields fields={getFieldsList(filter)} /> */}
-                    </div>
-                  </If>
-                </Tabs.TabPane>
-              );
-            })
-          }
+          {filters.map((filter) => {
+            const { type, name, label, enable, key } = filter;
+            return (
+              <Tabs.TabPane
+                key={key}
+                tab={
+                  <TabPaneOptionsName
+                    name={label || name}
+                    id={key}
+                    enable={enable}
+                    disableDelete={type === 'time'}
+                    removeFilter={removeFilter}
+                    updateFilter={updateFilter}
+                  />
+                }
+              >
+                <If condition={type !== 'time'}>
+                  <div className="auto-overflow">
+                    <div>通用设置</div>
+                    <ConfigFields fields={getFieldsList(filter)} />
+                    <div>数据源设置</div>
+                    {/* <ConfigFields fields={getFieldsList(filter)} /> */}
+                  </div>
+                </If>
+              </Tabs.TabPane>
+            );
+          })}
         </Tabs>
       </div>
     </Modal>

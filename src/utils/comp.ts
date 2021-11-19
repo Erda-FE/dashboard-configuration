@@ -14,7 +14,6 @@ export const formItemLayout = {
   },
 };
 
-
 class ParamsManage {
   private params: IParams | undefined;
 
@@ -39,9 +38,11 @@ export const paramsManage = new ParamsManage();
 // }
 
 let urlDataHandle: any;
+
 export function registerUrlDataHandle(handle: any) {
   urlDataHandle = handle;
 }
+
 export function getData(_url: string, _query?: any) {
   return {};
   // if (!url) return {};
@@ -57,9 +58,12 @@ export function getData(_url: string, _query?: any) {
   //   });
 }
 
-interface IParams { [name: string]: any }
+interface IParams {
+  [name: string]: any;
+}
 
 let loadingMessage: any = null;
+
 /**
  * dom to image
  *
@@ -91,18 +95,19 @@ export function saveImage(
   }
 
   loadingMessage = Toast.loading(message?.loadingMsg || textMap['exporting picture'], 0);
-  domtoimage.toPng(dom, {
-    quality: 1,
-  }).then((url: string) => {
-    const link = document.createElement('a');
-    link.download = `${name}.png`;
-    link.href = url;
-    loadingMessage();
-    loadingMessage = null;
-    link.click();
-  });
+  domtoimage
+    .toPng(dom, {
+      quality: 1,
+    })
+    .then((url: string) => {
+      const link = document.createElement('a');
+      link.download = `${name}.png`;
+      link.href = url;
+      loadingMessage();
+      loadingMessage = null;
+      link.click();
+    });
 }
-
 
 export function plainArrayValidator(_rule: any, text: string, callback: any): void {
   if (!text) {
@@ -123,5 +128,5 @@ export function plainArrayValidator(_rule: any, text: string, callback: any): vo
 
 export function strToObject(str: string) {
   // eslint-disable-next-line
-  return  (new Function(`return ${str}`))();
+  return new Function(`return ${str}`)();
 }

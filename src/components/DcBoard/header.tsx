@@ -88,102 +88,107 @@ const DashboardHeader = ({
     }
   }, [beforeSave, doSaveDashboard]);
 
-  const leftTools = useMemo(() => [
-    ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
-      {
-        icon: 'fullscreen',
-        btnType: 'text',
-        text: textMap.fullscreen,
-        onClick: () => _toggleFullscreen(),
-      },
-    ]),
-    ...insertWhen<DC_BOARD_HEADER.Tool>(isFullscreen, [
-      {
-        icon: 'fullscreen-exit',
-        btnType: 'text',
-        text: textMap['exit fullscreen'],
-        onClick: () => _toggleFullscreen(),
-      },
-    ]),
-    ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode && !isFullscreen, [
-      {
-        icon: 'camera',
-        btnType: 'text',
-        text: textMap['export picture'],
-        onClick: () => handleSaveImg(),
-      },
-    ]),
-  ], [isEditMode, isFullscreen, handleSaveImg, _toggleFullscreen]);
+  const leftTools = useMemo(
+    () => [
+      ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
+        {
+          icon: 'fullscreen',
+          btnType: 'text',
+          text: textMap.fullscreen,
+          onClick: () => _toggleFullscreen(),
+        },
+      ]),
+      ...insertWhen<DC_BOARD_HEADER.Tool>(isFullscreen, [
+        {
+          icon: 'fullscreen-exit',
+          btnType: 'text',
+          text: textMap['exit fullscreen'],
+          onClick: () => _toggleFullscreen(),
+        },
+      ]),
+      ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode && !isFullscreen, [
+        {
+          icon: 'camera',
+          btnType: 'text',
+          text: textMap['export picture'],
+          onClick: () => handleSaveImg(),
+        },
+      ]),
+    ],
+    [isEditMode, isFullscreen, handleSaveImg, _toggleFullscreen],
+  );
 
-  const editTools = useMemo(() => [
-    ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode, [
-      {
-        icon: 'edit',
-        text: textMap['edit mode'],
-        btnType: 'primary',
-        onClick: () => handleTriggerEditMode(),
-      },
-    ]),
-    ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
-      {
-        icon: 'plus',
-        btnType: 'text',
-        text: textMap['add charts'],
-        // onClick: () => setPickChartModalVisible(true),
-        onClick: () => addView(undefined),
-      },
-      // {
-      //   icon: 'setting',
-      //   customRender: () => {
-      //     return (
-      //       <Dropdown
-      //         trigger={['click']}
-      //         overlay={
-      //           <Menu>
-      //             <Menu.Item>
-      //               <a className="dc-chart-title-dp-op" onClick={() => toggleConfigModal()}>
-      //                 {textMap['global filter']}
-      //               </a>
-      //             </Menu.Item>
-      //           </Menu>
-      //         }
-      //       >
-      //         <Button type="text">
-      //           <DcIcon type="setting" />
-      //         </Button>
-      //       </Dropdown>
-      //     );
-      //   },
-      // },
-      {
-        icon: 'save',
-        btnType: 'text',
-        text: textMap['save dashboard'],
-        onClick: () => handleSaveDashboard(),
-      },
-      {
-        icon: 'close',
-        btnType: 'text',
-        text: textMap['exit edit mode'],
-        onClick: () => handleCancel(),
-      },
-    ]),
-  ], [isEditMode, handleTriggerEditMode, addView, toggleConfigModal, handleSaveDashboard, handleCancel]);
+  const editTools = useMemo(
+    () => [
+      ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode, [
+        {
+          icon: 'edit',
+          text: textMap['edit mode'],
+          btnType: 'primary',
+          onClick: () => handleTriggerEditMode(),
+        },
+      ]),
+      ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
+        {
+          icon: 'plus',
+          btnType: 'text',
+          text: textMap['add charts'],
+          // onClick: () => setPickChartModalVisible(true),
+          onClick: () => addView(undefined),
+        },
+        // {
+        //   icon: 'setting',
+        //   customRender: () => {
+        //     return (
+        //       <Dropdown
+        //         trigger={['click']}
+        //         overlay={
+        //           <Menu>
+        //             <Menu.Item>
+        //               <a className="dc-chart-title-dp-op" onClick={() => toggleConfigModal()}>
+        //                 {textMap['global filter']}
+        //               </a>
+        //             </Menu.Item>
+        //           </Menu>
+        //         }
+        //       >
+        //         <Button type="text">
+        //           <DcIcon type="setting" />
+        //         </Button>
+        //       </Dropdown>
+        //     );
+        //   },
+        // },
+        {
+          icon: 'save',
+          btnType: 'text',
+          text: textMap['save dashboard'],
+          onClick: () => handleSaveDashboard(),
+        },
+        {
+          icon: 'close',
+          btnType: 'text',
+          text: textMap['exit edit mode'],
+          onClick: () => handleCancel(),
+        },
+      ]),
+    ],
+    [isEditMode, handleTriggerEditMode, addView, toggleConfigModal, handleSaveDashboard, handleCancel],
+  );
 
-  const renderTools = (tools: DC_BOARD_HEADER.Tool[]) => tools.map(({ text, icon, btnType, customRender, onClick }) => (
-    <Choose>
-      <When condition={!!customRender}>
-        <React.Fragment key={icon}>
-          {(customRender as Function)()}
-        </React.Fragment>
-      </When>
-      <Otherwise>
-        <Tooltip title={text} key={icon}>
-          <Button type={btnType || 'default'} onClick={onClick} icon={<DcIcon type={icon} />} />
-        </Tooltip>
-      </Otherwise>
-    </Choose>
-  ));
+  const renderTools = (tools: DC_BOARD_HEADER.Tool[]) =>
+    tools.map(({ text, icon, btnType, customRender, onClick }) => (
+      <Choose>
+        <When condition={!!customRender}>
+          <React.Fragment key={icon}>{(customRender as Function)()}</React.Fragment>
+        </When>
+        <Otherwise>
+          <Tooltip title={text} key={icon}>
+            <Button type={btnType || 'default'} onClick={onClick} icon={<DcIcon type={icon} />} />
+          </Tooltip>
+        </Otherwise>
+      </Choose>
+    ));
 
   return (
     <>

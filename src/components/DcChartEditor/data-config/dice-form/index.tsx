@@ -37,11 +37,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   // 配置所需的数据，宿主注入
   const { dataConfigMetaDataStore, scope, scopeId, loadDataApi } = getConfig('diceDataConfigProps');
   const { getMetaGroups, getMetaData } = dataConfigMetaDataStore.effects;
-  const [
-    metaGroups,
-    metaConstantMap,
-    metaMetrics,
-  ] = dataConfigMetaDataStore.useStore((s: any) => [
+  const [metaGroups, metaConstantMap, metaMetrics] = dataConfigMetaDataStore.useStore((s: any) => [
     s.metaGroups,
     s.metaConstantMap,
     s.metaMetrics,
@@ -49,22 +45,43 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const ref = useRef(null as any);
 
   // 配置所需的数据计算
-  const fieldsMap = useMemo(() => reduce(metaMetrics, (result, value) => {
-    const { fields, tags, metric, filters } = value;
-    const singleFieldsMap = reduce(fields, (acc, field) => ({ ...acc, [`${metric}-${field.key}`]: { ...field, tags, metric, filters } }), {});
-    return { ...result, ...singleFieldsMap };
-  }, {}), [metaMetrics]);
+  const fieldsMap = useMemo(
+    () =>
+      reduce(
+        metaMetrics,
+        (result, value) => {
+          const { fields, tags, metric, filters } = value;
+          const singleFieldsMap = reduce(
+            fields,
+            (acc, field) => ({ ...acc, [`${metric}-${field.key}`]: { ...field, tags, metric, filters } }),
+            {},
+          );
+          return { ...result, ...singleFieldsMap };
+        },
+        {},
+      ),
+    [metaMetrics],
+  );
   const curMetric = metaMetrics ? metaMetrics[0] : {};
   const { types: typeMap } = metaConstantMap;
 
-  const aggregationMap = useMemo(() => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}), [typeMap]);
-  const filtersMap = useMemo(() => reduce(typeMap, (result, { filters }) => ({ ...result, ...keyBy(filters, 'operation') }), {}), [typeMap]);
+  const aggregationMap = useMemo(
+    () => reduce(typeMap, (result, { aggregations }) => ({ ...result, ...keyBy(aggregations, 'aggregation') }), {}),
+    [typeMap],
+  );
+  const filtersMap = useMemo(
+    () => reduce(typeMap, (result, { filters }) => ({ ...result, ...keyBy(filters, 'operation') }), {}),
+    [typeMap],
+  );
 
   // 图表信息
   const { chartType, curMapType = [], config: currentChartConfig = {} } = currentChart;
   const { dataSourceConfig } = currentChartConfig;
   const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
-  const [mapLevel, preLevel] = useMemo(() => [MAP_LEVEL[Math.max(curMapType.length - 1, 0)], MAP_LEVEL[curMapType.length - 2]], [curMapType.length]);
+  const [mapLevel, preLevel] = useMemo(
+    () => [MAP_LEVEL[Math.max(curMapType.length - 1, 0)], MAP_LEVEL[curMapType.length - 2]],
+    [curMapType.length],
+  );
   const chartTypeRef = useRef(chartType);
   const isTableType = chartTypeRef.current === 'table';
   const isMapType = chartTypeRef.current === 'chart:map';
@@ -94,139 +111,155 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   };
   const _metaGroups = removeEmptyArray(metaGroups);
 
-  const _getMetaData = (_activedMetricGroups: string[]) => getMetaData({
-    scope,
-    scopeId,
-    groupId: _activedMetricGroups[_activedMetricGroups.length - 1],
-    version: 'v2',
-  });
+  const _getMetaData = (_activedMetricGroups: string[]) =>
+    getMetaData({
+      scope,
+      scopeId,
+      groupId: _activedMetricGroups[_activedMetricGroups.length - 1],
+      version: 'v2',
+    });
 
   const handleGetMetaData = (_activedMetricGroups?: string[]) => {
     _activedMetricGroups && !isEmpty(_activedMetricGroups) && _getMetaData(_activedMetricGroups);
   };
 
-  const getTimeRange = useCallback((_customTime?: string) => {
-    if (_customTime) {
-      const [start, end] = customTimeRangeMap(textMap)[_customTime].getTimeRange();
-      return { start, end };
-    }
-    const { startTimeMs, endTimeMs } = timeSpan;
-    return {
-      start: startTimeMs,
-      end: endTimeMs,
-    };
-  }, [timeSpan, textMap]);
+  const getTimeRange = useCallback(
+    (_customTime?: string) => {
+      if (_customTime) {
+        const [start, end] = customTimeRangeMap(textMap)[_customTime].getTimeRange();
+        return { start, end };
+      }
+      const { startTimeMs, endTimeMs } = timeSpan;
+      return {
+        start: startTimeMs,
+        end: endTimeMs,
+      };
+    },
+    [timeSpan, textMap],
+  );
 
   const getDefaultFilter = useCallback(() => {
-    return reduce(curMetric?.filters, (result, { tag, op, value }) => ({
-      ...result,
-      [`${op}_${tag}`]: value,
-    }), {});
+    return reduce(
+      curMetric?.filters,
+      (result, { tag, op, value }) => ({
+        ...result,
+        [`${op}_${tag}`]: value,
+      }),
+      {},
+    );
   }, [curMetric?.filters]);
 
-  const getDSLFilters = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
-    if (isEmpty(dimensions)) return;
-    return map(dimensions, ({ type, field, filter, expr }) => {
-      if (type === 'filter') {
-        return `${fieldsMap[field as string]?.key}${filter?.operation}${
-          isNumber(filter?.value)
-            ? filter?.value
-            // 正则表达式特殊处理下
-            : filter?.operation === '=~'
+  const getDSLFilters = useCallback(
+    (dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
+      if (isEmpty(dimensions)) return;
+      return map(dimensions, ({ type, field, filter, expr }) => {
+        if (type === 'filter') {
+          return `${fieldsMap[field as string]?.key}${filter?.operation}${
+            isNumber(filter?.value)
+              ? filter?.value
+              : // 正则表达式特殊处理下
+              filter?.operation === '=~'
               ? `/${filter?.value}/`
               : `'${filter?.value}'`
-        }`;
-      } else if (type === 'expr') {
-        return expr;
-      }
-      return '';
-    });
-  }, [fieldsMap]);
-
-  const getDSLSelects = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[], isAutoPrecision?: boolean) => (isEmpty(dimensions)
-    ? []
-    : [
-      ...map(dimensions, ({ type, field, aggregation, key, expr: _expr, resultType }) => {
-        let expr;
-        switch (type) {
-          case 'expr':
-            expr = _expr;
-            break;
-          case 'time':
-            expr = 'time()';
-            break;
-          case 'field':
-            expr = aggregation
-              ?
-              `round_float(${aggregation}(${fieldsMap[field as string]?.key}), 2)` // 自动处理返回值精度问题，后面需自动处理
-              :
-              isAutoPrecision && resultType === 'number'
-                ? `round_float(${fieldsMap[field as string]?.key}, 2)`
-                : fieldsMap[field as string]?.key;
-            break;
-          default:
-            break;
+          }`;
+        } else if (type === 'expr') {
+          return expr;
         }
-        return {
-          expr,
-          alias: key,
-        };
-      }),
-      // 地图处理
-      ...insertWhen(isMapType, [
-        { expr: `${mapLevel}::tag`, alias: MAP_ALIAS },
-      ]),
-    ]
-  ), [fieldsMap, isMapType, mapLevel]);
+        return '';
+      });
+    },
+    [fieldsMap],
+  );
 
-  const getDSLGroupBy = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
-    return isMapType
-      // 地图下钻产生的值 => 需要获取图表信息
-      ? [mapLevel]
-      : isEmpty(dimensions)
+  const getDSLSelects = useCallback(
+    (dimensions: DICE_DATA_CONFIGURATOR.Dimension[], isAutoPrecision?: boolean) =>
+      isEmpty(dimensions)
+        ? []
+        : [
+            ...map(dimensions, ({ type, field, aggregation, key, expr: _expr, resultType }) => {
+              let expr;
+              switch (type) {
+                case 'expr':
+                  expr = _expr;
+                  break;
+                case 'time':
+                  expr = 'time()';
+                  break;
+                case 'field':
+                  expr = aggregation
+                    ? `round_float(${aggregation}(${fieldsMap[field as string]?.key}), 2)` // 自动处理返回值精度问题，后面需自动处理
+                    : isAutoPrecision && resultType === 'number'
+                    ? `round_float(${fieldsMap[field as string]?.key}, 2)`
+                    : fieldsMap[field as string]?.key;
+                  break;
+                default:
+                  break;
+              }
+              return {
+                expr,
+                alias: key,
+              };
+            }),
+            // 地图处理
+            ...insertWhen(isMapType, [{ expr: `${mapLevel}::tag`, alias: MAP_ALIAS }]),
+          ],
+    [fieldsMap, isMapType, mapLevel],
+  );
+
+  const getDSLGroupBy = useCallback(
+    (dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
+      return isMapType
+        ? // 地图下钻产生的值 => 需要获取图表信息
+          [mapLevel]
+        : isEmpty(dimensions)
         ? undefined
         : map(dimensions, ({ type, field, expr, timeInterval }) => {
-          let val;
-          switch (type) {
-            case 'time':
-              val = (timeInterval?.value && timeInterval?.unit) ? `time(${getIntervalString(timeInterval)})` : 'time()';
-              break;
-            case 'field':
-              val = fieldsMap[field as string]?.key;
-              break;
-            case 'expr':
-              val = expr;
-              break;
-            default:
-              break;
-          }
-          return val;
-        });
-  }, [fieldsMap, mapLevel]);
+            let val;
+            switch (type) {
+              case 'time':
+                val = timeInterval?.value && timeInterval?.unit ? `time(${getIntervalString(timeInterval)})` : 'time()';
+                break;
+              case 'field':
+                val = fieldsMap[field as string]?.key;
+                break;
+              case 'expr':
+                val = expr;
+                break;
+              default:
+                break;
+            }
+            return val;
+          });
+    },
+    [fieldsMap, mapLevel],
+  );
 
-  const getDSLOrderBy = useCallback((dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
-    return isEmpty(dimensions)
-      ? undefined
-      : map(dimensions, ({ type, field, aggregation, expr: _expr, sort }) => {
-        let expr;
-        switch (type) {
-          case 'expr':
-            expr = _expr;
-            break;
-          case 'sort':
-            expr = aggregation
-              ? `${aggregation}(${fieldsMap[field as string]?.key})`
-              : fieldsMap[field as string]?.key;
-            break;
-          default:
-            break;
-        }
-        return {
-          expr,
-          dir: sort,
-        };
-      });
-  }, [fieldsMap]);
+  const getDSLOrderBy = useCallback(
+    (dimensions: DICE_DATA_CONFIGURATOR.Dimension[]) => {
+      return isEmpty(dimensions)
+        ? undefined
+        : map(dimensions, ({ type, field, aggregation, expr: _expr, sort }) => {
+            let expr;
+            switch (type) {
+              case 'expr':
+                expr = _expr;
+                break;
+              case 'sort':
+                expr = aggregation
+                  ? `${aggregation}(${fieldsMap[field as string]?.key})`
+                  : fieldsMap[field as string]?.key;
+                break;
+              default:
+                break;
+            }
+            return {
+              expr,
+              dir: sort,
+            };
+          });
+    },
+    [fieldsMap],
+  );
 
   const getLoadData = useCallback((payload: Omit<CreateLoadDataParams, 'chartType'>) => {
     return createLoadDataFn({
@@ -237,73 +270,99 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const getSqlString = (sql?: DC.SqlContent) => {
     if (!sql) return '';
-    const sqlStr = reduce(SQL_OPERATOR, (result, operator, key) => {
-      return `${result}${sql[key] ? `${operator} ${sql[key]} ` : ''}`;
-    }, '');
+    const sqlStr = reduce(
+      SQL_OPERATOR,
+      (result, operator, key) => {
+        return `${result}${sql[key] ? `${operator} ${sql[key]} ` : ''}`;
+      },
+      '',
+    );
     return sqlStr;
   };
 
-  const genApi = useCallback(({
-    typeDimensions,
-    valueDimensions,
-    sortDimensions,
-    resultFilters,
-    isSqlMode,
-    customTime,
-    sql,
-    limit,
-  }: DC.DatasourceConfig): DC.API => {
-    const { url, query } = loadDataApi;
-    return {
-      url,
-      method: isSqlMode ? 'get' : 'post',
-      query: {
-        format: 'chartv2',
-        ql: isSqlMode ? 'influxql' : 'influxql:ast',
-        q: isSqlMode ? getSqlString(sql) : undefined,
-        type: '_',
-        epoch: !isTableType ? 'ms' : undefined,
-        time_field: find(typeDimensions, { type: 'time' })?.timeField?.value,
-        time_unit: find(typeDimensions, { type: 'time' })?.timeField?.unit,
-        ...getDefaultFilter(),
-        ...getTimeRange(customTime),
-        ...query,
-      },
-      body: isSqlMode
-        ? undefined
-        :
-        {
-          from: curMetric?.metric ? [curMetric?.metric] : undefined,
-          select: [...getDSLSelects(typeDimensions || []), ...getDSLSelects(valueDimensions || [], true)],
-          where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
-          groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
-          orderby: getDSLOrderBy(sortDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
-          // 0个维度且有1个或多个多个值，limit为1，返回最新值
-          limit: limit || (((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0) && !isMapType && !isTableType ? 1 : undefined),
+  const genApi = useCallback(
+    ({
+      typeDimensions,
+      valueDimensions,
+      sortDimensions,
+      resultFilters,
+      isSqlMode,
+      customTime,
+      sql,
+      limit,
+    }: DC.DatasourceConfig): DC.API => {
+      const { url, query } = loadDataApi;
+      return {
+        url,
+        method: isSqlMode ? 'get' : 'post',
+        query: {
+          format: 'chartv2',
+          ql: isSqlMode ? 'influxql' : 'influxql:ast',
+          q: isSqlMode ? getSqlString(sql) : undefined,
+          type: '_',
+          epoch: !isTableType ? 'ms' : undefined,
+          time_field: find(typeDimensions, { type: 'time' })?.timeField?.value,
+          time_unit: find(typeDimensions, { type: 'time' })?.timeField?.unit,
+          ...getDefaultFilter(),
+          ...getTimeRange(customTime),
+          ...query,
         },
-    };
-  }, [loadDataApi, isTableType, getDefaultFilter, getTimeRange, curMetric?.metric, getDSLSelects, getDSLFilters, getDSLGroupBy, getDSLOrderBy, isMapType]);
+        body: isSqlMode
+          ? undefined
+          : {
+              from: curMetric?.metric ? [curMetric?.metric] : undefined,
+              select: [...getDSLSelects(typeDimensions || []), ...getDSLSelects(valueDimensions || [], true)],
+              where: getDSLFilters(resultFilters as DICE_DATA_CONFIGURATOR.Dimension[]),
+              groupby: getDSLGroupBy(typeDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
+              orderby: getDSLOrderBy(sortDimensions as DICE_DATA_CONFIGURATOR.Dimension[]),
+              // 0个维度且有1个或多个多个值，limit为1，返回最新值
+              limit:
+                limit ||
+                ((typeDimensions || []).length < 1 && (valueDimensions || []).length > 0 && !isMapType && !isTableType
+                  ? 1
+                  : undefined),
+            },
+      };
+    },
+    [
+      loadDataApi,
+      isTableType,
+      getDefaultFilter,
+      getTimeRange,
+      curMetric?.metric,
+      getDSLSelects,
+      getDSLFilters,
+      getDSLGroupBy,
+      getDSLOrderBy,
+      isMapType,
+    ],
+  );
 
-  const handleUpdateDataSource = useCallback((_dataSource: Partial<DC.DatasourceConfig>, otherProps?: object) => {
-    const newDataSource = produce(dataSource, (draft) => {
-      forEach(_dataSource, (v, k) => { draft[k] = v; });
-    });
+  const handleUpdateDataSource = useCallback(
+    (_dataSource: Partial<DC.DatasourceConfig>, otherProps?: object) => {
+      const newDataSource = produce(dataSource, (draft) => {
+        forEach(_dataSource, (v, k) => {
+          draft[k] = v;
+        });
+      });
 
-    const _api = genApi(newDataSource);
-    _submitResult({
-      config: produce(currentChartConfig, (draft) => {
-        draft.dataSourceConfig = newDataSource;
-        const moreThanOneDayFormat = find(draft.dataSourceConfig.typeDimensions, { type: 'time' })?.timeFormat;
-        if (moreThanOneDayFormat) {
-          const optionProps = draft.optionProps || {};
-          draft.optionProps = { ...optionProps, moreThanOneDayFormat };
-        }
-      }),
-      api: _api,
-      ...otherProps,
-      loadData: getLoadData({ api: _api, ...newDataSource }),
-    });
-  }, [_submitResult, dataSource, currentChartConfig, genApi, getLoadData]);
+      const _api = genApi(newDataSource);
+      _submitResult({
+        config: produce(currentChartConfig, (draft) => {
+          draft.dataSourceConfig = newDataSource;
+          const moreThanOneDayFormat = find(draft.dataSourceConfig.typeDimensions, { type: 'time' })?.timeFormat;
+          if (moreThanOneDayFormat) {
+            const optionProps = draft.optionProps || {};
+            draft.optionProps = { ...optionProps, moreThanOneDayFormat };
+          }
+        }),
+        api: _api,
+        ...otherProps,
+        loadData: getLoadData({ api: _api, ...newDataSource }),
+      });
+    },
+    [_submitResult, dataSource, currentChartConfig, genApi, getLoadData],
+  );
 
   const handleUpdateChartType = (type: DC.ViewType) => {
     chartTypeRef.current = type;
@@ -317,7 +376,9 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const handleUpdateSqlContent = (_dataSource: Partial<DC.SqlContent>) => {
     const sql = produce(dataSource.sql || {}, (draft) => {
-      forEach(_dataSource, (v, k) => { draft[k] = v; });
+      forEach(_dataSource, (v, k) => {
+        draft[k] = v;
+      });
     });
     handleUpdateDataSource({ sql });
   };
@@ -447,7 +508,11 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         },
       },
       {
-        label: isLineType ? <DcInfoLabel text={textMap.dimensions} info={textMap['typeDimensions info']} /> : textMap.dimensions,
+        label: isLineType ? (
+          <DcInfoLabel text={textMap.dimensions} info={textMap['typeDimensions info']} />
+        ) : (
+          textMap.dimensions
+        ),
         name: 'typeDimensions',
         initialValue: dataSource?.typeDimensions,
         required: false,

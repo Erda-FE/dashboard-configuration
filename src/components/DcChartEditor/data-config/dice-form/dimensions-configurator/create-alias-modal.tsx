@@ -8,7 +8,7 @@ import { unitInfMap } from '../constants';
 
 const { Group: InputGroup } = Input;
 
-const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit;[k: string]: any }) => {
+const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit; [k: string]: any }) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const { type, unit } = value || {};
   return (
@@ -40,7 +40,10 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
             <Select
               value={unit}
               size={size}
-              options={map(unitInfMap(textMap)[type || '']?.units, (item) => ({ label: item || textMap.null, value: item }))}
+              options={map(unitInfMap(textMap)[type || '']?.units, (item) => ({
+                label: item || textMap.null,
+                value: item,
+              }))}
               onChange={(v) => onChange({ ...value, unit: v })}
             />
           </When>
@@ -49,7 +52,6 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
     </InputGroup>
   );
 };
-
 
 interface IProps {
   defaultValue: DICE_DATA_CONFIGURATOR.Dimension;
@@ -81,16 +83,9 @@ const CreateAliasModal = ({ defaultValue, isNeedUnit, ...rest }: IProps) => {
         initialValue: defaultValue.unit,
       },
     ]),
-
   ];
 
-  return (
-    <DcFormModal
-      title={textMap['field config']}
-      fields={fields}
-      {...rest}
-    />
-  );
+  return <DcFormModal title={textMap['field config']} fields={fields} {...rest} />;
 };
 
 export default CreateAliasModal;

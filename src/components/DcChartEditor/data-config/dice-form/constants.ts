@@ -2,9 +2,21 @@ import { map } from 'lodash';
 import moment from 'moment';
 import { TextType } from 'src/stores/dash-board';
 
-const getBeforeTimeRange = (number: number, string: any) => [moment().subtract(number, string).valueOf(), moment().valueOf()];
+const getBeforeTimeRange = (number: number, string: any) => [
+  moment().subtract(number, string).valueOf(),
+  moment().valueOf(),
+];
 const getScopeTimeRange = (scope: any) => [moment().startOf(scope).valueOf(), moment().valueOf()];
-const getLastScopeTimeRange = (scope: any) => [moment()[scope](moment()[scope]() - 1).startOf(scope).valueOf(), moment()[scope](moment()[scope]() - 1).endOf(scope).valueOf()];
+const getLastScopeTimeRange = (scope: any) => [
+  moment()
+    [scope](moment()[scope]() - 1)
+    .startOf(scope)
+    .valueOf(),
+  moment()
+    [scope](moment()[scope]() - 1)
+    .endOf(scope)
+    .valueOf(),
+];
 
 interface IPagination {
   pageSize: number;
@@ -137,14 +149,13 @@ interface DimensionConfig {
 // eslint-disable-next-line no-shadow
 enum SORT_TYPE {
   desc = 'DESC',
-  asc = 'ASC'
+  asc = 'ASC',
 }
 
 export const sortMap = (textMap: TextType) => ({
   [SORT_TYPE.desc]: { value: SORT_TYPE.desc, label: textMap.desc },
   [SORT_TYPE.asc]: { value: SORT_TYPE.asc, label: textMap.asc },
 });
-
 
 export const dimensionsConfigs = (textMap: TextType) => ({
   [SPECIAL_METRIC_TYPE.expr]: [
@@ -162,8 +173,7 @@ export const dimensionsConfigs = (textMap: TextType) => ({
       actionKey: 'configTime',
     },
   ],
-  [SPECIAL_METRIC_TYPE.field]: [
-  ],
+  [SPECIAL_METRIC_TYPE.field]: [],
   [SPECIAL_METRIC_TYPE.sort]: [
     {
       key: SPECIAL_METRIC_TYPE.sort,
@@ -221,7 +231,7 @@ export const unitInfMap = (textMap: TextType) => ({
   },
 });
 
-export const timeIntervals = (textMap: TextType) => ([
+export const timeIntervals = (textMap: TextType) => [
   {
     label: textMap.second,
     value: 's',
@@ -246,7 +256,7 @@ export const timeIntervals = (textMap: TextType) => ([
   //   label: textMap.month,
   //   value: 'M',
   // },
-]);
+];
 
 export const TIME_FIELDS_UNITS = [
   { label: 'ns', value: 'ns' },

@@ -5,10 +5,13 @@ import './index.scss';
 
 const { Search } = Input;
 
-type IProps = Merge<{
-  className: string;
-  onChange: (val: any) => void;
-}, Partial<DC_GLOBAL_FILTERS.Filter>>;
+type IProps = Merge<
+  {
+    className: string;
+    onChange: (val: any) => void;
+  },
+  Partial<DC_GLOBAL_FILTERS.Filter>
+>;
 
 const FilterComp = ({ className, type, label, placeholder, defaultValue, onChange }: IProps) => {
   return (
@@ -21,10 +24,7 @@ const FilterComp = ({ className, type, label, placeholder, defaultValue, onChang
           <TimeSelector defaultTime={defaultValue} onOk={(v) => onChange([v.startTimeMs, v.endTimeMs])} />
         </When>
         <When condition={type === 'search'}>
-          <Search
-            allowClear
-            placeholder={placeholder}
-          />
+          <Search allowClear placeholder={placeholder} />
         </When>
       </Choose>
     </div>

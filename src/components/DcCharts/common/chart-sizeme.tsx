@@ -54,7 +54,7 @@ export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps)
 
   if (onBoardEvent && useBrush) {
     Object.assign(onEvents, {
-      click: (params: {dataIndex: number}) => {
+      click: (params: { dataIndex: number }) => {
         const timeGap = time[1] - time[0];
         onBoardEvent?.({ start: time[params?.dataIndex], end: Number(time[params?.dataIndex]) + timeGap });
       },
@@ -67,20 +67,20 @@ export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps)
           onBoardEvent?.({ start, end });
         }
       },
-
     });
   }
 
   React.useEffect(() => {
     if (useBrush) {
-      ref.current && ref.current.getEchartsInstance().dispatchAction({
-        type: 'takeGlobalCursor',
-        key: 'brush',
-        brushOption: {
-          brushType: 'lineX',
-          brushMode: 'multiple',
-        },
-      });
+      ref.current &&
+        ref.current.getEchartsInstance().dispatchAction({
+          type: 'takeGlobalCursor',
+          key: 'brush',
+          brushOption: {
+            brushType: 'lineX',
+            brushMode: 'multiple',
+          },
+        });
     }
   }, [time]);
 

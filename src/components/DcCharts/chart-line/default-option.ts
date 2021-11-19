@@ -18,7 +18,7 @@ export default () => ({
   xAxis: [
     {
       axisTick: {
-        show: false, /* 坐标刻度 */
+        show: false /* 坐标刻度 */,
       },
       axisLine: {
         show: false,

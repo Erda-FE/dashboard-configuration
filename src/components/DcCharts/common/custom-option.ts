@@ -18,7 +18,7 @@ const getCustomOption = (data: DC.StaticData = {} as DC.StaticData, config: DC.C
 
   if (customOptionFn) {
     if (isString(customOptionFn)) {
-    // 取之前注册好的 customOptionFn
+      // 取之前注册好的 customOptionFn
       customOptionFn = getConfig(['chartOptionFn', customOptionFn]) as DC.OptionFn;
       // 未注册
       if (!customOptionFn) {

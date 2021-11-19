@@ -37,7 +37,11 @@ const RowEventConfig = ({ value, options, onChange }: RowEventConfigProps) => {
         placeholder={textMap['event value']}
         onChange={(v) => setEValue(v)}
       >
-        {map(options, (option) => <Select.Option value={option.key} key={option.key}>{option.alias}</Select.Option>)}
+        {map(options, (option) => (
+          <Select.Option value={option.key} key={option.key}>
+            {option.alias}
+          </Select.Option>
+        ))}
       </Select>
     </div>
   );
@@ -81,4 +85,3 @@ export default () => {
 
   return <CommonConfigurator fields={fields} />;
 };
-

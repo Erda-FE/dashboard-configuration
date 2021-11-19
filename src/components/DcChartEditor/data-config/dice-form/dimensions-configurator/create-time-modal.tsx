@@ -95,13 +95,7 @@ const CreateTimeModal = ({ defaultValue, metricsMap, ...rest }: IProps) => {
     },
   ];
 
-  return (
-    <DcFormModal
-      title={textMap['time config']}
-      fields={fields}
-      {...rest}
-    />
-  );
+  return <DcFormModal title={textMap['time config']} fields={fields} {...rest} />;
 };
 
 export default CreateTimeModal;

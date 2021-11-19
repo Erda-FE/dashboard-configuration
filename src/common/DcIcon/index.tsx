@@ -12,14 +12,7 @@ interface IProps {
   onClick?: (e: any) => void;
 }
 
-export const DcIcon = ({
-  useSymbol = false,
-  type,
-  size = 'default',
-  className,
-  onClick,
-  ...rest
-}: IProps) => {
+export const DcIcon = ({ useSymbol = false, type, size = 'default', className, onClick, ...rest }: IProps) => {
   let _classNames = classnames({
     'dc-iconfont': true,
     [`dc-icon-${type}`]: true,
@@ -37,23 +30,13 @@ export const DcIcon = ({
         </svg>
       </When>
       <Otherwise>
-        <span
-          className={_classNames}
-          onClick={onClick}
-          {...rest}
-        />
+        <span className={_classNames} onClick={onClick} {...rest} />
       </Otherwise>
     </Choose>
   );
 };
 
-export const DcInfoIcon = ({
-  info,
-  size,
-}: {
-  info: string;
-  size?: 'small' | 'default';
-}) => {
+export const DcInfoIcon = ({ info, size }: { info: string; size?: 'small' | 'default' }) => {
   return (
     <Tooltip title={info}>
       <DcIcon className="mr4" size={size} type="info-circle" />

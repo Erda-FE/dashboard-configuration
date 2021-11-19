@@ -1,5 +1,6 @@
 import qs from 'querystringify';
 import { pickBy, isNil } from 'lodash';
+
 /**
  * 获取cookies对象，传入key时获取单个字段
  * @param 需要获取的cookie key
@@ -12,7 +13,6 @@ function getCookies(key: string) {
   });
   return key ? cookies[key] : cookies;
 }
-
 
 function getHeaders(method: string) {
   const headers = {
@@ -49,16 +49,14 @@ const client = (url: string, { method, body, query, ...restConfig }: Record<stri
     },
   };
   body && (config.body = JSON.stringify(body));
-  return window
-    .fetch(queryStr ? `${url}?${queryStr}` : url, config)
-    .then(async (res: any) => {
-      const data = await res.json();
-      if (res.ok) {
-        return data;
-      } else {
-        return Promise.reject(data);
-      }
-    });
+  return window.fetch(queryStr ? `${url}?${queryStr}` : url, config).then(async (res: any) => {
+    const data = await res.json();
+    if (res.ok) {
+      return data;
+    } else {
+      return Promise.reject(data);
+    }
+  });
 };
 
 export default client;

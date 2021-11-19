@@ -5,6 +5,7 @@ interface ICutOptions {
   suffix?: string;
   showTip?: boolean;
 }
+
 /**
  * 截取字符串
  * @param fullStr 字符串
@@ -17,9 +18,7 @@ export function cutStr(fullStr: string, limit = 0, options?: ICutOptions) {
     return '';
   }
   const { suffix = '...', showTip = false } = options || {};
-  const str = (fullStr.length > limit ? `${fullStr.substring(0, limit)}${suffix}` : fullStr);
+  const str = fullStr.length > limit ? `${fullStr.substring(0, limit)}${suffix}` : fullStr;
   const sameLength = fullStr.length === str.length;
-  return showTip && !sameLength
-    ? <Tooltip title={fullStr}>{str}</Tooltip>
-    : str;
+  return showTip && !sameLength ? <Tooltip title={fullStr}>{str}</Tooltip> : str;
 }

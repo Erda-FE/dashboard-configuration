@@ -2,6 +2,7 @@ import { createFlatStore } from '../cube';
 import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
 
 export type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
+
 interface IState {
   isFullscreen: boolean;
   layout: any[];

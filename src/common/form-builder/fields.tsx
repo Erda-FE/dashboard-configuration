@@ -12,10 +12,10 @@
 // along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import React from 'react';
-import { Form, Row, Col, FormItemProps } from 'antd';
-import { map, some, isBoolean, has } from 'lodash';
-import { FormContext } from './form-builder';
+import { Col, Form, FormItemProps, Row } from 'antd';
+import { has, isBoolean, map, some } from 'lodash';
 import type { IContextType } from './form-builder';
+import { FormContext } from './form-builder';
 import ReadonlyField from './readonly-field';
 
 const { Item } = Form;
@@ -57,12 +57,12 @@ export interface IFieldType extends FormItemProps {
   colSpan?: number;
   isHoldLabel?: boolean;
   readonly?:
-  | boolean
-  | {
-    renderItem: React.ReactNode;
-    style?: React.CSSProperties;
-    className?: string;
-  };
+    | boolean
+    | {
+        renderItem: React.ReactNode;
+        style?: React.CSSProperties;
+        className?: string;
+      };
 }
 
 interface IProps {
@@ -74,7 +74,7 @@ interface IProps {
 }
 
 export const Fields: React.MemoExoticComponent<
-({ fields, isMultiColumn, columnNum, readonly, fid }: IProps) => JSX.Element
+  ({ fields, isMultiColumn, columnNum, readonly, fid }: IProps) => JSX.Element
 > = React.memo(({ fields = [], isMultiColumn, columnNum, readonly, fid }: IProps) => {
   const getColumn = (contextProps: IContextType) => {
     if (isMultiColumn || (isMultiColumn === undefined && contextProps.parentIsMultiColumn)) {
@@ -112,14 +112,20 @@ export const Fields: React.MemoExoticComponent<
               const labelStr = typeof label === 'object' ? label?.props?.text : label;
               const afterAddRequiredRules =
                 required && !some(rules, (rule) => has(rule, 'required'))
-                  ? [{ required: true, message: `${labelStr} 不能为空` }, ...rules]
+                  ? [
+                      {
+                        required: true,
+                        message: `${labelStr} 不能为空`,
+                      },
+                      ...rules,
+                    ]
                   : rules;
               const isRealReadOnly =
                 (itemReadonly !== undefined
                   ? itemReadonly
                   : readonly !== undefined
-                    ? readonly
-                    : contextProps?.parentReadonly) || false;
+                  ? readonly
+                  : contextProps?.parentReadonly) || false;
               const realReadData = isBoolean(isRealReadOnly) ? null : isRealReadOnly;
               return (
                 <Col span={colSpan || 24 / fieldRealColumnNum} key={idx} className={wrapperClassName}>

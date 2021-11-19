@@ -7,14 +7,22 @@ import DC from 'src/types';
 import DashboardStore from '../stores/dash-board';
 
 const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
-  const { y: maxY, h: maxH } = maxBy(items, ({ y, h }) => y + h) || { y: 0, h: 0 };
+  const { y: maxY, h: maxH } = maxBy(items, ({ y, h }) => y + h) || {
+    y: 0,
+    h: 0,
+  };
   return maxY + maxH;
 };
 
 const updateLayout = (id: string, items: DC.PureLayoutItem[]): DC.PureLayoutItem[] => {
   if (some(items, { i: id })) return items;
 
-  const size = { w: 8, h: 9, minW: 4, minH: 3 };
+  const size = {
+    w: 8,
+    h: 9,
+    minW: 4,
+    minH: 3,
+  };
   return [
     ...items,
     {
@@ -50,13 +58,15 @@ interface IState {
    */
   editorContextMap: Record<string, any>;
   canSave: boolean;
-  requiredField: {
-    chartType: boolean;
-    activedMetricGroups: boolean;
-    valueDimensions: boolean;
-    select: boolean;
-    from: boolean;
-  } | undefined;
+  requiredField:
+    | {
+        chartType: boolean;
+        activedMetricGroups: boolean;
+        valueDimensions: boolean;
+        select: boolean;
+        from: boolean;
+      }
+    | undefined;
 }
 
 const initState: IState = {
@@ -68,7 +78,10 @@ const initState: IState = {
   viewMap: {}, // 所有图表配置信息
   editChartId: undefined,
   viewCopy: undefined, // 修改时用于恢复的复制对象
-  timeSpan: { startTimeMs: 0, endTimeMs: 0 },
+  timeSpan: {
+    startTimeMs: 0,
+    endTimeMs: 0,
+  },
   editorContextMap: {},
   canSave: false,
   requiredField: {
@@ -132,7 +145,9 @@ const chartEditorStore = createFlatStore({
     updateEditor(state, payload: Partial<DC.View>) {
       state.isTouched = true;
       state.viewCopy = produce((state.viewCopy || {}) as DC.View, (draft) => {
-        forEach(payload, (v, k) => { draft[k] = v; });
+        forEach(payload, (v, k) => {
+          draft[k] = v;
+        });
       });
     },
     /**
@@ -159,7 +174,11 @@ const chartEditorStore = createFlatStore({
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;
 
-      state.viewCopy = { ...DEFAULT_VIEW_CONFIG, title: textMap['unnamed chart'], chartType: 'chart:line' } as unknown as DC.View;
+      state.viewCopy = {
+        ...DEFAULT_VIEW_CONFIG,
+        title: textMap['unnamed chart'],
+        chartType: 'chart:line',
+      } as unknown as DC.View;
       state.canSave = false;
       state.requiredField = {
         chartType: false,
@@ -185,14 +204,12 @@ const chartEditorStore = createFlatStore({
       }
     },
     checkBeforeSave(state, view) {
-      const {
-        chartType,
-        config,
-      } = view;
+      const { chartType, config } = view;
       const { activedMetricGroups, valueDimensions, isSqlMode = false, sql } = config?.dataSourceConfig || {};
 
       const sqlModeCanSave = isSqlMode && chartType && sql?.select && sql.from;
-      const notSqlModeCanSave = !isSqlMode && chartType && activedMetricGroups?.length > 0 && valueDimensions?.length > 0;
+      const notSqlModeCanSave =
+        !isSqlMode && chartType && activedMetricGroups?.length > 0 && valueDimensions?.length > 0;
       state.canSave = sqlModeCanSave || notSqlModeCanSave;
       state.requiredField = {
         chartType: !!chartType,
@@ -204,7 +221,10 @@ const chartEditorStore = createFlatStore({
     },
     saveEdit(state) {
       chartEditorStore.setEditMode(false);
-      return { layout: state.pureLayout, viewMap: state.viewMap }; // 只输出外部需要的
+      return {
+        layout: state.pureLayout,
+        viewMap: state.viewMap,
+      }; // 只输出外部需要的
     },
     updateViewMap(state, viewMap: Record<string, DC.View>) {
       state.viewMap = viewMap;

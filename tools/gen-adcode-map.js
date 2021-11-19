@@ -12,7 +12,8 @@ const path = require('path');
 let initMapString = '';
 
 // 获取行政区划 https://lbs.amap.com/api/webservice/guide/api/district/
-agent.get('https://restapi.amap.com/v3/config/district')
+agent
+  .get('https://restapi.amap.com/v3/config/district')
   .query({
     key: 'fb7b54dfe3335e47bb086058338077d0',
     subdistrict: 2,
@@ -34,17 +35,17 @@ const genADCodeMap = (districts) => {
         genInitMapString(_subDistricts);
       }
     }
-  }(districts));
+  })(districts);
 
   // 省市名不重复
   fs.writeFile(
     path.resolve(__dirname, '../src/constants/adcode-map.ts'),
     `export const adcodeMap = new Map([${initMapString}]);\r`,
-    errHandler('adcode map')
+    errHandler('adcode map'),
   );
 };
 
-const errHandler = msg => (err) => {
+const errHandler = (msg) => (err) => {
   if (err) {
     // eslint-disable-next-line no-console
     console.log(`>>>>>> ${msg} generated fail! <<<<<< \n\n`, err);

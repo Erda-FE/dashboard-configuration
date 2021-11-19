@@ -131,14 +131,18 @@
 // font-size
 @mixin font-size($list...) {
   @each $num in $list {
-    .fz#{$num} { font-size: #{$num}px; }
+    .fz#{$num} {
+      font-size: #{$num}px;
+    }
   }
 }
 
 // 百分比 width
 @mixin width($list...) {
   @each $num in $list {
-    .wd#{$num} { width: percentage($num/100); }
+    .wd#{$num} {
+      width: percentage($num/100);
+    }
   }
 }
 

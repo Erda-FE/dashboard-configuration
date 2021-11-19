@@ -6,7 +6,6 @@ const randomValue = () => Math.round(Math.random() * 1000);
 const data = {
   // legendData: ['直接访问', '邮件营销', '联盟广告', '视频广告', '搜索引擎'],
   metricData: [
-
     // {
     //   name: '访问来源',
     //   data: [
@@ -96,11 +95,26 @@ export default [
           metricData: [
             {
               data: [
-                {value: 180, name: 'sa'},
-                {value: 40, name: 'rr' },
-                {value: 20, name: 'tt' },
-                {value: 80, name: 'tr' },
-                {value: 100, name: 'yy' }
+                {
+                  value: 180,
+                  name: 'sa',
+                },
+                {
+                  value: 40,
+                  name: 'rr',
+                },
+                {
+                  value: 20,
+                  name: 'tt',
+                },
+                {
+                  value: 80,
+                  name: 'tr',
+                },
+                {
+                  value: 100,
+                  name: 'yy',
+                },
               ],
             },
           ],
@@ -124,8 +138,7 @@ export default [
       staticData: { metricData: [] },
       config: {
         option: {
-          tooltip: {
-          },
+          tooltip: {},
           legend: {
             bottom: 0,
             align: 'left',
@@ -152,9 +165,11 @@ export default [
           //     },
           //   },
           // ],
-          xAxis: [{
-            triggerEvent: true,
-          }],
+          xAxis: [
+            {
+              triggerEvent: true,
+            },
+          ],
         },
       },
       chartProps: {
@@ -164,7 +179,18 @@ export default [
           },
         },
       },
-      customRender: chartNode => <div className="SASA" style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>{chartNode}</div>,
+      customRender: (chartNode) => (
+        <div
+          className="SASA"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '100%',
+          }}
+        >
+          {chartNode}
+        </div>
+      ),
     },
   },
   // {
@@ -242,14 +268,16 @@ export default [
             x: 'center',
             y: 'bottom',
           },
-          series: [{
-            radius: ['50%', '70%'],
-            label: {
-              normal: {
-                formatter: '{b}:  {c}  {d}%',
+          series: [
+            {
+              radius: ['50%', '70%'],
+              label: {
+                normal: {
+                  formatter: '{b}:  {c}  {d}%',
+                },
               },
             },
-          }],
+          ],
         },
       },
     },
@@ -273,39 +301,123 @@ export default [
             {
               name: 'iphone12',
               data: [
-                { name: '哈密市', value: randomValue() },
-                { name: '天津', value: randomValue() },
-                { name: '上海', value: randomValue() },
-                { name: '重庆', value: randomValue() },
-                { name: '河北', value: randomValue() },
-                { name: '河南', value: randomValue() },
-                { name: '云南', value: randomValue() },
-                { name: '辽宁', value: randomValue() },
-                { name: '黑龙江', value: randomValue() },
-                { name: '湖南', value: randomValue() },
-                { name: '安徽', value: randomValue() },
-                { name: '山东', value: randomValue() },
-                { name: '新疆维吾尔自治区', value: randomValue() },
-                { name: '江苏', value: randomValue() },
+                {
+                  name: '哈密市',
+                  value: randomValue(),
+                },
+                {
+                  name: '天津',
+                  value: randomValue(),
+                },
+                {
+                  name: '上海',
+                  value: randomValue(),
+                },
+                {
+                  name: '重庆',
+                  value: randomValue(),
+                },
+                {
+                  name: '河北',
+                  value: randomValue(),
+                },
+                {
+                  name: '河南',
+                  value: randomValue(),
+                },
+                {
+                  name: '云南',
+                  value: randomValue(),
+                },
+                {
+                  name: '辽宁',
+                  value: randomValue(),
+                },
+                {
+                  name: '黑龙江',
+                  value: randomValue(),
+                },
+                {
+                  name: '湖南',
+                  value: randomValue(),
+                },
+                {
+                  name: '安徽',
+                  value: randomValue(),
+                },
+                {
+                  name: '山东',
+                  value: randomValue(),
+                },
+                {
+                  name: '新疆维吾尔自治区',
+                  value: randomValue(),
+                },
+                {
+                  name: '江苏',
+                  value: randomValue(),
+                },
               ],
             },
             {
               name: 'iphone11',
               data: [
-                { name: '哈密市', value: randomValue() },
-                { name: '天津', value: randomValue() },
-                { name: '上海', value: randomValue() },
-                { name: '重庆', value: randomValue() },
-                { name: '河北', value: randomValue() },
-                { name: '河南', value: randomValue() },
-                { name: '云南', value: randomValue() },
-                { name: '辽宁', value: randomValue() },
-                { name: '黑龙江', value: randomValue() },
-                { name: '湖南', value: randomValue() },
-                { name: '安徽', value: randomValue() },
-                { name: '山东', value: randomValue() },
-                { name: '新疆维吾尔自治区', value: randomValue() },
-                { name: '江苏', value: randomValue() },
+                {
+                  name: '哈密市',
+                  value: randomValue(),
+                },
+                {
+                  name: '天津',
+                  value: randomValue(),
+                },
+                {
+                  name: '上海',
+                  value: randomValue(),
+                },
+                {
+                  name: '重庆',
+                  value: randomValue(),
+                },
+                {
+                  name: '河北',
+                  value: randomValue(),
+                },
+                {
+                  name: '河南',
+                  value: randomValue(),
+                },
+                {
+                  name: '云南',
+                  value: randomValue(),
+                },
+                {
+                  name: '辽宁',
+                  value: randomValue(),
+                },
+                {
+                  name: '黑龙江',
+                  value: randomValue(),
+                },
+                {
+                  name: '湖南',
+                  value: randomValue(),
+                },
+                {
+                  name: '安徽',
+                  value: randomValue(),
+                },
+                {
+                  name: '山东',
+                  value: randomValue(),
+                },
+                {
+                  name: '新疆维吾尔自治区',
+                  value: randomValue(),
+                },
+                {
+                  name: '江苏',
+                  value: randomValue(),
+                },
               ],
             },
           ],

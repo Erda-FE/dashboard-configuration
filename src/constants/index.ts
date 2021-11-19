@@ -264,8 +264,10 @@ export const TEXT_EN_MAP = {
   'this year': 'this year',
   'last year': 'last year',
   'result filter': 'result filter',
-  'valueDimensions info': 'Except for the table, the selected value of other charts must ensure that the return value is numeric!',
-  'typeDimensions info': 'When selecting multiple dimensions, time must be selected, other dimensions are automatically grouped',
+  'valueDimensions info':
+    'Except for the table, the selected value of other charts must ensure that the return value is numeric!',
+  'typeDimensions info':
+    'When selecting multiple dimensions, time must be selected, other dimensions are automatically grouped',
   'null display tip': 'Specify the value displayed when the data is empty, the default is --',
   'config err': 'The configuration data is incorrect, please complete the configuration!',
   'number conversion': 'number conversion',

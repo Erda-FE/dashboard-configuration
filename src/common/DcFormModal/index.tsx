@@ -7,8 +7,8 @@ interface IProps {
   title?: React.ReactNode;
   visible: boolean;
   fields: any[];
-  onCancel?: ((e: React.MouseEvent<any, MouseEvent>) => void);
-  onOk: ((values: any) => void);
+  onCancel?: (e: React.MouseEvent<any, MouseEvent>) => void;
+  onOk: (values: any) => void;
 }
 
 const DcFormModal = ({ title, visible, fields, onCancel, onOk }: IProps) => {

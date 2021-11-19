@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import React from 'react';
-import { BoardGrid, PureBoardGrid, setLocale, getLocale, getTheme, setTheme } from '../src';
+import { BoardGrid, getLocale, getTheme, PureBoardGrid, setLocale, setTheme } from '../src';
 import layout from './mock/data';
-// import layout2 from './mock/data2';
+// import layout2 from './mock/data2'
 import { useMount } from 'react-use';
 import { Button } from 'antd';
-import './app.css'
+import './app.css';
 
 function App() {
   console.log('current locale:', getLocale());
@@ -19,13 +19,26 @@ function App() {
     <div style={{ padding: '20px' }}>
       <div style={{ marginBottom: '20px' }}>
         语言：
-        <Button className="mr12" onClick={() => setLocale('zh')}>中文</Button>
-        <Button className="mr12" onClick={() => setLocale('en')}>English</Button>
+        <Button className="mr12" onClick={() => setLocale('zh')}>
+          中文
+        </Button>
+        <Button className="mr12" onClick={() => setLocale('en')}>
+          English
+        </Button>
         主题：
-        <Button className="mr12" onClick={() => setTheme('dice')}>Dice</Button>
-        <Button className="mr12" onClick={() => setTheme('dark')}>Dark</Button>
+        <Button className="mr12" onClick={() => setTheme('dice')}>
+          Dice
+        </Button>
+        <Button className="mr12" onClick={() => setTheme('dark')}>
+          Dark
+        </Button>
       </div>
-      <BoardGrid layout={layout} onSave={(saveLayout) => { console.log(saveLayout); }} />
+      <BoardGrid
+        layout={layout}
+        onSave={(saveLayout) => {
+          console.log(saveLayout);
+        }}
+      />
       <PureBoardGrid layout={layout} showOptions />
     </div>
   );

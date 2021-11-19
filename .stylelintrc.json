@@ -10,11 +10,24 @@
     "rule-empty-line-before": [
       "always",
       {
-        "except": ["first-nested", "after-single-line-comment"]
+        "except": [
+          "first-nested",
+          "after-single-line-comment"
+        ]
       }
     ],
-    "at-rule-no-unknown": [true, {
-      "ignoreAtRules": ["function", "if", "each", "include", "mixin", "extend"]
-    }]
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "function",
+          "if",
+          "each",
+          "include",
+          "mixin",
+          "extend"
+        ]
+      }
+    ]
   }
 }

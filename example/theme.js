@@ -24,11 +24,7 @@ export const darkTheme = {
     ],
     borderColor: '#ccc',
     borderWidth: 0,
-    visualMapColor: [
-      '#bf444c',
-      '#d88273',
-      '#f6efa6',
-    ],
+    visualMapColor: ['#bf444c', '#d88273', '#f6efa6'],
     legendTextColor: '#eeeeee',
     kColor: '#fd1050',
     kColor0: '#0cf49b',
@@ -61,13 +57,9 @@ export const darkTheme = {
         axisLabelShow: true,
         axisLabelColor: '#eeeeee',
         splitLineShow: true,
-        splitLineColor: [
-          '#aaaaaa',
-        ],
+        splitLineColor: ['#aaaaaa'],
         splitAreaShow: false,
-        splitAreaColor: [
-          '#eeeeee',
-        ],
+        splitAreaColor: ['#eeeeee'],
       },
       {
         type: 'category',
@@ -79,14 +71,9 @@ export const darkTheme = {
         axisLabelShow: true,
         axisLabelColor: '#333',
         splitLineShow: false,
-        splitLineColor: [
-          '#ccc',
-        ],
+        splitLineColor: ['#ccc'],
         splitAreaShow: false,
-        splitAreaColor: [
-          'rgba(250,250,250,0.3)',
-          'rgba(200,200,200,0.3)',
-        ],
+        splitAreaColor: ['rgba(250,250,250,0.3)', 'rgba(200,200,200,0.3)'],
       },
       {
         type: 'value',
@@ -98,14 +85,9 @@ export const darkTheme = {
         axisLabelShow: true,
         axisLabelColor: '#333',
         splitLineShow: true,
-        splitLineColor: [
-          '#ccc',
-        ],
+        splitLineColor: ['#ccc'],
         splitAreaShow: false,
-        splitAreaColor: [
-          'rgba(250,250,250,0.3)',
-          'rgba(200,200,200,0.3)',
-        ],
+        splitAreaColor: ['rgba(250,250,250,0.3)', 'rgba(200,200,200,0.3)'],
       },
       {
         type: 'log',
@@ -117,14 +99,9 @@ export const darkTheme = {
         axisLabelShow: true,
         axisLabelColor: '#333',
         splitLineShow: true,
-        splitLineColor: [
-          '#ccc',
-        ],
+        splitLineColor: ['#ccc'],
         splitAreaShow: false,
-        splitAreaColor: [
-          'rgba(250,250,250,0.3)',
-          'rgba(200,200,200,0.3)',
-        ],
+        splitAreaColor: ['rgba(250,250,250,0.3)', 'rgba(200,200,200,0.3)'],
       },
       {
         type: 'time',
@@ -136,14 +113,9 @@ export const darkTheme = {
         axisLabelShow: true,
         axisLabelColor: '#333',
         splitLineShow: true,
-        splitLineColor: [
-          '#ccc',
-        ],
+        splitLineColor: ['#ccc'],
         splitAreaShow: false,
-        splitAreaColor: [
-          'rgba(250,250,250,0.3)',
-          'rgba(200,200,200,0.3)',
-        ],
+        splitAreaColor: ['rgba(250,250,250,0.3)', 'rgba(200,200,200,0.3)'],
       },
     ],
     axisSeperateSetting: false,

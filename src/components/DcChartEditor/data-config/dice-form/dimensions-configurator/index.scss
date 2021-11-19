@@ -1,4 +1,4 @@
-@import "../../../../../styles/variable";
+@import '../../../../../styles/variable';
 $dice-metric-group-prefix-cls: #{$prefix}-dice-metric-group;
 
 .#{$dice-metric-group-prefix-cls} {
@@ -23,21 +23,20 @@ $dice-metric-group-prefix-cls: #{$prefix}-dice-metric-group;
 }
 
 .dimensions-config-tag {
-   line-height: 22px;
-   align-self: start; 
-   background: #ffffff; 
-   border: #6a549e solid 1px; 
-   color: #6a549e;
+  line-height: 22px;
+  align-self: start;
+  background: #ffffff;
+  border: #6a549e solid 1px;
+  color: #6a549e;
 
-   &:hover {
-     cursor: pointer;
-   }
-
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .dimensions-config-tag2 {
-  background: #ffffff; 
-  border: #6a549e solid 1px; 
+  background: #ffffff;
+  border: #6a549e solid 1px;
   color: #6a549e;
   cursor: pointer;
 }

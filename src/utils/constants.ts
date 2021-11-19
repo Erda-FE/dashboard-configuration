@@ -1,4 +1,3 @@
-
 export const panelDataPrefix = 'paneldata#';
 export const panelControlPrefix = 'panelcontrol#';
 export const panelSettingPrefix = 'panelsetting#';

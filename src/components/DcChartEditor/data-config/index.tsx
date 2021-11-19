@@ -8,9 +8,6 @@ export default () => {
   const APIFormComponent = useMemo(() => getAPIFormComponent(), [getAPIFormComponent]);
 
   return (
-    <APIFormComponent
-      currentChart={viewCopy}
-      submitResult={(payload: Partial<DC.View>) => updateEditor(payload)}
-    />
+    <APIFormComponent currentChart={viewCopy} submitResult={(payload: Partial<DC.View>) => updateEditor(payload)} />
   );
 };

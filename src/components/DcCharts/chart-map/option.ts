@@ -25,7 +25,8 @@ export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: 
       mapType,
       zoom: 1.2,
       roam: true, // 是否开启平游或缩放
-      scaleLimit: { // 滚轮缩放的极限控制
+      scaleLimit: {
+        // 滚轮缩放的极限控制
         min: 1,
         max: 2,
       },

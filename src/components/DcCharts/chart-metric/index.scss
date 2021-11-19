@@ -1,4 +1,4 @@
-@import "../../../styles//variable";
+@import '../../../styles//variable';
 $metric-prefix-cls: #{$prefix}-metric;
 
 .#{$metric-prefix-cls}-panel {
@@ -20,7 +20,7 @@ $metric-prefix-cls: #{$prefix}-metric;
       width: 1px;
       height: 40px;
       background: rgba(0, 0, 0, 0.1);
-      content: "";
+      content: '';
     }
 
     .#{$metric-prefix-cls}-value {

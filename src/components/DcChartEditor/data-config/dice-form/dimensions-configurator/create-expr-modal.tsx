@@ -24,13 +24,7 @@ const CreateExprModal = ({ defaultValue, ...rest }: IProps) => {
     },
   ];
 
-  return (
-    <DcFormModal
-      title={textMap['expr input']}
-      fields={fields}
-      {...rest}
-    />
-  );
+  return <DcFormModal title={textMap['expr input']} fields={fields} {...rest} />;
 };
 
 export default CreateExprModal;

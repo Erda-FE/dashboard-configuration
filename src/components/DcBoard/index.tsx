@@ -77,14 +77,12 @@ const DcBoard = ({
     <Wrapper locale={locale}>
       <div
         ref={boardRef}
-        className={
-        classnames({
+        className={classnames({
           'dc-dashboard': true,
           'dark-border': true,
           'v-flex-box': true,
           active: isEditMode,
-        })
-      }
+        })}
       >
         <DashboardHeader
           wrapRef={boardRef}

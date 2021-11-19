@@ -21,13 +21,17 @@ interface IProps {
 
 const PureBoardGrid = ({ width, layout, globalVariable, onBoardEvent }: IProps) => {
   const [pureLayout, viewMap] = useMemo(() => splitLayoutAndView(layout), [layout]);
-  const gridItems = useMemo(() => genGridItems({
-    pureLayout,
-    viewMap,
-    globalVariable,
-    onBoardEvent,
-    isPure: true,
-  }), [globalVariable, onBoardEvent, pureLayout, viewMap]);
+  const gridItems = useMemo(
+    () =>
+      genGridItems({
+        pureLayout,
+        viewMap,
+        globalVariable,
+        onBoardEvent,
+        isPure: true,
+      }),
+    [globalVariable, onBoardEvent, pureLayout, viewMap],
+  );
 
   if (isEmpty(pureLayout) || width === Infinity) return null;
   const copyPureLayout = pureLayout.map((p) => ({ ...p }));

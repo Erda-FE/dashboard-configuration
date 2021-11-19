@@ -26,12 +26,12 @@ interface IProps {
 
 const BoardGrid = ({ width, layout, globalVariable }: IProps) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
-  const [
-    isEditMode,
-    editChartId,
-    viewMap,
-    pureLayout,
-  ] = ChartEditorStore.useStore((s) => [s.isEditMode, s.editChartId, s.viewMap, s.pureLayout]);
+  const [isEditMode, editChartId, viewMap, pureLayout] = ChartEditorStore.useStore((s) => [
+    s.isEditMode,
+    s.editChartId,
+    s.viewMap,
+    s.pureLayout,
+  ]);
   const { updateViewMap: updateChildMap, updateLayout } = ChartEditorStore;
   const storeGlobalVariable = GlobalFiltersStore.useStore((s) => s.globalVariable);
 
@@ -44,20 +44,18 @@ const BoardGrid = ({ width, layout, globalVariable }: IProps) => {
   // grid 组件内部会修改layout，而cube里的是不可直接更改的，所以重新生成一个对象
   const _pureLayout = map(pureLayout, (p) => ({ ...p }));
   // 外部指定的变量优先级高于内部产生的变量
-  const children = useMemo(() => genGridItems({
-    pureLayout: _pureLayout,
-    viewMap,
-    globalVariable: { ...storeGlobalVariable, ...globalVariable },
-  }), [_pureLayout, globalVariable, storeGlobalVariable, viewMap]);
+  const children = useMemo(
+    () =>
+      genGridItems({
+        pureLayout: _pureLayout,
+        viewMap,
+        globalVariable: { ...storeGlobalVariable, ...globalVariable },
+      }),
+    [_pureLayout, globalVariable, storeGlobalVariable, viewMap],
+  );
 
   if (isEmpty(pureLayout) || width === Infinity) {
-    return (
-      <DcEmpty
-        className="full-height"
-        description={textMap['no data']}
-        condition
-      />
-    );
+    return <DcEmpty className="full-height" description={textMap['no data']} condition />;
   }
 
   return (

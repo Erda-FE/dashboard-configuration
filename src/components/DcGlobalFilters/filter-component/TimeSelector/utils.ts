@@ -20,8 +20,8 @@ export interface ITimeSpan {
  * @param time 传入moment的时间
  * @param format 提示前缀
  */
-export const formatTime = (time: string | number, format?: string) => (time ? moment(time).format(format || 'YYYY-MM-DD') : null);
-
+export const formatTime = (time: string | number, format?: string) =>
+  time ? moment(time).format(format || 'YYYY-MM-DD') : null;
 
 /**
  * 获取快捷时间选项
@@ -49,7 +49,8 @@ export const getTimeSpan = (time?: number | Moment[] | number[]): ITimeSpan => {
 
   if (isArray(time)) {
     [startTimeMs, endTimeMs] = time;
-    if (moment.isMoment(startTimeMs)) { // moment对象
+    if (moment.isMoment(startTimeMs)) {
+      // moment对象
       endTimeMs = moment(endTimeMs).valueOf();
       startTimeMs = moment(startTimeMs).valueOf();
     }
@@ -59,9 +60,9 @@ export const getTimeSpan = (time?: number | Moment[] | number[]): ITimeSpan => {
     endTimeMs = new Date().getTime();
     startTimeMs = endTimeMs - 3600000 * hours;
   }
-  const endTime = parseInt(`${endTimeMs as number / 1000}`, 10);
+  const endTime = parseInt(`${(endTimeMs as number) / 1000}`, 10);
   const startTime = parseInt(`${startTimeMs / 1000}`, 10);
-  const endTimeNs = endTimeMs as number * 1000000;
+  const endTimeNs = (endTimeMs as number) * 1000000;
   const startTimeNs = startTimeMs * 1000000;
 
   return {

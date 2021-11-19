@@ -7,12 +7,13 @@ import { METRIC_UID_PREFIX } from '../constants';
  * @param {Merge<Omit<DICE_DATA_CONFIGURATOR.Dimension, 'key'>, { prefix: string }>} { prefix, ...rest }
  * @returns {DICE_DATA_CONFIGURATOR.Dimension}
  */
-export const genDefaultDimension = ({ prefix, ...rest }: Merge<Omit<DICE_DATA_CONFIGURATOR.Dimension, 'key'>, { prefix: string }>): DICE_DATA_CONFIGURATOR.Dimension => (
-  {
-    ...rest,
-    key: `${prefix || METRIC_UID_PREFIX}${genUUID(8)}`,
-  }
-);
+export const genDefaultDimension = ({
+  prefix,
+  ...rest
+}: Merge<Omit<DICE_DATA_CONFIGURATOR.Dimension, 'key'>, { prefix: string }>): DICE_DATA_CONFIGURATOR.Dimension => ({
+  ...rest,
+  key: `${prefix || METRIC_UID_PREFIX}${genUUID(8)}`,
+});
 
 export const getIntervalString = (interval: DICE_DATA_CONFIGURATOR.TimeInterval): string => {
   let intervalString = '';

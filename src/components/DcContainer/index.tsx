@@ -33,22 +33,15 @@ interface IProps {
   globalVariable?: Record<string, any>;
   onBoardEvent?: DC.onBoardEvent;
 }
-const DcContainer: React.FC<IProps> = ({
-  view,
-  viewId,
-  children,
-  isPure,
-  globalVariable,
-  onBoardEvent,
-}) => {
+const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalVariable, onBoardEvent }) => {
   // 全屏状态区分 Pure 和非 Pure
   const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
-  const [
-    editChartId,
-    fromEditorFullscreenStatus,
-    isEditMode,
-    requiredField,
-  ] = ChartEditorStore.useStore((s) => [s.editChartId, s.isFullscreen, s.isEditMode, s.requiredField]);
+  const [editChartId, fromEditorFullscreenStatus, isEditMode, requiredField] = ChartEditorStore.useStore((s) => [
+    s.editChartId,
+    s.isFullscreen,
+    s.isEditMode,
+    s.requiredField,
+  ]);
   const { toggleFullscreen: togglePureFullscreen } = DashboardStore;
   const { toggleFullscreen: toggleFromEditorPureFullscreen, editView, checkBeforeSave } = ChartEditorStore;
   const isFullscreen = isPure ? fromPureFullscreenStatus : fromEditorFullscreenStatus;
@@ -85,19 +78,14 @@ const DcContainer: React.FC<IProps> = ({
   const isCustomRender = isFunction(customRender);
   const isProd = process.env.NODE_ENV === 'production';
 
-  const [{
-    resData,
-    fetchStatus,
-    staticLoadFnPayload,
-    dynamicLoadFnPayloadMap,
-    dynamicFilterData,
-  }, updater, update] = useUpdate({
-    resData: {},
-    fetchStatus: FetchStatus.NONE,
-    staticLoadFnPayload: {},
-    dynamicLoadFnPayloadMap: {},
-    dynamicFilterData: [],
-  });
+  const [{ resData, fetchStatus, staticLoadFnPayload, dynamicLoadFnPayloadMap, dynamicFilterData }, updater, update] =
+    useUpdate({
+      resData: {},
+      fetchStatus: FetchStatus.NONE,
+      staticLoadFnPayload: {},
+      dynamicLoadFnPayloadMap: {},
+      dynamicFilterData: [],
+    });
   const viewRef = useRef<HTMLDivElement>(null);
 
   // 初始化 resData
@@ -105,60 +93,66 @@ const DcContainer: React.FC<IProps> = ({
     updater.resData(staticData as DC.StaticData);
   }, [api, staticData, updater]);
 
-  const _loadData = useCallback((params: { fn: (payload: any, body?: any) => Promise<any>; arg?: any; body?: any }) => {
-    const { arg, body, fn } = params;
-    if (!isFunction(fn)) return;
-    checkBeforeSave(view);
-    updater.fetchStatus(FetchStatus.FETCH);
-    // 调用外部传入的函数
-    fn({
-      ...reduce(dynamicLoadFnPayloadMap, (result, v) => ({ ...result, ...v }), {}),
-      ...staticLoadFnPayload,
-      ...arg,
-    }, body)
-      .then((res: any) => {
-        let _res = res;
-        if (dataConvertor) {
-          let convertor = dataConvertor;
-          // 取已经注册的 Data Convertor
-          if (isString(dataConvertor)) {
-            convertor = getConfig(['dataConvertor', dataConvertor]);
-            if (!convertor) {
-            // eslint-disable-next-line no-console
-              console.error(`dataConvertor \`${dataConvertor}\` not registered yet`);
-              return () => {};
+  const _loadData = useCallback(
+    (params: { fn: (payload: any, body?: any) => Promise<any>; arg?: any; body?: any }) => {
+      const { arg, body, fn } = params;
+      if (!isFunction(fn)) return;
+      checkBeforeSave(view);
+      updater.fetchStatus(FetchStatus.FETCH);
+      // 调用外部传入的函数
+      fn(
+        {
+          ...reduce(dynamicLoadFnPayloadMap, (result, v) => ({ ...result, ...v }), {}),
+          ...staticLoadFnPayload,
+          ...arg,
+        },
+        body,
+      )
+        .then((res: any) => {
+          let _res = res;
+          if (dataConvertor) {
+            let convertor = dataConvertor;
+            // 取已经注册的 Data Convertor
+            if (isString(dataConvertor)) {
+              convertor = getConfig(['dataConvertor', dataConvertor]);
+              if (!convertor) {
+                // eslint-disable-next-line no-console
+                console.error(`dataConvertor \`${dataConvertor}\` not registered yet`);
+                return () => {};
+              }
+            }
+
+            try {
+              _res = (convertor as Function)(res);
+            } catch (error) {
+              console.error('catch error in dataConvertor', error); // eslint-disable-line
             }
           }
 
-          try {
-            _res = (convertor as Function)(res);
-          } catch (error) {
-            console.error('catch error in dataConvertor', error); // eslint-disable-line
-          }
-        }
-
-        update({
-          fetchStatus: FetchStatus.SUCCESS,
-          resData: _res,
-        });
-      })
-      .catch((err) => {
-        if (!isProd) {
-          console.error('catch error in getChartData', err); // eslint-disable-line
-        }
-        if (err.status === 400) {
           update({
-            resData: undefined,
             fetchStatus: FetchStatus.SUCCESS,
+            resData: _res,
           });
-        } else {
-          update({
-            resData: undefined,
-            fetchStatus: FetchStatus.FAIL,
-          });
-        }
-      });
-  }, [dataConvertor, dynamicLoadFnPayloadMap, staticLoadFnPayload, update, updater, view]);
+        })
+        .catch((err) => {
+          if (!isProd) {
+            console.error('catch error in getChartData', err); // eslint-disable-line
+          }
+          if (err.status === 400) {
+            update({
+              resData: undefined,
+              fetchStatus: FetchStatus.SUCCESS,
+            });
+          } else {
+            update({
+              resData: undefined,
+              fetchStatus: FetchStatus.FAIL,
+            });
+          }
+        });
+    },
+    [dataConvertor, dynamicLoadFnPayloadMap, staticLoadFnPayload, update, updater, view],
+  );
 
   const _childNode = React.cloneElement(childNode, {
     ...childNode.props,
@@ -219,11 +213,12 @@ const DcContainer: React.FC<IProps> = ({
   );
 
   const getHeader = () => (
-    <div className={classnames({
-      'dc-chart-header': true,
-      'cursor-move': isEditMode && !chartEditorVisible,
-      active: isEditMode && !chartEditorVisible,
-    })}
+    <div
+      className={classnames({
+        'dc-chart-header': true,
+        'cursor-move': isEditMode && !chartEditorVisible,
+        active: isEditMode && !chartEditorVisible,
+      })}
     >
       <Choose>
         <When condition={isCustomTitle}>
@@ -235,40 +230,41 @@ const DcContainer: React.FC<IProps> = ({
             <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
               <If condition={isEditMode && !chartEditorVisible && !isFullscreen}>
                 <Tooltip title={textMap['config charts']}>
-                  <Button type="text" onClick={() => editView(viewId)}><DcIcon type="edit" /></Button>
+                  <Button type="text" onClick={() => editView(viewId)}>
+                    <DcIcon type="edit" />
+                  </Button>
                 </Tooltip>
               </If>
               <If condition={description}>
                 <Tooltip title={i18n?.description?.[locale] ?? description}>
-                  <Button type="text"><DcIcon type="info-circle" /></Button>
+                  <Button type="text">
+                    <DcIcon type="info-circle" />
+                  </Button>
                 </Tooltip>
               </If>
               <If condition={!isFullscreen && !chartEditorVisible}>
-                <ViewDropdownOptions
-                  view={view}
-                  viewId={viewId}
-                  viewRef={viewRef}
-                  toggleFullscreen={toggleFullscreen}
-                >
-                  <Button type="text"><DcIcon type="more" /></Button>
+                <ViewDropdownOptions view={view} viewId={viewId} viewRef={viewRef} toggleFullscreen={toggleFullscreen}>
+                  <Button type="text">
+                    <DcIcon type="more" />
+                  </Button>
                 </ViewDropdownOptions>
               </If>
             </div>
           </div>
           <If
             condition={
-              (controls && !isEmpty(controls[0]))
-              || !isEmpty(dataConfigSelectors)
-              || (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
+              (controls && !isEmpty(controls[0])) ||
+              !isEmpty(dataConfigSelectors) ||
+              (dynamicFilterKey && !isEmpty(dynamicFilterDataAPI))
             }
           >
             <div className="dc-chart-controls-ct">
               <If
                 condition={
-                  !isEmpty(controls[0])
-                  && controls[0].key
-                  && !isEmpty(controls[0].options)
-                  && controls[0].type === 'select'
+                  !isEmpty(controls[0]) &&
+                  controls[0].key &&
+                  !isEmpty(controls[0].options) &&
+                  controls[0].type === 'select'
                 }
               >
                 <Select
@@ -282,29 +278,35 @@ const DcContainer: React.FC<IProps> = ({
                     });
                   }}
                 >
-                  { map(controls[0].options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
+                  {map(controls[0].options, (item) => (
+                    <Select.Option value={item.value} key={item.value}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </If>
               <If condition={!isEmpty(dataConfigSelectors)}>
-                {
-                  map(dataConfigSelectors, ({ key, options, componentProps }) => (
-                    <Select
-                      size="small"
-                      key={key}
-                      className="my12 ml8"
-                      style={{ width: 150 }}
-                      onChange={(v: any) => {
-                        updater.dynamicLoadFnPayloadMap({
-                          ...dynamicLoadFnPayloadMap,
-                          [key]: JSON.parse(v),
-                        });
-                      }}
-                      {...componentProps}
-                    >
-                      { map(options, (item) => <Select.Option value={item.value} key={item.value}>{item.name}</Select.Option>) }
-                    </Select>
-                  ))
-                }
+                {map(dataConfigSelectors, ({ key, options, componentProps }) => (
+                  <Select
+                    size="small"
+                    key={key}
+                    className="my12 ml8"
+                    style={{ width: 150 }}
+                    onChange={(v: any) => {
+                      updater.dynamicLoadFnPayloadMap({
+                        ...dynamicLoadFnPayloadMap,
+                        [key]: JSON.parse(v),
+                      });
+                    }}
+                    {...componentProps}
+                  >
+                    {map(options, (item) => (
+                      <Select.Option value={item.value} key={item.value}>
+                        {item.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                ))}
               </If>
               <If condition={dynamicFilterKey && !isEmpty(dynamicFilterDataAPI)}>
                 <Select
@@ -319,16 +321,11 @@ const DcContainer: React.FC<IProps> = ({
                     });
                   }}
                 >
-                  {
-                    map(dynamicFilterData, (item) => (
-                      <Select.Option
-                        value={item.value}
-                        key={item.value}
-                      >
-                        {item.name}
-                      </Select.Option>
-                    ))
-                  }
+                  {map(dynamicFilterData, (item) => (
+                    <Select.Option value={item.value} key={item.value}>
+                      {item.name}
+                    </Select.Option>
+                  ))}
                 </Select>
               </If>
             </div>
@@ -342,7 +339,6 @@ const DcContainer: React.FC<IProps> = ({
     const requiredFields = view?.config?.dataSourceConfig?.isSqlMode ? REQUIRED_SQL_FIELDS : REQUIRED_FIELDS;
 
     const isLoseRequiredFields = requiredFields.some((item) => !requiredField?.[item]);
-
 
     let _msg = msg;
     let viewMask;
@@ -378,9 +374,7 @@ const DcContainer: React.FC<IProps> = ({
       <Choose>
         <When
           condition={
-            !isCustomRender
-            && !excludeEmptyType.includes(chartType)
-            && (!resData || isEmpty(resData?.metricData))
+            !isCustomRender && !excludeEmptyType.includes(chartType) && (!resData || isEmpty(resData?.metricData))
           }
         >
           <DcEmpty className="full-height" />
@@ -389,7 +383,7 @@ const DcContainer: React.FC<IProps> = ({
           <div className="dc-chart">
             <Choose>
               <When condition={isCustomRender}>
-                {(customRender as Function)((!resData || isEmpty(resData.metricData)) ? <DcEmpty /> : _childNode, view)}
+                {(customRender as Function)(!resData || isEmpty(resData.metricData) ? <DcEmpty /> : _childNode, view)}
               </When>
               <Otherwise>{_childNode}</Otherwise>
             </Choose>

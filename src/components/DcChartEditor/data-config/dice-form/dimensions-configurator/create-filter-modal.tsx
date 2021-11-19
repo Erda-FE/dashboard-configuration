@@ -34,11 +34,7 @@ const FilterInput = ({ value, onChange, fieldType, options }: IFilterInputProps)
     />
     <Choose>
       <When condition={fieldType === 'number'}>
-        <InputNumber
-          value={value?.value}
-          size="small"
-          onChange={(v) => onChange({ ...value, value: v })}
-        />
+        <InputNumber value={value?.value} size="small" onChange={(v) => onChange({ ...value, value: v })} />
       </When>
       <When condition={fieldType === 'string'}>
         <Input
@@ -49,10 +45,7 @@ const FilterInput = ({ value, onChange, fieldType, options }: IFilterInputProps)
         />
       </When>
       <When condition={fieldType === 'bool'}>
-        <Switch
-          defaultChecked={value?.value || false}
-          onChange={(v) => onChange({ ...value, value: v })}
-        />
+        <Switch defaultChecked={value?.value || false} onChange={(v) => onChange({ ...value, value: v })} />
       </When>
     </Choose>
   </InputGroup>
@@ -69,14 +62,16 @@ const CreateFilterModal = ({ defaultValue, metricsMap, typeMap, ...rest }: IProp
       type: FilterInput,
       name: 'filter',
       initialValue: defaultValue.filter,
-      validator: [{
-        validator: (_: any, value: { operation?: string; value?: any }) => {
-          if (value?.operation && !isUndefined(value?.value)) {
-            return true;
-          }
-          return false;
+      validator: [
+        {
+          validator: (_: any, value: { operation?: string; value?: any }) => {
+            if (value?.operation && !isUndefined(value?.value)) {
+              return true;
+            }
+            return false;
+          },
         },
-      }],
+      ],
       customProps: {
         fieldType,
         options,
@@ -84,13 +79,7 @@ const CreateFilterModal = ({ defaultValue, metricsMap, typeMap, ...rest }: IProp
     },
   ];
 
-  return (
-    <DcFormModal
-      title={`${textMap['filter config']}-${defaultValue.alias}`}
-      fields={fields}
-      {...rest}
-    />
-  );
+  return <DcFormModal title={`${textMap['filter config']}-${defaultValue.alias}`} fields={fields} {...rest} />;
 };
 
 export default CreateFilterModal;

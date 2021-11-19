@@ -53,7 +53,9 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
       content: `${textMap['confirm to remove']} ${view.title}?`,
       okText: textMap.delete,
       cancelText: textMap.cancel,
-      onOk() { deleteView(viewId); },
+      onOk() {
+        deleteView(viewId);
+      },
     });
   }, [deleteView, textMap, view.title, viewId]);
 
@@ -84,9 +86,7 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
       ql: 'influxql:ast',
     };
     const payload = {
-      select: [
-        { expr: '*' },
-      ],
+      select: [{ expr: '*' }],
       from: [metricName || ''],
       limit: 1,
     };
@@ -94,52 +94,57 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
     if (metricName) {
       const _exportingData = message.loading(textMap['exporting data'], 0);
       toggleExportingDataStatus();
-      exportChartData(metricName, _query, payload).then((res: Blob) => {
-        const blob = new Blob([res]);
-        const fileName = `${view.title}.xlsx`;
-        const downloadElement = document.createElement('a');
+      exportChartData(metricName, _query, payload)
+        .then((res: Blob) => {
+          const blob = new Blob([res]);
+          const fileName = `${view.title}.xlsx`;
+          const downloadElement = document.createElement('a');
 
-        downloadElement.download = fileName;
-        downloadElement.style.display = 'none';
-        downloadElement.href = URL.createObjectURL(blob);
-        document.body.appendChild(downloadElement);
-        downloadElement.click();
-        URL.revokeObjectURL(downloadElement.href);
-        document.body.removeChild(downloadElement);
-        _exportingData();
-        toggleExportingDataStatus();
-      }).catch(() => {
-        message.error(textMap['export data error']);
-        _exportingData();
-        toggleExportingDataStatus();
-      });
+          downloadElement.download = fileName;
+          downloadElement.style.display = 'none';
+          downloadElement.href = URL.createObjectURL(blob);
+          document.body.appendChild(downloadElement);
+          downloadElement.click();
+          URL.revokeObjectURL(downloadElement.href);
+          document.body.removeChild(downloadElement);
+          _exportingData();
+          toggleExportingDataStatus();
+        })
+        .catch(() => {
+          message.error(textMap['export data error']);
+          _exportingData();
+          toggleExportingDataStatus();
+        });
     }
   }, [isExportingData, view, textMap, toggleExportingDataStatus]);
 
-  const options: DC_BOARD_HEADER.Tool[] = useMemo(() => [
-    {
-      icon: 'fullscreen',
-      text: textMap.fullscreen,
-      onClick: () => _toggleFullscreen(),
-    },
-    {
-      icon: 'camera',
-      text: textMap['export picture'],
-      onClick: () => handleSaveImg(),
-    },
-    // {
-    //   icon: 'excel',
-    //   text: textMap['export data'],
-    //   onClick: () => handleExportData(),
-    // },
-    ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
+  const options: DC_BOARD_HEADER.Tool[] = useMemo(
+    () => [
       {
-        icon: 'delete',
-        text: textMap['remove charts'],
-        onClick: () => handleRemoveItem(),
+        icon: 'fullscreen',
+        text: textMap.fullscreen,
+        onClick: () => _toggleFullscreen(),
       },
-    ]),
-  ], [textMap, isEditMode, _toggleFullscreen, handleSaveImg, handleRemoveItem]);
+      {
+        icon: 'camera',
+        text: textMap['export picture'],
+        onClick: () => handleSaveImg(),
+      },
+      // {
+      //   icon: 'excel',
+      //   text: textMap['export data'],
+      //   onClick: () => handleExportData(),
+      // },
+      ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
+        {
+          icon: 'delete',
+          text: textMap['remove charts'],
+          onClick: () => handleRemoveItem(),
+        },
+      ]),
+    ],
+    [textMap, isEditMode, _toggleFullscreen, handleSaveImg, handleRemoveItem],
+  );
 
   return (
     <Dropdown
@@ -150,7 +155,8 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
           {options.map((option) => (
             <MenuItem key={option.icon}>
               <a className="dc-chart-title-dp-op" onClick={option.onClick}>
-                <DcIcon type={option.icon} />{option.text}
+                <DcIcon type={option.icon} />
+                {option.text}
               </a>
             </MenuItem>
           ))}
@@ -163,4 +169,3 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
 };
 
 export default memo(Options);
-

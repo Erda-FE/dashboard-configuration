@@ -46,7 +46,9 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     // 初始化全国地图
     agent('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '' })
       .then((res) => registerMap('中华人民共和国', res))
-      .catch((err) => { message.error(err); });
+      .catch((err) => {
+        message.error(err);
+      });
   });
 
   const loadMapDataSource = (_mapTypes: string[]) => {
@@ -59,7 +61,9 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     const body = {
       groupby: [mapLevel],
       select: _select,
-      where: preLevel ? [...(preBody?.where || []), `${preLevel}='${_mapTypes[_mapTypes.length - 1]}'`] : preBody?.where,
+      where: preLevel
+        ? [...(preBody?.where || []), `${preLevel}='${_mapTypes[_mapTypes.length - 1]}'`]
+        : preBody?.where,
     };
     loadData(undefined, body);
   };
@@ -78,7 +82,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   const _getOption = useCallback(
     (_data: DC.StaticData, config: DC.ChartConfig) => getOption(_data, config, mapTypes[mapTypes.length - 1]),
-    [mapTypes]
+    [mapTypes],
   );
 
   const changeMapType = (mapType: string) => {
@@ -88,9 +92,9 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
     if (registeredMapType.includes(mapType)) {
       if (mapTypes.includes(mapType)) {
-        _mapTypes = (slice(mapTypes, 0, findIndex(mapTypes, (_type) => _type === mapType) + 1));
+        _mapTypes = slice(mapTypes, 0, findIndex(mapTypes, (_type) => _type === mapType) + 1);
       } else {
-        _mapTypes = ([...mapTypes, mapType]);
+        _mapTypes = [...mapTypes, mapType];
       }
       updateMaps(_mapTypes);
       return;
@@ -99,7 +103,9 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     const adcode = adcodeMap.get(mapType);
     agent(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`, { referrer: '' })
       .then((res) => registerMap(mapType, res))
-      .catch((err) => { message.error(err); });
+      .catch((err) => {
+        message.error(err);
+      });
   };
 
   return (
@@ -115,11 +121,11 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
           <Breadcrumb.Item key={_type}>
             <Choose>
               <When condition={_k < mapTypes.length - 1}>
-                <span className="dc-hover-active" onClick={() => changeMapType(_type)}>{_type}</span>
+                <span className="dc-hover-active" onClick={() => changeMapType(_type)}>
+                  {_type}
+                </span>
               </When>
-              <Otherwise>
-                {_type}
-              </Otherwise>
+              <Otherwise>{_type}</Otherwise>
             </Choose>
           </Breadcrumb.Item>
         ))}

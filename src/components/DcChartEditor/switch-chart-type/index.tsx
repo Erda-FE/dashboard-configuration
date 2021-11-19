@@ -16,12 +16,7 @@ interface IProps {
   onChange: (v: DC.ViewType) => void;
 }
 
-const SwitchChartType = ({
-  value,
-  typeDimensions,
-  valueDimensions,
-  onChange,
-}: IProps) => {
+const SwitchChartType = ({ value, typeDimensions, valueDimensions, onChange }: IProps) => {
   const locale = DashboardStore.useStore((s) => s.locale);
   return (
     <div className="dc-editor-switch-chart">
@@ -33,14 +28,15 @@ const SwitchChartType = ({
               'center-flex-box': true,
               active: value === chartType,
             })}
-            onClick={() => { onChange(chartType as DC.ViewType); }}
+            onClick={() => {
+              onChange(chartType as DC.ViewType);
+            }}
           >
             <DcIcon type={icon} useSymbol />
           </div>
         </Popover>
-      ))
-      }
-    </div >
+      ))}
+    </div>
   );
 };
 

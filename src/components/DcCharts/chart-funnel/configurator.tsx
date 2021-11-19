@@ -22,7 +22,6 @@ export default () => {
     });
   };
 
-
   const fields = [
     {
       label: textMap.unit,

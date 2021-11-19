@@ -28,13 +28,7 @@ const genGridItems = ({ pureLayout, viewMap, isPure, globalVariable, onBoardEven
       const ChartNode = get(chartConfigMap, [chartType, 'Component']) as any;
       const node = ChartNode ? <ChartNode {...view.chartProps} {...view.api} /> : <></>;
       ChildComp = (
-        <DcContainer
-          viewId={i}
-          view={view}
-          isPure={isPure}
-          globalVariable={globalVariable}
-          onBoardEvent={onBoardEvent}
-        >
+        <DcContainer viewId={i} view={view} isPure={isPure} globalVariable={globalVariable} onBoardEvent={onBoardEvent}>
           {node}
         </DcContainer>
       );

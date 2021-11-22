@@ -15,7 +15,7 @@ import { insertWhen } from 'src/common/utils';
 import { getIntervalString } from './common/utils';
 import { customTimeRangeMap, MAP_ALIAS, MAP_LEVEL, SQL_OPERATOR } from './constants';
 import { createLoadDataFn } from './data-loader';
-import SwitchChartType from '../../switch-chart-type';
+import SwitchChartType from 'src/components/DcChartEditor/switch-chart-type';
 import DimensionsConfigurator from './dimensions-configurator';
 import ChartEditorStore from 'src/stores/chart-editor';
 import DashboardStore from 'src/stores/dash-board';

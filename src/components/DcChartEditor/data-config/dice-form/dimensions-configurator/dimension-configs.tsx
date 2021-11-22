@@ -5,7 +5,7 @@ import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
 import DashboardStore from 'src/stores/dash-board';
 import { DcInfoIcon } from 'src/common';
-import { dimensionsConfigs, SPECIAL_METRIC_TYPE } from '../constants';
+import { dimensionsConfigs, SPECIAL_METRIC_TYPE } from 'src/components/DcChartEditor/data-config/dice-form/constants';
 
 import './index.scss';
 

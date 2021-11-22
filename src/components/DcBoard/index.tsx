@@ -14,11 +14,11 @@ import DC from 'src/types';
 import { useComponentWidth } from 'src/common';
 import DashboardHeader from './header';
 import BoardGrid from './grid';
-import GlobalFilters from '../DcGlobalFilters';
+import GlobalFilters from 'src/components/DcGlobalFilters';
 // 编辑器部分
-import DcChartEditor from '../DcChartEditor';
-import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
-import { ConfigGlobalFiltersModal } from '../DcGlobalFilters/config-modal';
+import DcChartEditor from 'src/components/DcChartEditor';
+import DiceDataConfigFormComponent from 'src/components/DcChartEditor/data-config/dice-form';
+import { ConfigGlobalFiltersModal } from 'src/components/DcGlobalFilters/config-modal';
 import ChartEditorStore from 'src/stores/chart-editor';
 
 import 'src/static/iconfont.js';

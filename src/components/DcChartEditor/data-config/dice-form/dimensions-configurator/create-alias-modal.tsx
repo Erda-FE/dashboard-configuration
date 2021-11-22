@@ -4,7 +4,7 @@ import { Col, Input, Select } from 'antd';
 import { DcFormModal } from 'src/common';
 import { insertWhen } from 'src/common/utils';
 import DashboardStore from 'src/stores/dash-board';
-import { unitInfMap } from '../constants';
+import { unitInfMap } from 'src/components/DcChartEditor/data-config/dice-form/constants';
 
 const { Group: InputGroup } = Input;
 

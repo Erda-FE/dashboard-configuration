@@ -3,7 +3,7 @@ import moment from 'moment';
 import DC from 'src/types';
 import { areaColors } from 'src/theme/dice';
 import { cutStr, getFormatter } from 'src/common/utils';
-import { getCustomOption } from '../common/custom-option';
+import { getCustomOption } from 'src/components/DcCharts/common/custom-option';
 import getDefaultOption from './default-option';
 import DashboardStore from 'src/stores/dash-board';
 

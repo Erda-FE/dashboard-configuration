@@ -11,9 +11,13 @@ import { Cascader, message, Tag } from 'antd';
 import { useToggle } from 'react-use';
 import { DcDndProvider, DcIcon, DcInfoIcon, useUpdate } from 'src/common';
 import { cutStr, insertWhen } from 'src/common/utils';
-import { sortMap, SPECIAL_METRIC, SPECIAL_METRIC_TYPE } from '../constants';
+import {
+  sortMap,
+  SPECIAL_METRIC,
+  SPECIAL_METRIC_TYPE,
+} from 'src/components/DcChartEditor/data-config/dice-form/constants';
 import DashboardStore from 'src/stores/dash-board';
-import { genDefaultDimension } from '../common/utils';
+import { genDefaultDimension } from 'src/components/DcChartEditor/data-config/dice-form/common/utils';
 import CreateExprModal from './create-expr-modal';
 import CreateAliasModal from './create-alias-modal';
 import CreateTimeModal from './create-time-modal';

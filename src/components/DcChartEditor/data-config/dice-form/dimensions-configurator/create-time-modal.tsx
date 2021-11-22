@@ -3,7 +3,11 @@ import { Input, InputNumber, Select } from 'antd';
 import { filter, map } from 'lodash';
 import { DcFormModal } from 'src/common';
 import DashboardStore from 'src/stores/dash-board';
-import { TIME_FIELDS_UNITS, TIME_FORMATS, timeIntervals } from '../constants';
+import {
+  TIME_FIELDS_UNITS,
+  TIME_FORMATS,
+  timeIntervals,
+} from 'src/components/DcChartEditor/data-config/dice-form/constants';
 
 const { Group: InputGroup } = Input;
 

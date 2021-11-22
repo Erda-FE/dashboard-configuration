@@ -4,22 +4,22 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-01-29 11:17:37
  */
-import React, { useMemo, useCallback } from 'react';
-import { map, uniqueId, some, remove, find, findIndex, pickBy, isEmpty } from 'lodash';
+import React, { useCallback, useMemo } from 'react';
+import { find, findIndex, isEmpty, map, pickBy, remove, some, uniqueId } from 'lodash';
 import { produce } from 'immer';
-import { Cascader, Tag, message } from 'antd';
+import { Cascader, message, Tag } from 'antd';
 import { useToggle } from 'react-use';
-import { DcIcon, DcInfoIcon, DcDndProvider, useUpdate } from '../../../../../common';
-import { insertWhen, cutStr } from '../../../../../common/utils';
-import { SPECIAL_METRIC_TYPE, SPECIAL_METRIC, sortMap } from '../constants';
-import DashboardStore from '../../../../../stores/dash-board';
+import { DcDndProvider, DcIcon, DcInfoIcon, useUpdate } from 'src/common';
+import { cutStr, insertWhen } from 'src/common/utils';
+import { sortMap, SPECIAL_METRIC, SPECIAL_METRIC_TYPE } from '../constants';
+import DashboardStore from 'src/stores/dash-board';
 import { genDefaultDimension } from '../common/utils';
 import CreateExprModal from './create-expr-modal';
 import CreateAliasModal from './create-alias-modal';
 import CreateTimeModal from './create-time-modal';
 import CreateFilterModal from './create-filter-modal';
 import DimensionConfigs from './dimension-configs';
-import { customFilter, defaultRenderFilteredOption } from '../../../../../utils/cascader-filter';
+import { customFilter, defaultRenderFilteredOption } from 'src/utils/cascader-filter';
 import './index.scss';
 
 const METRIC_DISPLAY_CHARS_LIMIT = 20;

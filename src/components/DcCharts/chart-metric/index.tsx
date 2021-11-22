@@ -2,10 +2,10 @@
  * 数据指标
  */
 import React from 'react';
-import { uniqueId, map, isNumber, ceil } from 'lodash';
-import ChartEditorStore from '../../../stores/chart-editor';
-import { getCommonFormatter } from '../../../common/utils';
-
+import { ceil, isNumber, map, uniqueId } from 'lodash';
+import ChartEditorStore from 'src/stores/chart-editor';
+import { getCommonFormatter } from 'src/common/utils';
+import dcRegisterComp from 'src/components/dc-register-comp';
 import './index.scss';
 
 interface IResult {
@@ -38,11 +38,12 @@ const Metric = ({ results = [], viewId }: IProps) => (
 
 export default ({ data: { metricData: results, proportion }, option, ...rest }: any) => {
   const viewMap = ChartEditorStore.useStore((s) => s.viewMap);
+  const { Comp } = dcRegisterComp.getComp<(props: IProps) => JSX.Element>('card', Metric);
   const drawerInfo = viewMap[rest.viewId] || {};
   const props = {
     chartType: drawerInfo.chartType as string,
     results,
     option: { ...option, proportion },
   };
-  return <Metric {...props} {...rest} />;
+  return <Comp {...props} {...rest} />;
 };

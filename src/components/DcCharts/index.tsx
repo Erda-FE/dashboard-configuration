@@ -1,5 +1,5 @@
 import React from 'react';
-import { set, get, map as _map, cloneDeep } from 'lodash';
+import { cloneDeep, get, map as _map, set } from 'lodash';
 // 图表组件
 import ChartLine from './chart-line';
 import ChartPie from './chart-pie';

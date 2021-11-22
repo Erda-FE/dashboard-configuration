@@ -1,5 +1,5 @@
 import { merge, set, map, max, min } from 'lodash';
-import { getCustomOption } from '../common/custom-option';
+import { getCustomOption } from 'src/components/DcCharts/common/custom-option';
 import getDefaultOption from './default-option';
 import DC from 'src/types';
 

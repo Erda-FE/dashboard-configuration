@@ -1,4 +1,4 @@
-import { createFlatStore } from '../cube';
+import { createFlatStore } from 'src/cube';
 import DashboardStore from './dash-board';
 
 const textMap = DashboardStore.getState((s) => s.textMap);

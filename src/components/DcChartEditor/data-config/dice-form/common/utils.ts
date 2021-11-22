@@ -1,4 +1,4 @@
-import { genUUID } from '../../../../../common/utils';
+import { genUUID } from 'src/common/utils';
 import { METRIC_UID_PREFIX } from '../constants';
 
 /**

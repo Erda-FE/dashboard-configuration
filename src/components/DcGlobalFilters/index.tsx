@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { isEmpty } from 'lodash';
 import FilterComp from './filter-component';
-import GlobalFiltersStore from '../../stores/global-filters';
+import GlobalFiltersStore from 'src/stores/global-filters';
 
 const DcGlobalFilters = () => {
   const [filters, globalVariable] = GlobalFiltersStore.useStore((s) => [s.globalFilters, s.globalVariable]);

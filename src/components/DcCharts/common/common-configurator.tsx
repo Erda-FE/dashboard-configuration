@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Input } from 'antd';
-import { DcFormBuilder } from '../../../common';
-import ChartEditorStore from '../../../stores/chart-editor';
-import DashboardStore from '../../../stores/dash-board';
+import { DcFormBuilder } from 'src/common';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
 import DC from 'src/types';
 
 export default ({ fields: extraFields = [] }: { fields?: any[] }) => {

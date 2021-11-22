@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { map } from 'lodash';
-import { Select, Input, Col } from 'antd';
-import { DcFormModal } from '../../../../../common';
-import { insertWhen } from '../../../../../common/utils';
-import DashboardStore from '../../../../../stores/dash-board';
+import { Col, Input, Select } from 'antd';
+import { DcFormModal } from 'src/common';
+import { insertWhen } from 'src/common/utils';
+import DashboardStore from 'src/stores/dash-board';
 import { unitInfMap } from '../constants';
 
 const { Group: InputGroup } = Input;

@@ -1,4 +1,4 @@
-@import '../../../styles//variable';
+@import 'src/styles/variable';
 $metric-prefix-cls: #{$prefix}-metric;
 
 .#{$metric-prefix-cls}-panel {

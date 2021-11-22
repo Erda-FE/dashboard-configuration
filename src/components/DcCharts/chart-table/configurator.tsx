@@ -1,10 +1,10 @@
-import React, { FocusEvent, useState, useEffect } from 'react';
+import React, { FocusEvent, useEffect, useState } from 'react';
 import produce from 'immer';
 import { get, map } from 'lodash';
-import { Select, Input } from 'antd';
-import { CommonConfigurator } from '../common';
-import ChartEditorStore from '../../../stores/chart-editor';
-import DashboardStore from '../../../stores/dash-board';
+import { Input, Select } from 'antd';
+import { CommonConfigurator } from 'src/components/DcCharts/common';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
 import DC from 'src/types';
 
 interface RowEventConfigProps {

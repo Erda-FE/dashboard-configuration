@@ -1,10 +1,10 @@
-import { cloneDeep, forEach, maxBy, remove, omit, some } from 'lodash';
+import { cloneDeep, forEach, maxBy, omit, remove, some } from 'lodash';
 import { produce } from 'immer';
-import { createFlatStore } from '../cube';
-import { genUUID } from '../common/utils';
-import { DEFAULT_VIEW_CONFIG } from '../constants';
+import { createFlatStore } from 'src/cube';
+import { genUUID } from 'src/common/utils';
+import { DEFAULT_VIEW_CONFIG } from 'src/constants';
 import DC from 'src/types';
-import DashboardStore from '../stores/dash-board';
+import DashboardStore from 'src/stores/dash-board';
 
 const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {
   const { y: maxY, h: maxH } = maxBy(items, ({ y, h }) => y + h) || {

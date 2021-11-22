@@ -1,6 +1,6 @@
-import { merge, set, reduce, get, map } from 'lodash';
-import { getCustomOption } from '../common/custom-option';
-import { getCommonFormatter } from '../../../common/utils';
+import { get, map, merge, reduce, set } from 'lodash';
+import { getCustomOption } from 'src/components/DcCharts/common/custom-option';
+import { getCommonFormatter } from 'src/common/utils';
 import getDefaultOption from './default-option';
 import DC from 'src/types';
 

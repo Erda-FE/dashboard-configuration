@@ -1,4 +1,4 @@
-import { createStore, use } from '../../cube';
+import { createStore, use } from 'src/cube';
 
 const loadingStore = createStore({
   name: 'loading',

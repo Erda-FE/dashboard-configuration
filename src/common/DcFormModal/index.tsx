@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Modal } from 'antd';
-import { DcFormBuilder } from '..';
-import DashboardStore from '../../stores/dash-board';
+import { DcFormBuilder } from 'src/common';
+import DashboardStore from 'src/stores/dash-board';
 
 interface IProps {
   title?: React.ReactNode;

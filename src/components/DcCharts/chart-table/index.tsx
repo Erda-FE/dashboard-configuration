@@ -2,20 +2,23 @@
  * 数据表格
  */
 import React, { useCallback } from 'react';
-import { Table } from 'antd';
-import { map, get } from 'lodash';
-import { Copy } from '../../../common/utils/copy';
+import { Table as AntdTable } from 'antd';
+import { get, map } from 'lodash';
+import { Copy } from 'src/common/utils/copy';
+import dcRegisterComp from 'src/components/dc-register-comp';
 
 interface IProps {
   results: Array<{ [k: string]: any }>;
   cols: Array<{ title: string; dataIndex: string; unit?: string; copy?: boolean; render?: any }>;
   dataSource?: any[];
+
   [k: string]: any;
 }
 
 const fixedLimit = 5;
 const fixedWidth = 150;
 const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) => {
+  const { Comp: Table, config } = dcRegisterComp.getComp<typeof AntdTable, IProps['results']>('table', AntdTable);
   const rowClick: DC_COMPONENT_TABLE.IRowClick | undefined = get(rest, 'config.optionProps.rowClick');
   const { onBoardEvent } = rest;
   const isOverLimit = cols.length > fixedLimit;
@@ -78,7 +81,7 @@ const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) =>
           })}
           rowKey="c_key"
           columns={_cols}
-          dataSource={results}
+          dataSource={config?.dataConvert ? config.dataConvert(results) : results}
           rowClassName={(_, index) => (index % 2 === 1 ? 'dark-row' : '')}
           scroll={{ x: '100%' }}
           // scroll={isOverLimit ? { x: fixedWidth + cols.length * 200  } : { }}

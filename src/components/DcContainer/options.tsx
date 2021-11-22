@@ -5,18 +5,18 @@
  * @Last Modified time: 2021-01-26 15:45:36
  */
 
-import React, { useCallback, useEffect, useMemo, RefObject, ReactNode, memo } from 'react';
-import { Dropdown, Modal, Menu, message } from 'antd';
+import React, { memo, ReactNode, RefObject, useCallback, useEffect, useMemo } from 'react';
+import { Dropdown, Menu, message, Modal } from 'antd';
 import { get } from 'lodash';
 import { useFullscreen, useToggle } from 'react-use';
-import { getConfig } from '../../config';
-import { DcIcon } from '../../common';
-import { insertWhen } from '../../common/utils';
-import { saveImage } from '../../utils/comp';
-import ChartEditorStore from '../../stores/chart-editor';
-import DashboardStore from '../../stores/dash-board';
+import { getConfig } from 'src/config';
+import { DcIcon } from 'src/common';
+import { insertWhen } from 'src/common/utils';
+import { saveImage } from 'src/utils/comp';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
 // DcDashboard 里面发起的请求,需要提供配置
-import { exportChartData } from '../../services/chart-editor';
+import { exportChartData } from 'src/services/chart-editor';
 
 import './index.scss';
 

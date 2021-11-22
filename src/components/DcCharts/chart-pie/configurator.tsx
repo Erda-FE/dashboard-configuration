@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { Checkbox } from 'antd';
 import produce from 'immer';
-import { CommonConfigurator } from '../common';
-import ChartEditorStore from '../../../stores/chart-editor';
-import DashboardStore from '../../../stores/dash-board';
+import { CommonConfigurator } from 'src/components/DcCharts/common';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
 import DC from 'src/types';
 
 export default () => {

@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Select, Input, InputNumber } from 'antd';
-import { map, filter } from 'lodash';
-import { DcFormModal } from '../../../../../common';
-import DashboardStore from '../../../../../stores/dash-board';
-import { timeIntervals, TIME_FORMATS, TIME_FIELDS_UNITS } from '../constants';
+import { Input, InputNumber, Select } from 'antd';
+import { filter, map } from 'lodash';
+import { DcFormModal } from 'src/common';
+import DashboardStore from 'src/stores/dash-board';
+import { TIME_FIELDS_UNITS, TIME_FORMATS, timeIntervals } from '../constants';
 
 const { Group: InputGroup } = Input;
 

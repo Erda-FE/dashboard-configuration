@@ -1,4 +1,4 @@
-@import '../../../styles/variable';
+@import 'src/styles/variable';
 $pick-chart-cls: #{$prefix}-editor-switch-chart;
 
 .#{$pick-chart-cls} {

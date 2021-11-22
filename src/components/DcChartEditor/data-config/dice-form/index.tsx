@@ -4,24 +4,22 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-01-28 18:48:45
  */
-import React, { useMemo, useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { useMount } from 'react-use';
-import { map, forEach, find, reduce, isEmpty, keyBy, debounce, isNumber } from 'lodash';
+import { debounce, find, forEach, isEmpty, isNumber, keyBy, map, reduce } from 'lodash';
 import produce from 'immer';
-import { Cascader, Input, Select, InputNumber, Switch } from 'antd';
-import { getConfig } from '../../../../config';
-// import { useLoading } from '../../../../common/stores/loading';
-import { DcFormBuilder, DcInfoLabel } from '../../../../common';
-import { insertWhen } from '../../../../common/utils';
+import { Cascader, Input, InputNumber, Select, Switch } from 'antd';
+import { getConfig } from 'src/config';
+import { DcFormBuilder, DcInfoLabel } from 'src/common';
+import { insertWhen } from 'src/common/utils';
 import { getIntervalString } from './common/utils';
-import { customTimeRangeMap, MAP_LEVEL, MAP_ALIAS, SQL_OPERATOR } from './constants';
-// import DynamicFilterDataModal from './dynamic-filter-data-modal';
+import { customTimeRangeMap, MAP_ALIAS, MAP_LEVEL, SQL_OPERATOR } from './constants';
 import { createLoadDataFn } from './data-loader';
 import SwitchChartType from '../../switch-chart-type';
 import DimensionsConfigurator from './dimensions-configurator';
-import ChartEditorStore from '../../../../stores/chart-editor';
-import DashboardStore from '../../../../stores/dash-board';
-import { customFilter, defaultRenderFilteredOption } from '../../../../utils/cascader-filter';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
+import { customFilter, defaultRenderFilteredOption } from 'src/utils/cascader-filter';
 import './index.scss';
 import DC, { CreateLoadDataParams } from 'src/types';
 

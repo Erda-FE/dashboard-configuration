@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Popconfirm, Button, Drawer, Popover } from 'antd';
-import { getConfig } from '../../../config';
-import DataConfigurator from '../data-config';
-import DcContainer from '../../DcContainer';
-import ChartEditorStore from '../../../stores/chart-editor';
-import DashboardStore from '../../../stores/dash-board';
-import { REQUIRED_FIELDS, REQUIRED_SQL_FIELDS } from '../../../../src/constants/index';
+import { Button, Drawer, Popconfirm, Popover } from 'antd';
+import { getConfig } from 'src/config';
+import DataConfigurator from 'src/components/DcChartEditor/data-config';
+import DcContainer from 'src/components/DcContainer';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
+import { REQUIRED_FIELDS, REQUIRED_SQL_FIELDS } from 'src/constants/index';
 import './index.scss';
 
 const noop = () => null;

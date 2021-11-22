@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { map, isUndefined } from 'lodash';
-import { Select, Input, InputNumber, Switch } from 'antd';
-import { DcFormModal } from '../../../../../common';
-import DashboardStore from '../../../../../stores/dash-board';
+import { isUndefined, map } from 'lodash';
+import { Input, InputNumber, Select, Switch } from 'antd';
+import { DcFormModal } from 'src/common';
+import DashboardStore from 'src/stores/dash-board';
 
 const { Group: InputGroup } = Input;
 

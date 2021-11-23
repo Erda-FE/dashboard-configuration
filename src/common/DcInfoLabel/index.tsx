@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Tooltip } from 'antd';
-import { DcIcon } from '..';
+import { DcIcon } from 'src/common';
 
 interface IProps {
   text: string;

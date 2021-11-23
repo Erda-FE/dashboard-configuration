@@ -4,17 +4,16 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-02-26 14:22:59
  */
-import { ConfigProvider } from 'antd';
 import React, { useRef } from 'react';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
 import DC from 'src/types';
 import PureBoardGrid from './pure-grid';
-import { useComponentWidth, DcEmpty } from '../../common';
+import { DcEmpty, useComponentWidth } from 'src/common';
 import DashboardHeader from './pure-header';
-import DashboardStore from '../../stores/dash-board';
+import DashboardStore from 'src/stores/dash-board';
 import './index.scss';
-import { Wrapper } from '../../utils/locale';
+import { Wrapper } from 'src/utils/locale';
 
 const PureDashboard = ({ name, layout, showOptions = false, globalVariable, onBoardEvent }: DC.PureBoardGridProps) => {
   const [textMap, locale] = DashboardStore.getState((s) => [s.textMap, s.locale]);

@@ -3,7 +3,7 @@
 // import { forEach, replace } from 'lodash';
 import domtoimage from 'dom-to-image';
 import { message as Toast } from 'antd';
-import DashboardStore from '../stores/dash-board';
+import DashboardStore from 'src/stores/dash-board';
 
 export const formItemLayout = {
   labelCol: {

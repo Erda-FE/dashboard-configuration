@@ -4,13 +4,13 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-12-25 16:28:17
  */
-import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
-import { Tooltip, Button } from 'antd';
+import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
+import { Button, Tooltip } from 'antd';
 import { useFullscreen, useToggle } from 'react-use';
-import { DcIcon } from '../../common';
-import { insertWhen } from '../../common/utils';
-import { saveImage } from '../../utils/comp';
-import DashboardStore from '../../stores/dash-board';
+import { DcIcon } from 'src/common';
+import { insertWhen } from 'src/common/utils';
+import { saveImage } from 'src/utils/comp';
+import DashboardStore from 'src/stores/dash-board';
 
 import './header.scss';
 

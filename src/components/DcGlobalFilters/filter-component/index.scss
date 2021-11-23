@@ -1,4 +1,4 @@
-@import '../../../styles/dashboard-util';
+@import 'src/styles/dashboard-util';
 $grid-prefix-cls: #{$prefix}-global-filter-item;
 
 .#{$grid-prefix-cls} {

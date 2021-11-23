@@ -5,8 +5,8 @@
  * @Last Modified by: licao
  * @Last Modified time: 2020-12-27 12:12:59
  */
-import { values, map, merge, filter, get, isEmpty, find } from 'lodash';
-import { getChartData } from '../../../../services/chart-editor';
+import { filter, find, get, isEmpty, map, merge, values } from 'lodash';
+import { getChartData } from 'src/services/chart-editor';
 import { MAP_ALIAS } from './constants';
 
 export const createLoadDataFn =

@@ -4,16 +4,16 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-03-11 14:33:40
  */
-import React, { RefObject, useEffect, useCallback, useMemo } from 'react';
+import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { Button, Tooltip } from 'antd';
 import { useFullscreen, useToggle } from 'react-use';
 import DC from 'src/types';
-import { DcIcon } from '../../common';
-import { insertWhen } from '../../common/utils';
-import { saveImage } from '../../utils/comp';
-import DashboardStore from '../../stores/dash-board';
-import ChartEditorStore from '../../stores/chart-editor';
-import GlobalFiltersStore from '../../stores/global-filters';
+import { DcIcon } from 'src/common';
+import { insertWhen } from 'src/common/utils';
+import { saveImage } from 'src/utils/comp';
+import DashboardStore from 'src/stores/dash-board';
+import ChartEditorStore from 'src/stores/chart-editor';
+import GlobalFiltersStore from 'src/stores/global-filters';
 
 import './header.scss';
 

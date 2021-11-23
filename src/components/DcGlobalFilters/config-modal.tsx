@@ -2,10 +2,10 @@ import * as React from 'react';
 import { Button, Dropdown, Input, Menu, message, Modal, Tabs, Tooltip } from 'antd';
 import { useImmer } from 'use-immer';
 import { find, findIndex, map, remove } from 'lodash';
-import { DcIcon, DcInfoIcon } from '../../common';
-import { genUUID, insertWhen } from '../../common/utils';
-import DashboardStore, { TextType } from '../../stores/dash-board';
-import GlobalFiltersStore from '../../stores/global-filters';
+import { DcIcon, DcInfoIcon } from 'src/common';
+import { genUUID, insertWhen } from 'src/common/utils';
+import DashboardStore, { TextType } from 'src/stores/dash-board';
+import GlobalFiltersStore from 'src/stores/global-filters';
 
 import './config-modal.scss';
 

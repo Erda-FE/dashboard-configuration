@@ -6,16 +6,16 @@
  */
 import React, { useCallback, useMemo } from 'react';
 import { useMount } from 'react-use';
-import { map, slice, findIndex, cloneDeep } from 'lodash';
-import { message, Breadcrumb } from 'antd';
+import { cloneDeep, findIndex, map, slice } from 'lodash';
+import { Breadcrumb, message } from 'antd';
 import { registerMap as registerEchartsMap } from 'echarts';
-import agent from '../../../common/utils/agent';
-import { useUpdate } from '../../../common/use-hooks';
-import { ChartSizeMe } from '../common';
-import { adcodeMap } from '../../../constants/adcode-map';
+import agent from 'src/common/utils/agent';
+import { useUpdate } from 'src/common/use-hooks';
+import { ChartSizeMe } from 'src/components/DcCharts/common';
+import { adcodeMap } from 'src/constants/adcode-map';
 import { getOption } from './option';
-import ChartEditorStore from '../../../stores/chart-editor';
-import { MAP_LEVEL, MAP_ALIAS } from '../../DcChartEditor/data-config/dice-form/constants';
+import ChartEditorStore from 'src/stores/chart-editor';
+import { MAP_ALIAS, MAP_LEVEL } from 'src/components/DcChartEditor/data-config/dice-form/constants';
 import DC from 'src/types';
 import './index.scss';
 

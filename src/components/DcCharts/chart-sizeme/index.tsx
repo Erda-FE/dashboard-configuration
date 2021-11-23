@@ -1,7 +1,7 @@
 import ReactEcharts from 'echarts-for-react';
 import React from 'react';
-import DashboardStore from '../../../stores/dash-board';
-import { getConfig } from '../../../config';
+import DashboardStore from 'src/stores/dash-board';
+import { getConfig } from 'src/config';
 
 interface IProps {
   viewId?: string;

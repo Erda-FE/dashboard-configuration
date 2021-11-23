@@ -2,7 +2,6 @@ import React, { ReactElement, ReactNode } from 'react';
 
 declare namespace DC {
   type TData = number[] | string[];
-
   type ViewType =
     | 'chart:line'
     | 'chart:area'
@@ -14,9 +13,26 @@ declare namespace DC {
     | 'chart:scatter'
     | 'chart:map';
 
-  export type ViewDefMap = Record<ViewType, ViewDefItem>;
+  interface ViewDefItem {
+    name: string;
+    enName: string;
+    icon: DcIconType;
+    image: React.ReactNode;
+    Component: React.ReactNode | React.FunctionComponent; // props由viewId，以及接口的返回结果组成
+    Configurator: React.ReactNode | React.FunctionComponent; // 配置器
+    mockData?: any;
+    dataSettings?: any[]; // props由form相关属性构成
+  }
 
-  export interface IExtraData {
+  interface API {
+    url: string;
+    method: 'get' | 'post';
+    query?: Record<string, any>;
+    body?: Record<string, any>;
+    header?: Record<string, any>;
+  }
+
+  interface IExtraData {
     dataConfigSelectors?: any[];
     dynamicFilterKey?: string;
     dynamicFilterDataAPI?: API;
@@ -31,16 +47,7 @@ declare namespace DC {
   type DataConvertor = (data: object) => object;
   type OptionFn = (data: object, optionExtra?: object) => object;
 
-  interface ViewDefItem {
-    name: string;
-    enName: string;
-    icon: DcIconType;
-    image: React.ReactNode;
-    Component: React.ReactNode | React.FunctionComponent; // props由viewId，以及接口的返回结果组成
-    Configurator: React.ReactNode | React.FunctionComponent; // 配置器
-    mockData?: any;
-    dataSettings?: any[]; // props由form相关属性构成
-  }
+  type ViewDefMap = Record<ViewType, ViewDefItem>;
 
   interface SqlContent {
     select?: string;
@@ -125,14 +132,6 @@ declare namespace DC {
     value: string;
     seriesName: string;
     axisValue: string;
-  }
-
-  interface API {
-    url: string;
-    method: 'get' | 'post';
-    query?: Record<string, any>;
-    body?: Record<string, any>;
-    header?: Record<string, any>;
   }
 
   interface View {
@@ -221,7 +220,7 @@ declare namespace DC {
 
   type Layout = Array<Merge<LayoutItem, PureLayoutItem>>;
 
-  export interface BoardGridProps {
+  interface BoardGridProps {
     /** 指定编辑器的预览时间 */
     timeSpan?: { startTimeMs: number; endTimeMs: number };
     /** 大盘名 */
@@ -246,7 +245,7 @@ declare namespace DC {
     onEditorToggle?: (status: boolean) => void;
   }
 
-  export interface PureBoardGridProps {
+  interface PureBoardGridProps {
     /** 大盘名 */
     name?: string;
     /** 大盘 id，全局唯一 */
@@ -261,46 +260,89 @@ declare namespace DC {
     onBoardEvent?: DC.onBoardEvent;
   }
 
-  export interface DiceDataConfigProps {
+  interface DiceDataConfigProps {
     dataConfigMetaDataStore: Object;
     dynamicFilterMetaDataStore: Object;
     scope: string;
     scopeId: string;
     loadDataApi: Object;
   }
+
+  interface CreateLoadDataParams {
+    api: API;
+    chartType: ViewType;
+    typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+    valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
+    isSqlMode?: boolean;
+    customTime?: string;
+  }
+
+  const BoardGrid: (props: BoardGridProps) => JSX.Element;
+
+  const PureBoardGrid: (props: PureBoardGridProps) => JSX.Element;
+
+  interface DcRegisterComp {
+    use: <C = JSX.Element, D = {} | Array<any>>(
+      name: ViewType,
+      comp: C,
+      config?: {
+        dataConvert?: (data: any) => D;
+      },
+    ) => this;
+    getComp: <C = JSX.Element, D = {} | Array<any>>(
+      name: ViewType,
+      defaultComp: any,
+    ) => { Comp: C; config?: { dataConvert?: (data: any) => D } };
+  }
+
+  function createLoadDataFn(params: CreateLoadDataParams): Function;
+
+  function createOldLoadDataFn(params: any): Function;
+
+  function setLocale(key: 'en' | 'zh'): void;
+
+  function getLocale(): 'en' | 'zh';
+
+  function getTheme(): string;
+
+  function setTheme(key?: string): string;
+
+  function regist(path: string | string[] | number | number[], data: any): void;
+
+  function getConfig(path: string | string[] | number | number[]): void;
+
+  function registChart(type: string, data: any): void;
+
+  function registCharts(viewMap: Record<string, any>): void;
+
+  function registChartOption(name: string, fn: Function): any;
+
+  function registChartOptionFn(name: string, fn: Function): any;
+
+  function registDataConvertor(name: string, fn: Function): any;
+
+  function registControl(name: string, Comp: any): void;
+
+  function registTheme(name: string, theme: object): void;
+
+  function registDiceDataConfigProps(v: DiceDataConfigProps): void;
+
+  const dcRegisterComp: DcRegisterComp;
+
+  const colorMap: {
+    darkPurple: string;
+    darkGreen: string;
+    pink: string;
+    red: string;
+    yellow: string;
+    orange: string;
+    appleGreen: string;
+    green: string;
+    brown: string;
+    purple: string;
+    gray: string;
+  };
 }
 
-export default DC;
-
-/**
- *带编辑器的大盘
- *
- * @export
- * @class BoardGrid
- * @extends {React.Component<BoardGridProps, any>}
- */
-export class BoardGrid extends React.Component<DC.BoardGridProps, any> {}
-
-/**
- *大盘，仅渲染
- *
- * @export
- * @class PureDashboard
- * @extends {React.Component<DC.PureBoardGridProps, any>}
- */
-export class PureBoardGrid extends React.Component<DC.PureBoardGridProps, any> {}
-
-export function registDiceDataConfigProps(v: DC.DiceDataConfigProps): void;
-
-export interface CreateLoadDataParams {
-  api: DC.API;
-  chartType: DC.ViewType;
-  typeDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  valueDimensions?: DICE_DATA_CONFIGURATOR.Dimension[];
-  isSqlMode?: boolean;
-  customTime?: string;
-}
-
-export function createLoadDataFn(params: CreateLoadDataParams): Function;
-
-export function createOldLoadDataFn(params: any): Function;
+export = DC;
+export as namespace DC;

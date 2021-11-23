@@ -15,7 +15,7 @@ import React from 'react';
 import Clipboard from 'clipboard';
 import { isString } from 'lodash';
 import { message } from 'antd';
-import DashboardStore from '../../stores/dash-board';
+import DashboardStore from 'src/stores/dash-board';
 
 const selectorMap = {};
 const innerClassName = 'cursor-copy';

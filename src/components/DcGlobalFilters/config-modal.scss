@@ -1,4 +1,4 @@
-@import '../../styles/mixin';
+@import 'src/styles/mixin';
 $dashboard-prefix-cls: #{$prefix}-global-filters-config;
 
 .#{$dashboard-prefix-cls} {

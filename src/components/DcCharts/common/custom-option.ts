@@ -1,6 +1,6 @@
-import { isString, cloneDeep, merge } from 'lodash';
+import { cloneDeep, isString, merge } from 'lodash';
 import DC from 'src/types';
-import { getConfig } from '../../../config';
+import { getConfig } from 'src/config';
 
 export /**
  * 获取在配置中自定义的图表配置，并支持返回的数据中携带图表配置

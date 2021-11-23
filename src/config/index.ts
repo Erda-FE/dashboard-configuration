@@ -1,8 +1,7 @@
-import { set, get } from 'lodash';
-import DC from 'src/types';
-import defaultChartsMap from '../components/DcCharts';
-import { theme, themeObj as defaultTheme } from '../theme/dice';
-import { dynamicFilterMetaDataStore, dataConfigMetaDataStore } from './getDefaultStores';
+import { get, set } from 'lodash';
+import defaultChartsMap from 'src/components/DcCharts';
+import { theme, themeObj as defaultTheme } from 'src/theme/dice';
+import { dataConfigMetaDataStore, dynamicFilterMetaDataStore } from './getDefaultStores';
 
 const globalConfig = {
   chartConfigMap: defaultChartsMap,

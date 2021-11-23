@@ -1,5 +1,5 @@
-import { createFlatStore } from '../cube';
-import { TEXT_EN_MAP, TEXT_ZH_MAP } from '../constants';
+import { createFlatStore } from 'src/cube';
+import { TEXT_EN_MAP, TEXT_ZH_MAP } from 'src/constants';
 
 export type TextType = typeof TEXT_EN_MAP | typeof TEXT_ZH_MAP;
 

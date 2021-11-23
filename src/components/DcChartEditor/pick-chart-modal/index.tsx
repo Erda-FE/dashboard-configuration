@@ -1,9 +1,9 @@
 import * as React from 'react';
-import { Col, Row, Modal } from 'antd';
+import { Col, Modal, Row } from 'antd';
 import { map } from 'lodash';
-import ChartEditorStore from '../../../stores/chart-editor';
-import DashboardStore from '../../../stores/dash-board';
-import basicCharts from '../../DcCharts';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
+import basicCharts from 'src/components/DcCharts';
 import './index.scss';
 import DC from 'src/types';
 

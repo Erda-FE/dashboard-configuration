@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { Dropdown, Menu } from 'antd';
 import { map } from 'lodash';
-import { useDrag, useDrop, DropTargetMonitor } from 'react-dnd';
+import { DropTargetMonitor, useDrag, useDrop } from 'react-dnd';
 import { XYCoord } from 'dnd-core';
-import DashboardStore from '../../../../../stores/dash-board';
-import { DcInfoIcon } from '../../../../../common';
-import { dimensionsConfigs, SPECIAL_METRIC_TYPE } from '../constants';
+import DashboardStore from 'src/stores/dash-board';
+import { DcInfoIcon } from 'src/common';
+import { dimensionsConfigs, SPECIAL_METRIC_TYPE } from 'src/components/DcChartEditor/data-config/dice-form/constants';
 
 import './index.scss';
 

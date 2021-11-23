@@ -1,4 +1,4 @@
-import { cutStr } from '../../../common/utils';
+import { cutStr } from 'src/common/utils';
 
 export default () => ({
   tooltip: {

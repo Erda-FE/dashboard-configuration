@@ -1,5 +1,5 @@
 import * as React from 'react';
-import FormBuilder from '../form-builder';
+import FormBuilder from 'src/common/form-builder';
 
 const { Fields } = FormBuilder;
 

@@ -1,11 +1,11 @@
-import { map, merge, isEmpty } from 'lodash';
+import { isEmpty, map, merge } from 'lodash';
 import moment from 'moment';
 import DC from 'src/types';
-import { areaColors } from '../../../theme/dice';
-import { cutStr, getFormatter } from '../../../common/utils';
-import { getCustomOption } from '../common/custom-option';
+import { areaColors } from 'src/theme/dice';
+import { cutStr, getFormatter } from 'src/common/utils';
+import { getCustomOption } from 'src/components/DcCharts/common/custom-option';
 import getDefaultOption from './default-option';
-import DashboardStore from '../../../stores/dash-board';
+import DashboardStore from 'src/stores/dash-board';
 
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 

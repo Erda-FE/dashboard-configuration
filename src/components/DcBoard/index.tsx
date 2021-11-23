@@ -4,29 +4,28 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-03-03 20:38:30
  */
-import React, { useRef, useEffect } from 'react';
-import { ConfigProvider } from 'antd';
+import React, { useEffect, useRef } from 'react';
 import classnames from 'classnames';
 import { isFunction } from 'lodash';
 import 'react-grid-layout/css/styles.css';
 import { useUnmount } from 'react-use';
 import DC from 'src/types';
 // 渲染器部分
-import { useComponentWidth } from '../../common';
+import { useComponentWidth } from 'src/common';
 import DashboardHeader from './header';
 import BoardGrid from './grid';
-import GlobalFilters from '../DcGlobalFilters';
+import GlobalFilters from 'src/components/DcGlobalFilters';
 // 编辑器部分
-import DcChartEditor from '../DcChartEditor';
-import DiceDataConfigFormComponent from '../DcChartEditor/data-config/dice-form';
-import { ConfigGlobalFiltersModal } from '../DcGlobalFilters/config-modal';
-import ChartEditorStore from '../../stores/chart-editor';
+import DcChartEditor from 'src/components/DcChartEditor';
+import DiceDataConfigFormComponent from 'src/components/DcChartEditor/data-config/dice-form';
+import { ConfigGlobalFiltersModal } from 'src/components/DcGlobalFilters/config-modal';
+import ChartEditorStore from 'src/stores/chart-editor';
 
-import '../../static/iconfont.js';
-import '../../static/iconfont.css';
+import 'src/static/iconfont.js';
+import 'src/static/iconfont.css';
 import './index.scss';
-import DashboardStore from '../../stores/dash-board';
-import { Wrapper } from '../../utils/locale';
+import DashboardStore from 'src/stores/dash-board';
+import { Wrapper } from 'src/utils/locale';
 
 const DcBoard = ({
   timeSpan,

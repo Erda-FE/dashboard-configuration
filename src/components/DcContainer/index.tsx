@@ -4,24 +4,24 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-04-22 14:07:06
  */
-import React, { ReactElement, useRef, useEffect, useCallback } from 'react';
-import { Button, Tooltip, Select, message } from 'antd';
+import React, { ReactElement, useCallback, useEffect, useRef } from 'react';
+import { Button, Select, Tooltip } from 'antd';
 import classnames from 'classnames';
-import { isEmpty, get, isFunction, reduce, isString, map, merge } from 'lodash';
-import { useUpdate, DcIcon, DcEmpty } from '../../common';
-import { replaceVariable } from '../../common/utils';
-import { getConfig } from '../../config';
+import { get, isEmpty, isFunction, isString, map, merge, reduce } from 'lodash';
+import { DcEmpty, DcIcon, useUpdate } from 'src/common';
+import { replaceVariable } from 'src/common/utils';
+import { getConfig } from 'src/config';
 import { FetchStatus } from './constants';
 import ViewDropdownOptions from './options';
-import { ChartMask, ChartSpinMask } from '../DcCharts/common';
-import { createLoadDataFn } from '../DcChartEditor/data-config/dice-form/data-loader';
+import { ChartMask, ChartSpinMask } from 'src/components/DcCharts/common';
+import { createLoadDataFn } from 'src/components/DcChartEditor/data-config/dice-form/data-loader';
 // DcDashboard 里面发起的请求,需要提供配置
-import { getChartData } from '../../services/chart-editor';
-import ChartEditorStore from '../../stores/chart-editor';
-import DashboardStore from '../../stores/dash-board';
+import { getChartData } from 'src/services/chart-editor';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
 import './index.scss';
 import DC from 'src/types';
-import { REQUIRED_FIELDS, REQUIRED_SQL_FIELDS } from '../../../src/constants/index';
+import { REQUIRED_FIELDS, REQUIRED_SQL_FIELDS } from 'src/constants/index';
 
 const excludeEmptyType = ['chart:map'];
 

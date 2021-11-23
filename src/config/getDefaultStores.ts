@@ -1,4 +1,4 @@
-import { createStore } from '../cube';
+import { createStore } from 'src/cube';
 
 export const dataConfigMetaDataStore = createStore({
   name: 'dataConfigMetaData',

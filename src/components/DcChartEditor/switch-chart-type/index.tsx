@@ -3,9 +3,9 @@ import { map } from 'lodash';
 import { Popover } from 'antd';
 import DC from 'src/types';
 import classnames from 'classnames';
-import { DcIcon } from '../../../common';
-import basicCharts from '../../DcCharts';
-import DashboardStore from '../../../stores/dash-board';
+import { DcIcon } from 'src/common';
+import basicCharts from 'src/components/DcCharts';
+import DashboardStore from 'src/stores/dash-board';
 
 import './index.scss';
 

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { Input, Checkbox } from 'antd';
+import { Checkbox, Input } from 'antd';
 import produce from 'immer';
 import DC from 'src/types';
-import { CommonConfigurator } from '../common';
-import { DcInfoLabel } from '../../../common';
-import ChartEditorStore from '../../../stores/chart-editor';
-import DashboardStore from '../../../stores/dash-board';
+import { CommonConfigurator } from 'src/components/DcCharts/common';
+import { DcInfoLabel } from 'src/common';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
 
 export default () => {
   const textMap = DashboardStore.getState((s) => s.textMap);

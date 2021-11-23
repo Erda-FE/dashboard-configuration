@@ -2,8 +2,8 @@
  * 图表操作-控件读取
  */
 import React from 'react';
-import { map, isString, isEmpty } from 'lodash';
-import { getConfig } from '../../../config';
+import { isEmpty, isString, map } from 'lodash';
+import { getConfig } from 'src/config';
 import './index.scss';
 
 interface IProps {

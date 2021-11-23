@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import DC from 'src/types';
-import ChartEditorStore from '../../../stores/chart-editor';
+import ChartEditorStore from 'src/stores/chart-editor';
 
 export default () => {
   const [viewCopy, { getAPIFormComponent }] = ChartEditorStore.useStore((s) => [s.viewCopy, s.editorContextMap]);

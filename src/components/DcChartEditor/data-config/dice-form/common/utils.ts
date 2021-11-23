@@ -1,5 +1,5 @@
-import { genUUID } from '../../../../../common/utils';
-import { METRIC_UID_PREFIX } from '../constants';
+import { genUUID } from 'src/common/utils';
+import { METRIC_UID_PREFIX } from 'src/components/DcChartEditor/data-config/dice-form/constants';
 
 /**
  *生成默认维度

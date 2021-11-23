@@ -75,7 +75,6 @@ module.exports = () => {
         },
         {
           test: /\.(j|t)sx?$/,
-          use: 'babel-loader?cacheDirectory',
           include: [resolve('example'), resolve('src')],
           use: [
             'thread-loader',
@@ -93,6 +92,10 @@ module.exports = () => {
     resolve: {
       extensions: ['.js', '.jsx', '.tsx', '.ts', '.d.ts'],
       modules: [resolve('example'), resolve('src'), 'node_modules'],
+      alias: {
+        src: resolve('src'),
+        common: resolve('src/common'),
+      },
     },
     cache: {
       type: 'filesystem',
@@ -158,8 +161,14 @@ module.exports = () => {
             new CopyWebpackPlugin({
               patterns: [
                 {
-                  from: './src/types/index.d.ts',
-                  to: './',
+                  from: './src/**/*.d.ts',
+                  to: ({ context, absoluteFilename }) => {
+                    let paths = absoluteFilename.replace(`${context}/src`, `./types`);
+                    if (absoluteFilename.indexOf(`${context}/src/types`) > -1) {
+                      paths = absoluteFilename.replace(`${context}/src/types`, `./`);
+                    }
+                    return paths;
+                  },
                 },
               ],
             }),

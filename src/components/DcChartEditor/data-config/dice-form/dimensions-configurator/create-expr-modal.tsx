@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Input } from 'antd';
-import { DcFormModal } from '../../../../../common';
-import DashboardStore from '../../../../../stores/dash-board';
+import { DcFormModal } from 'src/common';
+import DashboardStore from 'src/stores/dash-board';
 
 interface IProps {
   defaultValue: DICE_DATA_CONFIGURATOR.Dimension;

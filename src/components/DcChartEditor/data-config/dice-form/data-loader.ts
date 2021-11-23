@@ -5,15 +5,14 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-02-25 12:38:00
  */
-import { reduce, map, merge, isEmpty, dropWhile, find, uniqBy, chunk, keyBy, isNumber, forEach } from 'lodash';
-import { getChartData } from '../../../../services/chart-editor';
-import { getFormatter } from '../../../../common/utils';
-import { MAP_ALIAS, customTimeRangeMap } from './constants';
-import DC, { CreateLoadDataParams } from 'src/types';
-import DashboardStore from '../../../../stores/dash-board';
+import { chunk, dropWhile, find, forEach, isEmpty, isNumber, keyBy, map, merge, reduce, uniqBy } from 'lodash';
+import { getChartData } from 'src/services/chart-editor';
+import { getFormatter } from 'src/common/utils';
+import { customTimeRangeMap, MAP_ALIAS } from './constants';
+import DashboardStore from 'src/stores/dash-board';
 
 export const createLoadDataFn =
-  ({ api, chartType, typeDimensions, valueDimensions, isSqlMode, customTime }: CreateLoadDataParams) =>
+  ({ api, chartType, typeDimensions, valueDimensions, isSqlMode, customTime }: DC.CreateLoadDataParams) =>
   async (payload: any = {}, body?: any) => {
     const [textMap, locale] = DashboardStore.getState((s) => [s.textMap, s.locale]);
     // 固定时间范围查询逻辑 customTime

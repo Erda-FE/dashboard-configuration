@@ -4,17 +4,16 @@
  * @Last Modified by: licao
  * @Last Modified time: 2021-03-04 10:11:25
  */
-import React, { useMemo, useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { isEmpty, map } from 'lodash';
 import ReactGridLayout from 'react-grid-layout';
-import DC from 'src/types';
 import { genGridItems } from './common';
-import { DcEmpty } from '../../common';
-import { GRID_LAYOUT_CONFIG } from '../../constants';
+import { DcEmpty } from 'src/common';
+import { GRID_LAYOUT_CONFIG } from 'src/constants';
 import { splitLayoutAndView } from './common/utils';
-import ChartEditorStore from '../../stores/chart-editor';
-import DashboardStore from '../../stores/dash-board';
-import GlobalFiltersStore from '../../stores/global-filters';
+import ChartEditorStore from 'src/stores/chart-editor';
+import DashboardStore from 'src/stores/dash-board';
+import GlobalFiltersStore from 'src/stores/global-filters';
 
 import 'react-grid-layout/css/styles.css';
 

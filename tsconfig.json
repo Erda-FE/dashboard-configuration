@@ -62,6 +62,9 @@
       "theme": [
         "./src/theme/dice.ts"
       ],
+      "src/*": [
+        "./src/*"
+      ],
       "interface": [
         "./interface"
       ]

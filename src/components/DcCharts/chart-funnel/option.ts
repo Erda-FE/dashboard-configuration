@@ -1,6 +1,5 @@
 import { get, map, merge, set } from 'lodash';
 import { getCustomOption } from 'src/components/DcCharts/common/custom-option';
-import DC from 'src/types';
 import getDefaultOption from './default-option';
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig) {

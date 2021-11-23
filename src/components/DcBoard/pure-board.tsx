@@ -7,13 +7,12 @@
 import React, { useRef } from 'react';
 import classnames from 'classnames';
 import { isEmpty } from 'lodash';
-import DC from 'src/types';
 import PureBoardGrid from './pure-grid';
 import { DcEmpty, useComponentWidth } from 'src/common';
 import DashboardHeader from './pure-header';
 import DashboardStore from 'src/stores/dash-board';
-import './index.scss';
 import { Wrapper } from 'src/utils/locale';
+import './index.scss';
 
 const PureDashboard = ({ name, layout, showOptions = false, globalVariable, onBoardEvent }: DC.PureBoardGridProps) => {
   const [textMap, locale] = DashboardStore.getState((s) => [s.textMap, s.locale]);

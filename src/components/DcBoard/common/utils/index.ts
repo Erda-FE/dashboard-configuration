@@ -1,5 +1,4 @@
 import { map } from 'lodash';
-import DC from 'src/types';
 
 /**
  * 分离 layout 结构为布局结构和视图内容结构

@@ -9,7 +9,6 @@ import classnames from 'classnames';
 import { isFunction } from 'lodash';
 import 'react-grid-layout/css/styles.css';
 import { useUnmount } from 'react-use';
-import DC from 'src/types';
 // 渲染器部分
 import { useComponentWidth } from 'src/common';
 import DashboardHeader from './header';

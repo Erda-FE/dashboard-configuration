@@ -4,7 +4,6 @@ import produce from 'immer';
 import { CommonConfigurator } from 'src/components/DcCharts/common';
 import ChartEditorStore from 'src/stores/chart-editor';
 import DashboardStore from 'src/stores/dash-board';
-import DC from 'src/types';
 
 export default () => {
   const textMap = DashboardStore.getState((s) => s.textMap);

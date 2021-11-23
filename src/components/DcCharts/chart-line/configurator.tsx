@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Checkbox, Input } from 'antd';
 import produce from 'immer';
-import DC from 'src/types';
 import { CommonConfigurator } from 'src/components/DcCharts/common';
 import { DcInfoLabel } from 'src/common';
 import ChartEditorStore from 'src/stores/chart-editor';

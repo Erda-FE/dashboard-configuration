@@ -5,7 +5,6 @@ import ChartEditorStore from 'src/stores/chart-editor';
 import DashboardStore from 'src/stores/dash-board';
 import basicCharts from 'src/components/DcCharts';
 import './index.scss';
-import DC from 'src/types';
 
 interface IProps {
   onPickChart: (chartType: DC.ViewType) => void;

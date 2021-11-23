@@ -7,7 +7,6 @@
 import React, { RefObject, useCallback, useEffect, useMemo } from 'react';
 import { Button, Tooltip } from 'antd';
 import { useFullscreen, useToggle } from 'react-use';
-import DC from 'src/types';
 import { DcIcon } from 'src/common';
 import { insertWhen } from 'src/common/utils';
 import { saveImage } from 'src/utils/comp';

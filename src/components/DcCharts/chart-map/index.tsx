@@ -16,7 +16,6 @@ import { adcodeMap } from 'src/constants/adcode-map';
 import { getOption } from './option';
 import ChartEditorStore from 'src/stores/chart-editor';
 import { MAP_ALIAS, MAP_LEVEL } from 'src/components/DcChartEditor/data-config/dice-form/constants';
-import DC from 'src/types';
 import './index.scss';
 
 interface IProps {

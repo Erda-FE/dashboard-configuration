@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import DC from 'src/types';
 import ChartEditorStore from 'src/stores/chart-editor';
 
 export default () => {

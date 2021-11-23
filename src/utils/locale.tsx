@@ -8,7 +8,7 @@ export const localeMap = {
   en: enUS,
 };
 
-export const Wrapper = ({ children, locale }: { children: React.ReactElement; locale: string }) => {
+export const Wrapper: React.FC<{ locale: keyof typeof localeMap }> = ({ children, locale }) => {
   if (process.env.NODE_ENV === 'production') {
     return <>{children}</>;
   } else {

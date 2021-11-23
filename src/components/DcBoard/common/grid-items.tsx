@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { get, isPlainObject, map } from 'lodash';
-import DC from 'src/types';
 import DcContainer from 'src/components/DcContainer';
 import { getConfig } from 'src/config';
 

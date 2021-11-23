@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { map } from 'lodash';
 import { Popover } from 'antd';
-import DC from 'src/types';
 import classnames from 'classnames';
 import { DcIcon } from 'src/common';
 import basicCharts from 'src/components/DcCharts';

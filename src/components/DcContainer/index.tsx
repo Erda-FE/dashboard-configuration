@@ -20,7 +20,6 @@ import { getChartData } from 'src/services/chart-editor';
 import ChartEditorStore from 'src/stores/chart-editor';
 import DashboardStore from 'src/stores/dash-board';
 import './index.scss';
-import DC from 'src/types';
 import { REQUIRED_FIELDS, REQUIRED_SQL_FIELDS } from 'src/constants/index';
 
 const excludeEmptyType = ['chart:map'];

@@ -3,7 +3,6 @@ import { Input } from 'antd';
 import { DcFormBuilder } from 'src/common';
 import ChartEditorStore from 'src/stores/chart-editor';
 import DashboardStore from 'src/stores/dash-board';
-import DC from 'src/types';
 
 export default ({ fields: extraFields = [] }: { fields?: any[] }) => {
   const textMap = DashboardStore.getState((s) => s.textMap);

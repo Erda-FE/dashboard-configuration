@@ -3,7 +3,6 @@ import { produce } from 'immer';
 import { createFlatStore } from 'src/cube';
 import { genUUID } from 'src/common/utils';
 import { DEFAULT_VIEW_CONFIG } from 'src/constants';
-import DC from 'src/types';
 import DashboardStore from 'src/stores/dash-board';
 
 const getNewChartYPosition = (items?: DC.PureLayoutItem[]): number => {

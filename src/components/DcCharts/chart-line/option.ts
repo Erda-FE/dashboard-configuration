@@ -1,6 +1,5 @@
 import { isEmpty, map, merge } from 'lodash';
 import moment from 'moment';
-import DC from 'src/types';
 import { areaColors } from 'src/theme/dice';
 import { cutStr, getFormatter } from 'src/common/utils';
 import { getCustomOption } from 'src/components/DcCharts/common/custom-option';

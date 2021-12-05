@@ -1,6 +1,6 @@
 {
   "name": "@erda-ui/dashboard-configurator",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Erda dashboard configurator powered by Echart",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -45,7 +45,7 @@
     "react-dom": ">=16.14.0"
   },
   "dependencies": {
-    "antd": "^4.15.4",
+    "antd": "~4.16.3",
     "classnames": "^2.2.6",
     "clipboard": "^2.0.8",
     "cube-state": "^1.5.6",

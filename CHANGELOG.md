@@ -1,3 +1,11 @@
+# [2.0.4](https://github.com/Erda-FE/dashboard-configuration/pull/52)(2021-11-24)
+### Feature
+* register custom components
+* format code
+
+### Fix
+* fix declaration file
+
 # [2.0.3](https://github.com/Erda-FE/dashboard-configuration/pull/48)(2021-11-18)
 ### Fix
 * display no mask which reminds user get data failed when didn't complete required fields

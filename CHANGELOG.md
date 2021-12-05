@@ -1,4 +1,10 @@
-# [2.0.4](https://github.com/Erda-FE/dashboard-configuration/pull/52)(2021-11-24)
+## [2.0.5](https://github.com/Erda-FE/dashboard-configuration/compare/v2.0.3...v2.0.5) (2021-12-05)
+
+### Bug Fixes
+
+* fixed minor version ([bbf5e6e](https://github.com/Erda-FE/dashboard-configuration/commit/bbf5e6e3aff63307da20148d28033c4755f41bd9))
+
+# [2.0.4](https://github.com/Erda-FE/dashboard-configuration/pull/52) (2021-11-24)
 ### Feature
 * register custom components
 * format code
@@ -6,7 +12,7 @@
 ### Fix
 * fix declaration file
 
-# [2.0.3](https://github.com/Erda-FE/dashboard-configuration/pull/48)(2021-11-18)
+# [2.0.3](https://github.com/Erda-FE/dashboard-configuration/pull/48) (2021-11-18)
 ### Fix
 * display no mask which reminds user get data failed when didn't complete required fields
 * line chart selected by default when add chart

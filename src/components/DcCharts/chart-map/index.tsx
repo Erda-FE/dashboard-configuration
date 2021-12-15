@@ -43,7 +43,7 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   useMount(() => {
     // 初始化全国地图
-    agent('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '' })
+    agent('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '', withoutDefaultHeader: true })
       .then((res) => registerMap('中华人民共和国', res))
       .catch((err) => {
         message.error(err);
@@ -100,7 +100,10 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     }
 
     const adcode = adcodeMap.get(mapType);
-    agent(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`, { referrer: '' })
+    agent(`https://geo.datav.aliyun.com/areas_v2/bound/${adcode}_full.json`, {
+      referrer: '',
+      withoutDefaultHeader: true,
+    })
       .then((res) => registerMap(mapType, res))
       .catch((err) => {
         message.error(err);

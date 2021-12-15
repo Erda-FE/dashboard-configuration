@@ -138,10 +138,12 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     const curYAxis = yAxis[i] || yAxis[yAxis.length - 1];
     return [curYAxis.unitType, curYAxis.unit];
   };
+
   const genTTArray = (param: any[]) =>
     param.map(
       (unit, i) =>
-        `<span style='color: ${unit.color}'>${showAllTooltip ? unit.seriesName : cutStr(unit.seriesName, 40)} : ${
+        `${unit.marker}<span>
+        ${showAllTooltip ? unit.seriesName : cutStr(unit.seriesName, 40)} : ${
           preciseTooltip || isNaN(unit.value)
             ? isNaN(unit.value)
               ? nullDisplay || '--'
@@ -186,7 +188,11 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
 
   const computedOption = {
     tooltip: {
+      backgroundColor: 'rgba(48,38,71,0.96)',
       formatter: (useBrush && brushFormatter) || tooltipFormatter || defaultTTFormatter,
+      textStyle: {
+        color: '#fff',
+      },
     },
     legend: {
       data: legendData,

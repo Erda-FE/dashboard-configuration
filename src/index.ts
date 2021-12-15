@@ -9,3 +9,4 @@ export { createLoadDataFn as createOldLoadDataFn } from 'src/components/DcChartE
 export { colorMap } from 'src/theme/dice';
 export { getLocale, setLocale, getTheme, setTheme };
 export { PureBoardGrid, BoardGrid };
+export { DashboardVersion } from 'src/utils/version';

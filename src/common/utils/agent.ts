@@ -14,7 +14,7 @@ function getCookies(key: string) {
   return key ? cookies[key] : cookies;
 }
 
-function getHeaders(method: string) {
+function getHeaders(method: string, withoutDefaultHeader: boolean) {
   const headers = {
     Accept: 'application/vnd.dice+json;version=1.0',
     Lang: localStorage.getItem('dashboardLang') === 'zh' ? 'zh-CN' : 'en-US',
@@ -28,14 +28,17 @@ function getHeaders(method: string) {
   if (method === 'POST') {
     headers['content-type'] = 'application/json';
   }
-  return headers;
+  return withoutDefaultHeader ? {} : headers;
 }
 
 /* 简单封装 Fetch
  * @Author: licao
  * @Date: 2020-12-29 16:37:41
  */
-const client = (url: string, { method, body, query, ...restConfig }: Record<string, any>) => {
+const client = (
+  url: string,
+  { method, body, query, withoutDefaultHeader = false, ...restConfig }: Record<string, any>,
+) => {
   const defaultMethod = body ? 'POST' : 'GET';
   const _method = (method || defaultMethod).toUpperCase();
   const resultRequest = pickBy(query, (item) => !isNil(item));
@@ -44,7 +47,7 @@ const client = (url: string, { method, body, query, ...restConfig }: Record<stri
     method: _method,
     ...restConfig,
     headers: {
-      ...getHeaders(_method),
+      ...getHeaders(_method, withoutDefaultHeader),
       ...restConfig.headers,
     },
   };

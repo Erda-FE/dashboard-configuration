@@ -23,8 +23,16 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
       })),
       tooltip: {
         trigger: 'item',
-        formatter: ({ seriesName, name, value, percent }: any) =>
-          `${seriesName} <br/>${name} : ${getCommonFormatter(unit, value)} (${percent}%)`,
+        formatter: ({ seriesName, name, value, percent, marker }: any) => {
+          return `${seriesName} <br/> <span> ${marker}${name} : ${getCommonFormatter(
+            unit,
+            value,
+          )} (${percent}%) </span>`;
+        },
+        backgroundColor: 'rgba(48,38,71,0.96)',
+        textStyle: {
+          color: '#fff',
+        },
       },
     },
     isShowTotal

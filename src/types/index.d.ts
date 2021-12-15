@@ -329,6 +329,8 @@ declare namespace DC {
 
   const dcRegisterComp: DcRegisterComp;
 
+  const DashboardVersion: string;
+
   const colorMap: {
     darkPurple: string;
     darkGreen: string;

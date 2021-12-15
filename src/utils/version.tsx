@@ -1,1 +1,2 @@
-export const DashboardVersion = '2.0.6';
+import pkg from '../../package.json';
+export const DashboardVersion = pkg.version;

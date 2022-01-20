@@ -1,3 +1,14 @@
+## [2.0.6](https://github.com/Erda-FE/dashboard-configuration/pull/56/commits/a2adaca0778d3c15cc198b03d4a0ad5fbf476644) (2021-12-15)
+
+
+### Bug Fixes
+
+* fix fetch 'https://geo.datav.aliyun.com/areas_v2/bound' without header to solve CORS problem 
+
+### Feat
+* export DashboardVersion
+* modify tooltip style in chart
+
 ## [2.0.5](https://github.com/Erda-FE/dashboard-configuration/compare/v2.0.3...v2.0.5) (2021-12-05)
 
 ### Bug Fixes

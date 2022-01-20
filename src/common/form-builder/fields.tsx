@@ -17,7 +17,7 @@ import { has, isBoolean, map, some } from 'lodash';
 import type { IContextType } from './form-builder';
 import { FormContext } from './form-builder';
 import ReadonlyField from './readonly-field';
-
+import DashboardStore from 'src/stores/dash-board';
 const { Item } = Form;
 
 /**
@@ -75,7 +75,8 @@ interface IProps {
 
 export const Fields: React.MemoExoticComponent<
   ({ fields, isMultiColumn, columnNum, readonly, fid }: IProps) => JSX.Element
-> = React.memo(({ fields = [], isMultiColumn, columnNum, readonly, fid }: IProps) => {
+  > = React.memo(({ fields = [], isMultiColumn, columnNum, readonly, fid }: IProps) => {
+  const textMap = DashboardStore.getState((s) => s.textMap);
   const getColumn = (contextProps: IContextType) => {
     if (isMultiColumn || (isMultiColumn === undefined && contextProps.parentIsMultiColumn)) {
       if (columnNum) return columnNum;
@@ -115,7 +116,7 @@ export const Fields: React.MemoExoticComponent<
                   ? [
                       {
                         required: true,
-                        message: `${labelStr} 不能为空`,
+                        message: `${labelStr} ${textMap['can not be empty']}`,
                       },
                       ...rules,
                     ]

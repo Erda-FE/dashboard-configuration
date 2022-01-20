@@ -147,6 +147,7 @@ export const TEXT_ZH_MAP = {
   failed: '失败',
   'start time': '开始时间',
   'end time': '结束时间',
+  'can not be empty': '不能为空',
 };
 
 export const TEXT_EN_MAP = {
@@ -299,6 +300,7 @@ export const TEXT_EN_MAP = {
   failed: 'failed',
   'start time': 'start time',
   'end time': 'end time',
+  'can not be empty': 'can not be empty',
 };
 
 export const DEFAULT_VIEW_CONFIG = {

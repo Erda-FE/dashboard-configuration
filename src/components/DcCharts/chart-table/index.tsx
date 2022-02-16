@@ -6,10 +6,23 @@ import { Table as AntdTable } from 'antd';
 import { get, map } from 'lodash';
 import { Copy } from 'src/common/utils/copy';
 import dcRegisterComp from 'src/components/dc-register-comp';
+import DashboardStore from 'src/stores/dash-board';
 
 interface IProps {
   results: Array<{ [k: string]: any }>;
-  cols: Array<{ title: string; dataIndex: string; unit?: string; copy?: boolean; render?: any }>;
+  cols: Array<{
+    title: string;
+    dataIndex: string;
+    unit?: string;
+    copy?: boolean;
+    render?: any;
+    i18n?: {
+      alias: {
+        en: string;
+        zh: string;
+      };
+    };
+  }>;
   dataSource?: any[];
 
   [k: string]: any;
@@ -20,11 +33,13 @@ const fixedWidth = 150;
 const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) => {
   const { Comp: Table, config } = dcRegisterComp.getComp<typeof AntdTable, IProps['results']>('table', AntdTable);
   const rowClick: DC_COMPONENT_TABLE.IRowClick | undefined = get(rest, 'config.optionProps.rowClick');
+  const locale = DashboardStore.getState((s) => s.locale);
   const { onBoardEvent } = rest;
   const isOverLimit = cols.length > fixedLimit;
   const _cols = map(cols, (col, index) => {
     let r = {
       ...col,
+      title: col?.i18n?.alias?.[locale] || col?.title,
       key: col.dataIndex,
       ellipsis: true,
     };

@@ -2,12 +2,14 @@ import { get, map, merge, reduce, set } from 'lodash';
 import { getCustomOption } from 'src/components/DcCharts/common/custom-option';
 import { getCommonFormatter } from 'src/common/utils';
 import getDefaultOption from './default-option';
+import DashboardStore from 'src/stores/dash-board';
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
   const { option: _option = {} } = config || {};
   const option = merge(getDefaultOption(), getCustomOption(data, config));
   const { metricData = [], legendData = [], unit } = data || {};
   const isShowTotal = get(config, ['optionProps', 'isShowTotal']);
+  const locale = DashboardStore.getState((s) => s.locale);
 
   if (legendData.length) {
     set(option, 'legend.data', legendData);
@@ -16,15 +18,23 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
   return merge(
     option,
     {
-      series: map(metricData, (item) => ({
-        ...item,
-        type: 'pie',
-        radius: isShowTotal ? ['50%', '70%'] : '70%',
-      })),
+      series: map(metricData, (item) => {
+        return {
+          ...item,
+          data: map(item.data, (x: any) => ({
+            ...x,
+            name: x?.i18n?.alias?.[locale] || x.name,
+          })),
+          type: 'pie',
+          radius: isShowTotal ? ['50%', '70%'] : '70%',
+        };
+      }),
       tooltip: {
         trigger: 'item',
-        formatter: ({ seriesName, name, value, percent, marker }: any) => {
-          return `${seriesName} <br/> <span> ${marker}${name} : ${getCommonFormatter(
+        formatter: (record: any) => {
+          const { seriesName, name, value, percent, marker, data } = record;
+          const { i18n } = data;
+          return `${seriesName} <br/> <span> ${marker}${i18n?.alias?.[locale] ?? name} : ${getCommonFormatter(
             unit,
             value,
           )} (${percent}%) </span>`;

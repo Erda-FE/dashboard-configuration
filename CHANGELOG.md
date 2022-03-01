@@ -1,3 +1,10 @@
+## [2.0.7](https://github.com/Erda-FE/dashboard-configuration/pull/57/commits/1dfd74dd17d1a5b8144dd153192ce8597c5a2974) (2021-01-20)
+
+### Bug Fixes
+
+* fix that i18n in validating required fields 
+
+
 ## [2.0.6](https://github.com/Erda-FE/dashboard-configuration/pull/56/commits/a2adaca0778d3c15cc198b03d4a0ad5fbf476644) (2021-12-15)
 
 

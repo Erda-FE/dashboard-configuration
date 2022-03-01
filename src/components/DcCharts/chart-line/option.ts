@@ -12,7 +12,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { metricData = [], xData, time, valueNames = [] } = data;
   const { optionProps = {}, dataSourceConfig = {}, option = {} } = config;
   const { typeDimensions, valueDimensions } = dataSourceConfig;
-  const textMap = DashboardStore.getState((s) => s.textMap);
+  const locale = DashboardStore.getState((s) => s.locale);
 
   // 多个维度，多个数值
   const isMultipleTypeAndMultipleValue = (typeDimensions?.length || 0) > 1 && (valueDimensions?.length || 0) > 1;
@@ -55,9 +55,9 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   };
   map(metricData, (value, i) => {
     const yIndex = option?.yAxis?.[i] ? i : 0;
-    const { axisIndex, name, tag, alias = '', unit: _unit, ...rest } = value;
+    const { axisIndex, name, tag, alias = '', i18n, unit: _unit, ...rest } = value;
     if (tag || name) {
-      legendData.push({ name: tag || name });
+      legendData.push({ name: i18n?.alias?.[locale] || tag || name });
     }
     const yAxisIndex = yIndex || 0;
     const areaColor = areaColors[i];
@@ -74,7 +74,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
         });
 
     series.push({
-      name: value.tag || seriesName || value.name || value.key,
+      name: i18n?.alias?.[locale] || value.tag || seriesName || value.name || value.key,
       yAxisIndex,
       label: {
         normal: {
@@ -103,7 +103,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     yAxis[yAxisIndex] = {
       show: yAxisIndex === 0,
       // 轴线名
-      name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || name || '',
+      name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || i18n?.alias?.[locale] || name || '',
       // 轴线名位置
       nameLocation: 'center',
       // 轴线名离轴线间距

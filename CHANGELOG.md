@@ -1,3 +1,9 @@
+## [2.0.8](https://github.com/Erda-FE/dashboard-configuration/pull/62/commits/73dc6ba46acb59041a1da33bf5e17fbc1ffd35e6) (2021-03-01)
+
+### Bug Fixes
+
+* complete i18n in charts
+
 ## [2.0.7](https://github.com/Erda-FE/dashboard-configuration/pull/57/commits/1dfd74dd17d1a5b8144dd153192ce8597c5a2974) (2021-01-20)
 
 ### Bug Fixes

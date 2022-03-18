@@ -1,7 +1,10 @@
 export default () => ({
+  backgroundColor: 'transparent',
   tooltip: {
     trigger: 'item',
     transitionDuration: 0.5,
+    renderMode: 'html',
+    appendToBody: true,
   },
   legend: {
     orient: 'vertical',

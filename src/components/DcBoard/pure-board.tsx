@@ -26,7 +26,6 @@ const PureDashboard = ({ name, layout, showOptions = false, globalVariable, onBo
         ref={boardRef}
         className={classnames({
           'dc-dashboard': true,
-          'dark-border': true,
           'v-flex-box': true,
         })}
       >

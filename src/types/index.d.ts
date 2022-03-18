@@ -262,7 +262,7 @@ declare namespace DC {
 
   interface DiceDataConfigProps {
     dataConfigMetaDataStore: Object;
-    dynamicFilterMetaDataStore: Object;
+    dynamicFilterMetaDataStore?: Object;
     scope: string;
     scopeId: string;
     loadDataApi: Object;

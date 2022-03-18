@@ -103,7 +103,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     yAxis[yAxisIndex] = {
       show: yAxisIndex === 0,
       // 轴线名
-      name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || i18n?.alias?.[locale] || name || '',
+      // name: yAxisNames[yAxisIndex] || valueNames[yAxisIndex] || i18n?.alias?.[locale] || name || '',
       // 轴线名位置
       nameLocation: 'center',
       // 轴线名离轴线间距
@@ -197,6 +197,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     legend: {
       data: legendData,
       formatter: lgFormatter,
+      bottom: true,
     },
     xAxis: [
       {

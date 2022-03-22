@@ -1,8 +1,14 @@
-## [2.0.9](https://github.com/Erda-FE/dashboard-configuration/pull/63/commits/ca268a2ac465a49a7109a83df4d0a1091e10426a) (2021-03-18)
+## [2.0.10](https://github.com/Erda-FE/dashboard-configuration/pull/63/commits/ca268a2ac465a49a7109a83df4d0a1091e10426a) (2021-03-18)
 
 ### Style
 
 *  unified chart style
+
+## [2.0.9](https://github.com/Erda-FE/dashboard-configuration/pull/62/commits/73dc6ba46acb59041a1da33bf5e17fbc1ffd35e6) (2021-03-01)
+
+### Duplicate
+
+*  the same as V2.0.8
 
 ## [2.0.8](https://github.com/Erda-FE/dashboard-configuration/pull/62/commits/73dc6ba46acb59041a1da33bf5e17fbc1ffd35e6) (2021-03-01)
 

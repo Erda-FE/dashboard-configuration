@@ -12,7 +12,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   const { metricData = [], xData, time, valueNames = [] } = data;
   const { optionProps = {}, dataSourceConfig = {}, option = {} } = config;
   const { typeDimensions, valueDimensions } = dataSourceConfig;
-  const locale = DashboardStore.getState((s) => s.locale);
+  const [locale, textMap] = DashboardStore.getState((s) => [s.locale, s.textMap]);
 
   // 多个维度，多个数值
   const isMultipleTypeAndMultipleValue = (typeDimensions?.length || 0) > 1 && (valueDimensions?.length || 0) > 1;

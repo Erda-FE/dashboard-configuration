@@ -18,9 +18,10 @@ interface IProps {
   wrapRef: RefObject<Element>;
   contentRef: RefObject<Element>;
   dashboardName?: string;
+  slot?: React.ReactElement;
 }
 
-const DashboardHeader = ({ wrapRef, contentRef, dashboardName }: IProps) => {
+const DashboardHeader = ({ wrapRef, contentRef, dashboardName, slot }: IProps) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const { toggleFullscreen } = DashboardStore;
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);

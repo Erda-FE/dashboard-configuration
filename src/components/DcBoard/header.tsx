@@ -20,6 +20,7 @@ interface IProps {
   wrapRef: RefObject<Element>;
   contentRef: RefObject<Element>;
   dashboardName?: string;
+  slot?: React.ReactElement;
   readOnly?: boolean;
   afterEdit?: () => void;
   beforeSave?: () => boolean; // 返回 false 来拦截 onSave
@@ -32,6 +33,7 @@ const DashboardHeader = ({
   contentRef,
   dashboardName,
   readOnly,
+  slot,
   afterEdit,
   beforeSave,
   onSave,
@@ -198,8 +200,9 @@ const DashboardHeader = ({
             <div className="fz18">{dashboardName}</div>
           </If>
         </div>
-        <div className="dc-dashboard-tools dc-dashboard-right-tools">
+        <div className="dc-dashboard-tools dc-dashboard-right-tools flex-box">
           {!readOnly && !isFullscreen && renderTools(editTools)}
+          {slot && !isEditMode && <div className="ml12">{slot}</div>}
         </div>
       </div>
     </>

@@ -33,6 +33,7 @@ const DcBoard = ({
   layout,
   globalVariable,
   id,
+  slot,
   onEdit,
   onCancel,
   onSave,
@@ -86,6 +87,7 @@ const DcBoard = ({
           contentRef={boardContentRef}
           dashboardName={name}
           afterEdit={onEdit}
+          slot={slot}
           beforeSave={beforeOnSave}
           onSave={onSave}
           onCancel={onCancel}

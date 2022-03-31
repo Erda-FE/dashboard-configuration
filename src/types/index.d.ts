@@ -243,6 +243,7 @@ declare namespace DC {
     onEdit?: () => void;
     /** 进入图表编辑模式回调 */
     onEditorToggle?: (status: boolean) => void;
+    slot?: React.ReactElement;
   }
 
   interface PureBoardGridProps {
@@ -258,6 +259,7 @@ declare namespace DC {
     showOptions?: boolean;
     /** 事件回调，需要组件支持 */
     onBoardEvent?: DC.onBoardEvent;
+    slot?: React.ReactElement;
   }
 
   interface DiceDataConfigProps {

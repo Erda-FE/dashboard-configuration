@@ -14,7 +14,14 @@ import DashboardStore from 'src/stores/dash-board';
 import { Wrapper } from 'src/utils/locale';
 import './index.scss';
 
-const PureDashboard = ({ name, layout, showOptions = false, globalVariable, onBoardEvent }: DC.PureBoardGridProps) => {
+const PureDashboard = ({
+  name,
+  layout,
+  showOptions = false,
+  globalVariable,
+  slot,
+  onBoardEvent,
+}: DC.PureBoardGridProps) => {
   const [textMap, locale] = DashboardStore.getState((s) => [s.textMap, s.locale]);
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
@@ -30,7 +37,7 @@ const PureDashboard = ({ name, layout, showOptions = false, globalVariable, onBo
         })}
       >
         <If condition={showOptions}>
-          <DashboardHeader wrapRef={boardRef} contentRef={boardContentRef} dashboardName={name} />
+          <DashboardHeader wrapRef={boardRef} contentRef={boardContentRef} dashboardName={name} slot={slot} />
         </If>
         <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
           <DcEmpty

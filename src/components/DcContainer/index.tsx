@@ -228,7 +228,7 @@ const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalV
             <h2 className="dc-chart-title px12">{i18n?.title?.[locale] ?? title} </h2>
             <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
               <If condition={isEditMode && !chartEditorVisible && !isFullscreen}>
-                <Tooltip title={textMap['config charts']}>
+                <Tooltip title={textMap['Configure chart']}>
                   <Button type="text" onClick={() => editView(viewId)}>
                     <DcIcon type="edit" />
                   </Button>

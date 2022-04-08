@@ -1,3 +1,9 @@
+## [2.0.11](https://github.com/Erda-FE/dashboard-configuration/pull/66/commits/0d0f1af72af612d31af45edf05c9e74d29636d42) (2021-03-22)
+
+### Fix
+
+*  text map not defined in line options
+
 ## [2.0.10](https://github.com/Erda-FE/dashboard-configuration/pull/63/commits/ca268a2ac465a49a7109a83df4d0a1091e10426a) (2021-03-18)
 
 ### Style

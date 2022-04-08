@@ -54,7 +54,7 @@ const BoardGrid = ({ width, layout, globalVariable }: IProps) => {
   );
 
   if (isEmpty(pureLayout) || width === Infinity) {
-    return <DcEmpty className="full-height" description={textMap['no data']} condition />;
+    return <DcEmpty className="full-height" description={textMap['No data']} condition />;
   }
 
   return (

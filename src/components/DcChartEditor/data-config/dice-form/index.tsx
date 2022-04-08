@@ -383,7 +383,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const fieldsList = [
     {
-      label: textMap['chart type'],
+      label: textMap['Chart type'],
       name: 'chartType',
       required: true,
       initialValue: chartType,
@@ -490,7 +490,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
     ]),
     ...insertWhen(!dataSource.isSqlMode, [
       {
-        label: textMap['metrics group'],
+        label: textMap['Metrics group'],
         type: Cascader,
         required: true,
         name: 'activedMetricGroups',
@@ -507,9 +507,9 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       },
       {
         label: isLineType ? (
-          <DcInfoLabel text={textMap.dimensions} info={textMap['typeDimensions info']} />
+          <DcInfoLabel text={textMap.Dimension} info={textMap['typeDimensions info']} />
         ) : (
-          textMap.dimensions
+          textMap.Dimension
         ),
         name: 'typeDimensions',
         initialValue: dataSource?.typeDimensions,
@@ -517,7 +517,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         type: DimensionsConfigurator,
         customProps: {
           type: 'type',
-          addText: textMap['add metric'],
+          addText: textMap['Add Metric'],
           disabled: isEmpty(dataSource.activedMetricGroups),
           metricsMap: fieldsMap,
           typeMap,
@@ -527,7 +527,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         },
       },
       {
-        label: <DcInfoLabel text={textMap.value} info={textMap['valueDimensions info']} />,
+        label: <DcInfoLabel text={textMap.Value} info={textMap['valueDimensions info']} />,
         name: 'valueDimensions',
         required: true,
         initialValue: dataSource?.valueDimensions,
@@ -544,7 +544,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         },
       },
       {
-        label: textMap['result filter'],
+        label: textMap['Result filter'],
         name: 'resultFilters',
         initialValue: dataSource?.resultFilters,
         required: false,
@@ -561,7 +561,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         },
       },
       {
-        label: textMap.sort,
+        label: textMap['Result sort'],
         name: 'sortDimensions',
         initialValue: dataSource?.sortDimensions,
         required: false,
@@ -579,7 +579,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       },
     ]),
     {
-      label: textMap['result limit'],
+      label: textMap['Result limit'],
       name: 'limit',
       type: InputNumber,
       required: false,
@@ -591,7 +591,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
       },
     },
     {
-      label: textMap['fixed time range'],
+      label: textMap['Fixed time range'],
       type: Select,
       name: 'customTime',
       initialValue: dataSource?.customTime,

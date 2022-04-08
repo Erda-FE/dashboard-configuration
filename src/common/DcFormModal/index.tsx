@@ -31,8 +31,8 @@ const DcFormModal = ({ title, visible, fields, onCancel, onOk }: IProps) => {
       title={title}
       visible={visible}
       maskClosable
-      okText={textMap.ok}
-      cancelText={textMap.cancel}
+      okText={textMap.OK}
+      cancelText={textMap.Cancel}
       onCancel={onCancel}
       onOk={handleSubmit}
     >

@@ -35,7 +35,7 @@ const PureDashboard = ({ name, layout, showOptions = false, globalVariable, onBo
         <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
           <DcEmpty
             className="flex-1"
-            description={textMap['no data']}
+            description={textMap['No data']}
             condition={isEmpty(layout) || gridWidth === Infinity}
           />
           <div className="dc-dashboard-grid-wp">

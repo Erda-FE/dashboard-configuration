@@ -12,7 +12,7 @@ export default ({ fields: extraFields = [] }: { fields?: any[] }) => {
 
   const fields = [
     {
-      label: textMap['chart title'],
+      label: textMap['Chart title'],
       name: 'title',
       type: Input,
       required: false,
@@ -24,7 +24,7 @@ export default ({ fields: extraFields = [] }: { fields?: any[] }) => {
       },
     },
     {
-      label: textMap['chart description'],
+      label: textMap['Chart description'],
       name: 'description',
       type: Input.TextArea,
       required: false,

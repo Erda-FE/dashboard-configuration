@@ -39,21 +39,21 @@ const DashboardHeader = ({ wrapRef, contentRef, dashboardName }: IProps) => {
       ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
         {
           icon: 'fullscreen',
-          text: textMap.fullscreen,
+          text: textMap['Full screen'],
           onClick: () => _toggleFullscreen(),
         },
       ]),
       ...insertWhen<DC_BOARD_HEADER.Tool>(isFullscreen, [
         {
           icon: 'fullscreen-exit',
-          text: textMap['exit fullscreen'],
+          text: textMap['Exit fullscreen'],
           onClick: () => _toggleFullscreen(),
         },
       ]),
       ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
         {
           icon: 'camera',
-          text: textMap['export picture'],
+          text: textMap.Export,
           onClick: () => handleSaveImg(),
         },
       ]),

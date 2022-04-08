@@ -243,6 +243,7 @@ declare namespace DC {
     onEdit?: () => void;
     /** 进入图表编辑模式回调 */
     onEditorToggle?: (status: boolean) => void;
+    slot?: React.ReactNode;
   }
 
   interface PureBoardGridProps {

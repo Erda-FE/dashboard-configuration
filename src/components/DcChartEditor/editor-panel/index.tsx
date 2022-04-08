@@ -21,9 +21,9 @@ const EditorPanel = () => {
 
   if (!viewCopy || !editChartId) return null;
   const TipMap = {
-    chartType: textMap['chart type'],
-    activedMetricGroups: textMap['metrics group'],
-    valueDimensions: textMap.value,
+    chartType: textMap['Chart type'],
+    activedMetricGroups: textMap['Metrics group'],
+    valueDimensions: textMap.Value,
     select: 'SELECT',
     from: 'FROM',
   };
@@ -56,12 +56,12 @@ const EditorPanel = () => {
     >
       <div className="dc-editor-wp v-flex-box flex-space-between full-height auto-overflow">
         <div className="dc-editor-header px16 py12 border-bottom color-text-sub white-bg fz22">
-          {textMap['config charts']}
+          {textMap['Configure chart']}
         </div>
         <div className="dc-editor-content flex-1 auto-overflow px4 py8">
           <div className="dc-editor-common-setting-setting v-flex-box py0 px12 auto-overflow border-radius">
             <div className="dc-editor-common-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
-              {textMap['common configuration']}
+              {textMap['Common configuration']}
             </div>
             <div className="dc-editor-common-setting-content auto-y-overflow px8 py4 flex-1">
               <CommonConfigForm />
@@ -74,7 +74,7 @@ const EditorPanel = () => {
           </div>
           <div className="dc-editor-data-setting v-flex-box py0 px12 border-radius">
             <div className="dc-editor-data-setting-title bold-500 color-text-sub fz14 mb8 py8 border-bottom">
-              {textMap['datasource configuration']}
+              {textMap['Data source configuration']}
             </div>
             <div className="dc-editor-data-setting-content px8 py4 auto-y-overflow flex-1">
               <DataConfigurator />
@@ -85,13 +85,13 @@ const EditorPanel = () => {
           <Choose>
             <When condition={canSave}>
               <Button onClick={completeEditor} type="primary">
-                {textMap.ok}
+                {textMap.OK}
               </Button>
             </When>
             <Otherwise>
               <Popover placement="topRight" content={submitTip()}>
                 <Button onClick={completeEditor} type="primary" disabled={!canSave}>
-                  {textMap.ok}
+                  {textMap.OK}
                 </Button>
               </Popover>
             </Otherwise>
@@ -99,19 +99,19 @@ const EditorPanel = () => {
           <Choose>
             <When condition={isTouched}>
               <Popconfirm
-                okText={textMap.ok}
-                cancelText={textMap.cancel}
+                okText={textMap.OK}
+                cancelText={textMap.Cancel}
                 placement="top"
                 trigger="click"
                 title={textMap['confirm to drop data']}
                 onConfirm={resetEditor}
               >
-                <Button style={{ marginRight: 8 }}>{textMap.cancel}</Button>
+                <Button style={{ marginRight: 8 }}>{textMap.Cancel}</Button>
               </Popconfirm>
             </When>
             <Otherwise>
               <Button style={{ marginRight: 8 }} onClick={resetEditor}>
-                {textMap.cancel}
+                {textMap.Cancel}
               </Button>
             </Otherwise>
           </Choose>

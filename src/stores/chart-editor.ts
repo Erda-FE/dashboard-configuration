@@ -175,7 +175,7 @@ const chartEditorStore = createFlatStore({
 
       state.viewCopy = {
         ...DEFAULT_VIEW_CONFIG,
-        title: textMap['unnamed chart'],
+        title: textMap['Unnamed chart'],
         chartType: 'chart:line',
       } as unknown as DC.View;
       state.canSave = false;

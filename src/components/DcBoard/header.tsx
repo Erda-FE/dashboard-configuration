@@ -20,7 +20,7 @@ interface IProps {
   wrapRef: RefObject<Element>;
   contentRef: RefObject<Element>;
   dashboardName?: string;
-  slot?: React.ReactElement;
+  slot?: React.ReactNode;
   readOnly?: boolean;
   afterEdit?: () => void;
   beforeSave?: () => boolean; // 返回 false 来拦截 onSave
@@ -95,7 +95,7 @@ const DashboardHeader = ({
         {
           icon: 'fullscreen',
           btnType: 'text',
-          text: textMap.fullscreen,
+          text: textMap['Full screen'],
           onClick: () => _toggleFullscreen(),
         },
       ]),
@@ -103,7 +103,7 @@ const DashboardHeader = ({
         {
           icon: 'fullscreen-exit',
           btnType: 'text',
-          text: textMap['exit fullscreen'],
+          text: textMap['Exit fullscreen'],
           onClick: () => _toggleFullscreen(),
         },
       ]),
@@ -111,7 +111,7 @@ const DashboardHeader = ({
         {
           icon: 'camera',
           btnType: 'text',
-          text: textMap['export picture'],
+          text: textMap.Export,
           onClick: () => handleSaveImg(),
         },
       ]),
@@ -124,7 +124,7 @@ const DashboardHeader = ({
       ...insertWhen<DC_BOARD_HEADER.Tool>(!isEditMode, [
         {
           icon: 'edit',
-          text: textMap['edit mode'],
+          text: textMap.Edit,
           btnType: 'primary',
           onClick: () => handleTriggerEditMode(),
         },
@@ -133,7 +133,7 @@ const DashboardHeader = ({
         {
           icon: 'plus',
           btnType: 'text',
-          text: textMap['add charts'],
+          text: textMap['Add Chart'],
           // onClick: () => setPickChartModalVisible(true),
           onClick: () => addView(undefined),
         },
@@ -163,7 +163,7 @@ const DashboardHeader = ({
         {
           icon: 'save',
           btnType: 'text',
-          text: textMap['save dashboard'],
+          text: textMap.Save,
           onClick: () => handleSaveDashboard(),
         },
         {

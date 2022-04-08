@@ -14,14 +14,7 @@ import DashboardStore from 'src/stores/dash-board';
 import { Wrapper } from 'src/utils/locale';
 import './index.scss';
 
-const PureDashboard = ({
-  name,
-  layout,
-  showOptions = false,
-  globalVariable,
-  slot,
-  onBoardEvent,
-}: DC.PureBoardGridProps) => {
+const PureDashboard = ({ name, layout, showOptions = false, globalVariable, onBoardEvent }: DC.PureBoardGridProps) => {
   const [textMap, locale] = DashboardStore.getState((s) => [s.textMap, s.locale]);
   const boardRef = useRef<HTMLDivElement>(null);
   const boardContentRef = useRef<HTMLDivElement>(null);
@@ -37,12 +30,12 @@ const PureDashboard = ({
         })}
       >
         <If condition={showOptions}>
-          <DashboardHeader wrapRef={boardRef} contentRef={boardContentRef} dashboardName={name} slot={slot} />
+          <DashboardHeader wrapRef={boardRef} contentRef={boardContentRef} dashboardName={name} />
         </If>
         <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
           <DcEmpty
             className="flex-1"
-            description={textMap['no data']}
+            description={textMap['No data']}
             condition={isEmpty(layout) || gridWidth === Infinity}
           />
           <div className="dc-dashboard-grid-wp">

@@ -52,7 +52,7 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
     Modal.confirm({
       content: `${textMap['confirm to remove']} ${view.title}?`,
       okText: textMap.delete,
-      cancelText: textMap.cancel,
+      cancelText: textMap.Cancel,
       onOk() {
         deleteView(viewId);
       },
@@ -122,12 +122,12 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
     () => [
       {
         icon: 'fullscreen',
-        text: textMap.fullscreen,
+        text: textMap['Full screen'],
         onClick: () => _toggleFullscreen(),
       },
       {
         icon: 'camera',
-        text: textMap['export picture'],
+        text: textMap.Export,
         onClick: () => handleSaveImg(),
       },
       // {
@@ -138,7 +138,7 @@ const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFull
       ...insertWhen<DC_BOARD_HEADER.Tool>(isEditMode, [
         {
           icon: 'delete',
-          text: textMap['remove charts'],
+          text: textMap['Remove charts'],
           onClick: () => handleRemoveItem(),
         },
       ]),

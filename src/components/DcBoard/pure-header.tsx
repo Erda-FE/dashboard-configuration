@@ -18,10 +18,9 @@ interface IProps {
   wrapRef: RefObject<Element>;
   contentRef: RefObject<Element>;
   dashboardName?: string;
-  slot?: React.ReactElement;
 }
 
-const DashboardHeader = ({ wrapRef, contentRef, dashboardName, slot }: IProps) => {
+const DashboardHeader = ({ wrapRef, contentRef, dashboardName }: IProps) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const { toggleFullscreen } = DashboardStore;
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
@@ -40,21 +39,21 @@ const DashboardHeader = ({ wrapRef, contentRef, dashboardName, slot }: IProps) =
       ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
         {
           icon: 'fullscreen',
-          text: textMap.fullscreen,
+          text: textMap['Full screen'],
           onClick: () => _toggleFullscreen(),
         },
       ]),
       ...insertWhen<DC_BOARD_HEADER.Tool>(isFullscreen, [
         {
           icon: 'fullscreen-exit',
-          text: textMap['exit fullscreen'],
+          text: textMap['Exit fullscreen'],
           onClick: () => _toggleFullscreen(),
         },
       ]),
       ...insertWhen<DC_BOARD_HEADER.Tool>(!isFullscreen, [
         {
           icon: 'camera',
-          text: textMap['export picture'],
+          text: textMap.Export,
           onClick: () => handleSaveImg(),
         },
       ]),

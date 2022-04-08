@@ -25,33 +25,33 @@ export default () => {
 
   const fields = [
     {
-      label: textMap['chart label'],
+      label: textMap['Chart label'],
       name: 'isLabel',
       type: Checkbox,
       required: false,
       customProps: {
         defaultChecked: isLabel,
-        children: textMap['show chart label'],
+        children: textMap['Show chart label'],
         onChange(e: React.ChangeEvent<HTMLInputElement>) {
           updateOptionProps({ isLabel: e.target.checked });
         },
       },
     },
     {
-      label: <DcInfoLabel text={textMap['connect null']} info={textMap['connect null tip']} />,
+      label: <DcInfoLabel text={textMap['Connect null value']} info={textMap['connect null tip']} />,
       name: 'isConnectNulls',
       type: Checkbox,
       required: false,
       customProps: {
         defaultChecked: isConnectNulls,
-        children: textMap['connect null'],
+        children: textMap['Connect null value'],
         onChange(e: React.ChangeEvent<HTMLInputElement>) {
           updateOptionProps({ isConnectNulls: e.target.checked });
         },
       },
     },
     {
-      label: <DcInfoLabel text={textMap['null display']} info={textMap['null display tip']} />,
+      label: <DcInfoLabel text={textMap['Show null value']} info={textMap['null display tip']} />,
       name: 'nullDisplay',
       type: Input,
       required: false,

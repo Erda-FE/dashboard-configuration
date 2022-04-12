@@ -1,4 +1,5 @@
-// @use 'sass:math';
+@use 'sass:math';
+
 @import './variable';
 
 // util
@@ -141,7 +142,7 @@
 @mixin width($list...) {
   @each $num in $list {
     .wd#{$num} {
-      width: percentage($num/100);
+      width: percentage(math.div($num, 100));
     }
   }
 }

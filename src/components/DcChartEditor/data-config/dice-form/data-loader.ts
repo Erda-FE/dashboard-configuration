@@ -50,14 +50,27 @@ export const createLoadDataFn =
     if (isTableType) {
       if (isSqlMode) {
         const { data: dataSource, cols } = data;
-        const _cols = map(cols, (col) => ({ dataIndex: col.key, title: col.key, width: col.width, copy: col.copy }));
+        const _cols = map(cols, (col) => ({
+          dataIndex: col.key,
+          title: col.key,
+          width: col.width,
+          copy: col.copy,
+        }));
 
         return {
           cols: _cols,
           metricData: map(dataSource, (item, k) =>
-            reduce(_cols, (result, { dataIndex }) => ({ ...result, [dataIndex]: item[dataIndex], c_key: k }), {
-              ...item,
-            }),
+            reduce(
+              _cols,
+              (result, { dataIndex }) => ({
+                ...result,
+                [dataIndex]: item[dataIndex],
+                c_key: k,
+              }),
+              {
+                ...item,
+              },
+            ),
           ),
           dataSource,
         };

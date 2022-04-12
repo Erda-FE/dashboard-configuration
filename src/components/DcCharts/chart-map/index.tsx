@@ -43,7 +43,10 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
 
   useMount(() => {
     // 初始化全国地图
-    agent('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', { referrer: '', withoutDefaultHeader: true })
+    agent('https://geo.datav.aliyun.com/areas_v2/bound/100000_full.json', {
+      referrer: '',
+      withoutDefaultHeader: true,
+    })
       .then((res) => registerMap('中华人民共和国', res))
       .catch((err) => {
         message.error(err);
@@ -56,7 +59,10 @@ const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
     const _select = cloneDeep(preBody?.select);
     if (!_select) return;
     const idx = findIndex(_select, { alias: MAP_ALIAS });
-    _select[idx] = { expr: `${mapLevel}::tag`, alias: MAP_ALIAS };
+    _select[idx] = {
+      expr: `${mapLevel}::tag`,
+      alias: MAP_ALIAS,
+    };
     const body = {
       groupby: [mapLevel],
       select: _select,

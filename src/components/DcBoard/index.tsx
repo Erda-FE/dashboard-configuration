@@ -32,7 +32,6 @@ const DcBoard = ({
   APIFormComponent = DiceDataConfigFormComponent,
   layout,
   globalVariable,
-  id,
   slot,
   onEdit,
   onCancel,
@@ -93,7 +92,7 @@ const DcBoard = ({
           onCancel={onCancel}
         />
         <div ref={boardContentRef} className="dc-dashboard-content flex-1 v-flex-box">
-          <GlobalFilters id={id} />
+          <GlobalFilters />
           <div className="dc-dashboard-grid-wp flex-1">
             {gridWidthHolder}
             <BoardGrid width={gridWidth} layout={layout} globalVariable={globalVariable} />

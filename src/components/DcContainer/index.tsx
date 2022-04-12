@@ -32,6 +32,7 @@ interface IProps {
   globalVariable?: Record<string, any>;
   onBoardEvent?: DC.onBoardEvent;
 }
+
 const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalVariable, onBoardEvent }) => {
   // 全屏状态区分 Pure 和非 Pure
   const fromPureFullscreenStatus = DashboardStore.useStore((s) => s.isFullscreen);
@@ -168,7 +169,14 @@ const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalV
     if (!isEmpty(_dynamicFilterDataAPI)) {
       const start = api?.query?.start;
       const end = api?.query?.end;
-      getChartData(merge({}, _dynamicFilterDataAPI, { query: { start, end } })).then(({ data }: any) => {
+      getChartData(
+        merge({}, _dynamicFilterDataAPI, {
+          query: {
+            start,
+            end,
+          },
+        }),
+      ).then(({ data }: any) => {
         if (isEmpty(data)) return;
         const { cols, data: _data } = data;
         if (cols[0] && !isEmpty(_data)) {
@@ -196,7 +204,11 @@ const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalV
   }, [_loadData, api, chartType, globalVariable, loadData, staticData, view]);
 
   useEffect(() => {
-    isFunction(loadData) && _loadData({ arg: chartQuery, fn: loadData });
+    isFunction(loadData) &&
+      _loadData({
+        arg: chartQuery,
+        fn: loadData,
+      });
     loadDynamicFilterData();
   }, [chartQuery, _loadData, loadDynamicFilterData, loadData]);
 
@@ -226,7 +238,12 @@ const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalV
         <Otherwise>
           <div className="flex-box">
             <h2 className="dc-chart-title px12">{i18n?.title?.[locale] ?? title} </h2>
-            <div className={classnames({ 'dc-chart-options': true, 'visibility-hidden': !isEditMode })}>
+            <div
+              className={classnames({
+                'dc-chart-options': true,
+                'visibility-hidden': !isEditMode,
+              })}
+            >
               <If condition={isEditMode && !chartEditorVisible && !isFullscreen}>
                 <Tooltip title={textMap['Configure chart']}>
                   <Button type="text" onClick={() => editView(viewId)}>

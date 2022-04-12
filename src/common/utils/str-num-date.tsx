@@ -10,8 +10,7 @@ interface ICutOptions {
  * 截取字符串
  * @param fullStr 字符串
  * @param limit 长度限制
- * @param options.suffix 截取添加的后缀，默认为...
- * @param options.showTip 是否超过长度后显示提示
+ * @param options {ICutOptions} 是否超过长度后显示提示
  */
 export function cutStr(fullStr: string, limit = 0, options?: ICutOptions) {
   if (typeof fullStr !== 'string') {

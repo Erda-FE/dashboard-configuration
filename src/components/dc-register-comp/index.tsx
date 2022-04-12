@@ -1,6 +1,6 @@
 class DcRegisterComp implements DC.DcRegisterComp {
-  private Comps: {};
   private static instance: DcRegisterComp;
+  private readonly Comps: {};
 
   constructor() {
     if (!DcRegisterComp.instance) {
@@ -10,7 +10,7 @@ class DcRegisterComp implements DC.DcRegisterComp {
     return DcRegisterComp.instance;
   }
 
-  use<C = JSX.Element, D = {} | Array<any>>(name: DC.ViewType, Comp: C, config?: { dataConvert?: (data: any) => D }) {
+  use<C = JSX.Element, D = {} | any[]>(name: DC.ViewType, Comp: C, config?: { dataConvert?: (data: any) => D }) {
     if (!(name in this.Comps)) {
       this.Comps[name] = {
         Comp,
@@ -20,15 +20,16 @@ class DcRegisterComp implements DC.DcRegisterComp {
     return this;
   }
 
-  getComp<C = JSX.Element, D = {} | Array<any>>(
+  getComp<C = JSX.Element, D = {} | any[]>(
     name: DC.ViewType,
     defaultComp: any,
   ): { Comp: C; config?: { dataConvert?: (data: any) => D } } {
-    const data = this.Comps[name] ?? {
-      Comp: defaultComp,
-      config: {},
-    };
-    return data;
+    return (
+      this.Comps[name] ?? {
+        Comp: defaultComp,
+        config: {},
+      }
+    );
   }
 }
 

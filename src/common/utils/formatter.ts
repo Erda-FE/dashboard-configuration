@@ -1,8 +1,7 @@
 import { findIndex } from 'lodash';
 
 class Formatter {
-  // eslint-disable-next-line
-  toFixed(value, fixed = 2) {
+  toFixed(value: number, fixed = 2): string | number {
     let fixValue = Number(value).toFixed(fixed);
     if (parseFloat(fixValue) === 0 && value > 0) {
       // fix之后值为0,改为科学计数 进制
@@ -14,19 +13,22 @@ class Formatter {
     return /\.(0)+$/.test(fixValue) ? `${parseInt(fixValue, 10)}` : fixValue;
   }
 
-  format(value, fixed) {
+  format(value: number, fixed?: number): string | number {
     return this.toFixed(value, fixed);
   }
 }
 
 class PercentFormatter extends Formatter {
-  format(value, fixed = 2) {
+  format(value: number, fixed = 2) {
     return `${this.toFixed(value, fixed)} %`;
   }
 }
 
 class AryFormatter extends Formatter {
-  format(value, fixed) {
+  aryTower: string[];
+  ary: number;
+
+  format(value: number, fixed?: number) {
     const { ary, aryTower } = this;
     if (value === 0) {
       return `${this.toFixed(value, fixed)} ${aryTower[0]}`;
@@ -42,8 +44,7 @@ class AryFormatter extends Formatter {
     return value;
   }
 
-  // eslint-disable-next-line
-  getCurAryTower(aryTower, unit) {
+  getCurAryTower(aryTower: string[], unit: string) {
     let idx = 0;
     if (unit) {
       idx = findIndex(aryTower, (v) => v.toLocaleUpperCase() === unit.toLocaleUpperCase());
@@ -54,7 +55,7 @@ class AryFormatter extends Formatter {
 }
 
 class NumberFormatter extends AryFormatter {
-  constructor(unit) {
+  constructor(unit: string) {
     super();
     this.aryTower = this.getCurAryTower(['', 'K', 'M'], unit);
     this.ary = 1000;
@@ -62,7 +63,7 @@ class NumberFormatter extends AryFormatter {
 }
 
 class CapacityFormatter extends AryFormatter {
-  constructor(unit) {
+  constructor(unit: string) {
     super();
     const allAryTower = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     this.aryTower = this.getCurAryTower(allAryTower, unit);
@@ -71,7 +72,7 @@ class CapacityFormatter extends AryFormatter {
 }
 
 class StorageFormatter extends AryFormatter {
-  constructor(unit) {
+  constructor(unit: string) {
     super();
     const allAryTower = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
     this.aryTower = this.getCurAryTower(allAryTower, unit);
@@ -80,7 +81,7 @@ class StorageFormatter extends AryFormatter {
 }
 
 class TrafficFormatter extends AryFormatter {
-  constructor(unit) {
+  constructor(unit: string) {
     super();
     const allAryTower = ['B/S', 'KB/S', 'MB/S', 'GB/S', 'TB/S', 'PB/S', 'EB/S', 'ZB/S', 'YB/S'];
     this.aryTower = this.getCurAryTower(allAryTower, unit);
@@ -89,7 +90,7 @@ class TrafficFormatter extends AryFormatter {
 }
 
 class TimeFormatter extends AryFormatter {
-  constructor(unit) {
+  constructor(unit: string) {
     super();
     const allAryTower = ['ns', 'μs', 'ms', 's'];
     this.aryTower = this.getCurAryTower(allAryTower, unit || 'ms');
@@ -98,20 +99,22 @@ class TimeFormatter extends AryFormatter {
 }
 
 class OwnUnit extends Formatter {
-  constructor(unit) {
+  unit: string;
+
+  constructor(unit: string) {
     super();
     this.unit = unit || '';
   }
 
-  format(value, fixed = 2) {
+  format(value: number, fixed = 2) {
     return `${this.toFixed(value, fixed)} ${this.unit}`;
   }
 }
 
-const MonitorChartFormatterMap = (unitType, unit) => {
+const MonitorChartFormatterMap = (unitType: string, unit: string) => {
   const formatterMap = {
     NUMBER: new NumberFormatter(unit),
-    PERCENT: new PercentFormatter(unit),
+    PERCENT: new PercentFormatter(),
     CAPACITY: new CapacityFormatter(unit),
     TRAFFIC: new TrafficFormatter(unit),
     TIME: new TimeFormatter(unit),
@@ -124,13 +127,14 @@ const MonitorChartFormatterMap = (unitType, unit) => {
   return formatterMap[(unitType || '').toLocaleUpperCase()];
 };
 
-export const getFormatter = (unitType, unit) => MonitorChartFormatterMap(unitType, unit) || new NumberFormatter(unit);
+export const getFormatter = (unitType: string, unit: string): AryFormatter =>
+  MonitorChartFormatterMap(unitType, unit) || new NumberFormatter(unit);
 
-export const getCommonFormatter = (_unit, _val) => {
+export const getCommonFormatter = (_unit: { type: string; unit: string } | undefined, _val: number) => {
   return !_unit || !_unit?.type || !_unit?.unit ? _val : getFormatter(_unit.type, _unit.unit).format(_val, 2);
 };
 
-export const getPrettyFixed = (value, fixed = 2) => {
+export const getPrettyFixed = (value: string | number, fixed = 2) => {
   const fixValue = Number(value).toFixed(fixed);
   return /\.(0)+$/.test(fixValue) ? `${parseInt(fixValue, 10)}` : fixValue;
 };

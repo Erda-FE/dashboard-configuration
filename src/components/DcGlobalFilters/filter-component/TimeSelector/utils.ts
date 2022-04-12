@@ -49,7 +49,7 @@ export const getTimeSpan = (time?: number | Moment[] | number[]): ITimeSpan => {
 
   if (isArray(time)) {
     [startTimeMs, endTimeMs] = time;
-    if (moment.isMoment(startTimeMs)) {
+    if (moment.isMoment(startTimeMs) || moment.isMoment(endTimeMs)) {
       // moment对象
       endTimeMs = moment(endTimeMs).valueOf();
       startTimeMs = moment(startTimeMs).valueOf();
@@ -60,9 +60,9 @@ export const getTimeSpan = (time?: number | Moment[] | number[]): ITimeSpan => {
     endTimeMs = new Date().getTime();
     startTimeMs = endTimeMs - 3600000 * hours;
   }
-  const endTime = parseInt(`${(endTimeMs as number) / 1000}`, 10);
+  const endTime = parseInt(`${endTimeMs / 1000}`, 10);
   const startTime = parseInt(`${startTimeMs / 1000}`, 10);
-  const endTimeNs = (endTimeMs as number) * 1000000;
+  const endTimeNs = endTimeMs * 1000000;
   const startTimeNs = startTimeMs * 1000000;
 
   return {
@@ -74,8 +74,17 @@ export const getTimeSpan = (time?: number | Moment[] | number[]): ITimeSpan => {
     startTimeMs,
     endTimeNs,
     startTimeNs,
-    time: { startTime, endTime },
-    timeMs: { startTimeMs, endTimeMs },
-    timeNs: { startTimeNs, endTimeNs },
+    time: {
+      startTime,
+      endTime,
+    },
+    timeMs: {
+      startTimeMs,
+      endTimeMs,
+    },
+    timeNs: {
+      startTimeNs,
+      endTimeNs,
+    },
   };
 };

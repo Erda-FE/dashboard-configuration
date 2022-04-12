@@ -63,14 +63,21 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     const areaColor = areaColors[i];
 
     const normalSeriesData = isMultipleTypeAndMultipleValue
-      ? convertInvalidValueToZero(value.data).map((x) => ({ value: x, category: name, alias }))
+      ? convertInvalidValueToZero(value.data).map((x) => ({
+          value: x,
+          category: name,
+          alias,
+        }))
       : convertInvalidValueToZero(value.data);
 
     const seriesData = !isBarChangeColor // TODO: isBarChangeColor seem to be useless anymore
       ? normalSeriesData
       : map(value.data, (item: any, j) => {
           const sect = Math.ceil(value.data.length / changeColors.length);
-          return { ...item, itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } } };
+          return {
+            ...item,
+            itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } },
+          };
         });
 
     series.push({
@@ -134,7 +141,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     return cutStr(defaultName, 40);
   };
   const haveTwoYAxis = yAxis.length > 1;
-  const getTTUnitType = (i: number) => {
+  const getTTUnitType = (i: number): [string, string] => {
     const curYAxis = yAxis[i] || yAxis[yAxis.length - 1];
     return [curYAxis.unitType, curYAxis.unit];
   };
@@ -160,7 +167,10 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
   if (isMultipleTypeAndMultipleValue) {
     defaultTTFormatter = (param: any) => {
       return `${formatTooltipTitle(param[0].name)}<br />${genTTArray(
-        param.map((x: any) => ({ ...x, seriesName: `${x.data.category}(${x.data.alias})` })),
+        param.map((x: any) => ({
+          ...x,
+          seriesName: `${x.data.category}(${x.data.alias})`,
+        })),
       ).join('')}`;
     };
   }

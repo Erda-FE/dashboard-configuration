@@ -25,7 +25,8 @@
           "each",
           "include",
           "mixin",
-          "extend"
+          "extend",
+          "use"
         ]
       }
     ]

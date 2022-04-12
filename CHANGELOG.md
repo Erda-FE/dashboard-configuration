@@ -1,3 +1,9 @@
+## [2.0.12](https://github.com/Erda-FE/dashboard-configuration/pull/68/commits/bff44e32bb96a77e2d66e7355ad2ab0b60771ff3) (2021-04-08)
+
+### Feat
+
+*   add slot to dashboard header
+
 ## [2.0.11](https://github.com/Erda-FE/dashboard-configuration/pull/66/commits/0d0f1af72af612d31af45edf05c9e74d29636d42) (2021-03-22)
 
 ### Fix

@@ -1,3 +1,9 @@
+## [2.0.13](https://github.com/Erda-FE/dashboard-configuration/pull/70/commits/6d0f429301f8636629013f9c2682ddb2666008ee) (2021-04-12)
+
+### Feat
+
+*   replace node-sass with sass
+
 ## [2.0.12](https://github.com/Erda-FE/dashboard-configuration/pull/68/commits/bff44e32bb96a77e2d66e7355ad2ab0b60771ff3) (2021-04-08)
 
 ### Feat

@@ -23,7 +23,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
           ...item,
           data: map(item.data, (x: any) => ({
             ...x,
-            name: x?.i18n?.alias?.[locale] || x.name,
+            name: x?.i18n?.alias?.[locale] || x?.name || '',
           })),
           type: 'pie',
           radius: isShowTotal ? ['50%', '70%'] : '70%',

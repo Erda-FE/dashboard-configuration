@@ -283,14 +283,14 @@ declare namespace DC {
   const PureBoardGrid: (props: PureBoardGridProps) => JSX.Element;
 
   interface DcRegisterComp {
-    use: <C = JSX.Element, D = {} | Array<any>>(
+    use: <C = JSX.Element, D = {} | any[]>(
       name: ViewType,
       comp: C,
       config?: {
         dataConvert?: (data: any) => D;
       },
     ) => this;
-    getComp: <C = JSX.Element, D = {} | Array<any>>(
+    getComp: <C = JSX.Element, D = {} | any[]>(
       name: ViewType,
       defaultComp: any,
     ) => { Comp: C; config?: { dataConvert?: (data: any) => D } };

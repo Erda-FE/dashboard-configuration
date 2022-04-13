@@ -196,6 +196,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     return isLessOneMinute ? 'HH:mm:ss' : 'HH:mm';
   };
 
+  const showDataZoom = ((xData && xData.length > 10) || (time && time.length > 100)) && !useBrush;
+
   const computedOption = {
     tooltip: {
       backgroundColor: 'rgba(48,38,71,0.96)',
@@ -220,19 +222,20 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       },
     ],
     yAxis: yAxis.length > 0 ? yAxis : [{ type: 'value' }],
-    dataZoom:
-      ((xData && xData.length > 10) || (time && time.length > 100)) && !useBrush
-        ? {
-            height: 25,
-            start: 0,
-            end: xData && xData.length > 10 ? 500 / xData.length : 25,
-            labelFormatter: time
-              ? (_: any, value: string) =>
-                  moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm')
-              : null,
-          }
-        : false,
+    dataZoom: showDataZoom
+      ? {
+          height: 25,
+          start: 0,
+          bottom: 24,
+          end: xData && xData.length > 10 ? 500 / xData.length : 25,
+          labelFormatter: time
+            ? (_: any, value: string) =>
+                moment(Number(value)).format(moreThanOneDay ? moreThanOneDayFormat || 'M/D HH:mm' : 'HH:mm')
+            : null,
+        }
+      : false,
     grid: {
+      bottom: showDataZoom ? 50 : 40,
       right: haveTwoYAxis ? 40 : 5,
     },
     series,

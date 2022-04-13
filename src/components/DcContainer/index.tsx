@@ -212,17 +212,6 @@ const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalV
     loadDynamicFilterData();
   }, [chartQuery, _loadData, loadDynamicFilterData, loadData]);
 
-  const getTitle = () => (
-    <div className="dc-chart-title-ct pointer">
-      <h2 className="dc-chart-title px12">{title}</h2>
-      <If condition={description}>
-        <Tooltip title={description}>
-          <DcIcon type="info-circle" className="dc-chart-title-op" />
-        </Tooltip>
-      </If>
-    </div>
-  );
-
   const getHeader = () => (
     <div
       className={classnames({
@@ -359,7 +348,7 @@ const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalV
     let _msg = msg;
     let viewMask;
     if (_msg === FetchStatus.FETCH) {
-      viewMask = <ChartSpinMask message={`${textMap.loading}...`} />;
+      viewMask = <ChartSpinMask />;
     } else if (isLoseRequiredFields) {
       _msg = '';
       return;

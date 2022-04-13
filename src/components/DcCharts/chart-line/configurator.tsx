@@ -55,6 +55,7 @@ export default () => {
       name: 'nullDisplay',
       type: Input,
       required: false,
+      initialValue: nullDisplay,
       customProps: {
         defaultChecked: nullDisplay,
         onBlur(e: React.FocusEvent<HTMLInputElement>) {

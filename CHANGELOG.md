@@ -1,3 +1,13 @@
+## [2.0.14](https://github.com/Erda-FE/dashboard-configuration/pull/74/commits/3a2354753b9e0a49414654369b6cf0a8571c76dd) (2021-04-13)
+
+### Feat
+
+*   remove loading text
+*   modify dataZoom style
+
+### Fix
+* remove useless required icon
+
 ## [2.0.13](https://github.com/Erda-FE/dashboard-configuration/pull/70/commits/6d0f429301f8636629013f9c2682ddb2666008ee) (2021-04-12)
 
 ### Feat

@@ -18,7 +18,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
     ..._data,
     data: map(_data.data, (x: any) => ({
       ...x,
-      name: x?.i18n?.alias?.[locale] || x.name,
+      name: x?.i18n?.alias?.[locale] || x?.name || '',
     })),
     label: {
       show: true,

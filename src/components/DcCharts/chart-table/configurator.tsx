@@ -20,7 +20,8 @@ const RowEventConfig = ({ value, options, onChange }: RowEventConfigProps) => {
 
   useEffect(() => {
     eName && eValue && onChange({ name: eName, value: eValue });
-  }, [eName, eValue, onChange]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [eName, eValue]);
 
   return (
     <div className="v-flex-box">

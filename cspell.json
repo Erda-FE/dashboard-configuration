@@ -1,0 +1,21 @@
+{
+  "version": "0.1",
+  "language": "en",
+  "words": [
+    "actived",
+    "antd",
+    "Cascader",
+    "CONFIGURATOR",
+    "Datasource",
+    "Echarts",
+    "immer",
+    "licao",
+    "sizeme"
+  ],
+  "flagWords": [
+    "hte"
+  ],
+  "ignorePaths": [
+    "node_modules"
+  ]
+}

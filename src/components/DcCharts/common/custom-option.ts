@@ -1,7 +1,7 @@
 import { cloneDeep, isString, merge } from 'lodash';
 import { getConfig } from 'src/config';
 
-export /**
+/**
  * 获取在配置中自定义的图表配置，并支持返回的数据中携带图表配置
  *
  * @param {DC.StaticData} data
@@ -9,7 +9,7 @@ export /**
  * @returns {object}
  */
 // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
-const getCustomOption = (data: DC.StaticData = {} as DC.StaticData, config: DC.ChartConfig = {}): object => {
+export const getCustomOption = (data: DC.StaticData = {} as DC.StaticData, config: DC.ChartConfig = {}): object => {
   // 优先级：customOptionFn > option
   let customOption;
   let { optionFn: customOptionFn } = config;

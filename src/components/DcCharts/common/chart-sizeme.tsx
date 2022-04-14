@@ -1,54 +1,24 @@
-import ReactEcharts, { Func } from 'echarts-for-react';
 import React from 'react';
 import DashboardStore from 'src/stores/dash-board';
-import { getConfig } from 'src/config';
+import ReactEchartsEnhance from 'src/components/DcCharts/react-echarts-enhance';
 
-interface IProps {
+export interface IProps {
   viewId?: string;
-  data: object;
-  config: {
-    option: object;
-  };
+  data: DC.StaticData;
+  config: DC.ChartConfig;
   style?: object;
   theme?: string;
   option: any;
-  [k: string]: any;
+  onBoardEvent?: Function;
+  onEvents: {
+    [key: string]: (...args: any[]) => any;
+  };
 }
-
-// 重写相关生命周期，用于注册theme
-const oldComponentDidMount = ReactEcharts.prototype.componentDidMount as Func;
-const oldComponentDidUpdate = ReactEcharts.prototype.componentDidUpdate as Func;
-
-ReactEcharts.prototype.componentDidMount = function (...arg) {
-  const { theme } = this.props;
-  const themeMap = getConfig('theme');
-  let themeObj = themeMap[theme];
-  if (!themeObj) {
-    // eslint-disable-next-line no-console
-    console.info(`theme ${theme} not registered yet`);
-    themeObj = themeMap.dice;
-  }
-  this.echartsLib.registerTheme(theme, themeObj);
-  oldComponentDidMount.call(this, ...arg);
-};
-
-ReactEcharts.prototype.componentDidUpdate = function (...arg) {
-  const { theme } = this.props;
-  const themeMap = getConfig('theme');
-  let themeObj = themeMap[theme];
-  if (!themeObj) {
-    // eslint-disable-next-line no-console
-    console.info(`theme ${theme} not registered yet`);
-    themeObj = themeMap.dice;
-  }
-  this.echartsLib.registerTheme(theme, themeObj);
-  oldComponentDidUpdate.call(this, ...arg);
-};
 
 export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps) => {
   const theme = DashboardStore.useStore((s) => s.theme);
   const { optionProps = {} } = rest?.config || {};
-  const ref = React.useRef(null);
+  const ref = React.useRef<ReactEchartsEnhance>(null);
   const { useBrush = true } = optionProps;
   const { time = [] } = option || {};
 
@@ -85,7 +55,7 @@ export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps)
   }, [time]);
 
   return (
-    <ReactEcharts
+    <ReactEchartsEnhance
       {...rest}
       ref={ref}
       notMerge

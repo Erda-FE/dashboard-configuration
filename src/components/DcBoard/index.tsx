@@ -15,7 +15,6 @@ import DashboardHeader from './header';
 import BoardGrid from './grid';
 import GlobalFilters from 'src/components/DcGlobalFilters';
 // 编辑器部分
-import DcChartEditor from 'src/components/DcChartEditor';
 import DiceDataConfigFormComponent from 'src/components/DcChartEditor/data-config/dice-form';
 import { ConfigGlobalFiltersModal } from 'src/components/DcGlobalFilters/config-modal';
 import ChartEditorStore from 'src/stores/chart-editor';
@@ -25,6 +24,7 @@ import 'src/static/iconfont.css';
 import './index.scss';
 import DashboardStore from 'src/stores/dash-board';
 import { Wrapper } from 'src/utils/locale';
+import EditorPanel from 'src/components/DcChartEditor/editor-panel';
 
 const DcBoard = ({
   timeSpan,
@@ -99,7 +99,7 @@ const DcBoard = ({
           </div>
         </div>
         <ConfigGlobalFiltersModal />
-        <DcChartEditor />
+        <EditorPanel />
       </div>
     </Wrapper>
   );

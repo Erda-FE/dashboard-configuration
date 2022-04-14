@@ -21,6 +21,7 @@ module.exports = {
       extends: ['eslint-config-ali/typescript/react', 'prettier'],
       plugins: ['@typescript-eslint'],
       rules: {
+        'no-nested-ternary': 'off',
         'max-len': 'off',
         'jsx-control-statements/jsx-jcs-no-undef': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
@@ -34,6 +35,7 @@ module.exports = {
         ],
         '@typescript-eslint/interface-name-prefix': 'off',
         indent: 0,
+        'no-param-reassign': ['error', { props: true, ignorePropertyModificationsFor: ['draft', 'state', 'acc'] }],
       },
     },
   ],

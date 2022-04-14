@@ -9,9 +9,9 @@ import DashboardStore from 'src/stores/dash-board';
 const changeColors = ['rgb(0, 209, 156)', 'rgb(251, 162, 84)', 'rgb(247, 91, 96)'];
 
 export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
-  const { metricData = [], xData, time, valueNames = [] } = data;
-  const { optionProps = {}, dataSourceConfig = {}, option = {} } = config;
-  const { typeDimensions, valueDimensions } = dataSourceConfig;
+  const { metricData = [], xData, time } = data;
+  const { optionProps = {}, dataSourceConfig, option = {} } = config;
+  const { typeDimensions, valueDimensions } = dataSourceConfig ?? {};
   const [locale, textMap] = DashboardStore.getState((s) => [s.locale, s.textMap]);
 
   // 多个维度，多个数值
@@ -26,7 +26,6 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
     unit: customUnit,
     noAreaColor,
     decimal = 2,
-    yAxisNames = [],
     legendFormatter,
     isMoreThanOneDay,
     moreThanOneDayFormat,
@@ -72,11 +71,11 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
 
     const seriesData = !isBarChangeColor // TODO: isBarChangeColor seem to be useless anymore
       ? normalSeriesData
-      : map(value.data, (item: any, j) => {
+      : map(value.data, (item: any, j: number) => {
           const sect = Math.ceil(value.data.length / changeColors.length);
           return {
             ...item,
-            itemStyle: { normal: { color: changeColors[Number.parseInt(j / sect, 10)] } },
+            itemStyle: { normal: { color: changeColors[Number.parseInt(String(j / sect), 10)] } },
           };
         });
 
@@ -131,7 +130,7 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
       // 坐标轴刻度配置
       axisLabel: {
         margin: 0,
-        formatter: (val: string) => getFormatter(curUnitType, curUnit).format(val, decimal),
+        formatter: (val: number) => getFormatter(curUnitType, curUnit).format(val, decimal),
       },
     };
   });

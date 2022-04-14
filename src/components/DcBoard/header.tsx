@@ -42,7 +42,7 @@ const DashboardHeader = ({
   const textMap = DashboardStore.getState((s) => s.textMap);
   // 编辑态
   const [isEditMode, viewMap] = ChartEditorStore.useStore((s) => [s.isEditMode, s.viewMap]);
-  const { setEditMode, setPickChartModalVisible, addView, saveEdit, toggleFullscreen } = ChartEditorStore;
+  const { setEditMode, addView, saveEdit, toggleFullscreen } = ChartEditorStore;
   const { toggleConfigModal } = GlobalFiltersStore;
 
   const [_isFullscreen, _toggleFullscreen] = useToggle(false);
@@ -134,32 +134,8 @@ const DashboardHeader = ({
           icon: 'plus',
           btnType: 'text',
           text: textMap['Add Chart'],
-          // onClick: () => setPickChartModalVisible(true),
           onClick: () => addView(undefined),
         },
-        // {
-        //   icon: 'setting',
-        //   customRender: () => {
-        //     return (
-        //       <Dropdown
-        //         trigger={['click']}
-        //         overlay={
-        //           <Menu>
-        //             <Menu.Item>
-        //               <a className="dc-chart-title-dp-op" onClick={() => toggleConfigModal()}>
-        //                 {textMap['global filter']}
-        //               </a>
-        //             </Menu.Item>
-        //           </Menu>
-        //         }
-        //       >
-        //         <Button type="text">
-        //           <DcIcon type="setting" />
-        //         </Button>
-        //       </Dropdown>
-        //     );
-        //   },
-        // },
         {
           icon: 'save',
           btnType: 'text',

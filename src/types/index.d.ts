@@ -17,7 +17,6 @@ declare namespace DC {
     name: string;
     enName: string;
     icon: DcIconType;
-    image: React.ReactNode;
     Component: React.ReactNode | React.FunctionComponent; // props由viewId，以及接口的返回结果组成
     Configurator: React.ReactNode | React.FunctionComponent; // 配置器
     mockData?: any;

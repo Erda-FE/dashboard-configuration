@@ -43,10 +43,9 @@ interface IState {
   isTouched: boolean;
   isFullscreen: boolean;
   /**
-   *外部传入的时间
-   *
+   * @description 外部传入的时间
    * @type {{ startTimeMs: number; endTimeMs: number }}
-   * @memberof IState
+   * @methodOf IState
    */
   timeSpan: { startTimeMs: number; endTimeMs: number };
   /**
@@ -168,7 +167,7 @@ const chartEditorStore = createFlatStore({
       };
     },
     // 新增图表组件
-    addView(state, chartType: DC.ViewType) {
+    addView(state, _chartType?: DC.ViewType) {
       const textMap = DashboardStore.getState((s) => s.textMap);
       const viewId = `view-${genUUID(8)}`;
       state.editChartId = viewId;

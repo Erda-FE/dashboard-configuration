@@ -1,17 +1,9 @@
-import { ChartSizeMe } from 'src/components/DcCharts/common';
-import * as React from 'react';
+import generateCharts from 'src/components/DcCharts/common/gen-charts';
 import { getOption } from './option';
 
-interface IProps {
-  data: any;
-  viewId: string;
-  config: {
-    option: object;
-  };
-}
-
-const ChartFunnel = React.forwardRef((props: IProps, ref: React.Ref<any>) => (
-  <ChartSizeMe {...props} option={getOption(props.data, props.config)} ref={ref} />
-));
-
+/**
+ * @description funnel Chart
+ */
+const ChartFunnel = generateCharts(getOption);
+ChartFunnel.displayName = 'ChartFunnel';
 export default ChartFunnel;

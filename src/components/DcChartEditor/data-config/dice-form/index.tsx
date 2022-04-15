@@ -76,10 +76,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
   const { chartType, curMapType = [], config: currentChartConfig = {} } = currentChart;
   const { dataSourceConfig } = currentChartConfig;
   const dataSource = useMemo(() => (dataSourceConfig || {}) as DC.DatasourceConfig, [dataSourceConfig]);
-  const [mapLevel, preLevel] = useMemo(
-    () => [MAP_LEVEL[Math.max(curMapType.length - 1, 0)], MAP_LEVEL[curMapType.length - 2]],
-    [curMapType.length],
-  );
+  const [mapLevel] = useMemo(() => [MAP_LEVEL[Math.max(curMapType.length - 1, 0)]], [curMapType.length]);
   const chartTypeRef = useRef(chartType);
   const isTableType = chartTypeRef.current === 'table';
   const isMapType = chartTypeRef.current === 'chart:map';
@@ -268,14 +265,13 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
 
   const getSqlString = (sql?: DC.SqlContent) => {
     if (!sql) return '';
-    const sqlStr = reduce(
+    return reduce(
       SQL_OPERATOR,
       (result, operator, key) => {
         return `${result}${sql[key] ? `${operator} ${sql[key]} ` : ''}`;
       },
       '',
     );
-    return sqlStr;
   };
 
   const genApi = useCallback(
@@ -394,7 +390,7 @@ const DiceForm = ({ submitResult, currentChart }: IProps) => {
         valueDimensions: dataSource.valueDimensions,
       },
     },
-    ...insertWhen(!!isTableType, [
+    ...insertWhen(isTableType, [
       {
         label: textMap['configuration mode'],
         type: Switch,

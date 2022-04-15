@@ -18,16 +18,6 @@ const getLastScopeTimeRange = (scope: any) => [
     .valueOf(),
 ];
 
-interface IPagination {
-  pageSize: number;
-  pageSizeOptions: string[];
-}
-
-export const PAGINATION: IPagination = {
-  pageSize: 15,
-  pageSizeOptions: ['15', '30', '45', '60'],
-};
-
 export const customTimeRangeMap = (textMap: TextType) => ({
   '5min': {
     name: textMap['5min'],
@@ -137,16 +127,6 @@ export const SPECIAL_METRIC = {
   [SPECIAL_METRIC_TYPE.sort]: 'c_data-sort',
 };
 
-interface DimensionConfig {
-  actionKey?: DICE_DATA_CONFIGURATOR.DimensionConfigsActionType;
-  label?: string;
-  info?: string;
-  type?: 'divider' | 'sub';
-  key?: string;
-  options?: Array<{ value: string; label: string }>;
-}
-
-// eslint-disable-next-line no-shadow
 enum SORT_TYPE {
   desc = 'DESC',
   asc = 'ASC',
@@ -184,7 +164,6 @@ export const dimensionsConfigs = (textMap: TextType) => ({
   ],
 });
 
-// eslint-disable-next-line no-shadow
 export enum UNIT_TYPE {
   NUMBER = 'NUMBER',
   PERCENT = 'PERCENT',

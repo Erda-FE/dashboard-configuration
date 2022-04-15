@@ -49,7 +49,6 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig) {
       ? {
           title: {
             text: '总量',
-            // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
             subtext: getCommonFormatter(
               unit,
               reduce(get(metricData, [0, 'data']), (sum, { value }) => sum + value, 0),

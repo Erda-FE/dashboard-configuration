@@ -8,9 +8,17 @@ import { unitInfMap } from 'src/components/DcChartEditor/data-config/dice-form/c
 
 const { Group: InputGroup } = Input;
 
-const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.FieldUnit; [k: string]: any }) => {
+interface IUnitConfigProps {
+  value: DICE_DATA_CONFIGURATOR.FieldUnit;
+  onChange: (data: DICE_DATA_CONFIGURATOR.FieldUnit) => void;
+  size?: 'large' | 'small';
+}
+
+const UnitConfig: React.FC<IUnitConfigProps> = ({ value, onChange, size }) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const { type, unit } = value || {};
+  const units = React.useMemo(() => unitInfMap(textMap), [textMap]);
+  const unitMeta = React.useMemo(() => units[type || ''] ?? {}, [type]);
   return (
     <InputGroup size={size}>
       <Col span={6}>
@@ -19,8 +27,8 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
           value={type}
           size={size}
           className="field-config-select"
-          options={map(unitInfMap(textMap), (item) => ({ label: item.name, value: item.value }))}
-          onChange={(v) => onChange({ ...value, type: v, unit: unitInfMap(textMap)[v]?.defaultUnit })}
+          options={map(units, (item) => ({ label: item.name, value: item.value }))}
+          onChange={(v) => onChange({ ...value, type: v, unit: units[v]?.defaultUnit })}
         />
       </Col>
       <Col span={8}>
@@ -36,11 +44,11 @@ const UnitConfig = ({ value, onChange, size }: { value?: DICE_DATA_CONFIGURATOR.
               }}
             />
           </When>
-          <When condition={!!unitInfMap(textMap)[type || '']?.units}>
+          <When condition={!!unitMeta.units}>
             <Select
               value={unit}
               size={size}
-              options={map(unitInfMap(textMap)[type || '']?.units, (item) => ({
+              options={map(unitMeta?.units, (item) => ({
                 label: item || textMap.null,
                 value: item,
               }))}

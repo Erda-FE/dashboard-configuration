@@ -32,6 +32,7 @@ type EffectKeys<T> = {
 type EKs<T> = keyof EffectKeys<ValueOf<T, 'effects'> | ValueOf<T, '_effects'>>;
 
 export function useLoading<T>(store: T & { name: string }, effectNames: Array<EKs<T>>): boolean[] {
+  // @ts-ignore
   return loadingStore.useStore((s) => effectNames.map((n: EKs<T>) => (s[store.name] && s[store.name][n]) || false));
 }
 

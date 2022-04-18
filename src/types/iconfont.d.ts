@@ -46,5 +46,9 @@ type DcIconType =
   | 'info-circle'
   | 'setting'
   | 'save'
-  | 'delete'
-  | 'camera';
+  | 'camera'
+  | 'success'
+  | 'info'
+  | 'error'
+  | 'warning'
+  | 'delete';

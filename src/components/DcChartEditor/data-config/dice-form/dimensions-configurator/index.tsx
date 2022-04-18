@@ -78,6 +78,7 @@ const DimensionsConfigurator = ({
       ]),
       ...insertWhen(!isEmpty(metricsMap), [
         {
+          // @ts-ignore
           value: fieldTypes.includes(dimensionType)
             ? SPECIAL_METRIC[dimensionType]
             : SPECIAL_METRIC[SPECIAL_METRIC_TYPE.field],
@@ -209,7 +210,7 @@ const DimensionsConfigurator = ({
         type,
         alias,
         prefix: dimensionType,
-        field,
+        field: field as string,
         resultType: metricsMap[field]?.type,
       });
 

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Checkbox, Input } from 'antd';
 import produce from 'immer';
 import { CommonConfigurator } from 'src/components/DcCharts/common';

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Dropdown, Input, Menu, message, Modal, Tabs, Tooltip } from 'antd';
 import { useImmer } from 'use-immer';
 import { find, findIndex, map, remove } from 'lodash';
@@ -9,10 +9,10 @@ import GlobalFiltersStore from 'src/stores/global-filters';
 
 import './config-modal.scss';
 
-type IconType = 'success' | 'info' | 'error' | 'warning';
+type IconType = 'success' | 'info' | 'error' | 'warning' | 'eye' | 'eye-close' | 'delete';
 
 interface FilterOption {
-  icon?: IconType;
+  icon: IconType;
   tip?: string;
   onClick?: (e: React.MouseEvent) => void;
 }
@@ -266,7 +266,7 @@ export const ConfigGlobalFiltersModal = () => {
             </Menu>
           }
         >
-          <Button type="secondary" size="small">
+          <Button size="small">
             <DcIcon type="plus" />
           </Button>
         </Dropdown>

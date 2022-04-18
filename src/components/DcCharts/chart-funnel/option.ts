@@ -1,4 +1,4 @@
-import { get, map, merge, set } from 'lodash';
+import { map, merge, set } from 'lodash';
 import { getCustomOption } from 'src/components/DcCharts/common/custom-option';
 import { getCommonFormatter } from 'src/common/utils';
 import getDefaultOption from './default-option';

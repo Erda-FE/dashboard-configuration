@@ -5,12 +5,12 @@ import ReactEchartsEnhance from 'src/components/DcCharts/react-echarts-enhance';
 export interface IProps {
   viewId?: string;
   data: DC.StaticData;
-  config: DC.ChartConfig;
+  config?: DC.ChartConfig;
   style?: object;
   theme?: string;
-  option: any;
+  option?: any;
   onBoardEvent?: Function;
-  onEvents: {
+  onEvents?: {
     [key: string]: (...args: any[]) => any;
   };
 }

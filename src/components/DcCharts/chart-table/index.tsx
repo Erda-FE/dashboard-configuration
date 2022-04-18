@@ -29,7 +29,6 @@ interface IProps {
 }
 
 const fixedLimit = 5;
-const fixedWidth = 150;
 const ChartTable = ({ results = [], cols = [], dataSource, ...rest }: IProps) => {
   const { Comp: Table, config } = dcRegisterComp.getComp<typeof AntdTable, IProps['results']>('table', AntdTable);
   const rowClick: DC_COMPONENT_TABLE.IRowClick | undefined = get(rest, 'config.optionProps.rowClick');

@@ -1,5 +1,5 @@
 // import { map } from 'lodash';
-import * as React from 'react';
+import React from 'react';
 
 const randomValue = () => Math.round(Math.random() * 1000);
 

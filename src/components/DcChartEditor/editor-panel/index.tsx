@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Button, Drawer, Popconfirm, Popover } from 'antd';
 import { getConfig } from 'src/config';
 import DataConfigurator from 'src/components/DcChartEditor/data-config';

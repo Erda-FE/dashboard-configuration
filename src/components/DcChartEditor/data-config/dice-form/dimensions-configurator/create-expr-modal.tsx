@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Input } from 'antd';
 import { DcFormModal } from 'src/common';
 import DashboardStore from 'src/stores/dash-board';

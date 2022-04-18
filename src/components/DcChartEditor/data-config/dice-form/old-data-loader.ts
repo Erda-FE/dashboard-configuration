@@ -59,29 +59,8 @@ export const createLoadDataFn =
     }
 
     if (chartType === 'chart:funnel') {
-      // // 漏斗图：一维，多值
-      // const xAxis = get(api, ['extraData', 'xAxis', 0, 'fid']);
-      // // const yAxisKeys = map(get(api, ['extraData', 'activedMetrics']), ({ fid }) => fid);
-      // const { cols, data: _data } = data;
-
-      // // const xAxisCol = find(cols, { key: xAxis });
-      // const yAxisCols = filter(cols, ({ key }) => key !== xAxis);
-
-      // const yAxises = map(yAxisCols, (col) => col.key);
-      // const metricData = map(yAxises, (yAxis) => ({
-      //   // name: yAxis,
-      //   data: map(_data, (item) => ({
-      //     name: item[xAxis],
-      //     value: item[yAxis],
-      //   })),
-      // }));
-
       // 漏斗图：0维，多值
-      const xAxis = get(api, ['extraData', 'xAxis', 0, 'fid']);
-      const { cols, data: _data } = data;
-
-      // const xAxisCol = find(cols, { key: xAxis });
-      // const yAxisCols = filter(cols, ({ key }) => key !== xAxis);
+      const { data: _data } = data;
 
       const yAxises = map(yAxisInfo, (col) => col.fid);
 

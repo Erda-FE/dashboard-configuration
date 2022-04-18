@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { isUndefined, map } from 'lodash';
 import { Input, InputNumber, Select, Switch } from 'antd';
 import { DcFormModal } from 'src/common';

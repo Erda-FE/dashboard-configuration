@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Input } from 'antd';
 import { DcFormBuilder } from 'src/common';
 import ChartEditorStore from 'src/stores/chart-editor';

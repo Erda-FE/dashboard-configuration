@@ -20,12 +20,6 @@ export default ({ defaultTime, onOk, ...rest }: IProps) => {
     setValue([moment(startTimeMs), moment(endTimeMs)]);
   }, [defaultTime]);
 
-  const defaultDisabledDate = (current: Moment | undefined) => {
-    const endEdge = moment();
-    const startEdge = moment().subtract(8, 'days');
-    return !!current && (current > endEdge || current < startEdge);
-  };
-
   return (
     <RangePicker
       showTime

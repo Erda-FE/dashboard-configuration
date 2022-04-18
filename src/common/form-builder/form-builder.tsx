@@ -44,7 +44,6 @@ interface IProps extends FormProps {
    * readonly: whether all the Form.Item in Form is readonly, default false.
    * else: the same as antd Form
    */
-  children: React.ReactNode;
   isMultiColumn?: boolean;
   columnNum?: number;
   readonly?: boolean;
@@ -52,7 +51,7 @@ interface IProps extends FormProps {
   onSubmit?: () => void;
 }
 
-const PureFormBuilder = <T extends Obj>({
+const PureFormBuilder = <T extends Obj<any>>({
   form,
   children,
   layout = 'vertical',
@@ -80,7 +79,7 @@ const PureFormBuilder = <T extends Obj>({
   };
 
   const handleResize = throttle(({ width }: { width: number }) => {
-    let columns = 1;
+    let columns: number;
     if (width <= 400) {
       columns = 1;
     } else if (width < 600) {

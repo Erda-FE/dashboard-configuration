@@ -108,6 +108,7 @@ const DcContainer: React.FC<IProps> = ({ view, viewId, children, isPure, globalV
         },
         body,
       )
+        // @ts-ignore
         .then((res: any) => {
           let _res = res;
           if (dataConvertor) {

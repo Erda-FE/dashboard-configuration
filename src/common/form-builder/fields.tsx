@@ -111,6 +111,7 @@ export const Fields: React.MemoExoticComponent<
                 ...rest
               } = item;
 
+              // @ts-ignore
               const labelStr = typeof label === 'object' ? label?.props?.text : label;
               const afterAddRequiredRules =
                 required && !some(rules, (rule) => has(rule, 'required'))

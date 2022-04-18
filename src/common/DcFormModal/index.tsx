@@ -19,10 +19,6 @@ const DcFormModal = ({ title, visible, fields, onCancel, onOk }: IProps) => {
     ref.current?.validateFieldsAndScroll((values: any) => {
       onOk && onOk(values);
     });
-    // ref.current?.validateFieldsAndScroll((errors: any, values: any) => {
-    //   if (errors) return;
-    //   onOk && onOk(values);
-    // });
   };
 
   return (

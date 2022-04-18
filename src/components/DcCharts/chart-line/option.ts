@@ -71,7 +71,8 @@ export function getOption(data: DC.StaticData, config: DC.ChartConfig = {}) {
 
     const seriesData = !isBarChangeColor // TODO: isBarChangeColor seem to be useless anymore
       ? normalSeriesData
-      : map(value.data, (item: any, j: number) => {
+      : // @ts-ignore
+        map(value.data, (item: any, j: number) => {
           const sect = Math.ceil(value.data.length / changeColors.length);
           return {
             ...item,

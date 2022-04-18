@@ -37,6 +37,7 @@ export const paramsManage = new ParamsManage();
 //   return newUrl;
 // }
 
+// @ts-ignore
 let urlDataHandle: any;
 
 export function registerUrlDataHandle(handle: any) {

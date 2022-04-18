@@ -13,6 +13,8 @@ declare let Choose: React.FunctionComponent;
 declare let When: React.FunctionComponent<{ condition: boolean }>;
 declare let Otherwise: React.FunctionComponent;
 
-interface Obj<T extends any> {
+interface Obj<T extends any = any> {
   [k: string]: T;
 }
+
+type Nullable<T> = T | null;

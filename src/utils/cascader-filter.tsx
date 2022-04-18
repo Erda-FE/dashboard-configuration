@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 interface CascaderOptionType {
   value?: string | number;
@@ -18,9 +18,7 @@ interface FilledFieldNamesType {
 }
 
 export function customFilter(inputValue: string, path: CascaderOptionType[]) {
-  return path.some(
-    (option: CascaderOptionType) => (option?.label || '').toLowerCase().indexOf(inputValue.toLowerCase()) > -1,
-  );
+  return path.some((option) => ((option?.label as string) || '').toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
 }
 
 function highlightKeyword(str: string, keyword: string, prefixCls: string | undefined) {

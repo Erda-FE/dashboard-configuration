@@ -5,7 +5,7 @@ import getDefaultOption from './default-option';
 export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: string) => {
   const { option: _option = {} } = config || {};
   const option = merge(getDefaultOption(), getCustomOption(data, config));
-  const { metricData = [{}], legendData = [] } = data || {};
+  const { metricData, legendData = [] } = data || {};
 
   if (legendData.length) {
     set(option, ['legend', 'data'], legendData);
@@ -15,6 +15,7 @@ export const getOption = (data: DC.StaticData, config: DC.ChartConfig, mapType: 
   let maxVal = 1;
 
   const series = map(metricData, (_data) => {
+    // @ts-ignore
     const val = map(_data.data, (item) => item?.value);
     min(val) && (minVal = min(val));
     max(val) && (maxVal = max(val) + 1);

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { map } from 'lodash';
 import { Popover } from 'antd';
 import classnames from 'classnames';
@@ -10,12 +10,12 @@ import './index.scss';
 
 interface IProps {
   value: DC.ViewType;
-  typeDimensions: DICE_DATA_CONFIGURATOR.Dimension[];
-  valueDimensions: DICE_DATA_CONFIGURATOR.Dimension[];
+  // typeDimensions: DICE_DATA_CONFIGURATOR.Dimension[];
+  // valueDimensions: DICE_DATA_CONFIGURATOR.Dimension[];
   onChange: (v: DC.ViewType) => void;
 }
 
-const SwitchChartType = ({ value, typeDimensions, valueDimensions, onChange }: IProps) => {
+const SwitchChartType = ({ value, onChange }: IProps) => {
   const locale = DashboardStore.useStore((s) => s.locale);
   return (
     <div className="dc-editor-switch-chart">

@@ -4,7 +4,7 @@ import FilterComp from './filter-component';
 import GlobalFiltersStore from 'src/stores/global-filters';
 
 const DcGlobalFilters = () => {
-  const [filters, globalVariable] = GlobalFiltersStore.useStore((s) => [s.globalFilters, s.globalVariable]);
+  const [filters] = GlobalFiltersStore.useStore((s) => [s.globalFilters]);
   const { updateGlobalVariable } = GlobalFiltersStore;
   const displayFilters = useMemo(() => filters.filter(({ enable }) => enable), [filters]);
 

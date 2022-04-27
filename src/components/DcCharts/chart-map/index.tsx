@@ -31,7 +31,7 @@ interface IProps {
 
 const noop = () => {};
 
-const ChartMap = React.forwardRef((props: IProps, ref: React.Ref<any>) => {
+const ChartMap = React.forwardRef<any, IProps>((props, ref) => {
   const loadData = useMemo(() => props.loadData || noop, [props.loadData]);
   const preBody = props.api?.body;
   const { updateEditor } = ChartEditorStore;

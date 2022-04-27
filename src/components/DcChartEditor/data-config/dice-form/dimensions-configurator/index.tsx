@@ -321,7 +321,7 @@ const DimensionsConfigurator = ({
               showSearch={{ filter: customFilter, render: defaultRenderFilteredOption }}
               size="small"
               options={metricOptions}
-              style={{ width: 130, alignSelf: 'start' }}
+              // style={{ width: 130, alignSelf: 'start' }}
               onPopupVisibleChange={(visible: boolean) => toggleSelectVisible(visible)}
               onChange={handleAddDimension}
             />

@@ -15,10 +15,10 @@ export interface IProps {
   };
 }
 
-export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps) => {
+const ChartSizeMe = ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps) => {
   const theme = DashboardStore.useStore((s) => s.theme);
   const { optionProps = {} } = rest?.config || {};
-  const ref = React.useRef<ReactEchartsEnhance>(null);
+  const chartRef = React.useRef<ReactEchartsEnhance>(null);
   const { useBrush = true } = optionProps;
   const { time = [] } = option || {};
 
@@ -42,8 +42,8 @@ export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps)
 
   React.useEffect(() => {
     if (useBrush) {
-      ref.current &&
-        ref.current.getEchartsInstance().dispatchAction({
+      chartRef.current &&
+        chartRef.current.getEchartsInstance().dispatchAction({
           type: 'takeGlobalCursor',
           key: 'brush',
           brushOption: {
@@ -57,7 +57,7 @@ export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps)
   return (
     <ReactEchartsEnhance
       {...rest}
-      ref={ref}
+      ref={chartRef}
       notMerge
       option={option}
       onEvents={onEvents}
@@ -66,3 +66,4 @@ export default ({ style, option, onBoardEvent, onEvents = {}, ...rest }: IProps)
     />
   );
 };
+export default ChartSizeMe;

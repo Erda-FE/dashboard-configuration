@@ -13,7 +13,6 @@ const { Item: MenuItem, Divider: MenuDivider, SubMenu } = Menu;
 
 interface IProps {
   index: number;
-  children: JSX.Element;
   type: DICE_DATA_CONFIGURATOR.DimensionMetricType;
   dimensionType: DICE_DATA_CONFIGURATOR.DimensionType;
   aggregation?: string;
@@ -31,7 +30,7 @@ interface DragItem {
   type: string;
 }
 
-const DimensionConfigs = ({
+const DimensionConfigs: React.FC<IProps> = ({
   index,
   children,
   type,
@@ -41,7 +40,7 @@ const DimensionConfigs = ({
   sort,
   aggregationMap,
   onTriggerAction,
-}: IProps) => {
+}) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const COMMON_dimensionsConfigs = [
     {

@@ -5,7 +5,7 @@
  * @Last Modified time: 2021-01-26 15:45:36
  */
 
-import React, { memo, ReactNode, RefObject, useCallback, useEffect, useMemo } from 'react';
+import React, { memo, RefObject, useCallback, useEffect, useMemo } from 'react';
 import { Dropdown, Menu, Modal } from 'antd';
 import { useFullscreen, useToggle } from 'react-use';
 import { DcIcon } from 'src/common';
@@ -22,11 +22,10 @@ interface IProps {
   viewRef: RefObject<Element>;
   view: any;
   disabled?: boolean;
-  children: ReactNode;
   toggleFullscreen: (v: boolean) => void;
 }
 
-const Options = ({ view, viewId, viewRef, children, disabled = false, toggleFullscreen }: IProps) => {
+const Options: React.FC<IProps> = ({ view, viewId, viewRef, children, disabled = false, toggleFullscreen }) => {
   const textMap = DashboardStore.getState((s) => s.textMap);
   const [isEditMode] = ChartEditorStore.useStore((s) => [s.isEditMode]);
   const { deleteView } = ChartEditorStore;

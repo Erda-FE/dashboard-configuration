@@ -118,7 +118,10 @@ const PureFormBuilder = <T extends Obj<any>>({
 };
 
 const FormBuilder = React.forwardRef(
-  <T extends Obj>({ children, ...rest }: IProps, ref: React.Ref<IFormExtendType<T>>) => {
+  <T extends Obj>(
+    { children, ...rest }: React.PropsWithChildren<IProps>,
+    ref: React.ForwardedRef<IFormExtendType<T>>,
+  ) => {
     const [form] = Form.useForm() as [IFormExtendType<T>];
 
     React.useImperativeHandle(ref, () => form);
